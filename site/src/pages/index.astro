@@ -10,7 +10,7 @@ const marquee = ['Lifestyle', '<i>Viagens</i>', 'Experiências', '<i>Gastronomia
 const marqueeLoop = [...marquee, ...marquee, ...marquee];
 const title = 'Carol Limah · Criadora de conteúdo em São Paulo';
 const description = 'Viagem, gastronomia e hospedagem com humor e sem roteiro decorado. Portfólio e media kit da Carol Limah (@eu.carollimah) para parcerias com marcas.';
-// og:image precisa de URL absoluta: defina `site` em astro.config.mjs quando houver domínio.
+// og:image precisa de URL absoluta: vem do `site` em astro.config.mjs.
 const ogImage = Astro.site ? new URL('/og.jpg', Astro.site).href : '/og.jpg';
 
 const pct = (n: number) => `${n.toLocaleString('pt-BR')}%`;

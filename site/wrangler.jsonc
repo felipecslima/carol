@@ -1,0 +1,8 @@
+{
+  "name": "carol",
+  "compatibility_date": "2026-10-01",
+  // site estático: o Worker só serve o que o `astro build` gera em dist/
+  "assets": {
+    "directory": "./dist"
+  }
+}
