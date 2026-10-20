@@ -133,8 +133,9 @@ main:focus { outline: none; }
 .about-tag:hover { color: var(--bg); background: var(--accent-light); text-decoration-color: currentColor; }
 .about-text { display: flex; flex-direction: column; gap: 24px; }
 .about-text p { font-size: 18px; line-height: 1.6; color: var(--muted); text-wrap: pretty; }
-.topics { list-style: none; margin: 0; padding: 4px 0 0; display: flex; flex-wrap: wrap; row-gap: 6px; font-size: 15px; font-weight: 500; color: var(--text-2); }
-.topics li + li::before { content: '·'; margin-inline: 12px; color: var(--accent); }
+.topics { list-style: none; margin: 0 0 0 -28px; padding: 4px 0 0; display: flex; flex-wrap: wrap; row-gap: 6px; font-size: 15px; font-weight: 500; color: var(--text-2); clip-path: inset(-8px -8px -8px 28px); }
+/* todo item leva o ponto antes; a lista recua 28px e o recorte esconde o ponto que cai no começo de cada linha */
+.topics li::before { content: '·'; display: inline-block; width: 28px; text-align: center; color: var(--accent); }
 
 /* Portfólio */
 .portfolio { --focus: var(--bg); background: var(--cream); color: var(--bg); scroll-margin-top: 60px; }
