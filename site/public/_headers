@@ -1,0 +1,9 @@
+# HSTS em tudo; cache no Cloudflare. _astro/ e fonts/ não mudam de conteúdo sem mudar de nome; media/ pode ser trocada, então 30 dias.
+/*
+  Strict-Transport-Security: max-age=31536000
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/media/*
+  Cache-Control: public, max-age=2592000

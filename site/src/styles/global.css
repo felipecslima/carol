@@ -1,3 +1,12 @@
+/* Fontes servidas pelo próprio site (public/fonts, subconjuntos latin e latin-ext do Google Fonts):
+   sem a folha de estilos externa bloqueando o primeiro desenho do título. */
+@font-face { font-family: 'Hanken Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(/fonts/hanken-grotesk-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Hanken Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(/fonts/hanken-grotesk-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url(/fonts/instrument-serif-italic-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url(/fonts/instrument-serif-italic-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url(/fonts/instrument-serif-normal-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url(/fonts/instrument-serif-normal-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 :root {
   --bg: #17110d;
   --bg-band: #1d1611;
@@ -152,6 +161,8 @@ main:focus { outline: none; }
 .card:hover, .card:focus-visible { box-shadow: 0 18px 40px rgba(23, 17, 13, 0.25); }
 .card[hidden] { display: none; }
 .card video, .card img.media { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card video { position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s; }
+.card.playing video { opacity: 1; }
 .card .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23, 17, 13, 0) 45%, rgba(23, 17, 13, 0.92) 100%); pointer-events: none; }
 .card .brand { position: absolute; left: 12px; top: 12px; padding: 6px 10px; border-radius: 999px; background: var(--cream); color: var(--bg); font-size: 12px; font-weight: 700; }
 .card .play { position: absolute; right: 12px; top: 12px; width: 30px; height: 30px; border-radius: 50%; background: rgba(23, 17, 13, 0.55); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; }
@@ -167,7 +178,7 @@ main:focus { outline: none; }
 .pf-niches { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 22px; font-size: 15px; color: var(--cream-eyebrow); }
 .pf-niches a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; color: var(--bg); text-decoration: underline; text-decoration-color: rgba(23, 17, 13, 0.3); text-underline-offset: 4px; }
 .pf-niches a:hover { color: var(--cream-italic); text-decoration-color: currentColor; }
-.filter-n { margin-left: 4px; font-weight: 500; opacity: 0.55; font-variant-numeric: tabular-nums; }
+.filter-n { margin-left: 4px; font-weight: 500; opacity: 0.7; font-variant-numeric: tabular-nums; }
 
 @media (max-width: 720px) {
   .pf-head { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
@@ -436,3 +447,8 @@ footer .logo { font-size: 20px; color: var(--text); }
   .bars .fill { width: var(--w) !important; transition: none; }
   .results-text { position: static; }
 }
+
+/* 404 */
+.nf { min-height: calc(100svh - 69px - 100px); display: flex; flex-direction: column; justify-content: center; gap: 28px; padding-block: clamp(56px, 8vw, 112px); }
+.nf .h1 { max-width: 14ch; }
+.nf .nx-more-list { margin-top: 12px; }

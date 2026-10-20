@@ -30,7 +30,7 @@ export const NICHES: Niche[] = [
     slug: 'restaurantes-em-sao-paulo',
     label: 'Restaurantes em SP',
     title: 'Restaurantes em SP · Carol Limah, influenciadora de gastronomia',
-    description: 'Restaurantes de SP nos reels da Carol Limah (@eu.carollimah): tacacá perto da Paulista, Kome na Bela Vista, Gusto Cucina e On Fire. Parcerias com restaurantes.',
+    description: 'Restaurantes de SP nos reels da Carol Limah (@eu.carollimah): tacacá perto da Paulista, Kome, Gusto Cucina e On Fire.',
     h1: 'Restaurantes em São Paulo, <em>prato a prato.</em>',
     lead: 'Do tacacá perto da Paulista ao rodízio do Kome na Bela Vista: eu visito, provo e mostro o clima da casa. Conteúdo que faz o seguidor querer reservar.',
     stops: [
@@ -45,7 +45,7 @@ export const NICHES: Niche[] = [
     slug: 'viagens-e-hospedagem',
     label: 'Viagens e hospedagem',
     title: 'Viagens e hospedagem no interior e litoral de SP · Carol Limah',
-    description: 'Passeios e hospedagem nos reels da Carol Limah (@eu.carollimah): Jacareí, Igaratá, Campos do Jordão, Ilhabela e pousadas. Parcerias com hotéis e pousadas.',
+    description: 'Passeios e hospedagem da Carol Limah (@eu.carollimah): Jacareí, Igaratá, Campos do Jordão, Ilhabela e pousadas.',
     h1: 'Fins de semana pelo interior e o litoral de SP, <em>de perto.</em>',
     lead: 'Cavalgada, quadriciclo, fazenda e hospedagem: passeios de um ou dois dias a partir de São Paulo, mostrados com humor e sem roteiro decorado.',
     stops: [
@@ -60,7 +60,7 @@ export const NICHES: Niche[] = [
     slug: 'publis-e-ugc',
     label: 'Publis e UGC',
     title: 'Publis e vídeos UGC · Carol Limah, criadora de conteúdo em SP',
-    description: `Publis e vídeos UGC da Carol Limah (@eu.carollimah) para Mercado Livre, Shein, Kome e outras marcas. Os reels do Mercado Livre têm média de ${REELS_STATS.mlAverage} views.`,
+    description: `Publis e UGC da Carol Limah (@eu.carollimah) para Mercado Livre, Shein e Kome. Média de ${REELS_STATS.mlAverage} views nos reels do Mercado Livre.`,
     h1: 'Publis que <em>entregam alcance.</em>',
     lead: `Reels no meu perfil e vídeos UGC para a marca usar nos próprios canais. Os ${REELS_STATS.mlCount} reels para o Mercado Livre têm média de ${REELS_STATS.mlAverage} views.`,
     stops: [

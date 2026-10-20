@@ -1,5 +1,7 @@
 // ---- Lightbox (<dialog> modal: foco preso, fundo inerte e Esc nativos) ----
 // `cards` devolve a lista navegável do momento (na home, só os cards visíveis no filtro).
+import { posterSrc, videoSrc } from '../data/content';
+
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
 export function initLightbox(cards: () => HTMLElement[], reduceMotion: boolean) {
@@ -10,12 +12,12 @@ export function initLightbox(cards: () => HTMLElement[], reduceMotion: boolean) 
   function render() {
     const list = cards();
     const c = list[idx!];
-    const { id, video, cat, title, brand, views, src, poster } = c.dataset;
+    const { id, video, cat, title, brand, views } = c.dataset;
     lbMedia.replaceChildren();
     if (video === '1') {
       const v = document.createElement('video');
-      v.src = src!;
-      v.poster = poster!;
+      v.src = videoSrc(id!);
+      v.poster = posterSrc(id!, 720);
       v.controls = true;
       v.muted = true; // começa mudo; o som fica nos controles
       v.playsInline = true;
@@ -86,6 +88,7 @@ export function bindCards(all: HTMLElement[], list: () => HTMLElement[], open: (
   const play = (c: HTMLElement) => c.querySelector('video')?.play().catch(() => {});
   const pause = (c: HTMLElement) => c.querySelector('video')?.pause();
   all.forEach((c) => {
+    c.querySelector('video')?.addEventListener('playing', () => c.classList.add('playing'), { once: true });
     if (!reduceMotion) {
       c.addEventListener('mouseenter', () => play(c));
       c.addEventListener('mouseleave', () => pause(c));

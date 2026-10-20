@@ -1,8 +1,14 @@
 {
   "name": "carol",
   "compatibility_date": "2026-10-01",
-  // site estático: o Worker só serve o que o `astro build` gera em dist/
+  // worker.js só redireciona http/www para https://eucarollimah.com.br; o resto é o que o `astro build` gera em dist/
+  "main": "./worker.js",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // o redirecionamento precisa ver toda requisição, inclusive as de arquivos
+    "run_worker_first": true,
+    // dist/404.html (src/pages/404.astro) com status 404
+    "not_found_handling": "404-page"
   }
 }

@@ -3,6 +3,7 @@ import '../styles/global.css';
 import SeoHead from '../components/SeoHead.astro';
 import MediaCard from '../components/MediaCard.astro';
 import Lightbox from '../components/Lightbox.astro';
+import Icons from '../components/Icons.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { NICHES } from '../data/niches';
 import {
@@ -13,9 +14,9 @@ import {
 const marquee = ['Lifestyle', '<i>Viagens</i>', 'Experiências', '<i>Gastronomia</i>', 'Moda', '<i>UGC</i>'];
 // cada metade do loop precisa ser mais larga que a tela (até 2560px), por isso a lista se repete
 const marqueeLoop = [...marquee, ...marquee, ...marquee];
-// título e descrição com os termos que as marcas buscam (nome, @, cidade, nichos); ~60 e ~155 caracteres
+// título e descrição com os termos que as marcas buscam (nome, @, cidade, nichos); até ~60 e ~130 caracteres
 const title = 'Carol Limah · Influenciadora de viagem e gastronomia em SP';
-const description = 'Carol Limah (@eu.carollimah), influenciadora em São Paulo: restaurantes, hotéis, pousadas e viagens com humor. Portfólio, resultados e media kit para marcas.';
+const description = 'Carol Limah (@eu.carollimah), influenciadora de viagens e gastronomia em SP: restaurantes, hotéis e pousadas. Portfólio e media kit.';
 // URLs absolutas (og:image, canonical, JSON-LD) vêm do `site` em astro.config.mjs.
 const abs = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
 const canonical = abs('/');
@@ -70,6 +71,7 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
     <SeoHead title={title} description={description} path="/" ogType="profile" jsonLd={jsonLd} />
   </head>
   <body>
+    <Icons />
     <a class="skip" href="#conteudo">Pular para o conteúdo</a>
     <nav class="nav" aria-label="Principal">
       <div class="wrap">
@@ -193,7 +195,7 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
           <ol class="bar-list">
             {TOP_REELS.map((r, i) => (
               <li class="reel-row">
-                <img class="reel-thumb" src={`/media/reels/r${r.k}.webp`} alt="" width="132" height="176" loading="lazy" />
+                <img class="reel-thumb" src={`/media/reels/r${r.k}.webp`} alt={`Capa do reel: ${r.title ?? "sem texto na capa"}`} width="132" height="176" loading="lazy" />
                 <div class="reel-body">
                   <span class="reel-title">
                     {r.title ?? <span class="reel-untitled">Reel sem texto na capa</span>}
@@ -303,7 +305,7 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
         </p>
         <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
         <div class="contact-note">
-          <p class="contact-time"><img class="avatar" src="/media/carol-avatar.webp" alt="" width="160" height="160" loading="lazy" />{RESPONSE_TIME}</p>
+          <p class="contact-time"><img class="avatar" src="/media/carol-avatar.webp" alt="Carol Limah" width="160" height="160" loading="lazy" />{RESPONSE_TIME}</p>
           <p class="brief-title">O e-mail já abre com este roteiro:</p>
           <ul class="brief">{BRIEF.map((b) => <li>{b}</li>)}</ul>
         </div>

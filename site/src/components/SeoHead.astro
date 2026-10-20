@@ -9,8 +9,10 @@ interface Props {
   path: string;
   ogType?: string;
   jsonLd?: object;
+  /** páginas fora da busca (404): sem canonical nem prévia de link */
+  noindex?: boolean;
 }
-const { title, description, path, ogType = 'website', jsonLd } = Astro.props;
+const { title, description, path, ogType = 'website', jsonLd, noindex = false } = Astro.props;
 const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
 const canonical = abs(path);
 const ogImage = abs('/og.jpg');
@@ -19,7 +21,10 @@ const ogImage = abs('/og.jpg');
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{title}</title>
 <meta name="description" content={description} />
+{noindex ? <meta name="robots" content="noindex" /> : <Fragment>
 <link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="pt-BR" href={canonical} />
+<link rel="alternate" hreflang="x-default" href={canonical} />
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonical} />
 <meta property="og:site_name" content="Carol Limah" />
@@ -31,12 +36,13 @@ const ogImage = abs('/og.jpg');
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="Carol Limah, criadora de conteúdo em São Paulo" />
 <meta name="twitter:card" content="summary_large_image" />
+</Fragment>}
 {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 <meta name="theme-color" content="#17110d" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 {CLOUDINARY_ORIGIN && <link rel="preconnect" href={CLOUDINARY_ORIGIN} />}
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<!-- o título do hero é o maior elemento da primeira tela: a serif chega junto com o HTML -->
+<link rel="preload" href="/fonts/instrument-serif-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />

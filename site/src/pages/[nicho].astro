@@ -5,6 +5,7 @@ import '../styles/global.css';
 import SeoHead from '../components/SeoHead.astro';
 import MediaCard from '../components/MediaCard.astro';
 import Lightbox from '../components/Lightbox.astro';
+import Icons from '../components/Icons.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { EMAIL, MAILTO, MEDIA_KIT_PDF, RESPONSE_TIME } from '../data/content';
 import { NICHES, stopMedia, topViews, type Niche } from '../data/niches';
@@ -51,6 +52,7 @@ const jsonLd = {
     <SeoHead title={niche.title} description={niche.description} path={path} jsonLd={jsonLd} />
   </head>
   <body>
+    <Icons />
     <a class="skip" href="#conteudo">Pular para o conteúdo</a>
     <nav class="nav" aria-label="Principal">
       <div class="wrap">
