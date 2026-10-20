@@ -1,0 +1,368 @@
+---
+import '../styles/global.css';
+import {
+  AUDIENCE, AUDIENCE_SUMMARY, BRANDS, BRIEF, EMAIL, FILTERS, INSIGHTS, MAILTO, MEDIA, MEDIA_KIT_PDF, REACH_MULTIPLE, REELS_STATS,
+  RESPONSE_TIME, SERVICES, TOP_REELS, CLOUDINARY_ORIGIN, groupsOf, posterSrc, videoSrc, type Share,
+} from '../data/content';
+
+const marquee = ['Lifestyle', '<i>Viagens</i>', 'Experiências', '<i>Gastronomia</i>', 'Moda', '<i>UGC</i>'];
+// cada metade do loop precisa ser mais larga que a tela (até 2560px), por isso a lista se repete
+const marqueeLoop = [...marquee, ...marquee, ...marquee];
+const title = 'Carol Limah · Criadora de conteúdo em São Paulo';
+const description = 'Viagem, gastronomia e hospedagem com humor e sem roteiro decorado. Portfólio e media kit da Carol Limah (@eu.carollimah) para parcerias com marcas.';
+// og:image precisa de URL absoluta: defina `site` em astro.config.mjs quando houver domínio.
+const ogImage = Astro.site ? new URL('/og.jpg', Astro.site).href : '/og.jpg';
+
+const pct = (n: number) => `${n.toLocaleString('pt-BR')}%`;
+// barras de público: escala relativa ao maior valor do grupo
+const scaled = (list: Share[]) => {
+  const max = Math.max(...list.map((s) => s.pct));
+  return list.map((s) => ({ ...s, w: `${((s.pct / max) * 100).toFixed(1)}%` }));
+};
+const photoSrcset = (id: string) => `/media/${id}-600.webp 600w, /media/${id}.webp 1100w`;
+// barras dos reels: escala a partir de zero, relativa ao mais visto
+const topMax = TOP_REELS[0].k;
+const reelTone = (i: number) => Math.min(3, Math.floor(i / 2));
+// comparação seguidores × views por reel, escala relativa ao maior valor
+const compare = [
+  { label: 'Seguidores no Instagram', value: INSIGHTS.followers, k: INSIGHTS.followersK, base: true },
+  { label: 'Média de views por reel', value: REELS_STATS.average, k: REELS_STATS.averageK },
+  { label: 'Média nas publis do Mercado Livre', value: REELS_STATS.mlAverage, k: REELS_STATS.mlAverageK },
+];
+const compareMax = Math.max(...compare.map((c) => c.k));
+const viewsLong = INSIGHTS.views.replace(/ mi$/, ' milhão');
+const social = [
+  { label: 'Instagram @eu.carollimah', href: 'https://www.instagram.com/eu.carollimah' },
+  { label: 'Threads @eu.carollimah', href: 'https://www.threads.net/@eu.carollimah' },
+];
+const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.filter((m) => groupsOf(m).includes(key)).length);
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#17110d" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {CLOUDINARY_ORIGIN && <link rel="preconnect" href={CLOUDINARY_ORIGIN} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+    <nav class="nav" aria-label="Principal">
+      <div class="wrap">
+        <a class="logo" href="#topo">Carol <i>Limah</i></a>
+        <button class="burger" type="button" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+          <a href="#sobre">Sobre</a>
+          <a href="#portfolio">Portfólio</a>
+          <a href="#resultados">Resultados</a>
+          <a href="#servicos">Formatos</a>
+          <a class="cta" href="#contato">Quero uma parceria</a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="conteudo" tabindex="-1">
+    <header id="topo" class="wrap hero">
+      <div class="hero-text">
+        <div class="eyebrow"><span class="dot"></span>Criadora de conteúdo · São Paulo</div>
+        <h1 class="h1">Uma amazonense morando em São&nbsp;Paulo te levando em <em>lugares incríveis.</em></h1>
+        <p class="hero-lead">Restaurantes, hotéis, pousadas e viagens de fim de semana, mostrados do jeito que eu vivo: com humor, de perto e sem roteiro decorado.</p>
+        <div class="btns">
+          <a class="btn btn-primary" href="#portfolio">Ver portfólio</a>
+          <a class="btn btn-outline" href="#contato">Quero uma parceria</a>
+        </div>
+        <dl class="stats">
+          <div class="stat"><dt>seguidores no Instagram <em>{INSIGHTS.followersGrowth} em 30 dias</em></dt><dd>{INSIGHTS.followers}</dd></div>
+          <div class="stat"><dt>views nos últimos 30 dias</dt><dd>{INSIGHTS.views}</dd></div>
+          <div class="stat"><dt>média de views por reel</dt><dd>{REELS_STATS.average}</dd></div>
+        </dl>
+      </div>
+      <div class="collage">
+        <img class="main" src="/media/p9.webp" srcset={photoSrcset('p9')} sizes="(max-width: 600px) 62vw, 340px" alt="Carol Limah ao telefone, de óculos escuros, num parque" width="1100" height="1467" fetchpriority="high" />
+        <img class="small" src="/media/p6.webp" srcset={photoSrcset('p6')} sizes="240px" alt="Cavalgada ao pôr do sol" width="1100" height="1428" loading="lazy" />
+        <img class="vid" src="/media/p10.webp" srcset={photoSrcset('p10')} sizes="220px" alt="Carol em pé sobre um quadriciclo, com montanhas ao fundo" width="1100" height="1467" loading="lazy" />
+        <div class="seal">Amazonas<br /><i>→ São Paulo</i></div>
+      </div>
+    </header>
+
+    <div class="marquee">
+      <div class="marquee-track" aria-hidden="true">
+        {[0, 1].map(() => (
+          <span>
+            {marqueeLoop.map((m) => (<><Fragment set:html={m} /><span class="sep"></span></>))}
+          </span>
+        ))}
+      </div>
+      <button class="vid-toggle marquee-toggle" type="button" aria-label="Pausar animação" hidden>
+        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1" /><rect x="9.4" y="3" width="2.6" height="10" rx="1" /></svg>
+        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5Z" /></svg>
+      </button>
+    </div>
+
+    <section id="sobre" class="wrap about">
+      <div class="about-photo">
+        <img src="/media/p4.webp" srcset={photoSrcset('p4')} sizes="(max-width: 520px) 92vw, 460px" alt="Carol em restaurante em São Paulo" width="1100" height="1956" loading="lazy" />
+        <a class="about-tag" href={MAILTO}>{EMAIL}</a>
+      </div>
+      <div class="about-text">
+        <span class="eyebrow">Sobre mim</span>
+        <h2 class="h2">Do Amazonas pra São Paulo, <em>te mostrando tudo.</em></h2>
+        <p>Sou a Carol, amazonense morando em SP. No meu perfil eu levo quem me acompanha pra conhecer restaurantes, hotéis, pousadas e destinos como Ilhabela e Campos do Jordão, sempre com o meu jeito: espontânea, divertida e muito sincera.</p>
+        <p>Também divido a rotina e o meu processo de emagrecimento. É essa proximidade que faz a minha audiência confiar no que eu indico.</p>
+        <ul class="topics" aria-label="Temas">
+          {['Viagem', 'Gastronomia', 'Hospedagem', 'Moda', 'Lifestyle'].map((c) => <li>{c}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section id="portfolio" class="portfolio">
+      <div class="wrap">
+        <div class="pf-head">
+          <div class="pf-title">
+            <span class="eyebrow">Portfólio</span>
+            <h2 class="h2">Conteúdos que eu <em>já criei</em></h2>
+          </div>
+          <div class="filters" id="filters" role="group" aria-label="Filtrar conteúdos">
+            {FILTERS.map((f) => (
+              <button class="filter" type="button" data-filter={f.key} aria-pressed={f.key === 'todos' ? 'true' : 'false'}>
+                {f.label} <span class="filter-n">{filterCount(f.key)}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="grid" id="grid">
+          {MEDIA.map((m) => (
+            <button
+              class="card" type="button"
+              data-cat={m.cat} data-groups={groupsOf(m).join(' ')} data-title={m.title} data-brand={m.brand ?? ''}
+              data-video={m.video ? '1' : '0'} data-id={m.id} data-src={m.video ? videoSrc(m.id) : undefined} data-poster={m.video ? posterSrc(m.id, 720) : undefined} data-views={m.views ?? ''}
+              aria-label={`${m.video ? 'Vídeo' : 'Foto'}: ${m.title} · ${m.cat}${m.brand ? ` · parceria com ${m.brand}` : ''}${m.views ? ` · ${m.views} views` : ''}`}
+            >
+              {m.video
+                ? <video src={`${videoSrc(m.id)}#t=0.8`} poster={posterSrc(m.id)} muted loop playsinline preload="none" aria-hidden="true"></video>
+                : <img class="media" src={`/media/${m.id}.webp`} srcset={photoSrcset(m.id)} sizes="(max-width: 720px) 50vw, 300px" alt="" loading="lazy" />}
+              <div class="shade"></div>
+              {m.brand && <span class="brand">{m.brand}</span>}
+              {m.video && (
+                <span class="play" aria-hidden="true">
+                  <svg viewBox="0 0 16 16"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5Z" /></svg>
+                </span>
+              )}
+              <div class="cap">
+                <small>{m.cat}</small><strong>{m.title}</strong>
+                {m.views && (
+                  <span class="views" aria-hidden="true">
+                    <svg viewBox="0 0 16 16"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8Z" /><circle cx="8" cy="8" r="2" /></svg>
+                    {m.views} views
+                  </span>
+                )}
+              </div>
+            </button>
+          ))}
+        </div>
+        <button class="more" type="button" id="more" aria-controls="grid" hidden>Ver todos os {MEDIA.length} conteúdos</button>
+      </div>
+    </section>
+
+    <section id="resultados" class="results">
+      <div class="wrap results-reels">
+        <div class="results-text">
+          <span class="eyebrow">Resultados</span>
+          <h2 class="h2">Alcance que vai <em>muito além</em> dos seguidores</h2>
+          <p>Nos últimos 30 dias foram <strong>{viewsLong} de visualizações</strong> ({INSIGHTS.viewsGrowth} sobre o mês anterior) e <strong>{INSIGHTS.newFollowers} seguidores novos</strong>. Nos {REELS_STATS.count} reels do perfil, a média é de <strong>{REELS_STATS.average} views</strong>: mais de {REACH_MULTIPLE} o número de seguidores. {REELS_STATS.over500} passaram de 500 mil, e {REELS_STATS.overMillion} chegaram a 1 milhão.</p>
+          <p class="results-case">Publi também entrega: os {REELS_STATS.mlCount} reels para o <strong>Mercado Livre</strong> têm média de <strong>{REELS_STATS.mlAverage} views</strong>.</p>
+        </div>
+        <div class="results-charts">
+        <figure class="compare">
+          <figcaption class="chart-title">Views por reel comparadas aos seguidores</figcaption>
+          <ul class="cmp-list">
+            {compare.map((c) => (
+              <li class:list={['cmp', { base: c.base }]}>
+                <span class="cmp-label">{c.label}</span>
+                <b>{c.value}</b>
+                <span class="cmp-track" aria-hidden="true"><span class="cmp-fill" style={`width:${((c.k / compareMax) * 100).toFixed(1)}%`}></span></span>
+              </li>
+            ))}
+          </ul>
+        </figure>
+        <figure class="bars" id="bars">
+          <figcaption class="chart-title">Os 8 reels mais vistos, entre {REELS_STATS.count} do perfil</figcaption>
+          <ol class="bar-list">
+            {TOP_REELS.map((r, i) => (
+              <li class="reel-row">
+                <img class="reel-thumb" src={`/media/reels/r${r.k}.webp`} alt="" width="132" height="176" loading="lazy" />
+                <div class="reel-body">
+                  <span class="reel-title">
+                    {r.title ?? <span class="reel-untitled">Reel sem texto na capa</span>}
+                    {r.brand && <span class="reel-brand">{r.brand}</span>}
+                  </span>
+                  <div class="track" style={`--w:${((r.k / topMax) * 100).toFixed(1)}%`} aria-hidden="true">
+                    <div class={`fill tone-${reelTone(i)}`}></div>
+                  </div>
+                </div>
+                <b>{r.views}<span class="sr-only"> views</span></b>
+              </li>
+            ))}
+          </ol>
+          <p class="source">Fonte: aba Reels do Instagram @eu.carollimah · {REELS_STATS.count} reels, {REELS_STATS.period}</p>
+        </figure>
+        </div>
+      </div>
+
+      <div class="wrap audience" id="publico">
+        <div class="aud-head">
+          <h3 class="aud-title">Quem me <em>assiste</em></h3>
+          <ul class="aud-sum">
+            {AUDIENCE_SUMMARY.map((s) => <li><b>{s.value}</b> {s.text}</li>)}
+          </ul>
+          <p class="aud-stamp">Dados do Instagram · {INSIGHTS.period}</p>
+        </div>
+        <div class="aud-grid">
+          <figure class="aud-chart">
+            <figcaption>Gênero</figcaption>
+            <div class="split" aria-hidden="true">
+              {AUDIENCE.gender.map((g, i) => <span class={`seg tone-${i === 0 ? 0 : 2}`} style={`flex-basis:${g.pct}%`}></span>)}
+            </div>
+            <ul class="split-legend">
+              {AUDIENCE.gender.map((g) => <li><b>{pct(g.pct)}</b> {g.label}</li>)}
+            </ul>
+          </figure>
+          <figure class="aud-chart">
+            <figcaption>Faixa etária</figcaption>
+            <ul class="hbars">
+              {scaled(AUDIENCE.age).map((s) => (
+                <li class:list={['hbar', { key: s.key }]}>
+                  <span class="hbar-label">{s.label}<span class="sr-only"> anos:</span></span>
+                  <span class="hbar-track" aria-hidden="true"><span class="hbar-fill" style={`width:${s.w}`}></span></span>
+                  <b>{pct(s.pct)}</b>
+                </li>
+              ))}
+            </ul>
+          </figure>
+          <figure class="aud-chart">
+            <figcaption>Principais cidades</figcaption>
+            <ul class="hbars hbars-cities">
+              {scaled(AUDIENCE.cities).map((s) => (
+                <li class:list={['hbar', { key: s.key }]}>
+                  <span class="hbar-label">{s.label}<span class="sr-only">:</span></span>
+                  <span class="hbar-track" aria-hidden="true"><span class="hbar-fill" style={`width:${s.w}`}></span></span>
+                  <b>{pct(s.pct)}</b>
+                </li>
+              ))}
+            </ul>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicos" class="services">
+      <div class="wrap">
+        <div class="services-head">
+          <span class="eyebrow">Formatos de parceria</span>
+          <h2 class="h2">Como a sua marca pode <em>aparecer comigo</em></h2>
+        </div>
+        <div class="svc-grid">
+          {SERVICES.map((s, i) => (
+            <div class="svc">
+              <span class="n">{String(i + 1).padStart(2, '0')}</span>
+              <h3 set:html={s.title} />
+              <p>{s.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="brands">
+        <h3 class="wrap eyebrow" id="marcas">Marcas e lugares com quem já trabalhei</h3>
+        <ul class="sr-only" aria-labelledby="marcas">{BRANDS.map((b) => <li>{b}</li>)}</ul>
+        <div class="marquee">
+          <div class="marquee-track" aria-hidden="true" style={`--dur:${BRANDS.length * 6}s`}>
+            {[0, 1].map(() => (
+              <span>{BRANDS.map((b, i) => (<>{i % 2 ? <i>{b}</i> : b}<span class="sep"></span></>))}</span>
+            ))}
+          </div>
+          <button class="vid-toggle marquee-toggle" type="button" aria-label="Pausar animação" hidden>
+            <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1" /><rect x="9.4" y="3" width="2.6" height="10" rx="1" /></svg>
+            <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5Z" /></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="contact">
+      <div class="wrap">
+        <span class="eyebrow">Vamos conversar?</span>
+        <h2 class="h2">Bora levar a sua marca pra <em>um lugar incrível?</em></h2>
+        <a class="mail-btn" href={MAILTO}>Escrever e-mail</a>
+        <p class="contact-addr">
+          <span id="email-text">{EMAIL}</span>
+          <button class="copy-btn" type="button" id="copy" data-email={EMAIL} aria-label="Copiar e-mail" hidden>Copiar</button>
+        </p>
+        <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
+        <div class="contact-note">
+          <p class="contact-time"><img class="avatar" src="/media/carol-avatar.webp" alt="" width="160" height="160" loading="lazy" />{RESPONSE_TIME}</p>
+          <p class="brief-title">O e-mail já abre com este roteiro:</p>
+          <ul class="brief">{BRIEF.map((b) => <li>{b}</li>)}</ul>
+        </div>
+        <div class="contact-actions">
+          <a class="kit-btn" href={MEDIA_KIT_PDF} download>Baixar media kit (PDF)</a>
+        </div>
+      </div>
+    </section>
+
+    <a class="dock" id="dock" href="#contato" hidden>Quero uma parceria</a>
+    </main>
+
+    <dialog class="lb" id="lb" aria-labelledby="lb-title">
+      <div class="lb-media" id="lb-media"></div>
+      <div class="lb-panel">
+        <span class="lb-cat" id="lb-cat"></span>
+        <h2 class="lb-title" id="lb-title"></h2>
+        <span class="lb-brand" id="lb-brand" hidden></span>
+        <span class="lb-views" id="lb-views" hidden></span>
+        <span class="lb-count" id="lb-count"></span>
+        <span class="sr-only" id="lb-live" aria-live="polite"></span>
+        <div class="lb-actions">
+          <button class="lb-nav" type="button" id="lb-prev" aria-label="Anterior">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5" /></svg>
+          </button>
+          <button class="lb-nav" type="button" id="lb-next" aria-label="Próximo">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5" /></svg>
+          </button>
+          <button class="lb-close" type="button" id="lb-close">Fechar</button>
+        </div>
+      </div>
+    </dialog>
+
+    <footer>
+      <div class="wrap">
+        <span class="logo">Carol <i>Limah</i></span>
+        <ul class="foot-social" aria-label="Redes sociais">
+          {social.map((l) => <li><a href={l.href} target="_blank" rel="noopener">{l.label}</a></li>)}
+        </ul>
+        <span>© 2026 Carol Limah · São Paulo, SP</span>
+      </div>
+    </footer>
+
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

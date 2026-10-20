@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#17110d;color:#f3ece2;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#f3ece2;text-decoration:none}
+a:hover{color:oklch(0.8 0.11 65)}
+@keyframes cl-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes cl-fade{from{opacity:0}to{opacity:1}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#17110d;color:#f3ece2;font-family:'Hanken Grotesk',system-ui,sans-serif">
+
+<nav data-screen-label="Nav" style="position:sticky;top:0;z-index:20;background:rgba(23,17,13,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(243,236,226,.08)">
+  <div style="max-width:1240px;margin:0 auto;padding:16px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+    <a href="#topo" style="font-family:'Instrument Serif',serif;font-size:26px;line-height:1;letter-spacing:-.01em;color:#f3ece2">Carol <span style="font-style:italic;color:oklch(0.8 0.11 65)">Limah</span></a>
+    <div style="display:flex;gap:clamp(14px,2.4vw,30px);font-size:14px;font-weight:500;flex-wrap:wrap;align-items:center">
+      <a href="#sobre" style="color:#cbbfb1">Sobre</a>
+      <a href="#portfolio" style="color:#cbbfb1">Portfólio</a>
+      <a href="#resultados" style="color:#cbbfb1">Resultados</a>
+      <a href="#servicos" style="color:#cbbfb1">Formatos</a>
+      <a href="#contato" style="padding:9px 16px;border-radius:999px;background:#f3ece2;color:#17110d;font-weight:600">Fale comigo</a>
+    </div>
+  </div>
+</nav>
+
+<header id="topo" data-screen-label="Hero" style="max-width:1240px;margin:0 auto;padding:clamp(40px,7vw,96px) clamp(20px,4vw,40px) clamp(48px,6vw,80px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,5vw,72px);align-items:center">
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:oklch(0.8 0.11 65)">
+      <span style="width:8px;height:8px;border-radius:50%;background:oklch(0.8 0.11 65)"></span>
+      Criadora de conteúdo · São Paulo
+    </div>
+    <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7.4vw,104px);line-height:.94;letter-spacing:-.02em;text-wrap:balance">Uma amazonense perdida em SP te levando em <span style="font-style:italic;color:oklch(0.8 0.11 65)">lugares incríveis.</span></h1>
+    <p style="margin:0;max-width:520px;font-size:clamp(17px,1.4vw,19px);line-height:1.55;color:#cbbfb1;text-wrap:pretty">Restaurantes, hotéis, pousadas e viagens de fim de semana, mostrados do jeito que eu vivo: com humor, de perto e sem roteiro decorado.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a href="#portfolio" style="padding:15px 26px;border-radius:999px;background:oklch(0.8 0.11 65);color:#17110d;font-weight:700;font-size:15px">Ver portfólio</a>
+      <a href="#contato" style="padding:15px 26px;border-radius:999px;border:1px solid rgba(243,236,226,.25);color:#f3ece2;font-weight:600;font-size:15px">Quero uma parceria</a>
+    </div>
+    <div style="display:flex;gap:clamp(24px,4vw,48px);flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(243,236,226,.12)">
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Instrument Serif',serif;font-size:44px;line-height:1">58,4 mil</span><span style="font-size:13px;color:#a89a8a">seguidores no Instagram</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Instrument Serif',serif;font-size:44px;line-height:1">489 mil</span><span style="font-size:13px;color:#a89a8a">views no reel mais visto</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Instrument Serif',serif;font-size:44px;line-height:1">2,6 mi</span><span style="font-size:13px;color:#a89a8a">views somadas em 11 reels</span></div>
+    </div>
+  </div>
+
+  <sc-if value="{{ heroCollage }}" hint-placeholder-val="{{ true }}">
+    <div style="position:relative;aspect-ratio:4/5;width:100%;max-width:540px;justify-self:center">
+      <img src="media/p8.png" alt="Carol Limah sorrindo" style="position:absolute;left:14%;top:0;width:62%;height:78%;object-fit:cover;object-position:center 20%;border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,.45)">
+      <img src="media/p6.jpg" alt="Cavalgada ao pôr do sol" style="position:absolute;left:0;bottom:2%;width:42%;aspect-ratio:3/4;object-fit:cover;border-radius:16px;transform:rotate(-5deg);border:5px solid #17110d;box-shadow:0 20px 40px rgba(0,0,0,.4)">
+      <div style="position:absolute;right:0;bottom:8%;width:38%;aspect-ratio:9/16;border-radius:18px;overflow:hidden;transform:rotate(4deg);border:5px solid #17110d;box-shadow:0 20px 40px rgba(0,0,0,.4);background:#221a15">
+        <video src="media/v04.mov" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;height:100%;object-fit:cover;display:block"></video>
+      </div>
+      <div style="position:absolute;right:4%;top:6%;padding:10px 14px;border-radius:14px;background:#f3ece2;color:#17110d;font-size:13px;font-weight:600;line-height:1.25;transform:rotate(3deg);box-shadow:0 10px 24px rgba(0,0,0,.3)">Amazonas<br><span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:20px;font-weight:400">→ São Paulo</span></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ heroVideo }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;width:100%;max-width:400px;justify-self:center;aspect-ratio:9/16;border-radius:28px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.5);background:#221a15">
+      <video src="media/v05.mov" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;height:100%;object-fit:cover;display:block"></video>
+      <div style="position:absolute;left:16px;top:16px;display:flex;align-items:center;gap:8px;padding:7px 12px 7px 7px;border-radius:999px;background:rgba(23,17,13,.6);backdrop-filter:blur(8px);font-size:13px;font-weight:600">
+        <img src="media/p8.png" alt="" style="width:26px;height:26px;border-radius:50%;object-fit:cover;object-position:center 15%">eu.carollimah
+      </div>
+    </div>
+  </sc-if>
+</header>
+
+<div style="overflow:hidden;border-top:1px solid rgba(243,236,226,.1);border-bottom:1px solid rgba(243,236,226,.1);background:#1d1611;padding:18px 0">
+  <div style="display:flex;width:max-content;animation:cl-marquee 42s linear infinite;font-family:'Instrument Serif',serif;font-size:clamp(24px,2.6vw,34px);white-space:nowrap;color:#e4d8c9">
+    <span style="padding-right:28px">Amazonas <span style="color:oklch(0.8 0.11 65)">✦</span> Ilhabela <span style="color:oklch(0.8 0.11 65)">✦</span> Campos do Jordão <span style="color:oklch(0.8 0.11 65)">✦</span> <i>Hotéis &amp; pousadas</i> <span style="color:oklch(0.8 0.11 65)">✦</span> Restaurantes em SP <span style="color:oklch(0.8 0.11 65)">✦</span> <i>Vozinha</i> <span style="color:oklch(0.8 0.11 65)">✦</span> Emagrecendo <span style="color:oklch(0.8 0.11 65)">✦</span></span>
+    <span style="padding-right:28px">Amazonas <span style="color:oklch(0.8 0.11 65)">✦</span> Ilhabela <span style="color:oklch(0.8 0.11 65)">✦</span> Campos do Jordão <span style="color:oklch(0.8 0.11 65)">✦</span> <i>Hotéis &amp; pousadas</i> <span style="color:oklch(0.8 0.11 65)">✦</span> Restaurantes em SP <span style="color:oklch(0.8 0.11 65)">✦</span> <i>Vozinha</i> <span style="color:oklch(0.8 0.11 65)">✦</span> Emagrecendo <span style="color:oklch(0.8 0.11 65)">✦</span></span>
+  </div>
+</div>
+
+<section id="sobre" data-screen-label="Sobre" style="max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,128px) clamp(20px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(40px,6vw,88px);align-items:center;scroll-margin-top:70px">
+  <div style="position:relative;max-width:460px;width:100%">
+    <img src="media/p4.jpg" alt="Carol em restaurante em São Paulo" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:20px;display:block">
+    <div style="position:absolute;right:-14px;bottom:28px;padding:14px 18px;border-radius:16px;background:oklch(0.8 0.11 65);color:#17110d;font-weight:600;font-size:14px;line-height:1.3;max-width:180px">parceria.eucarollimah<br>@gmail.com</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:24px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a89a8a">Sobre mim</span>
+    <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5vw,68px);line-height:1;letter-spacing:-.015em;text-wrap:balance">Do Amazonas pra São Paulo, <span style="font-style:italic;color:oklch(0.8 0.11 65)">te mostrando tudo.</span></h2>
+    <p style="margin:0;font-size:18px;line-height:1.6;color:#cbbfb1;text-wrap:pretty">Sou a Carol, amazonense morando em SP. No meu perfil eu levo quem me acompanha pra conhecer restaurantes, hotéis, pousadas e destinos como Ilhabela e Campos do Jordão, sempre com o meu jeito: espontânea, divertida e muito sincera.</p>
+    <p style="margin:0;font-size:18px;line-height:1.6;color:#cbbfb1;text-wrap:pretty">Também divido a rotina, o meu processo de emagrecimento e os momentos com a minha vozinha. É essa proximidade que faz a minha audiência confiar no que eu indico.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:4px">
+      <span style="padding:8px 14px;border-radius:999px;border:1px solid rgba(243,236,226,.2);font-size:14px;color:#e4d8c9">Viagem</span>
+      <span style="padding:8px 14px;border-radius:999px;border:1px solid rgba(243,236,226,.2);font-size:14px;color:#e4d8c9">Gastronomia</span>
+      <span style="padding:8px 14px;border-radius:999px;border:1px solid rgba(243,236,226,.2);font-size:14px;color:#e4d8c9">Hospedagem</span>
+      <span style="padding:8px 14px;border-radius:999px;border:1px solid rgba(243,236,226,.2);font-size:14px;color:#e4d8c9">Moda</span>
+      <span style="padding:8px 14px;border-radius:999px;border:1px solid rgba(243,236,226,.2);font-size:14px;color:#e4d8c9">Lifestyle</span>
+    </div>
+  </div>
+</section>
+
+<section id="portfolio" data-screen-label="Portfólio" style="background:#f3ece2;color:#17110d;scroll-margin-top:60px">
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(64px,8vw,112px) clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:36px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:640px">
+        <span style="font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7a6a5a">Portfólio</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5vw,68px);line-height:1;letter-spacing:-.015em">Conteúdos que eu <span style="font-style:italic;color:#9a5b22">já criei</span></h2>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+          <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div ref="{{ gridRef }}" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px">
+      <sc-for list="{{ items }}" as="item" hint-placeholder-count="8">
+        <div onClick="{{ item.open }}" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}" style="position:relative;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#d9cfc2;cursor:pointer;animation:cl-fade .4s ease" style-hover="box-shadow:0 18px 40px rgba(23,17,13,.25)">
+          <sc-if value="{{ item.isVideo }}" hint-placeholder-val="{{ false }}">
+            <video src="{{ item.poster }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block"></video>
+          </sc-if>
+          <sc-if value="{{ item.isPhoto }}" hint-placeholder-val="{{ false }}">
+            <img src="{{ item.src }}" alt="{{ item.title }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
+          </sc-if>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,17,13,0) 50%,rgba(23,17,13,.85) 100%);pointer-events:none"></div>
+          <sc-if value="{{ item.brand }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute;left:12px;top:12px;padding:6px 10px;border-radius:999px;background:#f3ece2;color:#17110d;font-size:12px;font-weight:700">{{ item.brand }}</span>
+          </sc-if>
+          <sc-if value="{{ item.isVideo }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute;right:12px;top:12px;width:30px;height:30px;border-radius:50%;background:rgba(23,17,13,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;color:#f3ece2;font-size:11px">▶</span>
+          </sc-if>
+          <div style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;flex-direction:column;gap:3px;color:#f3ece2;pointer-events:none">
+            <span style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:oklch(0.85 0.1 65)">{{ item.cat }}</span>
+            <span style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1.1">{{ item.title }}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<sc-if value="{{ showChart }}" hint-placeholder-val="{{ true }}">
+<section id="resultados" data-screen-label="Resultados" style="max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,128px) clamp(20px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(40px,6vw,88px);align-items:start;scroll-margin-top:70px">
+  <div style="display:flex;flex-direction:column;gap:22px;position:sticky;top:110px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a89a8a">Resultados</span>
+    <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5vw,68px);line-height:1;letter-spacing:-.015em;text-wrap:balance">Alcance que vai <span style="font-style:italic;color:oklch(0.8 0.11 65)">muito além</span> dos seguidores</h2>
+    <p style="margin:0;font-size:18px;line-height:1.6;color:#cbbfb1;max-width:440px;text-wrap:pretty">Com 58,4 mil seguidores, os meus reels chegam a quase meio milhão de visualizações. Views dos reels mais assistidos do perfil:</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:26px">489 mil</span><div style="height:34px;border-radius:8px;background:rgba(243,236,226,.07)"><div style="width:100%;height:100%;border-radius:8px;background:oklch(0.8 0.11 65)"></div></div></div>
+    <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:26px">458 mil</span><div style="height:34px;border-radius:8px;background:rgba(243,236,226,.07)"><div style="width:93.7%;height:100%;border-radius:8px;background:oklch(0.8 0.11 65)"></div></div></div>
+    <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:26px">380 mil</span><div style="height:34px;border-radius:8px;background:rgba(243,236,226,.07)"><div style="width:77.7%;height:100%;border-radius:8px;background:oklch(0.72 0.1 65)"></div></div></div>
+    <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:26px">287 mil</span><div style="height:34px;border-radius:8px;background:rgba(243,236,226,.07)"><div style="width:58.7%;height:100%;border-radius:8px;background:oklch(0.64 0.09 65)"></div></div></div>
+    <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:26px">267 mil</span><div style="height:34px;border-radius:8px;background:rgba(243,236,226,.07)"><div style="width:54.6%;height:100%;border-radius:8px;background:oklch(0.64 0.09 65)"></div></div></div>
+    <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:26px">243 mil</span><div style="height:34px;border-radius:8px;background:rgba(243,236,226,.07);position:relative"><div style="width:49.7%;height:100%;border-radius:8px;background:oklch(0.64 0.09 65)"></div><span style="position:absolute;left:calc(49.7% + 12px);top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:#e4d8c9;white-space:nowrap">Mercado Livre</span></div></div>
+    <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:26px">203 mil</span><div style="height:34px;border-radius:8px;background:rgba(243,236,226,.07)"><div style="width:41.5%;height:100%;border-radius:8px;background:oklch(0.56 0.08 65)"></div></div></div>
+    <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:center"><span style="font-family:'Instrument Serif',serif;font-size:26px">118 mil</span><div style="height:34px;border-radius:8px;background:rgba(243,236,226,.07)"><div style="width:24.1%;height:100%;border-radius:8px;background:oklch(0.56 0.08 65)"></div></div></div>
+    <p style="margin:8px 0 0;font-size:13px;color:#a89a8a">Fonte: aba Reels do Instagram @eu.carollimah</p>
+  </div>
+</section>
+</sc-if>
+
+<section id="servicos" data-screen-label="Formatos" style="border-top:1px solid rgba(243,236,226,.1);scroll-margin-top:60px">
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,128px) clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:44px">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:720px">
+      <span style="font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a89a8a">Formatos de parceria</span>
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5vw,68px);line-height:1;letter-spacing:-.015em">Como a sua marca pode <span style="font-style:italic;color:oklch(0.8 0.11 65)">aparecer comigo</span></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1px;background:rgba(243,236,226,.12);border:1px solid rgba(243,236,226,.12);border-radius:20px;overflow:hidden">
+      <div style="background:#17110d;padding:32px 28px 36px;display:flex;flex-direction:column;gap:14px" style-hover="background:#1f1813">
+        <span style="font-family:'Instrument Serif',serif;font-size:20px;color:oklch(0.8 0.11 65)">01</span>
+        <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:32px;line-height:1.05">Reels &amp; <i>stories</i></h3>
+        <p style="margin:0;font-size:16px;line-height:1.55;color:#cbbfb1">Publicação no meu perfil, com roteiro no meu tom e entrega para a audiência que já confia nas minhas dicas.</p>
+      </div>
+      <div style="background:#17110d;padding:32px 28px 36px;display:flex;flex-direction:column;gap:14px" style-hover="background:#1f1813">
+        <span style="font-family:'Instrument Serif',serif;font-size:20px;color:oklch(0.8 0.11 65)">02</span>
+        <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:32px;line-height:1.05">Hotéis &amp; <i>pousadas</i></h3>
+        <p style="margin:0;font-size:16px;line-height:1.55;color:#cbbfb1">Cobertura da hospedagem e do destino: quartos, experiências, café da manhã e o roteiro ao redor.</p>
+      </div>
+      <div style="background:#17110d;padding:32px 28px 36px;display:flex;flex-direction:column;gap:14px" style-hover="background:#1f1813">
+        <span style="font-family:'Instrument Serif',serif;font-size:20px;color:oklch(0.8 0.11 65)">03</span>
+        <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:32px;line-height:1.05">Restaurantes <i>em SP</i></h3>
+        <p style="margin:0;font-size:16px;line-height:1.55;color:#cbbfb1">Visita, prato a prato, com o clima da casa. Conteúdo que faz o seguidor querer reservar.</p>
+      </div>
+      <div style="background:#17110d;padding:32px 28px 36px;display:flex;flex-direction:column;gap:14px" style-hover="background:#1f1813">
+        <span style="font-family:'Instrument Serif',serif;font-size:20px;color:oklch(0.8 0.11 65)">04</span>
+        <h3 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:32px;line-height:1.05">Vídeos <i>UGC</i></h3>
+        <p style="margin:0;font-size:16px;line-height:1.55;color:#cbbfb1">Vídeos para a marca usar nos próprios canais e anúncios, sem precisar de postagem no meu perfil.</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px;padding-top:12px">
+      <span style="font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a89a8a">Marcas e lugares com quem já criei</span>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,56px);align-items:baseline;font-family:'Instrument Serif',serif;font-size:clamp(28px,3.4vw,44px);color:#e4d8c9">
+        <span>Mercado Livre</span>
+        <span style="font-style:italic">Shein</span>
+        <span>Churrasco On Fire</span>
+        <span style="font-style:italic">Kome Bela Vista</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contato" data-screen-label="Contato" style="background:oklch(0.8 0.11 65);color:#17110d;scroll-margin-top:60px">
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,10vw,140px) clamp(20px,4vw,40px);display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px">
+    <span style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase">Vamos conversar?</span>
+    <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,7.4vw,112px);line-height:.95;letter-spacing:-.02em;max-width:980px;text-wrap:balance">Bora levar a sua marca pra <span style="font-style:italic">um lugar incrível?</span></h2>
+    <button onClick="{{ copyEmail }}" style="margin-top:8px;display:flex;align-items:center;gap:14px;padding:18px 18px 18px 28px;border-radius:999px;border:none;background:#17110d;color:#f3ece2;font-family:'Hanken Grotesk',sans-serif;font-size:clamp(16px,1.6vw,20px);font-weight:600;cursor:pointer;max-width:100%;flex-wrap:wrap;justify-content:center">
+      parceria.eucarollimah@gmail.com
+      <span style="padding:8px 14px;border-radius:999px;background:oklch(0.8 0.11 65);color:#17110d;font-size:13px;font-weight:700">{{ copyLabel }}</span>
+    </button>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <a href="https://www.instagram.com/eu.carollimah" target="_blank" style="padding:12px 20px;border-radius:999px;border:1.5px solid #17110d;color:#17110d;font-weight:600;font-size:15px">Instagram @eu.carollimah</a>
+      <a href="https://www.threads.net/@eu.carollimah" target="_blank" style="padding:12px 20px;border-radius:999px;border:1.5px solid #17110d;color:#17110d;font-weight:600;font-size:15px">Threads @eu.carollimah</a>
+    </div>
+  </div>
+</section>
+
+<footer style="max-width:1240px;margin:0 auto;padding:28px clamp(20px,4vw,40px);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:#a89a8a">
+  <span style="font-family:'Instrument Serif',serif;font-size:20px;color:#f3ece2">Carol <i style="color:oklch(0.8 0.11 65)">Limah</i></span>
+  <span>© 2026 Carol Limah · São Paulo, SP</span>
+</footer>
+
+<sc-if value="{{ lb }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeLb }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,7,5,.88);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;gap:clamp(16px,3vw,40px);padding:24px;flex-wrap:wrap;animation:cl-fade .25s ease">
+    <div onClick="{{ stop }}" style="height:min(86vh,820px);aspect-ratio:9/16;max-width:92vw;border-radius:20px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.6)">
+      <sc-if value="{{ lb.isVideo }}" hint-placeholder-val="{{ false }}">
+        <video src="{{ lb.src }}" controls="{{ true }}" autoPlay="{{ true }}" playsInline="{{ true }}" style="width:100%;height:100%;object-fit:cover;display:block"></video>
+      </sc-if>
+      <sc-if value="{{ lb.isPhoto }}" hint-placeholder-val="{{ false }}">
+        <img src="{{ lb.src }}" alt="{{ lb.title }}" style="width:100%;height:100%;object-fit:cover;display:block">
+      </sc-if>
+    </div>
+    <div onClick="{{ stop }}" style="display:flex;flex-direction:column;gap:12px;max-width:300px;color:#f3ece2">
+      <span style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:oklch(0.8 0.11 65)">{{ lb.cat }}</span>
+      <span style="font-family:'Instrument Serif',serif;font-size:40px;line-height:1">{{ lb.title }}</span>
+      <sc-if value="{{ lb.brand }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;color:#cbbfb1">Parceria com {{ lb.brand }}</span></sc-if>
+      <div style="display:flex;gap:8px;padding-top:8px">
+        <button onClick="{{ prevLb }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(243,236,226,.3);background:transparent;color:#f3ece2;font-size:18px;cursor:pointer">←</button>
+        <button onClick="{{ nextLb }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(243,236,226,.3);background:transparent;color:#f3ece2;font-size:18px;cursor:pointer">→</button>
+        <button onClick="{{ closeLb }}" style="height:44px;padding:0 18px;border-radius:999px;border:none;background:#f3ece2;color:#17110d;font-weight:600;font-size:14px;cursor:pointer;font-family:'Hanken Grotesk',sans-serif">Fechar</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroVariant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;colagem&quot;,&quot;video&quot;],&quot;default&quot;:&quot;colagem&quot;,&quot;tsType&quot;:&quot;'colagem'|'video'&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;autoplayReels&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Portfólio&quot;},&quot;showChart&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const MEDIA = [
+  { v: 1, src: 'media/v02.mov', cat: 'Moda', title: 'Fit check', brand: 'Shein' },
+  { v: 1, src: 'media/v05.mov', cat: 'Gastronomia', title: '“Virei blogueira”' },
+  { v: 0, src: 'media/p1.jpg', cat: 'Experiências', title: 'Churrasco On Fire', brand: 'Churrasco On Fire' },
+  { v: 1, src: 'media/v04.mov', cat: 'Viagem', title: 'Quadriciclo na serra' },
+  { v: 0, src: 'media/p6.jpg', cat: 'Viagem', title: 'Cavalgada ao pôr do sol' },
+  { v: 1, src: 'media/v17.mov', cat: 'Gastronomia', title: 'Jantar a dois' },
+  { v: 0, src: 'media/p7.jpg', cat: 'Gastronomia', title: 'Reels patrocinado', brand: 'Kome Bela Vista' },
+  { v: 1, src: 'media/v14.mov', cat: 'Viagem', title: 'Pôr do sol de lancha' },
+  { v: 0, src: 'media/p2.jpg', cat: 'Viagem', title: 'Trilha a cavalo' },
+  { v: 0, src: 'media/p4.jpg', cat: 'Gastronomia', title: 'Almoço em SP' },
+  { v: 1, src: 'media/v01.mov', cat: 'Bem-estar', title: 'Bastidores' },
+  { v: 0, src: 'media/p5.png', cat: 'Viagem', title: 'Dia no haras' },
+];
+const CATS = ['Todos', 'Viagem', 'Gastronomia', 'Experiências', 'Moda', 'Bem-estar'];
+
+class Component extends DCLogic {
+  state = { filter: 'Todos', lb: null, copied: false };
+  gridRef = React.createRef();
+  componentDidMount() { this.sync(); }
+  componentDidUpdate() { this.sync(); }
+  sync() {
+    document.querySelectorAll('header video').forEach(v => { v.muted = true; if (v.paused) v.play().catch(() => {}); });
+    const el = this.gridRef.current; if (!el) return;
+    const auto = this.props.autoplayReels ?? false;
+    el.querySelectorAll('video').forEach(v => { if (auto) v.play().catch(() => {}); else if (!v.matches(':hover *')) v.pause(); });
+  }
+  list() { const f = this.state.filter; return f === 'Todos' ? MEDIA : MEDIA.filter(m => m.cat === f); }
+  renderVals() {
+    const auto = this.props.autoplayReels ?? false;
+    const list = this.list();
+    const hero = this.props.heroVariant ?? 'colagem';
+    const pill = on => ({ padding: '9px 16px', borderRadius: 999, border: on ? '1px solid #17110d' : '1px solid rgba(23,17,13,.2)', background: on ? '#17110d' : 'transparent', color: on ? '#f3ece2' : '#17110d', fontFamily: "'Hanken Grotesk',sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer' });
+    const lbItem = this.state.lb == null ? null : list[this.state.lb];
+    const step = d => e => { e.stopPropagation(); this.setState(s => ({ lb: (s.lb + d + list.length) % list.length })); };
+    return {
+      heroCollage: hero !== 'video',
+      heroVideo: hero === 'video',
+      showChart: this.props.showChart ?? true,
+      gridRef: this.gridRef,
+      filters: CATS.map(c => ({ label: c, style: pill(c === this.state.filter), onClick: () => this.setState({ filter: c }) })),
+      items: list.map((m, i) => ({
+        ...m, isVideo: !!m.v, isPhoto: !m.v, brand: m.brand || null,
+        poster: m.v ? m.src + '#t=0.8' : m.src,
+        open: () => this.setState({ lb: i }),
+        enter: e => { if (!auto) { const v = e.currentTarget.querySelector('video'); v && v.play().catch(() => {}); } },
+        leave: e => { if (!auto) { const v = e.currentTarget.querySelector('video'); v && v.pause(); } },
+      })),
+      lb: lbItem ? { ...lbItem, isVideo: !!lbItem.v, isPhoto: !lbItem.v, brand: lbItem.brand || null } : null,
+      closeLb: () => this.setState({ lb: null }),
+      stop: e => e.stopPropagation(),
+      prevLb: step(-1), nextLb: step(1),
+      copyLabel: this.state.copied ? 'Copiado!' : 'Copiar e-mail',
+      copyEmail: () => {
+        try { navigator.clipboard.writeText('parceria.eucarollimah@gmail.com'); } catch (e) {}
+        this.setState({ copied: true }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ copied: false }), 2000);
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

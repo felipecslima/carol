@@ -1,0 +1,23 @@
+# sistema
+.DS_Store
+
+# dependências e build
+node_modules/
+site/dist/
+.astro/
+
+# segredos (credenciais do Cloudinary)
+.env
+site/.env
+
+# mídia bruta e pesada (originais de 4,7 GB; vídeos do site estão no Cloudinary)
+medias/
+site/media-backup/
+*.zip
+design_handoff_carol_portfolio/media/*.mov
+
+# caches de ferramentas
+.playwright-mcp/
+.impeccable/hook.cache.json
+site/.impeccable/hook.cache.json
+site/.impeccable/live/

@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "instrument serif",
+        "createdAt": "2026-10-20T17:10:36.780Z",
+        "reason": "Fonte definida no design handoff da Carol (README: Instrument Serif + Hanken Grotesk, fidelidade alta); decisão do designer do handoff, não confirmada novamente pelo usuário"
+      }
+    ]
+  }
+}
