@@ -1,0 +1,46 @@
+{
+  "title": "Estrutura das páginas de nicho",
+  "question": "Restaurantes em SP, Viagens e hospedagem, Publis e UGC: as três páginas seguem a mesma estrutura, no visual atual do site (espresso, caramelo, Instrument Serif). Qual composição?",
+  "options": [
+    {
+      "id": "roteiro",
+      "kind": "assigned",
+      "kicker": "THE ROLL",
+      "label": "Roteiro por lugar",
+      "lineage": "guias de viagem impressos organizados por região e cozinha",
+      "thesis": "A página é um roteiro: os vídeos agrupados por lugar ou cozinha, cada grupo com nome de cidade ou bairro como título.",
+      "palette": ["#17110d", "#f3ece2", "#e0a868", "#d9cfc2"],
+      "materials": ["Instrument Serif em títulos de parada", "linha do roteiro numerada", "cards 9:16 do portfólio"],
+      "viewport": "H1 do nicho à esquerda com o roteiro (São Paulo → Jacareí → Igaratá → Campos do Jordão → Ilhabela) como índice clicável à direita; abaixo, a primeira parada com seus vídeos.",
+      "risk": "Grupos com um vídeo só ficam magros; pede agrupar com critério.",
+      "html": ".impeccable/mocks/decision/roteiro.html"
+    },
+    {
+      "id": "reel-destaque",
+      "kind": "dealt",
+      "label": "Reel em destaque",
+      "lineage": "capa de revista com a matéria principal em foto inteira",
+      "thesis": "O reel mais visto do nicho toca grande ao lado do título; o resto vem numa faixa logo abaixo.",
+      "palette": ["#17110d", "#f3ece2", "#e0a868", "#1d1611"],
+      "materials": ["vídeo 9:16 em tamanho de tela", "números do nicho em serif", "faixa de cards"],
+      "viewport": "Esquerda: H1, dois números do nicho e o botão de parceria. Direita: o reel de maior alcance (tacacá 1,1 mi, cavalo 425 mil, Shein 478 mil) tocando em loop.",
+      "risk": "Parece a home de novo se a faixa abaixo não tiver ritmo próprio.",
+      "html": ".impeccable/mocks/decision/reel-destaque.html"
+    },
+    {
+      "id": "guia",
+      "kind": "dealt",
+      "label": "Guia em verbetes",
+      "lineage": "guias de restaurante com verbetes numerados",
+      "thesis": "Cada vídeo vira um verbete: número, lugar, marca, views e uma linha do que a Carol mostrou, ao lado do vídeo.",
+      "palette": ["#17110d", "#f3ece2", "#e0a868", "#a89a8a"],
+      "materials": ["numeração em serif grande", "fios finos entre verbetes", "vídeo 9:16 menor"],
+      "viewport": "H1 e parágrafo do nicho no topo, sumário numerado à direita; a lista de verbetes começa logo na dobra.",
+      "risk": "Mais texto por vídeo: a página fica longa e pede texto bem escrito por item.",
+      "html": ".impeccable/mocks/decision/guia.html"
+    }
+  ],
+  "reroll": true,
+  "steer": true,
+  "buildPath": { "value": "code" }
+}

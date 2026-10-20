@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T00:00:00.000Z",
+  "title": "Design System: Carol Limah",
+  "extensions": {
+    "colorMeta": {
+      "accent": { "role": "primary", "displayName": "Caramel", "canonical": "oklch(0.8 0.11 65)", "tonalRamp": ["oklch(0.18 0.04 65)", "oklch(0.3 0.06 65)", "oklch(0.42 0.07 65)", "oklch(0.56 0.08 65)", "oklch(0.64 0.09 65)", "oklch(0.72 0.1 65)", "oklch(0.8 0.11 65)", "oklch(0.92 0.05 65)"] },
+      "accent-light": { "role": "primary", "displayName": "Pale Caramel", "canonical": "oklch(0.85 0.1 65)", "tonalRamp": ["oklch(0.2 0.04 65)", "oklch(0.32 0.06 65)", "oklch(0.45 0.08 65)", "oklch(0.58 0.09 65)", "oklch(0.7 0.1 65)", "oklch(0.78 0.1 65)", "oklch(0.85 0.1 65)", "oklch(0.94 0.04 65)"] },
+      "bar-2": { "role": "secondary", "displayName": "Caramel Ramp 2", "canonical": "oklch(0.72 0.1 65)", "tonalRamp": ["oklch(0.18 0.04 65)", "oklch(0.3 0.06 65)", "oklch(0.42 0.07 65)", "oklch(0.56 0.08 65)", "oklch(0.64 0.09 65)", "oklch(0.72 0.1 65)", "oklch(0.8 0.11 65)", "oklch(0.92 0.05 65)"] },
+      "bar-3": { "role": "secondary", "displayName": "Caramel Ramp 3", "canonical": "oklch(0.64 0.09 65)", "tonalRamp": ["oklch(0.18 0.04 65)", "oklch(0.3 0.06 65)", "oklch(0.42 0.07 65)", "oklch(0.56 0.08 65)", "oklch(0.64 0.09 65)", "oklch(0.72 0.1 65)", "oklch(0.8 0.11 65)", "oklch(0.92 0.05 65)"] },
+      "bar-4": { "role": "secondary", "displayName": "Caramel Ramp 4", "canonical": "oklch(0.56 0.08 65)", "tonalRamp": ["oklch(0.18 0.04 65)", "oklch(0.3 0.06 65)", "oklch(0.42 0.07 65)", "oklch(0.56 0.08 65)", "oklch(0.64 0.09 65)", "oklch(0.72 0.1 65)", "oklch(0.8 0.11 65)", "oklch(0.92 0.05 65)"] },
+      "bg": { "role": "neutral", "displayName": "Espresso", "canonical": "#17110d", "tonalRamp": ["#17110d", "#1d1611", "#221a15", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#f3ece2"] },
+      "bg-band": { "role": "neutral", "displayName": "Roast Band", "canonical": "#1d1611", "tonalRamp": ["#17110d", "#1d1611", "#221a15", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#f3ece2"] },
+      "bg-hover": { "role": "neutral", "displayName": "Roast Hover", "canonical": "#1f1813", "tonalRamp": ["#17110d", "#1f1813", "#221a15", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#f3ece2"] },
+      "bg-video": { "role": "neutral", "displayName": "Video Well", "canonical": "#221a15", "tonalRamp": ["#17110d", "#1d1611", "#221a15", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#f3ece2"] },
+      "text": { "role": "neutral", "displayName": "Cream", "canonical": "#f3ece2", "tonalRamp": ["#17110d", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#d9cfc2", "#e4d8c9", "#f3ece2"] },
+      "text-2": { "role": "neutral", "displayName": "Oat", "canonical": "#e4d8c9", "tonalRamp": ["#17110d", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#d9cfc2", "#e4d8c9", "#f3ece2"] },
+      "muted": { "role": "neutral", "displayName": "Latte", "canonical": "#cbbfb1", "tonalRamp": ["#17110d", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#d9cfc2", "#e4d8c9", "#f3ece2"] },
+      "subtle": { "role": "neutral", "displayName": "Dust", "canonical": "#a89a8a", "tonalRamp": ["#17110d", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#d9cfc2", "#e4d8c9", "#f3ece2"] },
+      "cream": { "role": "neutral", "displayName": "Cream Ground", "canonical": "#f3ece2", "tonalRamp": ["#17110d", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#d9cfc2", "#e4d8c9", "#f3ece2"] },
+      "cream-card": { "role": "neutral", "displayName": "Card Oat", "canonical": "#d9cfc2", "tonalRamp": ["#17110d", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#d9cfc2", "#e4d8c9", "#f3ece2"] },
+      "cream-eyebrow": { "role": "neutral", "displayName": "Cocoa Ink", "canonical": "#6f5f50", "tonalRamp": ["#17110d", "#3d3027", "#6f5f50", "#a89a8a", "#cbbfb1", "#d9cfc2", "#e4d8c9", "#f3ece2"] },
+      "cream-italic": { "role": "neutral", "displayName": "Burnt Caramel", "canonical": "#9a5b22", "tonalRamp": ["oklch(0.2 0.05 60)", "oklch(0.3 0.08 60)", "oklch(0.4 0.1 60)", "oklch(0.5 0.11 60)", "oklch(0.6 0.11 60)", "oklch(0.7 0.1 60)", "oklch(0.82 0.07 60)", "oklch(0.94 0.03 60)"] },
+      "line": { "role": "neutral", "displayName": "Hairline", "canonical": "rgba(243, 236, 226, 0.1)", "tonalRamp": ["rgba(243, 236, 226, 0.05)", "rgba(243, 236, 226, 0.07)", "rgba(243, 236, 226, 0.08)", "rgba(243, 236, 226, 0.1)", "rgba(243, 236, 226, 0.12)", "rgba(243, 236, 226, 0.18)", "rgba(243, 236, 226, 0.25)", "rgba(243, 236, 226, 0.3)"] }
+    },
+    "typographyMeta": {
+      "display-xl": { "displayName": "Display XL", "purpose": "Closing contact headline only." },
+      "display": { "displayName": "Display", "purpose": "Page H1 with a caramel italic close." },
+      "headline": { "displayName": "Headline", "purpose": "Section H2s and niche stop names." },
+      "headline-sm": { "displayName": "Headline Small", "purpose": "Sub-section heads (audience, other routes)." },
+      "title": { "displayName": "Title", "purpose": "Service names, route stop names, lightbox title." },
+      "title-sm": { "displayName": "Title Small", "purpose": "Media card titles." },
+      "numeral": { "displayName": "Numeral", "purpose": "Hero stats and chart values, always the serif." },
+      "body-lg": { "displayName": "Body Large", "purpose": "Narrative paragraphs, about 62ch." },
+      "body": { "displayName": "Body", "purpose": "Service descriptions and supporting text." },
+      "ui": { "displayName": "UI", "purpose": "Buttons and filters." },
+      "nav": { "displayName": "Nav", "purpose": "Navigation links." },
+      "meta": { "displayName": "Meta", "purpose": "Counts, sources, stamps, footer." },
+      "label": { "displayName": "Label", "purpose": "Uppercase category line attached to an item (card caption, lightbox)." }
+    },
+    "shadows": [
+      { "name": "portrait-lift", "value": "0 30px 60px rgba(0, 0, 0, 0.45)", "purpose": "Main hero photograph." },
+      { "name": "collage-lift", "value": "0 20px 40px rgba(0, 0, 0, 0.4)", "purpose": "Secondary hero collage photo and video tile." },
+      { "name": "card-hover", "value": "0 18px 40px rgba(23, 17, 13, 0.25)", "purpose": "Media card on hover and focus." },
+      { "name": "stage", "value": "0 30px 80px rgba(0, 0, 0, 0.6)", "purpose": "Lightbox media." },
+      { "name": "action-float", "value": "0 14px 30px rgba(23, 17, 13, 0.28)", "purpose": "Mail button on the caramel band." },
+      { "name": "dock-float", "value": "0 12px 28px rgba(23, 17, 13, 0.45)", "purpose": "Mobile fixed call to action." }
+    ],
+    "motion": [
+      { "name": "hover", "value": "0.2s", "purpose": "Color, background and border state changes." },
+      { "name": "fade-in", "value": "fade 0.4s ease", "purpose": "Media cards entering; lightbox opens at 0.25s." },
+      { "name": "bar-fill", "value": "width 1s cubic-bezier(0.2, 0.7, 0.2, 1)", "purpose": "Ranked bars growing from zero on viewport entry." },
+      { "name": "route-fill", "value": "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Route line segment filling and current dot scaling." },
+      { "name": "marquee", "value": "marquee 100s linear infinite", "purpose": "Topic band scroll; pausable, off under reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "xs", "value": "480px" },
+      { "name": "sm", "value": "720px" },
+      { "name": "md", "value": "860px" },
+      { "name": "lg", "value": "1000px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Caramel pill for the one action a section wants.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Quero uma parceria</a>",
+      "css": ".ds-btn-primary { display: inline-block; padding: 15px 26px; border-radius: 999px; background: var(--accent, oklch(0.8 0.11 65)); color: var(--bg, #17110d); font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 15px; font-weight: 700; text-decoration: none; transition: background 0.2s; } .ds-btn-primary:hover { background: var(--accent-light, oklch(0.85 0.1 65)); } .ds-btn-primary:focus-visible { outline: 2px solid var(--accent, oklch(0.8 0.11 65)); outline-offset: 3px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary pill on dark grounds, beside the primary.",
+      "html": "<a class=\"ds-btn-outline\" href=\"#\">Baixar media kit (PDF)</a>",
+      "css": ".ds-btn-outline { display: inline-block; padding: 15px 26px; border-radius: 999px; border: 1px solid rgba(243, 236, 226, 0.25); background: var(--bg, #17110d); color: var(--text, #f3ece2); font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 15px; font-weight: 600; text-decoration: none; transition: color 0.2s; } .ds-btn-outline:hover { color: var(--accent, oklch(0.8 0.11 65)); } .ds-btn-outline:focus-visible { outline: 2px solid var(--accent, oklch(0.8 0.11 65)); outline-offset: 3px; }"
+    },
+    {
+      "name": "Mail Button",
+      "kind": "button",
+      "refersTo": "button-mail",
+      "description": "Large espresso pill closing the caramel contact band.",
+      "html": "<div class=\"ds-mail-wrap\"><a class=\"ds-mail-btn\" href=\"#\">Escrever e-mail</a></div>",
+      "css": ".ds-mail-wrap { padding: 32px; background: var(--accent, oklch(0.8 0.11 65)); } .ds-mail-btn { display: inline-flex; align-items: center; min-height: 64px; padding: 0 44px; border-radius: 999px; background: var(--bg, #17110d); color: var(--cream, #f3ece2); font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 20px; font-weight: 700; text-decoration: none; box-shadow: 0 14px 30px rgba(23, 17, 13, 0.28); transition: background 0.2s, color 0.2s, transform 0.2s; } .ds-mail-btn:hover { background: var(--bg-hover, #1f1813); color: var(--accent-light, oklch(0.85 0.1 65)); transform: translateY(-2px); } .ds-mail-btn:focus-visible { outline: 2px solid var(--bg, #17110d); outline-offset: 3px; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "filter-chip",
+      "description": "Toggle pill for filtering media on the cream band.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">Todos</button><button class=\"ds-chip\" aria-pressed=\"false\">Viagem <span class=\"ds-chip-n\">12</span></button></div>",
+      "css": ".ds-chips { display: flex; gap: 8px; padding: 24px; background: var(--cream, #f3ece2); } .ds-chip { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(23, 17, 13, 0.2); background: transparent; color: var(--bg, #17110d); font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; } .ds-chip[aria-pressed='true'] { background: var(--bg, #17110d); border-color: var(--bg, #17110d); color: var(--cream, #f3ece2); } .ds-chip:hover { border-color: var(--bg, #17110d); } .ds-chip:focus-visible { outline: 2px solid var(--bg, #17110d); outline-offset: 3px; } .ds-chip-n { margin-left: 4px; font-weight: 500; opacity: 0.55; }"
+    },
+    {
+      "name": "Media Card",
+      "kind": "card",
+      "refersTo": "media-card",
+      "description": "9:16 proof tile with brand badge, serif title and view count.",
+      "html": "<button class=\"ds-card\" type=\"button\"><span class=\"ds-card-shade\"></span><span class=\"ds-card-brand\">Mercado Livre</span><span class=\"ds-card-cap\"><small>Publi</small><strong>Achados da semana</strong><span class=\"ds-card-views\"><svg viewBox=\"0 0 16 16\" width=\"14\" height=\"14\"><path d=\"M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><circle cx=\"8\" cy=\"8\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg>480 mil views</span></span></button>",
+      "css": ".ds-card { position: relative; width: 220px; aspect-ratio: 9 / 16; border: 0; padding: 0; border-radius: 16px; overflow: hidden; background: var(--cream-card, #d9cfc2); color: var(--text, #f3ece2); text-align: left; cursor: pointer; transition: box-shadow 0.2s; } .ds-card:hover, .ds-card:focus-visible { box-shadow: 0 18px 40px rgba(23, 17, 13, 0.25); outline: none; } .ds-card-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23, 17, 13, 0) 45%, rgba(23, 17, 13, 0.92) 100%); } .ds-card-brand { position: absolute; left: 12px; top: 12px; padding: 6px 10px; border-radius: 999px; background: var(--cream, #f3ece2); color: var(--bg, #17110d); font: 700 12px 'Hanken Grotesk', system-ui, sans-serif; } .ds-card-cap { position: absolute; left: 14px; right: 14px; bottom: 14px; display: flex; flex-direction: column; gap: 3px; } .ds-card-cap small { font: 600 11px 'Hanken Grotesk', system-ui, sans-serif; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light, oklch(0.85 0.1 65)); } .ds-card-cap strong { font: 400 22px/1.1 'Instrument Serif', serif; } .ds-card-views { display: flex; align-items: center; gap: 6px; margin-top: 4px; font: 600 13px 'Hanken Grotesk', system-ui, sans-serif; color: var(--text-2, #e4d8c9); }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "button-cream",
+      "description": "Sticky blurred espresso bar with serif wordmark and cream pill call to action.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-logo\" href=\"#\">Carol <i>Limah</i></a><div class=\"ds-nav-links\"><a href=\"#\" aria-current=\"page\">Restaurantes em SP</a><a href=\"#\">Viagens e hospedagem</a><a class=\"ds-nav-cta\" href=\"#\">Quero uma parceria</a></div></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 24px; background: rgba(23, 17, 13, 0.78); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(243, 236, 226, 0.08); font-family: 'Hanken Grotesk', system-ui, sans-serif; } .ds-logo { font: 400 26px/1 'Instrument Serif', serif; color: var(--text, #f3ece2); text-decoration: none; } .ds-logo i { color: var(--accent, oklch(0.8 0.11 65)); } .ds-nav-links { display: flex; align-items: center; gap: 30px; font-size: 14px; font-weight: 500; } .ds-nav-links a { color: var(--muted, #cbbfb1); text-decoration: none; } .ds-nav-links a:hover { color: var(--accent, oklch(0.8 0.11 65)); } .ds-nav-links a[aria-current='page'] { color: var(--text, #f3ece2); text-decoration: underline; text-decoration-color: var(--accent, oklch(0.8 0.11 65)); text-decoration-thickness: 2px; text-underline-offset: 8px; } .ds-nav-links a:focus-visible { outline: 2px solid var(--accent, oklch(0.8 0.11 65)); outline-offset: 3px; } .ds-nav-links .ds-nav-cta { padding: 9px 16px; border-radius: 999px; background: var(--cream, #f3ece2); color: var(--bg, #17110d); font-weight: 600; } .ds-nav-links .ds-nav-cta:hover { background: var(--accent, oklch(0.8 0.11 65)); color: var(--bg, #17110d); }"
+    },
+    {
+      "name": "Route Index",
+      "kind": "custom",
+      "refersTo": "route",
+      "description": "Signature niche index: vertical hairline, caramel stop dots, serif names; passed stops light up.",
+      "html": "<ol class=\"ds-route\"><li><a class=\"passed\" href=\"#\"><span class=\"ds-route-n\">01</span><b>Sabores do Amazonas</b><small>2 vídeos · até 1,1 mi views</small></a></li><li><a aria-current=\"true\" href=\"#\"><span class=\"ds-route-n\">02</span><b>Kome</b><small>3 vídeos · até 237 mil views</small></a></li><li><a href=\"#\"><span class=\"ds-route-n\">03</span><b>Churrasco On Fire</b><small>3 vídeos · até 293 mil views</small></a></li></ol>",
+      "css": ".ds-route { list-style: none; margin: 0; padding: 24px; width: 320px; background: var(--bg, #17110d); color: var(--text-2, #e4d8c9); } .ds-route li { position: relative; } .ds-route li:not(:last-child)::before { content: ''; position: absolute; left: 5px; top: 31px; height: 100%; width: 1px; background: rgba(243, 236, 226, 0.18); } .ds-route li:first-child::after { content: ''; position: absolute; left: 5px; top: 31px; height: 100%; width: 1px; background: var(--accent, oklch(0.8 0.11 65)); } .ds-route a { position: relative; display: grid; grid-template-columns: 28px minmax(0, 1fr); grid-template-areas: 'n name' 'n meta'; column-gap: 14px; row-gap: 2px; padding: 14px 0 14px 26px; border-bottom: 1px solid rgba(243, 236, 226, 0.1); color: inherit; text-decoration: none; } .ds-route li:last-child a { border-bottom: 0; } .ds-route a::before { content: ''; position: absolute; z-index: 1; left: 0; top: 26px; width: 11px; height: 11px; border-radius: 50%; box-sizing: border-box; border: 1.5px solid var(--accent, oklch(0.8 0.11 65)); background: var(--bg, #17110d); transition: background 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-route a.passed::before, .ds-route a[aria-current]::before { background: var(--accent, oklch(0.8 0.11 65)); } .ds-route a[aria-current]::before { transform: scale(1.35); } .ds-route-n { grid-area: n; padding-top: 7px; font: 400 18px 'Instrument Serif', serif; color: var(--accent, oklch(0.8 0.11 65)); } .ds-route b { grid-area: name; font: 400 30px/1.1 'Instrument Serif', serif; letter-spacing: -0.01em; transition: color 0.2s; } .ds-route small { grid-area: meta; font: 400 13px 'Hanken Grotesk', system-ui, sans-serif; color: var(--subtle, #a89a8a); } .ds-route a[aria-current] b { color: var(--text, #f3ece2); } .ds-route a:hover b { color: var(--accent, oklch(0.8 0.11 65)); } .ds-route a:focus-visible { outline: 2px solid var(--accent, oklch(0.8 0.11 65)); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ranked Bar Row",
+      "kind": "custom",
+      "refersTo": "bars",
+      "description": "Data row with caramel brand tag, serif value and caramel-ramp fill.",
+      "html": "<div class=\"ds-bar\"><div class=\"ds-bar-body\"><span class=\"ds-bar-title\">Achados da semana <span class=\"ds-bar-brand\">Mercado Livre</span></span><span class=\"ds-bar-track\"><span class=\"ds-bar-fill\" style=\"width: 82%\"></span></span></div><b>480 mil</b></div>",
+      "css": ".ds-bar { display: grid; grid-template-columns: minmax(0, 1fr) 84px; gap: 16px; align-items: center; padding: 24px; width: 460px; background: var(--bg, #17110d); color: var(--text, #f3ece2); } .ds-bar-body { display: flex; flex-direction: column; gap: 8px; } .ds-bar-title { display: flex; align-items: baseline; gap: 10px; font: 400 15px/1.3 'Hanken Grotesk', system-ui, sans-serif; color: var(--text-2, #e4d8c9); } .ds-bar-brand { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent, oklch(0.8 0.11 65)); } .ds-bar-track { display: block; height: 12px; border-radius: 4px; background: rgba(243, 236, 226, 0.07); } .ds-bar-fill { display: block; height: 100%; border-radius: 4px; background: var(--bar-1, oklch(0.8 0.11 65)); transition: width 1s cubic-bezier(0.2, 0.7, 0.2, 1); } .ds-bar b { font: 400 26px 'Instrument Serif', serif; text-align: right; white-space: nowrap; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Late Table",
+    "overview": "A dimly lit table at the end of the evening: espresso ground, cream type, and one warm caramel light that falls only on the words worth leaning toward. The site reads like a printed food-and-travel supplement more than a creator link page. Large Instrument Serif headlines carry the voice, Hanken Grotesk carries the facts, and the caramel lives almost entirely in italics, ordinals and the one action the page wants.\n\nDensity is relaxed and editorial: wide section breathing room, hairline dividers instead of boxes, and the proof (9:16 video cards, view counts, partner brands) given the most surface. Depth comes from photographs, never from containers. The world is chic and restrained; ornaments are typographic (a thin caramel rule, a middot, a serif numeral), never decorative symbols.",
+    "keyCharacteristics": [
+      "Espresso dark ground with one inverted cream band (portfolio) and one full-caramel band (contact).",
+      "Instrument Serif at weight 400 for every headline, title and number; italic phrases in caramel.",
+      "Pill-shaped actions; softly rounded 9:16 media; flat text surfaces divided by 1px hairlines.",
+      "Soft, dark, diffuse shadows only under photographs, the lightbox and floating actions.",
+      "The route: a vertical hairline with caramel stop dots that light as the reader passes them."
+    ],
+    "rules": [
+      { "name": "The Caramel Speaks Once Rule", "body": "On dark grounds caramel is reserved for italic emphasis, ordinals and route marks, data leads, and the primary action. Body copy, borders and surfaces never take it, except the contact band, where it becomes the ground.", "section": "colors" },
+      { "name": "The Three Grounds Rule", "body": "Espresso is the default, cream is the inverted proof band, caramel is the closing ask. Each ground swaps its accent: caramel on espresso, burnt caramel on cream, espresso on caramel (italics inherit). The focus ring follows the same swap (`--focus` set to espresso on cream and caramel).", "section": "colors" },
+      { "name": "The Serif Counts Rule", "body": "Every figure the brand should remember (followers, views, percentages, ordinals) is set in Instrument Serif at weight 400, with tabular numerals where numbers stack. The sans never sets a hero number.", "section": "typography" },
+      { "name": "The Weightless Serif Rule", "body": "Instrument Serif is only ever weight 400. Emphasis comes from italic and caramel, not bold.", "section": "typography" },
+      { "name": "The Photographs Float Rule", "body": "Only imagery and floating actions cast shadows. A block of text that needs separation gets a hairline or a band, never a drop shadow, and never a hard offset shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "**Do** close serif headlines with an italic phrase in caramel (burnt caramel on cream, inherited espresso on caramel).",
+      "**Do** set every remembered number in Instrument Serif 400 and every label in Hanken Grotesk.",
+      "**Do** separate sections and rows with the 1px hairline or a tonal band before reaching for a container.",
+      "**Do** keep every action a pill with a 44px minimum target and the caramel-or-cream fill logic above.",
+      "**Do** present proof as 9:16 media cards with brand badge and views, in 14px-gap auto-fill grids.",
+      "**Do** honour reduced motion: marquee, fills, route transitions, card fades and the dock all stop."
+    ],
+    "donts": [
+      "**Don't** use decorative symbols or kitsch ornaments (such as ✦) as separators; use the thin caramel rule, a middot or a slash.",
+      "**Don't** bold Instrument Serif or set it in any weight other than 400.",
+      "**Don't** put caramel on body copy, borders or surfaces on the espresso ground.",
+      "**Don't** cast shadows from text blocks, and never use a hard offset shadow.",
+      "**Don't** add uppercase tracked kickers above headlines on new surfaces; the niche pages ship without them and the uppercase label stays attached to items (card captions, lightbox category, brand tags).",
+      "**Don't** tilt route rows, grids or text; rotation belongs to the hero photo collage only."
+    ]
+  }
+}

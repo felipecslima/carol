@@ -1,0 +1,40 @@
+---
+// Card 9:16 do portfólio (home e páginas de nicho). Abre o lightbox via scripts/lightbox.ts.
+import { groupsOf, posterSrc, videoSrc, type MediaItem } from '../data/content';
+
+interface Props {
+  m: MediaItem;
+  sizes?: string;
+  /** páginas de nicho: sem rótulo de categoria e sem selo de marca quando a parada já tem o nome dela */
+  bare?: boolean;
+  hideBrand?: boolean;
+}
+const { m, sizes = '(max-width: 720px) 50vw, 300px', bare = false, hideBrand = false } = Astro.props;
+const photoSrcset = (id: string) => `/media/${id}-600.webp 600w, /media/${id}.webp 1100w`;
+---
+<button
+  class="card" type="button"
+  data-cat={m.cat} data-groups={groupsOf(m).join(' ')} data-title={m.title} data-brand={m.brand ?? ''}
+  data-video={m.video ? '1' : '0'} data-id={m.id} data-src={m.video ? videoSrc(m.id) : undefined} data-poster={m.video ? posterSrc(m.id, 720) : undefined} data-views={m.views ?? ''}
+  aria-label={`${m.video ? 'Vídeo' : 'Foto'}: ${m.title} · ${m.cat}${m.brand ? ` · parceria com ${m.brand}` : ''}${m.views ? ` · ${m.views} views` : ''}`}
+>
+  {m.video
+    ? <video src={`${videoSrc(m.id)}#t=0.8`} poster={posterSrc(m.id)} muted loop playsinline preload="none" aria-hidden="true"></video>
+    : <img class="media" src={`/media/${m.id}.webp`} srcset={photoSrcset(m.id)} sizes={sizes} alt={`${m.title} · ${m.cat}${m.brand ? ` · ${m.brand}` : ''} · Carol Limah`} loading="lazy" />}
+  <div class="shade"></div>
+  {m.brand && !hideBrand && <span class="brand">{m.brand}</span>}
+  {m.video && (
+    <span class="play" aria-hidden="true">
+      <svg viewBox="0 0 16 16"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5Z" /></svg>
+    </span>
+  )}
+  <div class="cap">
+    {!bare && <small>{m.cat}</small>}<strong>{m.title}</strong>
+    {m.views && (
+      <span class="views" aria-hidden="true">
+        <svg viewBox="0 0 16 16"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8Z" /><circle cx="8" cy="8" r="2" /></svg>
+        {m.views} views
+      </span>
+    )}
+  </div>
+</button>

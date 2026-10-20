@@ -203,9 +203,15 @@ export const BRANDS = [
   'CASACOR', 'Palmolive', 'Alva', 'Emma', 'Café de la Musique', 'Mana Poke', 'Arena Movie', 'Espaço Simone Zagallo',
 ];
 
-export const SERVICES = [
-  { title: 'Reels & <i>stories</i>', text: 'Publicação no meu perfil, com roteiro no meu tom e entrega para a audiência que já confia nas minhas dicas.' },
-  { title: 'Hotéis & <i>pousadas</i>', text: 'Cobertura da hospedagem e do destino: quartos, experiências, café da manhã e o roteiro ao redor.' },
-  { title: 'Restaurantes <i>em SP</i>', text: 'Visita, prato a prato, com o clima da casa. Conteúdo que faz o seguidor querer reservar.' },
-  { title: 'Vídeos <i>UGC</i>', text: 'Vídeos para a marca usar nos próprios canais e anúncios, sem precisar de postagem no meu perfil.' },
+/** `niche`: slug da página de nicho que mostra esse formato (data/niches.ts) */
+export const SERVICES: { title: string; text: string; niche: string; more: string }[] = [
+  { title: 'Reels & <i>stories</i>', text: 'Publicação no meu perfil, com roteiro no meu tom e entrega para a audiência que já confia nas minhas dicas.', niche: 'publis-e-ugc', more: 'Ver publis' },
+  { title: 'Hotéis & <i>pousadas</i>', text: 'Cobertura da hospedagem e do destino: quartos, experiências, café da manhã e o roteiro ao redor.', niche: 'viagens-e-hospedagem', more: 'Ver viagens e hospedagem' },
+  { title: 'Restaurantes <i>em SP</i>', text: 'Visita, prato a prato, com o clima da casa. Conteúdo que faz o seguidor querer reservar.', niche: 'restaurantes-em-sao-paulo', more: 'Ver restaurantes' },
+  { title: 'Vídeos <i>UGC</i>', text: 'Vídeos para a marca usar nos próprios canais e anúncios, sem precisar de postagem no meu perfil.', niche: 'publis-e-ugc', more: 'Ver UGC' },
+];
+
+export const SOCIAL = [
+  { label: 'Instagram @eu.carollimah', href: 'https://www.instagram.com/eu.carollimah' },
+  { label: 'Threads @eu.carollimah', href: 'https://www.threads.net/@eu.carollimah' },
 ];

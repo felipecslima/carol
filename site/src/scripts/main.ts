@@ -1,23 +1,10 @@
+import { initMenu } from './menu';
+import { bindCards, initLightbox } from './lightbox';
+
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ---- Menu mobile ----
-const burger = $('burger');
-const links = $('nav-links');
-const isOpen = () => links.classList.contains('open');
-const setMenu = (open: boolean) => {
-  links.classList.toggle('open', open);
-  burger.setAttribute('aria-expanded', String(open));
-  burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-};
-burger.addEventListener('click', () => setMenu(!isOpen()));
-links.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && isOpen()) { setMenu(false); burger.focus(); }
-});
-document.addEventListener('click', (e) => {
-  if (isOpen() && !(e.target as Element).closest('.nav')) setMenu(false);
-});
+const links = initMenu();
 
 // ---- Marquee: pausa permanente além do hover (WCAG 2.2.2); com reduced-motion ele já fica parado ----
 const marquees = document.querySelectorAll('.marquee');
@@ -92,93 +79,7 @@ filters.forEach((b) =>
   }),
 );
 
-const play = (c: HTMLElement) => c.querySelector('video')?.play().catch(() => {});
-const pause = (c: HTMLElement) => c.querySelector('video')?.pause();
-cards.forEach((c) => {
-  if (!reduceMotion) {
-    c.addEventListener('mouseenter', () => play(c));
-    c.addEventListener('mouseleave', () => pause(c));
-    c.addEventListener('focus', () => play(c));
-    c.addEventListener('blur', () => pause(c));
-  }
-  c.addEventListener('click', () => open(visible().indexOf(c)));
-});
-
-// ---- Lightbox (<dialog> modal: foco preso, fundo inerte e Esc nativos) ----
-const lb = $<HTMLDialogElement>('lb');
-const lbMedia = $('lb-media');
-let idx: number | null = null;
-
-function render() {
-  const list = visible();
-  const c = list[idx!];
-  const { id, video, cat, title, brand, views, src, poster } = c.dataset;
-  lbMedia.replaceChildren();
-  if (video === '1') {
-    const v = document.createElement('video');
-    v.src = src!;
-    v.poster = poster!;
-    v.controls = true;
-    v.muted = true; // começa mudo; o som fica nos controles
-    v.playsInline = true;
-    if (!reduceMotion) v.autoplay = true;
-    v.setAttribute('aria-label', title!);
-    lbMedia.append(v);
-  } else {
-    const img = document.createElement('img');
-    img.src = `/media/${id}.webp`;
-    img.alt = title!;
-    lbMedia.append(img);
-  }
-  $('lb-cat').textContent = `${video === '1' ? 'Vídeo' : 'Foto'} · ${cat}`;
-  $('lb-title').textContent = title!;
-  const b = $('lb-brand');
-  b.hidden = !brand;
-  b.textContent = brand ? `Parceria com ${brand}` : '';
-  const vw = $('lb-views');
-  vw.hidden = !views;
-  vw.textContent = views ? `${views} views no Instagram` : '';
-  $('lb-count').textContent = `${idx! + 1} de ${list.length}`;
-  $('lb-prev').hidden = $('lb-next').hidden = list.length < 2;
-  $('lb-live').textContent = `${title}, ${idx! + 1} de ${list.length}`;
-}
-
-function open(i: number) {
-  idx = i;
-  render();
-  lb.showModal();
-  document.body.style.overflow = 'hidden';
-  $('lb-close').focus();
-}
-
-function step(d: number) {
-  const n = visible().length;
-  idx = (idx! + d + n) % n;
-  render();
-}
-
-// Roda logo depois de lb.close(): o <dialog> devolve o foco a quem abriu, e aqui ele
-// vai para o card do último item visto. O Esc nativo passa pelo mesmo caminho via 'cancel'.
-function cleanup() {
-  if (idx === null) return;
-  const last = visible()[idx];
-  idx = null;
-  lbMedia.replaceChildren(); // para o vídeo
-  document.body.style.overflow = '';
-  last?.focus();
-}
-const close = () => { lb.close(); cleanup(); };
-lb.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
-lb.addEventListener('close', cleanup);
-lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
-$('lb-close').addEventListener('click', close);
-$('lb-prev').addEventListener('click', () => step(-1));
-$('lb-next').addEventListener('click', () => step(1));
-lb.addEventListener('keydown', (e) => {
-  if ((e.target as Element).closest('video')) return; // setas controlam o vídeo
-  if (e.key === 'ArrowLeft') step(-1);
-  else if (e.key === 'ArrowRight') step(1);
-});
+bindCards(cards, visible, initLightbox(visible, reduceMotion), reduceMotion);
 
 // ---- Barras: visíveis por padrão; animam de 0 só com JS e sem reduced-motion ----
 const bars = $('bars');
