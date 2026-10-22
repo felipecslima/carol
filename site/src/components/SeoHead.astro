@@ -46,3 +46,12 @@ const ogImage = abs('/og.jpg');
 <!-- o título do hero é o maior elemento da primeira tela: a serif chega junto com o HTML -->
 <link rel="preload" href="/fonts/instrument-serif-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+<!-- Amplitude: a chave é a pública do projeto (só envia eventos), por isso fica no HTML -->
+<script is:inline src="https://cdn.amplitude.com/script/86c8a9bc2c7bbeb3e38d5662653bbf02.js"></script>
+<script is:inline>
+  window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1, serverZone: 'US' }));
+  window.amplitude.init('86c8a9bc2c7bbeb3e38d5662653bbf02', {
+    serverZone: 'US',
+    autocapture: true,
+  });
+</script>

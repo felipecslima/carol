@@ -1,6 +1,11 @@
 import { initMenu } from './menu';
 import { bindCards, initLightbox } from './lightbox';
 
+// carregado pelo script da Amplitude no SeoHead; pode faltar se um bloqueador barrar o CDN
+declare global {
+  interface Window { amplitude?: { track(eventType: string): void } }
+}
+
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -101,6 +106,7 @@ if (navigator.clipboard?.writeText) {
     clearTimeout(t);
     try {
       await navigator.clipboard.writeText(copy.dataset.email!);
+      window.amplitude?.track('Email Copied');
       copy.textContent = 'Copiado!';
       status.textContent = 'E-mail copiado.';
       status.classList.add('sr-only');
