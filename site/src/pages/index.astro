@@ -92,7 +92,6 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
     <main id="conteudo" tabindex="-1">
     <header id="topo" class="wrap hero">
       <div class="hero-text">
-        <p class="hero-byline">Carol Limah, criadora de conteúdo em SP</p>
         <h1 class="h1">Uma amazonense morando em São&nbsp;Paulo te levando em <em>lugares incríveis.</em></h1>
         <p class="hero-lead">Restaurantes, hotéis, pousadas e viagens de fim de semana, mostrados do jeito que eu vivo: com humor, de perto e sem roteiro decorado.</p>
         <div class="btns">
@@ -133,7 +132,6 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
         <a class="about-tag" href={MAILTO}>{EMAIL}</a>
       </div>
       <div class="about-text">
-        <span class="eyebrow">Sobre mim</span>
         <h2 class="h2">Do Amazonas pra São Paulo, <em>te mostrando tudo.</em></h2>
         <p>Sou a Carol, amazonense morando em SP. No meu perfil eu levo quem me acompanha pra conhecer restaurantes, hotéis, pousadas e destinos como Ilhabela e Campos do Jordão, sempre com o meu jeito: espontânea, divertida e muito sincera.</p>
         <p>Também divido a rotina e o meu processo de emagrecimento. É essa proximidade que faz a minha audiência confiar no que eu indico.</p>
@@ -147,7 +145,6 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
       <div class="wrap">
         <div class="pf-head">
           <div class="pf-title">
-            <span class="eyebrow">Portfólio</span>
             <h2 class="h2">Conteúdos que eu <em>já criei</em></h2>
           </div>
           <div class="filters" id="filters" role="group" aria-label="Filtrar conteúdos">
@@ -172,7 +169,6 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
     <section id="resultados" class="results">
       <div class="wrap results-reels">
         <div class="results-text">
-          <span class="eyebrow">Resultados</span>
           <h2 class="h2">Alcance que vai <em>muito além</em> dos seguidores</h2>
           <p>Nos últimos 30 dias foram <strong>{viewsLong} de visualizações</strong> ({INSIGHTS.viewsGrowth} sobre o mês anterior) e <strong>{INSIGHTS.newFollowers} seguidores novos</strong>. Nos {REELS_STATS.count} reels do perfil, a média é de <strong>{REELS_STATS.average} views</strong>: mais de {REACH_MULTIPLE} o número de seguidores. {REELS_STATS.over500} passaram de 500 mil, e {REELS_STATS.overMillion} chegaram a 1 milhão.</p>
           <p class="results-case">Publi também entrega: os {REELS_STATS.mlCount} reels para o <strong>Mercado Livre</strong> têm média de <strong>{REELS_STATS.mlAverage} views</strong>.</p>
@@ -263,13 +259,11 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
     <section id="servicos" class="services">
       <div class="wrap">
         <div class="services-head">
-          <span class="eyebrow">Formatos de parceria</span>
           <h2 class="h2">Como a sua marca pode <em>aparecer comigo</em></h2>
         </div>
         <div class="svc-grid">
-          {SERVICES.map((s, i) => (
+          {SERVICES.map((s) => (
             <div class="svc">
-              <span class="n">{String(i + 1).padStart(2, '0')}</span>
               <h3 set:html={s.title} />
               <p>{s.text}</p>
               <a class="svc-link" href={`/${s.niche}/`}>{s.more}</a>
@@ -278,7 +272,7 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
         </div>
       </div>
       <div class="brands">
-        <h3 class="wrap eyebrow" id="marcas">Marcas e lugares com quem já trabalhei</h3>
+        <h3 class="wrap brands-t" id="marcas">Marcas e lugares com quem já trabalhei</h3>
         <ul class="sr-only" aria-labelledby="marcas">{BRANDS.map((b) => <li>{b}</li>)}</ul>
         <div class="marquee">
           <div class="marquee-track" aria-hidden="true" style={`--dur:${BRANDS.length * 6}s`}>
@@ -296,7 +290,6 @@ const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.fil
 
     <section id="contato" class="contact">
       <div class="wrap">
-        <span class="eyebrow">Vamos conversar?</span>
         <h2 class="h2">Bora levar a sua marca pra <em>um lugar incrível?</em></h2>
         <a class="mail-btn" href={MAILTO}>Escrever e-mail</a>
         <p class="contact-addr">

@@ -28,13 +28,13 @@ const photoSrcset = (id: string) => `/media/${id}-600.webp 600w, /media/${id}.we
   <div class="shade"></div>
   <!-- o nome do botão é o próprio texto visível (WCAG 2.5.3); o que só o leitor de tela precisa vai em sr-only -->
   <div class="cap">
-    {m.video && <span class="sr-only">Vídeo: </span>}{!bare && <small>{m.cat}</small>}<strong>{m.title}</strong>
-    {m.views && (
+    {m.video && <span class="sr-only">Vídeo: </span>}<strong>{m.title}</strong>
+    {m.views ? (
       <span class="views">
         <svg aria-hidden="true"><use href="#i-eye" /></svg>
         {m.views} views
       </span>
-    )}
+    ) : <span class="views" aria-hidden="true" style="visibility: hidden">&nbsp;</span>}
   </div>
   {m.brand && (hideBrand
     ? <span class="sr-only">, parceria com {m.brand}</span>

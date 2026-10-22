@@ -22,6 +22,8 @@ export interface Niche {
   /** H1 com <em> no trecho em itálico */
   h1: string;
   lead: string;
+  /** H2 do contato, com <em>; sem ele vale o da home */
+  contact?: string;
   stops: Stop[];
 }
 
@@ -63,6 +65,7 @@ export const NICHES: Niche[] = [
     description: `Publis e UGC da Carol Limah (@eu.carollimah) para Mercado Livre, Shein e Kome. Média de ${REELS_STATS.mlAverage} views nos reels do Mercado Livre.`,
     h1: 'Publis que <em>entregam alcance.</em>',
     lead: `Reels no meu perfil e vídeos UGC para a marca usar nos próprios canais. Os ${REELS_STATS.mlCount} reels para o Mercado Livre têm média de ${REELS_STATS.mlAverage} views.`,
+    contact: 'Bora colocar a sua marca <em>no meu feed?</em>',
     stops: [
       { id: 'mercado-livre', name: 'Mercado Livre', where: 'Achadinhos e datas', text: 'Datas como 8.8 e 10/10, achadinhos e o espaço da marca na CASACOR.', ids: ['v23', 'v32', 'v24', 'v28', 'v31'] },
       { id: 'restaurantes', name: 'Restaurantes e eventos', where: 'Kome · On Fire · Gusto Cucina', text: 'Parcerias com casas e eventos: o cardápio, o clima e o movimento.', ids: ['v22', 'v50', 'v52', 'v49', 'v48', 'v20'] },

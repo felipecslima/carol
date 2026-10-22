@@ -28,18 +28,27 @@ const updateNow = () => {
 };
 if (route && 'IntersectionObserver' in window) {
   new IntersectionObserver(([e]) => { routeSeen = e.isIntersecting || e.boundingClientRect.top > 0; updateNow(); }).observe(route);
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (!e.isIntersecting) return;
-      const i = stops.indexOf(e.target as HTMLElement);
-      current = i;
-      updateNow();
-      marks.forEach((a, j) => {
-        a.classList.toggle('passed', j < i);
-        if (j === i) a.setAttribute('aria-current', 'location');
-        else a.removeAttribute('aria-current');
-      });
+  const setCurrent = (i: number) => {
+    current = i;
+    updateNow();
+    marks.forEach((a, j) => {
+      a.classList.toggle('passed', i >= 0 && j < i);
+      if (j === i) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
     });
-  }, { rootMargin: '-45% 0px -50% 0px' });
-  stops.forEach((s) => io.observe(s));
+  };
+  // a parada atual é a última cujo topo já passou do meio da tela; acima da primeira, o roteiro fica apagado.
+  // Calculado na rolagem (e não por IntersectionObserver) para valer também num salto direto ao topo.
+  let ticking = false;
+  const sync = () => {
+    ticking = false;
+    const mid = window.innerHeight / 2;
+    let i = -1;
+    stops.forEach((s, j) => { if (s.getBoundingClientRect().top <= mid) i = j; });
+    if (i !== current) setCurrent(i);
+  };
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(sync); } };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  sync();
 }

@@ -160,7 +160,7 @@ components:
 
 **Creative North Star: "The Late Table"**
 
-A dimly lit table at the end of the evening: espresso ground, cream type, and one warm caramel light that falls only on the words worth leaning toward. The site reads like a printed food-and-travel supplement more than a creator link page. Large Instrument Serif headlines carry the voice, Hanken Grotesk carries the facts, and the caramel lives almost entirely in italics, ordinals and the one action the page wants.
+A dimly lit table at the end of the evening: espresso ground, cream type, and one warm caramel light that falls only on the words worth leaning toward. The site reads like a printed food-and-travel supplement more than a creator link page. Large Instrument Serif headlines carry the voice, Hanken Grotesk carries the facts, and the caramel lives almost entirely in italics, route dots and the one action the page wants.
 
 Density is relaxed and editorial: wide section breathing room, hairline dividers instead of boxes, and the proof (9:16 video cards, view counts, partner brands) given the most surface. Depth comes from photographs, never from containers. The world is chic and restrained; ornaments are typographic (a thin caramel rule, a middot, a serif numeral), never decorative symbols.
 
@@ -176,8 +176,8 @@ Density is relaxed and editorial: wide section breathing room, hairline dividers
 A warm, near-monochrome brown world with a single caramel accent stepped into a four-tone data ramp.
 
 ### Primary
-- **Caramel** (`accent`): the italic phrase in every serif headline, ordinals, route dots and line, data bar for the leading value, the primary pill button, and the whole contact band. Also the default focus ring and text selection.
-- **Pale Caramel** (`accent-light`): hover state of caramel fills; category labels on dark media captions.
+- **Caramel** (`accent`): the italic phrase in every serif headline, route dots and line, data bar for the leading value, the primary pill button, and the whole contact band. Also the default focus ring and text selection.
+- **Pale Caramel** (`accent-light`): hover state of caramel fills.
 
 ### Secondary
 - **Caramel Data Ramp** (`bar-2`, `bar-3`, `bar-4`): descending tones for ranked bars; `bar-4` marks the baseline or non-key series so the caramel lead reads as the answer.
@@ -195,7 +195,7 @@ A warm, near-monochrome brown world with a single caramel accent stepped into a 
 - **Hairline** (`line`): 1px dividers between sections, stops, list rows.
 
 ### Named Rules
-**The Caramel Speaks Once Rule.** On dark grounds caramel is reserved for italic emphasis, ordinals and route marks, data leads, and the primary action. Body copy, borders and surfaces never take it, except the contact band, where it becomes the ground.
+**The Caramel Speaks Once Rule.** On dark grounds caramel is reserved for italic emphasis, route marks, data leads, and the primary action. Body copy, borders and surfaces never take it, except the contact band, where it becomes the ground.
 
 **The Three Grounds Rule.** Espresso is the default, cream is the inverted proof band, caramel is the closing ask. Each ground swaps its accent: caramel on espresso, burnt caramel on cream, espresso on caramel (italics inherit). The focus ring follows the same swap (`--focus` set to espresso on cream and caramel).
 
@@ -209,7 +209,7 @@ A warm, near-monochrome brown world with a single caramel accent stepped into a 
 ### Hierarchy
 - **Display XL** (400, clamp 48–112px, 0.95): the closing contact headline only.
 - **Display** (400, clamp 48–84px, 0.94, -0.02em): page H1, balanced wrapping, with a caramel italic close.
-- **Headline** (400, clamp 40–68px, 1): section H2s and niche stop names (stop names run clamp 40–64px with a 0.42em caramel ordinal on the baseline).
+- **Headline** (400, clamp 40–68px, 1): section H2s and niche stop names (stop names run clamp 40–64px behind a 13px solid caramel dot set 0.42em down).
 - **Headline Small** (400, clamp 36–52px): sub-section heads such as audience and "other routes".
 - **Title** (400, 32px, 1.05): service names; route stop names run clamp 26–32px; lightbox title 40px.
 - **Title Small** (400, 22px, 1.1): media card titles (18px on mobile).
@@ -218,10 +218,10 @@ A warm, near-monochrome brown world with a single caramel accent stepped into a 
 - **Body** (400, 16px, 1.55): service descriptions; 15px for chart labels and lists.
 - **UI** (600–700, 15px): buttons and filters.
 - **Meta** (400, 13px): counts, sources, stamps, footer, tabular numerals.
-- **Label** (600, 11px, 0.12em, uppercase): the category line inside a media card caption and the lightbox category. Confined to labels attached to an item.
+- **Label** (600, 11px, 0.12em, uppercase): the lightbox category. Confined to labels attached to an item, never above a heading or a card title.
 
 ### Named Rules
-**The Serif Counts Rule.** Every figure the brand should remember (followers, views, percentages, ordinals) is set in Instrument Serif at weight 400, with tabular numerals where numbers stack. The sans never sets a hero number.
+**The Serif Counts Rule.** Every figure the brand should remember (followers, views, percentages) is set in Instrument Serif at weight 400, with tabular numerals where numbers stack. The sans never sets a hero number.
 
 **The Weightless Serif Rule.** Instrument Serif is only ever weight 400. Emphasis comes from italic and caramel, not bold.
 
@@ -231,11 +231,11 @@ A single centered column of 1240px with a fluid gutter (clamp 20–40px). Sectio
 
 Media grids are `auto-fill` with 230px (home) or 200px (niche) minimums and a 14px gap, forced to two columns with a 10px gap under 720px. Breakpoints in use: 480px (stacked actions, compact chart rows), 720px (burger nav, two-column grids, mobile dock), 860px (sticky results text), 1000px (two-column hero and niche layout).
 
-Sticky elements sit 96–110px from the top to clear the blurred nav. Vertical stacks inside a block run at 14–28px; text never sits closer than 12px to an action group.
+Sticky elements sit 96–110px from the top to clear the nav. Vertical stacks inside a block run at 14–28px; text never sits closer than 12px to an action group.
 
 ## Elevation & Depth
 
-Flat surfaces, lifted photographs. Text containers, service cells, route rows and chart blocks have no shadow and are divided by hairlines or tonal bands. Shadows are soft, dark and large-radius, and they belong to imagery and to things that float above the page: hero photos, the hovered media card, the lightbox, the mail button and the mobile dock. The sticky nav uses a translucent espresso with a 14px backdrop blur instead of a shadow.
+Flat surfaces, lifted photographs. Text containers, service cells, route rows and chart blocks have no shadow and are divided by hairlines or tonal bands. Shadows are soft, dark and large-radius, and they belong to imagery and to things that float above the page: hero photos, the hovered media card, the lightbox, the mail button and the mobile dock. The sticky nav is solid espresso with a hairline below, no shadow and no blur, so nothing reads through it.
 
 ### Shadow Vocabulary
 - **Portrait lift** (`box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45)`): main hero photograph.
@@ -268,15 +268,15 @@ Soft and confident, always pills.
 - **State:** pressed fills espresso with cream text. On mobile the row scrolls horizontally with a right-edge fade mask.
 
 ### Cards / Containers
-- **Media card:** 9:16 button, 16px radius, card-oat placeholder, bottom gradient shade into espresso at 0.92, cream brand badge pill at top left, blurred circular play mark at top right, caption with label, serif title and eye-icon view count. Fades in over 0.4s; hover adds the card shadow.
-- **Service grid:** 20px-rounded frame, 1px cream hairlines between espresso cells, 32/28/36px padding, caramel serif ordinal, 32px serif title.
+- **Media card:** 9:16 button, 16px radius, card-oat placeholder, bottom gradient shade into espresso at 0.92, cream brand badge pill at top left, blurred circular play mark at top right, caption with serif title and eye-icon view count (the view line keeps its height when a card has no count, so titles in a row share a baseline). Fades in over 0.4s; hover adds the card shadow.
+- **Service grid:** 20px-rounded frame, 1px cream hairlines between espresso cells, 32/28/36px padding, 32px serif title; no ordinals, the order carries no information.
 - **Internal padding:** 12–14px for overlay captions, 28–32px for text cells.
 
 ### Navigation
-Sticky bar in translucent espresso (0.78) with 14px blur and a cream hairline below. Serif wordmark with the surname in caramel italic. Links are 14px/500 in latte, caramel on hover; the current page is cream with a 2px caramel underline offset 8px. The final item is the cream pill call to action. Under 720px the links collapse behind a three-line burger into a stacked list with hairline separators and a full-width pill. Breadcrumbs use 14px meta text, slash separators and underlined links, with the current page in caramel.
+Sticky bar in solid espresso with a cream hairline below. Serif wordmark with the surname in caramel italic. Links are 14px/500 in latte, caramel on hover; the current page is cream with a 2px caramel underline offset 8px. The final item is the cream pill call to action. Under 720px the links collapse behind a three-line burger into a stacked list with hairline separators and a full-width pill. Breadcrumbs use 14px meta text, slash separators and underlined links, with the current page in caramel.
 
 ### Route Index (signature)
-The niche pages' clickable table of contents. A vertical 1px hairline joins 11px ringed caramel dots; each row carries a serif stop name (clamp 26–32px) and a meta line of video count and top views; no ordinals, the line and dots carry the sequence. As the reader scrolls, passed dots fill caramel, the current dot scales to 1.35, and the line segment fills downward in caramel (0.6s, `cubic-bezier(0.16, 1, 0.3, 1)`). Each stop heading repeats the solid caramel dot. Sticky beside the content on desktop; on mobile it sits above the stops and, once scrolled away, the current stop shows in a strip inside the nav (dot, serif name, "3 de 5"). Stop cards drop the category label and any brand tag that repeats the stop name; on mobile each stop is a horizontal scroll-snap rail of 62vw cards.
+The niche pages' clickable table of contents. A vertical 1px hairline joins 11px ringed caramel dots; each row carries a serif stop name (clamp 26–32px) and a meta line of video count and top views; no ordinals, the line and dots carry the sequence. As the reader scrolls, passed dots fill caramel, the current dot scales to 1.35, and the line segment fills downward in caramel (0.6s, `cubic-bezier(0.16, 1, 0.3, 1)`). Each stop heading repeats the solid caramel dot. Sticky beside the content on desktop; on mobile it sits above the stops and, once scrolled away, the current stop shows in a strip inside the nav (dot, serif name, "3 de 5"). Stop cards drop any brand tag that repeats the stop name. A stop with a single video sets its heading beside the 240px card, level with its top, instead of stranding the card in the column. The intro sits at the top of the first viewport, so the first stop's heading shows above the fold. On mobile each stop is a horizontal scroll-snap rail of 62vw cards, and stops scroll to 126px from the top so their rule lands under the current-stop strip.
 
 ### Ranked Bars
 Data rows in a grid of thumbnail, label with caramel uppercase brand tag, and a right-aligned serif value. Tracks are 12–14px tall at 0.07 cream on 4px radius, filled from the caramel ramp in rank order and animated from zero over 1s when they enter the viewport.
@@ -299,5 +299,5 @@ A band in roast with hairline borders, serif words at clamp 24–34px in oat, se
 - **Don't** bold Instrument Serif or set it in any weight other than 400.
 - **Don't** put caramel on body copy, borders or surfaces on the espresso ground.
 - **Don't** cast shadows from text blocks, and never use a hard offset shadow.
-- **Don't** add uppercase tracked kickers above headlines on new surfaces; the niche pages ship without them and the uppercase label stays attached to items (card captions, lightbox category, brand tags).
+- **Don't** put a kicker, eyebrow or byline above a headline or a card title, on any surface; the heading carries its own weight. The uppercase label stays attached to items (lightbox category, brand tags).
 - **Don't** tilt route rows, grids or text; rotation belongs to the hero photo collage only.

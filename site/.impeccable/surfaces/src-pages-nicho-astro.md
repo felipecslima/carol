@@ -17,7 +17,7 @@ OWN-WORLD: O da home: fundo espresso #17110d, texto creme, caramelo oklch(0.8 0.
 
 STORY: A marca entende em segundos o que a Carol cobre nesse nicho e onde já esteve. Vê os vídeos de cada parada com views e marca, acredita pelo alcance e escreve o e-mail.
 
-FIRST VIEWPORT: Trilha "Carol Limah / Nicho" no topo. À esquerda, o H1 do nicho em serif grande com itálico caramelo, um parágrafo e as ações (e-mail + media kit). À direita, o roteiro como índice clicável: linha vertical, ponto por parada, nome em serif 30px, contagem de vídeos e views. A primeira parada começa logo abaixo da dobra.
+FIRST VIEWPORT: Trilha "Carol Limah / Nicho" no topo. À esquerda, o H1 do nicho em serif grande com itálico caramelo, um parágrafo e as ações (e-mail + media kit). À direita, o roteiro como índice clicável: linha vertical, ponto por parada, nome em serif 30px, contagem de vídeos e views. Intro e índice alinhados no topo; o título da primeira parada já aparece na dobra (ajuste da revisão de 22/10).
 
 FORM: Roteiro por lugar, posição 7 da lista ordenada (sorteada para a frente). seed:4c19cfe74bc8aa57
 

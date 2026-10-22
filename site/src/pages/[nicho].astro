@@ -125,7 +125,7 @@ const jsonLd = {
 
     <section id="contato" class="contact">
       <div class="wrap">
-        <h2 class="h2">Bora levar a sua marca pra <em>um lugar incrível?</em></h2>
+        <h2 class="h2" set:html={niche.contact ?? 'Bora levar a sua marca pra <em>um lugar incrível?</em>'} />
         <a class="mail-btn" href={MAILTO}>Escrever e-mail</a>
         <p class="contact-addr"><span>{EMAIL}</span></p>
         <p class="contact-time nx-time">{RESPONSE_TIME}</p>
