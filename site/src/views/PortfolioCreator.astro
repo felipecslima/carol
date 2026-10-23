@@ -1,0 +1,327 @@
+---
+// Página de vendas do Portfólio Creator (/portfolio-creator/), só em português.
+// Mesma estrutura, classes e tipografia do site da Carol (styles/global.css, Home.astro); as cores do produto
+// entram por tokens em styles/portfolio-creator.css. Textos e preços em data/portfolio-creator.ts, imagens
+// geradas por scripts/portfolio-creator-shots.mjs.
+// Ordem do argumento: promessa, dor, para quem é, como funciona, o que a marca vê, modelos, quem fez, preço,
+// teste e primeiras creators, dúvidas, ferramentas que vêm aí, fechamento.
+import '../styles/global.css';
+import '../styles/portfolio-creator.css';
+import SeoHead from '../components/SeoHead.astro';
+import { SOCIAL } from '../data/content';
+import {
+  BENEFITS, BEGINNER, CAROL, FAQ, FOUNDERS, FREE, MODELS, PAINS, PC, PC_PATH, PLANS, STEPS, TRIAL,
+} from '../data/portfolio-creator';
+
+const title = 'Portfólio Creator: mesmo sem nenhuma publi';
+const description = 'Monte portfólio e mídia kit de UGC e influência em 15 modelos, com PDF e link próprio. Criado pela Carol Limah. Teste grátis.';
+const abs = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
+
+// links externos (DM, WhatsApp) abrem em outra aba
+const ext = (href: string) => (/^https?:/.test(href) ? { target: '_blank', rel: 'noopener' } : {});
+const cta = { href: PC.cta, ...ext(PC.cta) };
+const whatsapp = PC.whatsapp && { href: PC.whatsapp, ...ext(PC.whatsapp) };
+// cada metade do loop precisa ser mais larga que a tela, por isso a lista se repete
+const BAND = ['Mídia kit', 'Reels', 'Publis', 'Estatísticas', 'PDF', 'Site próprio', 'UGC'];
+const bandLoop = [...BAND, ...BAND, ...BAND];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Portfólio Creator',
+  description,
+  url: abs(PC_PATH),
+  image: abs('/og-portfolio-creator.jpg'),
+  brand: { '@type': 'Brand', name: 'Portfólio Creator' },
+  offers: [
+    { name: 'Portfólio em PDF + link', price: '49.90' },
+    { name: 'Portfólio em site', price: '149.90' },
+    { name: 'Atualização mensal', price: '19.90' },
+  ].map((o) => ({ '@type': 'Offer', ...o, priceCurrency: 'BRL', url: abs(`${PC_PATH}#plano`) })),
+};
+---
+
+<!doctype html>
+<html lang="pt-BR" class="pc">
+  <head>
+    <SeoHead
+      lang="pt"
+      title={title}
+      description={description}
+      alternates={{ pt: PC_PATH }}
+      jsonLd={jsonLd}
+      og={{ image: '/og-portfolio-creator.jpg', alt: 'Portfólio Creator: seu primeiro portfólio de creator', siteName: 'Portfólio Creator' }}
+      themeColor="#24130F"
+    />
+    <!-- antes do primeiro desenho: depois do prazo do cupom, a faixa e os avisos de cupom não aparecem -->
+    <script is:inline define:vars={{ fim: PC.cupomFim }}>
+      if (Date.now() > Date.parse(fim)) document.documentElement.classList.add('sem-cupom');
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+    <p class="promo" data-cupom>
+      10% no valor do plano com o cupom <b class="cupom">{PC.cupom}</b> até {PC.cupomAte}.{' '}
+      <a href="#plano">Ver planos</a>
+    </p>
+    <nav class="nav" aria-label="Principal">
+      <div class="wrap">
+        <a class="logo" href="#topo">Portfólio <i>Creator</i></a>
+        <button class="burger" type="button" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+          <a href="#como">Como funciona</a>
+          <a href="#modelos">Modelos</a>
+          <a href="#sobre">Sobre a Carol</a>
+          <a href="#plano">Planos</a>
+          <a href="#duvidas">Dúvidas</a>
+          <a class="cta" {...cta}>Pedir meu teste</a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="conteudo" tabindex="-1">
+      <header id="topo" class="wrap hero">
+        <div class="hero-text">
+          <h1 class="h1">Seu primeiro portfólio de <em>creator.</em></h1>
+          <p class="hero-lead">Mesmo sem nenhuma publi, você escolhe um modelo, sobe os vídeos que gravou em casa e monta um portfólio para mandar às marcas. Quando seus números crescerem, é só atualizar.</p>
+          <div class="btns">
+            <a class="btn btn-primary" {...cta}>Pedir meu teste grátis</a>
+            <a class="btn btn-outline" href="#plano">Ver planos</a>
+          </div>
+          <dl class="stats">
+            <div class="stat"><dt>modelos de layout</dt><dd>15</dd></div>
+            <div class="stat"><dt>paletas de cor</dt><dd>45</dd></div>
+            <div class="stat"><dt>a partir de</dt><dd>R$ 49,90</dd></div>
+          </dl>
+          <p class="hero-note">O botão abre o direct da Carol no Instagram, porque o cadastro no site ainda não abriu. Sem cartão de crédito no teste e 7 dias para desistir da compra.</p>
+        </div>
+        <div class="collage">
+          <img class="main" src="/media/pc/portfolio-iniciante.webp" alt="Exemplo de portfólio no modo iniciante, no celular" width="624" height="1280" fetchpriority="high" />
+          <img class="small" src="/media/pc/modelo-nuvem.webp" alt="Modelo Nuvem, com layout centralizado e suave" width="480" height="549" loading="lazy" />
+          <img class="vid" src="/media/pc/modelo-assinatura.webp" alt="Modelo Assinatura, escuro e elegante" width="480" height="549" loading="lazy" />
+          <div class="seal">Feito pela<br /><i>Carol Limah</i></div>
+        </div>
+      </header>
+
+      <div class="marquee">
+        <div class="marquee-track" aria-hidden="true">
+          {[0, 1].map(() => (
+            <span>{bandLoop.map((w, i) => (<>{i % 2 ? <i>{w}</i> : w}<span class="sep"></span></>))}</span>
+          ))}
+        </div>
+        <button class="vid-toggle marquee-toggle" type="button" aria-label="Pausar animação" hidden>
+          <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1" /><rect x="9.4" y="3" width="2.6" height="10" rx="1" /></svg>
+          <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5Z" /></svg>
+        </button>
+      </div>
+
+      <section class="dark-sec">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2 class="h2">Ninguém fecha publi <em>sem portfólio.</em></h2>
+            <div class="sec-aside"><p>A marca pede seu mídia kit e o que você tem? Print solto no WhatsApp, link do perfil e a esperança de que ela olhe com carinho.</p></div>
+          </div>
+          <ul class="cells">
+            {PAINS.map((p) => <li><h3>{p.title}</h3><p>{p.text}</p></li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section id="iniciante" class="wrap about">
+        <div class="about-photo phone-wrap">
+          <img src="/media/pc/portfolio-iniciante.webp" alt="Portfólio no modo iniciante, sem números nem marcas: o que a creator entrega e os vídeos de exemplo" width="624" height="1280" loading="lazy" />
+        </div>
+        <div class="about-text">
+          <h2 class="h2">Para quem começa do <em>zero.</em></h2>
+          <p>Poucos seguidores e nenhuma publi? No <b>modo iniciante</b>, o portfólio esconde as seções de números e marcas e destaca o que importa para quem faz UGC, que são vídeos gravados para a marca usar nos anúncios: seus vídeos, os estilos que você grava e o que você entrega.</p>
+          <ul class="checks">{BEGINNER.map((b) => <li>{b}</li>)}</ul>
+        </div>
+      </section>
+
+      <section id="como" class="cream">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2 class="h2">Do zero ao portfólio em <em>3 passos</em></h2>
+            <div class="sec-aside"><p>Se você sabe postar um reels, você sabe usar. Não precisa saber design.</p></div>
+          </div>
+          <ol class="steps">
+            {STEPS.map((s) => <li><h3>{s.title}</h3><p>{s.text}</p></li>)}
+          </ol>
+        </div>
+      </section>
+
+      <section id="marca" class="wrap trial-grid">
+        <div class="trial-text">
+          <h2 class="h2">O que a marca <em>quer ver</em></h2>
+          <p>O portfólio pronto organiza o que uma marca procura antes de fechar uma publi.</p>
+          <ul class="checks checks-rich">{BENEFITS.map((b) => <li><b>{b.title}</b><span>{b.text}</span></li>)}</ul>
+        </div>
+        <div class="demo" data-ui aria-hidden="true">
+          <div class="demo-who">
+            <div class="demo-avatar">VC</div>
+            <div><div class="demo-name">Seu nome aqui</div><span>@seu.perfil, exemplo</span></div>
+          </div>
+          <div class="demo-stats">
+            <div><b>0 mil</b>seguidores</div>
+            <div><b>0 mil</b>views em 30 dias</div>
+            <div><b>0 mil</b>média por reel</div>
+          </div>
+          <div class="demo-reels">
+            <i style="background: #E9D6CB"></i><i style="background: #F9C9DA"></i><i style="background: #D9CCFA"></i><i style="background: #CDEFE0"></i>
+          </div>
+          <div class="watermark">{Array.from({ length: 12 }, () => <span>PORTFÓLIO CREATOR, TESTE</span>)}</div>
+        </div>
+      </section>
+
+      <section id="modelos" class="cream">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2 class="h2">15 modelos, <em>45 combinações</em></h2>
+            <div class="sec-aside"><p>Cada modelo tem layout próprio e 3 paletas de cor.</p></div>
+          </div>
+          <ul class="models">
+            {MODELS.map((m, i) => (
+              <li style={`--i: ${i}`}>
+                <figure>
+                  <img src={`/media/pc/modelo-${m.file}.webp`} alt={`Modelo ${m.name}: começo do portfólio de exemplo`} width="480" height="549" loading="lazy" />
+                  <figcaption><b>{m.name}</b><span>{m.vibe}</span></figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="sobre" class="wrap about">
+        <div class="about-photo">
+          <img src="/media/pc/carol-retrato.webp" alt="Carol Limah, criadora do Portfólio Creator" width="720" height="900" loading="lazy" />
+          <a class="about-tag" href="/">Ver o meu portfólio</a>
+        </div>
+        <div class="about-text">
+          <h2 class="h2">Oi, eu sou a <em>Carol.</em></h2>
+          <p>Larguei a odontologia e hoje trabalho exclusivamente como criadora de conteúdo: influencer, UGC e UGC Canvas. Quando comecei, eu não sabia o que fazer nem para onde ir. Hoje, quero ajudar milhares de pessoas a conquistar a independência financeira trabalhando no digital, e o Portfólio Creator é o primeiro passo.</p>
+          <dl class="stats">
+            {CAROL.stats.map((s) => <div class="stat"><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
+          </dl>
+          <p class="topics-title">Segmentos que já confiaram no meu trabalho</p>
+          <ul class="topics">{CAROL.segments.map((s) => <li>{s}</li>)}</ul>
+        </div>
+      </section>
+
+      <section id="plano" class="cream">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2 class="h2">Planos que cabem em <em>uma publi</em></h2>
+            <div class="sec-aside">
+              <p>Uma única publi fechada já paga o seu portfólio. Por enquanto, a compra começa no direct da Carol no Instagram.</p>
+              <p class="coupon-note" data-cupom><b>{PC.cupom}</b>: 10% no valor do plano até {PC.cupomAte}. Não vale para a taxa do domínio.</p>
+            </div>
+          </div>
+          <ul class="plans">
+            {PLANS.map((p) => (
+              <li>
+                <article class={`plan plan-${p.key}`}>
+                  <h3>{p.label}</h3>
+                  <p class="price"><b>{p.price}</b>{p.per && <span>{p.per}</span>}</p>
+                  <p class="plan-note">{p.note}</p>
+                  {p.yearly && <p class="yearly">{p.yearly}</p>}
+                  <ul>{p.items.map((it) => <li>{it}</li>)}</ul>
+                  <a class="btn" {...cta}>{p.action}</a>
+                  {p.key === 'site' && whatsapp && <a class="plan-help" {...whatsapp}>Tenho dúvidas: falar no WhatsApp</a>}
+                </article>
+              </li>
+            ))}
+          </ul>
+          <p class="why"><b>Por que não montar em outro lugar?</b> Editores comuns te dão um modelo em branco. Aqui você recebe uma estrutura pensada por mim, que já fiz mais de 400 publis, com cada informação no lugar onde a marca procura.</p>
+          <p class="pay-note">
+            Você tem 7 dias para desistir da compra.
+            Ao comprar, você aceita os {PC.termos ? <a href={PC.termos}>Termos de uso</a> : 'Termos de uso'}.
+          </p>
+        </div>
+      </section>
+
+      <section id="teste" class="wrap trial-grid">
+        <div class="trial-text">
+          <h2 class="h2">Monte o seu <em>antes de pagar.</em></h2>
+          <p>No teste grátis você escolhe um modelo, sobe seus vídeos e prints e vê o seu portfólio de verdade, até o PDF, com marca d'água. Gostou? Escolha um plano e libere tudo.</p>
+          <ul class="checks">{TRIAL.map((t) => <li>{t}</li>)}</ul>
+          <a class="btn btn-primary" {...cta}>Pedir meu teste grátis</a>
+        </div>
+        <div id="creators" class="founders-card">
+          <h3>Seja uma das <em>5 primeiras</em></h3>
+          <p>Você monta seu portfólio com o plano PDF liberado, sem pagar nada. Em troca, conta para a gente como foi: o que achou de montar e como as marcas reagiram.</p>
+          <ul class="founders-list">
+            {FOUNDERS.map((f) => <li><b>{f.title}</b><span>{f.text}</span></li>)}
+          </ul>
+          <a class="btn btn-dark" href="https://ig.me/m/eu.carollimah" target="_blank" rel="noopener">Quero uma das 5 vagas</a>
+          {PC.vagas !== null && <p class="seats">{PC.vagas} de 5 vagas abertas</p>}
+        </div>
+      </section>
+
+      <section id="duvidas" class="dark-sec ruled">
+        <div class="wrap faq-grid">
+          <h2 class="h2">Dúvidas</h2>
+          <div class="faq">
+            {FAQ.map((f) => (
+              <details>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="gratis" class="cream">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2 class="h2">Vem aí, <em>de graça</em></h2>
+            <div class="sec-aside"><p>Estou terminando estas 5 ferramentas para quem está começando. Quer ser avisada? Me chama no direct do Instagram.</p></div>
+          </div>
+          <ul class="nx-more-list free">
+            {FREE.map((f) => (
+              <li>
+                {f.href ? (
+                  <a href={f.href}><b>{f.title}</b><span>{f.text}</span><span class="nx-go">{f.action}</span></a>
+                ) : (
+                  <div class="item"><b>{f.title}</b><span>{f.text}</span><span class="soon">Em breve</span></div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="contato" class="contact">
+        <div class="wrap">
+          <h2 class="h2">Mande seu mídia kit <em>sem medo.</em></h2>
+          <a class="mail-btn" {...cta}>Pedir meu teste grátis</a>
+          <div class="contact-note">
+            <p class="contact-time"><img class="avatar" src="/media/pc/carol-rosto.webp" alt="Carol Limah" width="96" height="96" loading="lazy" />Feito por mim, Carol Limah</p>
+            <p class="brief-title">Abre meu direct no Instagram. Sem cartão de crédito no teste e 7 dias para desistir da compra.</p>
+          </div>
+        </div>
+      </section>
+
+      <a class="dock" id="dock" href="#contato" hidden>Pedir meu teste</a>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <a class="logo" href="#topo">Portfólio <i>Creator</i></a>
+        <ul class="foot-social" aria-label="Carol Limah">
+          <li><a href="/">Site da Carol</a></li>
+          {SOCIAL.filter((l) => /instagram/i.test(l.href)).map((l) => <li><a href={l.href} target="_blank" rel="me noopener">{l.label}</a></li>)}
+          {PC.termos && <li><a href={PC.termos}>Termos e privacidade</a></li>}
+        </ul>
+        <span>© 2026 Carol Limah</span>
+      </div>
+    </footer>
+
+    <script>
+      import '../scripts/portfolio-creator';
+    </script>
+  </body>
+</html>

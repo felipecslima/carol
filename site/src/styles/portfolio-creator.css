@@ -1,0 +1,219 @@
+/* Portfólio Creator (/portfolio-creator/): mesma estrutura, tipografia e movimento do site da Carol (global.css).
+   Aqui fica só o que é do produto: as cores (tokens abaixo) e os blocos que o site da Carol não tem. */
+
+/* Cores do Creators sobre o esqueleto do site: base marrom-escuro, faixas em creme e rosa como acento */
+.pc {
+  --bg: #24130F;
+  --bg-band: #2D1A14;
+  --bg-hover: #3A2721;
+  --bg-video: #3A2721;
+  --text: #FBF4EC;
+  --text-2: #E6D3CB;
+  --muted: #D2BFB6;
+  --subtle: #B9A59C;
+  --cream: #FBF4EC;
+  --cream-card: #EEDFD5;
+  --cream-eyebrow: #6B5650;
+  --cream-italic: #B71F4E;
+  --accent: #E5386A;
+  --accent-light: #FF8FB0;
+  --line: rgba(251, 244, 236, 0.12);
+  --yellow: #FFCF4A;
+  --mint: #DDF5EA;
+  --green: #0B4A35;
+  --ink-2: #4A3A34;
+  scrollbar-color: #4a3128 var(--bg);
+}
+/* rosa cheio com texto branco passa de 4,5:1; o rosa do produto fica para superfícies grandes e títulos */
+.pc .btn-primary { background: #D42A5B; color: #fff; }
+.pc .btn-primary:hover { background: var(--cream-italic); color: #fff; }
+.pc .logo i, .pc .h2 em, .pc .h1 em { color: var(--accent-light); }
+.pc .cream .h2 em { color: var(--cream-italic); }
+.pc .contact .h2 em { color: inherit; }
+.pc main p { max-width: 62ch; }
+
+/* ---- faixas em creme (como o portfólio da Carol) ---- */
+.cream { --focus: var(--bg); background: var(--cream); color: var(--bg); scroll-margin-top: 60px; }
+.cream > .wrap { padding-block: clamp(64px, 8vw, 112px); display: flex; flex-direction: column; gap: clamp(32px, 4vw, 48px); }
+.sec-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px clamp(32px, 6vw, 88px); }
+.sec-head .h2 { flex: 1 1 420px; max-width: 760px; }
+.sec-aside { flex: 0 1 380px; display: flex; flex-direction: column; gap: 14px; }
+.sec-aside p { font-size: 18px; line-height: 1.6; color: var(--muted); text-wrap: pretty; }
+.cream .sec-aside p { color: var(--ink-2); }
+.dark-sec { scroll-margin-top: 60px; }
+.dark-sec > .wrap { padding-block: clamp(64px, 9vw, 128px); display: flex; flex-direction: column; gap: clamp(32px, 4vw, 48px); }
+.dark-sec.ruled { border-top: 1px solid var(--line); }
+
+/* ---- hero ---- */
+.hero-note { font-size: 14px; color: var(--subtle); margin-top: -8px; }
+.pc .collage .main { object-position: top; background: #FFEFE8; }
+.pc .collage .small, .pc .collage .vid { object-position: top; background: var(--bg-video); }
+/* o collage da Carol leva fotos; aqui são telas, então a sobreposição é menor para não esconder texto */
+.pc .collage .main { left: 20%; width: 56%; height: 82%; }
+.pc .collage .small { width: 36%; bottom: 0; }
+.pc .collage .vid { width: 30%; bottom: 4%; }
+.pc .collage .seal { left: 0; right: auto; top: 4%; }
+
+/* ---- sobre: a Carol ---- */
+.topics-title { font-size: 15px; font-weight: 600; color: var(--text-2); margin-bottom: -14px; }
+
+/* ---- grade de células com fios, como os formatos da Carol ---- */
+.cells { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+.cells li { background: var(--bg); padding: 32px 28px 36px; display: flex; flex-direction: column; gap: 14px; }
+.cells h3 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.05; }
+.cells p { font-size: 16px; line-height: 1.55; color: var(--muted); }
+
+/* ---- passos: é uma sequência de verdade, então o numeral em serifa (como os números do hero) faz sentido ---- */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(28px, 4vw, 56px); counter-reset: s; }
+.steps li { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid rgba(36, 19, 15, 0.2); counter-increment: s; }
+.steps li::before { content: counter(s); font-family: var(--serif); font-size: 64px; line-height: 1; color: var(--cream-italic); }
+.steps h3 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.05; }
+.steps p { font-size: 17px; line-height: 1.55; color: var(--ink-2); }
+
+/* ---- modelos ---- */
+.models { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 24px 14px; }
+.models figure { margin: 0; }
+.models img { width: 100%; height: auto; aspect-ratio: 1200 / 1372; object-fit: cover; object-position: top; border-radius: 16px; background: var(--cream-card); display: block; }
+.models figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 12px 2px 0; }
+.models b { font-family: var(--serif); font-weight: 400; font-size: 24px; line-height: 1.1; }
+.models span { font-size: 13px; color: var(--cream-eyebrow); text-align: right; }
+@media (max-width: 720px) { .models { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 10px; } .models img { border-radius: 12px; } }
+
+/* ---- modo iniciante e teste: duas colunas como "sobre" ---- */
+.about-photo.phone-wrap { max-width: 340px; justify-self: center; }
+.about-photo.phone-wrap img { aspect-ratio: 312 / 640; object-position: top; background: #FFEFE8; }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.checks li { padding: 14px 0; border-top: 1px solid var(--line); font-size: 17px; line-height: 1.45; color: var(--text-2); }
+.checks li:last-child { border-bottom: 1px solid var(--line); }
+.trial-grid { padding-block: clamp(64px, 9vw, 128px); scroll-margin-top: 70px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: clamp(40px, 6vw, 88px); align-items: center; }
+.trial-text { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.trial-text p { font-size: 18px; line-height: 1.6; color: var(--muted); }
+.trial-text .checks { align-self: stretch; }
+
+/* exemplo do teste: o portfólio com marca d'água */
+.demo { position: relative; background: var(--cream); color: var(--bg); border-radius: 20px; padding: clamp(20px, 3vw, 32px); overflow: hidden; }
+.demo-who { position: relative; z-index: 1; display: flex; gap: 14px; align-items: center; }
+.demo-avatar { width: 56px; height: 56px; border-radius: 50%; background: #F9C9DA; display: grid; place-items: center; font-weight: 700; flex: none; }
+.demo-name { font-family: var(--serif); font-size: 32px; line-height: 1; }
+.demo-who span { font-size: 14px; color: var(--cream-eyebrow); }
+.demo-stats { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 22px; }
+.demo-stats div { background: #fff; border-radius: 12px; padding: 12px; font-size: 13px; color: var(--cream-eyebrow); }
+.demo-stats b { display: block; font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.1; color: var(--bg); }
+.demo-reels { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.demo-reels i { height: clamp(96px, 12vw, 140px); border-radius: 10px; }
+.watermark { position: absolute; inset: 34% 6% 4%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 46px 20px; align-content: center; transform: rotate(-22deg); pointer-events: none; user-select: none; }
+.watermark span { font-weight: 700; font-size: 14px; letter-spacing: 0.04em; color: rgba(36, 19, 15, 0.16); white-space: nowrap; }
+
+
+/* ---- ferramentas grátis: a lista "ver também" da Carol, com o "em breve" onde a página ainda não existe ---- */
+.soon { align-self: flex-start; font-size: 13px; font-weight: 600; color: var(--subtle); border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; }
+.free b { display: block; }
+.free .nx-go { font-size: 14px; font-weight: 600; color: var(--text-2); text-decoration: underline; text-decoration-color: rgba(251, 244, 236, 0.3); text-underline-offset: 4px; }
+.free div.item { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 24px 24px 28px 0; border-bottom: 1px solid var(--line); }
+.free div.item b { font-family: var(--serif); font-weight: 400; font-size: 30px; line-height: 1.05; }
+.free div.item > span:not(.soon) { font-size: 15px; line-height: 1.5; color: var(--subtle); }
+
+/* ---- planos ---- */
+.promo { background: var(--accent); color: var(--bg); text-align: center; padding: 10px var(--gutter); font-size: 14px; font-weight: 600; line-height: 1.5; }
+.promo a { color: var(--bg); text-decoration: underline; text-underline-offset: 3px; }
+.cupom { display: inline-block; background: var(--bg); color: var(--cream); padding: 1px 8px; border-radius: 6px; letter-spacing: 0.04em; }
+.sem-cupom [data-cupom] { display: none !important; }
+.plans { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; align-items: stretch; }
+.plan { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: clamp(24px, 3vw, 36px); border-radius: 20px; background: #fff; color: var(--bg); }
+.plan-site { background: var(--bg); color: var(--text); }
+.plan-atualizacao { background: var(--mint); color: var(--green); }
+.plan h3 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.05; }
+.price { display: flex; align-items: baseline; gap: 6px; margin-top: 14px; }
+.price b { font-family: var(--serif); font-weight: 400; font-size: 64px; line-height: 1; }
+.price span { font-size: 18px; }
+.plan-note { font-size: 14px; line-height: 1.45; opacity: 0.85; }
+.yearly { align-self: flex-start; margin-top: 8px; background: var(--green); color: #fff; font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 999px; }
+.plan ul { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-direction: column; flex: 1; }
+.plan li { padding: 11px 0; border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); font-size: 16px; line-height: 1.45; }
+.plan .btn { margin-top: 24px; text-align: center; font-weight: 700; background: var(--bg); color: var(--cream); }
+.plan .btn:hover { background: var(--bg-hover); color: var(--cream); }
+.plan-site .btn { background: #D42A5B; color: #fff; }
+.plan-site .btn:hover { background: var(--cream-italic); color: #fff; }
+.plan-atualizacao .btn { background: var(--green); color: #fff; }
+.plan-help { display: block; text-align: center; margin-top: 12px; color: var(--yellow); font-weight: 600; font-size: 15px; text-decoration: underline; text-underline-offset: 4px; }
+.coupon-note { font-size: 15px; color: var(--ink-2); }
+.coupon-note b { color: var(--cream-italic); letter-spacing: 0.04em; }
+.why { font-size: 18px; line-height: 1.6; max-width: 720px; color: var(--ink-2); }
+.why b { color: var(--bg); }
+.pay-note { font-size: 14px; color: var(--cream-eyebrow); }
+.pay-note a { color: var(--cream-italic); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---- dúvidas ---- */
+.faq { max-width: 860px; margin-inline: auto; width: 100%; }
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font-family: var(--serif); font-size: clamp(22px, 2.4vw, 28px); line-height: 1.15; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; font-family: var(--sans); color: var(--accent-light); font-size: 26px; line-height: 1; flex: none; transition: transform 0.2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq summary:hover { color: var(--accent-light); }
+.faq details p { padding-bottom: 24px; font-size: 17px; line-height: 1.6; color: var(--muted); }
+
+/* ---- movimento: o hero entra em sequência e os modelos aparecem uma vez; o resto é o do site (marquee, fade, dock) ---- */
+@keyframes rise { from { opacity: 0; translate: 0 24px; } }
+@media (prefers-reduced-motion: no-preference) {
+  .pc .hero-text > * { animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .pc .hero-text > :nth-child(2) { animation-delay: 0.1s; }
+  .pc .hero-text > :nth-child(3) { animation-delay: 0.2s; }
+  .pc .hero-text > :nth-child(4) { animation-delay: 0.3s; }
+  .pc .collage > * { animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .pc .collage .small { animation-delay: 0.2s; }
+  .pc .collage .vid { animation-delay: 0.35s; }
+  .pc .collage .seal { animation-delay: 0.5s; }
+  .models.reveal-ready li { opacity: 0; translate: 0 24px; }
+  .models.reveal-ready.in li { opacity: 1; translate: 0 0; transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 45ms), translate 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 45ms); }
+}
+
+/* a chamada final tem uma frase longa; o título gigante da Carol cabe uma frase curta */
+.pc .contact .h2 { font-size: clamp(40px, 5.4vw, 76px); max-width: 1000px; }
+
+/* faixa do cupom: branco sobre o rosa fechado, que passa de 4,5:1 */
+.promo { background: #D42A5B; color: #fff; }
+.promo a { color: #fff; }
+.cupom { background: #fff; color: var(--cream-italic); }
+/* no tablet e no celular o título vem antes da foto, como no resto da página */
+@media (max-width: 999px) { .pc .about-text { order: -1; } }
+
+/* ---- ajustes da crítica ---- */
+/* o aviso do hero fica discreto mas legível */
+.hero-note { max-width: 52ch; }
+.promo a { display: inline-block; padding: 12px 4px; margin: -12px 0; }
+/* benefícios em lista com título e frase, ao lado do exemplo */
+.checks-rich li { display: flex; flex-direction: column; gap: 2px; }
+.checks-rich b { font-weight: 600; color: var(--text); }
+.checks-rich span { font-size: 15px; color: var(--muted); }
+/* teste e primeiras creators lado a lado: o cartão creme é o que a Carol oferece de graça às 5 primeiras */
+.founders-card { background: var(--cream); color: var(--bg); border-radius: 20px; padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 18px; align-items: flex-start; --focus: var(--bg); }
+.founders-card h3 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 3.4vw, 44px); line-height: 1; }
+.founders-card h3 em { font-style: italic; color: var(--cream-italic); }
+.founders-card > p { font-size: 17px; line-height: 1.55; color: var(--ink-2); }
+.founders-list { list-style: none; margin: 0; padding: 0; align-self: stretch; display: flex; flex-direction: column; }
+.founders-list li { padding: 14px 0; border-top: 1px solid rgba(36, 19, 15, 0.2); display: flex; flex-direction: column; gap: 2px; }
+.founders-list li:last-child { border-bottom: 1px solid rgba(36, 19, 15, 0.2); }
+.founders-list b { font-family: var(--serif); font-weight: 400; font-size: 24px; line-height: 1.1; }
+.founders-list span { font-size: 15px; color: var(--ink-2); }
+.seats { font-size: 14px; font-weight: 600; }
+/* dúvidas: título à esquerda, respostas na coluna larga, como os resultados da Carol */
+.dark-sec > .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(32px, 5vw, 72px); align-items: start; }
+@media (min-width: 900px) {
+  .dark-sec > .faq-grid { grid-template-columns: 1fr 2fr; }
+  .faq-grid > .h2 { position: sticky; top: 110px; }
+}
+.faq { max-width: none; }
+/* ferramentas que vêm aí: cinco colunas no desktop, sobre a faixa creme */
+.nx-more-list.free { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+@media (min-width: 1000px) { .nx-more-list.free { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.cream .nx-more-list { border-top-color: rgba(36, 19, 15, 0.2); }
+.cream .nx-more-list a, .cream .nx-more-list .item { border-bottom-color: rgba(36, 19, 15, 0.2); }
+.cream .nx-more-list b { color: var(--bg); }
+.cream .nx-more-list span { color: var(--ink-2); }
+.cream .nx-more-list a:hover b { color: var(--cream-italic); }
+.free div.item { padding-right: 20px; }
+.cream .soon { color: var(--cream-eyebrow); border-color: rgba(36, 19, 15, 0.3); }
+.free div.item b { font-size: 26px; }
+.cream .free div.item > span:not(.soon) { color: var(--ink-2); }
