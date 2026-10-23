@@ -53,7 +53,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E6. Blocos e modelos
 
-- [ ] **DEV-060** Contrato de bloco: tipo, variações, campos (com limite de letras), placeholders, regras (obrigatório, máximo). Pronto quando: um registro central lista os blocos.
+- [x] **DEV-060** Contrato de bloco: tipo, variações, campos (com limite de letras), placeholders, regras (obrigatório, máximo). Pronto quando: um registro central lista os blocos.
 - [ ] **DEV-061** Bloco Capa (2 variações).
 - [ ] **DEV-062** Bloco Sobre mim (2 variações).
 - [ ] **DEV-063** Bloco Números (2 variações), escondido no modo iniciante.
