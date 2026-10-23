@@ -1,0 +1,25 @@
+---
+// Mídia kit do Portfólio Creator em 1 página A4 (rota de impressão); fora da busca. A marca d'água de teste
+// aparece por padrão; `?marca=0` a tira (uso futuro, só para a conta paga).
+import '../../styles/global.css';
+import '../../blocks/blocos.css';
+import SeoHead from '../../components/SeoHead.astro';
+import MidiaKit from '@app/midia-kit/MidiaKit';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Portfólio Creator: mídia kit"
+      description="Mídia kit em PDF."
+      alternates={{ pt: '/app/midia-kit/' }}
+      noindex
+      themeColor="#ffffff"
+    />
+  </head>
+  <body style="margin:0">
+    <MidiaKit client:only="react" />
+  </body>
+</html>

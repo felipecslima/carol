@@ -29,6 +29,9 @@ export function PainelRevisao({ alertas, aoIr }: { alertas: Alerta[]; aoIr: (blo
           </ul>
         </>
       )}
+      <a className="ed-botao-claro" href="/app/midia-kit/">
+        Ver mídia kit em PDF
+      </a>
       <button type="button" className="ed-primario" disabled>
         Publicar (em breve)
       </button>

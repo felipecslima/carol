@@ -119,9 +119,9 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E12. PDF do mídia kit
 
-- [ ] **DEV-150** Rota de impressão do mídia kit em 1 página A4 por modelo.
+- [x] **DEV-150** Rota de impressão do mídia kit em 1 página A4 por modelo. *Primeira versão em `/app/midia-kit/` (duas colunas, escala automática, PDF de 1 página pela impressão); precisa de aprovação visual e de um layout por modelo quando houver mais modelos.*
 - [ ] **DEV-151** Geração do PDF pelo Cloudflare Browser Rendering e armazenamento no Supabase Storage.
-- [ ] **DEV-152** Marca d'água "PORTFÓLIO CREATOR • TESTE" na conta grátis; selo no PDF pago.
+- [ ] **DEV-152** Marca d'água "PORTFÓLIO CREATOR • TESTE" na conta grátis; selo no PDF pago. *Marca d'água de teste já aparece na rota; falta o selo no PDF pago.*
 - [ ] **DEV-153** Regerar o PDF a cada publicação.
 
 ### E13. Pedidos, pagamento e Slack

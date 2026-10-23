@@ -1,0 +1,174 @@
+/* Mídia kit A4 (1 página). Na tela, a folha aparece centralizada; na impressão, ocupa a página inteira. */
+.mk {
+  min-height: 100dvh;
+  background: #e9e1d8;
+  padding: 16px;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+.mk-barra {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  width: 794px;
+  max-width: 100%;
+  justify-content: space-between;
+}
+.mk-barra a {
+  color: #24130f;
+  font-weight: 700;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.mk-barra button {
+  min-height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: #d42a5b;
+  color: #fff;
+  font:
+    800 16px 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+.mk :is(a, button):focus-visible {
+  outline: 3px solid #24130f;
+  outline-offset: 3px;
+}
+.mk-folha {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(36, 19, 15, 0.18);
+  flex: none;
+}
+.mk-conteudo {
+  transform-origin: top left;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas: 'capa capa' 'numeros publico' 'videos videos' 'sobre marcas' 'formatos formatos' 'contato contato';
+  align-content: start;
+  --respiro: 20px;
+}
+.mk-conteudo > .bl-capa {
+  grid-area: capa;
+}
+.mk-conteudo > .bl-numeros {
+  grid-area: numeros;
+}
+.mk-conteudo > .bl-publico {
+  grid-area: publico;
+}
+.mk-conteudo > .bl-videos {
+  grid-area: videos;
+}
+.mk-conteudo > .bl-sobre {
+  grid-area: sobre;
+}
+.mk-conteudo > .bl-marcas {
+  grid-area: marcas;
+}
+.mk-conteudo > .bl-formatos {
+  grid-area: formatos;
+}
+.mk-conteudo > .bl-contato {
+  grid-area: contato;
+}
+.mk-conteudo > .bl {
+  width: 100%;
+  padding-inline: 32px;
+}
+.mk-conteudo > .bl-contato {
+  margin-inline: 12px;
+  width: auto;
+}
+.mk-conteudo .bl-cards-numero {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+}
+.mk-marca {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font:
+    900 56px 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  color: rgba(36, 19, 15, 0.1);
+  transform: rotate(-30deg);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+@media (max-width: 860px) {
+  .mk-folha {
+    zoom: 0.45;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  html,
+  body {
+    margin: 0;
+    background: #fff;
+  }
+  .mk {
+    padding: 0;
+    background: #fff;
+    display: block;
+  }
+  .mk-barra {
+    display: none;
+  }
+  .mk-folha {
+    width: 210mm !important;
+    height: 297mm !important;
+    box-shadow: none;
+    zoom: 1;
+  }
+  .mk-folha,
+  .mk-conteudo {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* versão compacta das seções para caber em 1 página */
+.mk-conteudo .bl-capa {
+  gap: 12px;
+}
+.mk-conteudo .bl-capa-foto {
+  width: 120px;
+  border-width: 6px;
+  box-shadow: 0 0 0 4px var(--destaque);
+}
+.mk-conteudo .bl-titulo-grande {
+  font-size: 36px;
+}
+.mk-conteudo .bl-video {
+  width: 120px;
+}
+.mk-conteudo .bl-sobre-foto {
+  max-height: 200px;
+  aspect-ratio: 1;
+}
+.mk-conteudo .bl-texto {
+  font-size: 15px;
+}
+.mk-conteudo .bl-titulo {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.mk-conteudo .bl-numero {
+  font-size: 28px;
+  white-space: nowrap;
+}

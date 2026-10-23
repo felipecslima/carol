@@ -1,15 +1,12 @@
 // Editor do Portfólio Creator (mobile primeiro): a creator edita em cima do resultado final. Primeiro toque
 // seleciona o bloco, segundo abre a edição; controles embaixo, onde o polegar alcança; um nível de gaveta só.
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
 import { REGISTRO } from '@blocks/registro';
-import { blocosVisiveis, type Projeto } from '@lib/projeto';
-import { variaveisDeTema } from '@themes/aplicar';
-import { gerarPaleta } from '@themes/paleta';
-import { NUVEM } from '@themes/modelos/nuvem';
-import type { Fontes } from '@themes/tokens';
+import { blocosVisiveis } from '@lib/projeto';
+import { temaDoProjeto } from './tema';
 import { CamposDoBloco } from './CamposDoBloco';
 import { criarEditor } from './estado';
 import { progresso } from '@lib/progresso';
@@ -24,17 +21,6 @@ import { carregarRascunho, salvarRascunho } from './persistencia';
 import './editor.css';
 
 type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | null;
-
-function temaDoProjeto(p: Projeto): CSSProperties {
-  const origem = p.corPropria ?? NUVEM.paletas[p.paleta]?.origem ?? NUVEM.paletas[0].origem;
-  const paleta = gerarPaleta(origem, NUVEM.esquema);
-  const estilo = {
-    ...NUVEM.estilo,
-    fontes: p.fontes as Fontes,
-    cantos: p.cantos,
-  };
-  return variaveisDeTema(paleta, estilo, p.clima) as CSSProperties;
-}
 
 export default function Editor() {
   const editor = useMemo(() => criarEditor(carregarRascunho() ?? PROJETO_DE_EXEMPLO, REGISTRO), []);
