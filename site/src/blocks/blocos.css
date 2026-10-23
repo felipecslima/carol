@@ -430,3 +430,14 @@
   background: var(--fundo);
   color: var(--texto);
 }
+
+/* selo "informado pela creator" dos números e do público */
+.bl-selo {
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+.bl-selo::before {
+  content: '✓ ';
+}

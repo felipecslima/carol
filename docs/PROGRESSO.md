@@ -7,7 +7,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **Fase:** E1 (fundação) em andamento.
 - **Tarefa atual:** E7 e E8 quase completas: assistente (`/app/novo/`) → editor (`/app/editor/`) funcionam de ponta a ponta no celular, salvando no aparelho. Faltam DEV-089 (outros modelos/formato), DEV-102 (pedir vídeos e números no assistente). DEV-069 aguarda aprovação visual.
 - **Modo de trabalho:** o usuário autorizou seguir e commitar na `dev` sem parar, até precisar dele. Nada vai para a `main` nem para produção.
-- **Próximo passo:** E10 (formulário de números, DEV-130/131), DEV-140 (revisão final), DEV-150 (rota de impressão do mídia kit). Dependem de acesso: `DEV-006` (`wrangler login`), E2 (projeto Supabase novo), upload de mídia (E9, precisa do Cloudinary no servidor).
+- **Próximo passo:** DEV-140 (revisão final com alertas), DEV-150 (rota de impressão do mídia kit). Dependem de acesso: `DEV-006` (`wrangler login`), E2 (projeto Supabase novo), upload de mídia (E9, Cloudinary no servidor). Número de exemplo (`exemplo: true`) deve bloquear a publicação (entra na DEV-140).
 - **Git:** branch `dev`; 3 commits `Setup:` e DEV-001 a DEV-005 commitadas.
 - **OCR:** código removido por ora (pedido do usuário); continua no commit `6ecf8fc`. A spec `docs/04-ocr-prints.md` fica.
 - **Atenção (privacidade):** o `SeoHead` carrega a Amplitude com Session Replay em toda página, inclusive `/app`. Antes de haver login e dados de creators, tirar a Amplitude de `/app` (ou pedir consentimento).

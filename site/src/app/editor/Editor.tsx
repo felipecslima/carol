@@ -13,13 +13,15 @@ import type { Fontes } from '@themes/tokens';
 import { CamposDoBloco } from './CamposDoBloco';
 import { criarEditor } from './estado';
 import { progresso } from '@lib/progresso';
+import { aplicarNumeros } from '@lib/numeros';
 import { Gaveta } from './Gaveta';
+import { PainelNumeros } from './PainelNumeros';
 import { Camadas, Desfazer, Esconder, Lapis, Olho, Mais, Paleta, Refazer, Subir, Descer } from './icones';
 import { PainelAdicionar, PainelEstilo, PainelSecoes } from './Paineis';
 import { carregarRascunho, salvarRascunho } from './persistencia';
 import './editor.css';
 
-type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | null;
+type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | null;
 
 function temaDoProjeto(p: Projeto): CSSProperties {
   const origem = p.corPropria ?? NUVEM.paletas[p.paleta]?.origem ?? NUVEM.paletas[0].origem;
@@ -228,10 +230,28 @@ export default function Editor() {
       >
         {bloco && definicao && (
           <CamposDoBloco
+            aoInformarNumeros={() => setPainel('numeros')}
             definicao={definicao}
             bloco={bloco}
             aoMudarDados={(dados) => e.atualizarDados(bloco.id, dados)}
             aoTrocarVariacao={(v) => e.trocarVariacao(bloco.id, v)}
+          />
+        )}
+      </Gaveta>
+      <Gaveta
+        aberta={painel === 'numeros'}
+        aoFechar={() => setPainel(null)}
+        titulo="Meus números"
+        descricao="Só você sabe esses números. Eles preenchem Números e Público na página."
+      >
+        {painel === 'numeros' && (
+          <PainelNumeros
+            inicial={projeto.numeros}
+            aoSalvar={(n) => {
+              e.substituir(aplicarNumeros(projeto, n));
+              setPainel(null);
+              setAviso('Números aplicados.');
+            }}
           />
         )}
       </Gaveta>

@@ -104,8 +104,8 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E10. Números informados pela creator
 
-- [ ] **DEV-130** Formulário de números (seguidores, visualizações, contas alcançadas, interações, público, views por reel) com período e guia visual de onde achar cada um no Insights. Grava no mesmo formato que a leitura de prints vai usar (`04-ocr-prints.md`, seção 3.2). Pronto quando: os números aparecem nos blocos Números e Público.
-- [ ] **DEV-131** Selo "informado pela creator" e validações simples (percentuais que somam perto de 100, valores não negativos).
+- [x] **DEV-130** Formulário de números (seguidores, visualizações, contas alcançadas, interações, público, views por reel) com período e guia visual de onde achar cada um no Insights. Grava no mesmo formato que a leitura de prints vai usar (`04-ocr-prints.md`, seção 3.2). Pronto quando: os números aparecem nos blocos Números e Público.
+- [x] **DEV-131** Selo "informado pela creator" e validações simples (percentuais que somam perto de 100, valores não negativos).
 
 ### E11. Publicação e páginas públicas
 

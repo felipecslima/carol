@@ -31,6 +31,7 @@ export function Publico({ variacao, dados, modo }: PropsDoBloco<DadosDePublico, 
           ))}
         </ul>
       )}
+      {dados.selo && <p className="bl-selo">{dados.selo}</p>}
     </section>
   );
 }

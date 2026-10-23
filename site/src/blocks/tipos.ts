@@ -49,6 +49,8 @@ export interface DadosDoSobre {
 }
 export interface DadosDeNumeros {
   itens?: ItemDeNumero[];
+  /** "Informado pela creator · 20/09 a 19/10": aparece quando os números vêm da creator */
+  selo?: string;
 }
 export interface DadosDeVideos {
   titulo?: string;
@@ -61,6 +63,7 @@ export interface DadosDeMarcas {
 export interface DadosDePublico {
   titulo?: string;
   itens?: ItemDeNumero[];
+  selo?: string;
 }
 export interface DadosDeFormatos {
   titulo?: string;

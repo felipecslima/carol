@@ -2,6 +2,7 @@
 // ou formato muda só a pele; o conteúdo vai junto, e o que não cabe vai para `guardados`.
 import { z } from 'zod';
 import { schemaDosDados, type Registro } from './bloco';
+import { numerosSchema } from './numeros';
 
 export const MAXIMO_DE_BLOCOS = 15;
 
@@ -27,6 +28,8 @@ export const projetoSchema = z.object({
   cantos: z.enum(['retos', 'suaves', 'redondos']),
   clima: z.enum(['claro', 'escuro']).default('claro'),
   modoIniciante: z.boolean().default(false),
+  /** números informados pela creator (formato do docs/04-ocr-prints.md, 3.2); alimentam Números e Público */
+  numeros: numerosSchema.optional(),
   blocos: z.array(bloco).max(MAXIMO_DE_BLOCOS, `No máximo ${MAXIMO_DE_BLOCOS} blocos`),
   guardados: z.array(bloco).default([]),
 });

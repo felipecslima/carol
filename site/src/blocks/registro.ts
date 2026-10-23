@@ -53,7 +53,10 @@ export const BLOCOS = {
       { id: 'barras', nome: 'Barras comparando' },
     ],
     // os números são sempre da creator: nenhum exemplo pode ir para o ar (regra 1 do guia)
-    campos: [{ id: 'itens', rotulo: 'Números', tipo: 'lista', itens: itemDeNumero, bloqueiaPublicacao: true }],
+    campos: [
+      { id: 'itens', rotulo: 'Números', tipo: 'lista', itens: itemDeNumero, bloqueiaPublicacao: true },
+      { id: 'selo', rotulo: 'Selo', tipo: 'etiqueta', maximo: 60 },
+    ],
   },
   videos: {
     tipo: 'videos',
@@ -110,6 +113,7 @@ export const BLOCOS = {
     campos: [
       titulo,
       { id: 'itens', rotulo: 'Dados do público', tipo: 'lista', itens: itemDeNumero, bloqueiaPublicacao: true },
+      { id: 'selo', rotulo: 'Selo', tipo: 'etiqueta', maximo: 60 },
     ],
   },
   formatos: {

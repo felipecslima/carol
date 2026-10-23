@@ -525,3 +525,41 @@
   outline: 3px solid #fff;
   outline-offset: 2px;
 }
+
+.ed-duas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.ed-com-sufixo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ed-com-sufixo span {
+  font-weight: 700;
+  color: var(--ed-suave);
+}
+.ed-item--cidade {
+  grid-template-columns: 1fr 5rem auto;
+}
+.ed-form input[type='date'] {
+  font: inherit;
+  font-size: 16px;
+  padding: 12px 14px;
+  border: 2px solid var(--ed-borda);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ed-texto);
+  width: 100%;
+  min-height: 48px;
+}
+.ed-primario {
+  min-height: 52px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ed-rosa);
+  color: #fff;
+  font-weight: 800;
+  font-size: 17px;
+}

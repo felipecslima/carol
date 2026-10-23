@@ -19,6 +19,7 @@ export function Numeros({ variacao, dados, modo }: PropsDoBloco<DadosDeNumeros, 
             </li>
           ))}
         </ul>
+        {dados.selo && <p className="bl-selo">{dados.selo}</p>}
       </section>
     );
   }
@@ -33,6 +34,7 @@ export function Numeros({ variacao, dados, modo }: PropsDoBloco<DadosDeNumeros, 
           </li>
         ))}
       </ul>
+      {dados.selo && <p className="bl-selo">{dados.selo}</p>}
     </section>
   );
 }

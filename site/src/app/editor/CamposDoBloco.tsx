@@ -128,14 +128,21 @@ export function CamposDoBloco({
   bloco,
   aoMudarDados,
   aoTrocarVariacao,
+  aoInformarNumeros,
 }: {
   definicao: DefinicaoDeBloco;
   bloco: Bloco;
   aoMudarDados: (dados: Dados) => void;
   aoTrocarVariacao: (variacao: string) => void;
+  aoInformarNumeros?: () => void;
 }) {
   return (
     <div className="ed-form">
+      {(definicao.tipo === 'numeros' || definicao.tipo === 'publico') && aoInformarNumeros && (
+        <button type="button" className="ed-primario" onClick={aoInformarNumeros}>
+          Informar meus números do Instagram
+        </button>
+      )}
       {definicao.variacoes.length > 1 && (
         <fieldset className="ed-variacoes">
           <legend>Layout</legend>
