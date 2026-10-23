@@ -1,0 +1,24 @@
+---
+// Editor do Portfólio Creator: ilha React só no navegador (precisa de toque, teclado e localStorage).
+import '../../styles/global.css';
+import '../../blocks/blocos.css';
+import SeoHead from '../../components/SeoHead.astro';
+import Editor from '@app/editor/Editor';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Portfólio Creator: editor"
+      description="Editor do Portfólio Creator."
+      alternates={{ pt: '/app/editor/' }}
+      noindex
+      themeColor="#FBF4EC"
+    />
+  </head>
+  <body style="margin:0">
+    <Editor client:only="react" />
+  </body>
+</html>

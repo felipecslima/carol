@@ -6,6 +6,13 @@ import type { DefinicaoDeBloco, Registro } from '@lib/bloco';
 
 const titulo = { id: 'titulo', rotulo: 'Título', tipo: 'titulo', maximo: 60 } as const;
 
+// campos de cada item das listas (cada item pode vir marcado `exemplo`, ver blocks/tipos.ts)
+const itemDeNumero = [
+  { id: 'valor', rotulo: 'Número', tipo: 'numero', maximo: 12, obrigatorio: true },
+  { id: 'rotulo', rotulo: 'O que é', tipo: 'etiqueta', maximo: 40, obrigatorio: true },
+  { id: 'proporcao', rotulo: 'Tamanho da barra (0 a 100)', tipo: 'proporcao' },
+] as const;
+
 export const BLOCOS = {
   capa: {
     tipo: 'capa',
@@ -46,7 +53,7 @@ export const BLOCOS = {
       { id: 'barras', nome: 'Barras comparando' },
     ],
     // os números são sempre da creator: nenhum exemplo pode ir para o ar (regra 1 do guia)
-    campos: [{ id: 'itens', rotulo: 'Números', tipo: 'lista', bloqueiaPublicacao: true }],
+    campos: [{ id: 'itens', rotulo: 'Números', tipo: 'lista', itens: itemDeNumero, bloqueiaPublicacao: true }],
   },
   videos: {
     tipo: 'videos',
@@ -55,7 +62,20 @@ export const BLOCOS = {
       { id: 'carrossel', nome: 'Carrossel' },
       { id: 'grade', nome: 'Grade' },
     ],
-    campos: [titulo, { id: 'itens', rotulo: 'Vídeos', tipo: 'lista' }],
+    campos: [
+      titulo,
+      {
+        id: 'itens',
+        rotulo: 'Vídeos',
+        tipo: 'lista',
+        itens: [
+          { id: 'titulo', rotulo: 'Título do vídeo', tipo: 'titulo', maximo: 60, obrigatorio: true },
+          { id: 'visualizacoes', rotulo: 'Visualizações', tipo: 'etiqueta', maximo: 12 },
+          { id: 'marca', rotulo: 'Marca parceira', tipo: 'etiqueta', maximo: 40 },
+          { id: 'capa', rotulo: 'Capa', tipo: 'imagem' },
+        ],
+      },
+    ],
   },
   marcas: {
     tipo: 'marcas',
@@ -65,7 +85,19 @@ export const BLOCOS = {
       { id: 'logos', nome: 'Logos' },
       { id: 'lista', nome: 'Nomes em lista' },
     ],
-    campos: [titulo, { id: 'itens', rotulo: 'Marcas', tipo: 'lista' }],
+    campos: [
+      titulo,
+      {
+        id: 'itens',
+        rotulo: 'Marcas',
+        tipo: 'lista',
+        itens: [
+          { id: 'nome', rotulo: 'Nome da marca', tipo: 'titulo', maximo: 40, obrigatorio: true },
+          { id: 'resultado', rotulo: 'Resultado da publi', tipo: 'etiqueta', maximo: 60 },
+          { id: 'logo', rotulo: 'Logo', tipo: 'imagem' },
+        ],
+      },
+    ],
   },
   publico: {
     tipo: 'publico',
@@ -75,7 +107,10 @@ export const BLOCOS = {
       { id: 'idade', nome: 'Idade' },
       { id: 'cidades', nome: 'Cidades' },
     ],
-    campos: [titulo, { id: 'itens', rotulo: 'Dados do público', tipo: 'lista', bloqueiaPublicacao: true }],
+    campos: [
+      titulo,
+      { id: 'itens', rotulo: 'Dados do público', tipo: 'lista', itens: itemDeNumero, bloqueiaPublicacao: true },
+    ],
   },
   formatos: {
     tipo: 'formatos',
@@ -84,7 +119,19 @@ export const BLOCOS = {
       { id: 'cards', nome: 'Cards' },
       { id: 'tabela', nome: 'Tabela' },
     ],
-    campos: [titulo, { id: 'itens', rotulo: 'Formatos', tipo: 'lista' }],
+    campos: [
+      titulo,
+      {
+        id: 'itens',
+        rotulo: 'Formatos',
+        tipo: 'lista',
+        itens: [
+          { id: 'titulo', rotulo: 'Nome do formato', tipo: 'titulo', maximo: 40, obrigatorio: true },
+          { id: 'descricao', rotulo: 'Descrição', tipo: 'texto', maximo: 100 },
+          { id: 'preco', rotulo: 'Preço (só se você quiser mostrar)', tipo: 'etiqueta', maximo: 30 },
+        ],
+      },
+    ],
   },
   contato: {
     tipo: 'contato',

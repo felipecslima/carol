@@ -25,6 +25,7 @@ export const projetoSchema = z.object({
     .optional(),
   fontes: z.string().min(1),
   cantos: z.enum(['retos', 'suaves', 'redondos']),
+  clima: z.enum(['claro', 'escuro']).default('claro'),
   modoIniciante: z.boolean().default(false),
   blocos: z.array(bloco).max(MAXIMO_DE_BLOCOS, `No máximo ${MAXIMO_DE_BLOCOS} blocos`),
   guardados: z.array(bloco).default([]),

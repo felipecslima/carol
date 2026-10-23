@@ -73,13 +73,13 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 - [ ] **DEV-080** Teste do Puck (1 a 2 dias) com decisão registrada.
 - [x] **DEV-081** Estado do editor (Zustand) com o JSON do projeto e histórico de desfazer/refazer (zundo).
-- [ ] **DEV-082** Salvar sozinho com debounce, indicador "Salvo ✓" e fila offline que reenvia ao voltar a internet.
-- [ ] **DEV-083** Seleção: primeiro toque no bloco, segundo no elemento; barra flutuante Editar, ↑, ↓, Esconder.
-- [ ] **DEV-084** Gaveta de edição (Vaul) com campo focado, contador de letras, dica do bloco, teclado sem cobrir o campo.
-- [ ] **DEV-085** Painel Seções: visíveis com ↑↓, Guardados com Devolver, Capa e Contato sem opção de remover.
-- [ ] **DEV-086** Adicionar bloco: biblioteca com miniaturas no estilo do modelo atual; máximo de 15 blocos.
-- [ ] **DEV-087** Trocar variação de um bloco.
-- [ ] **DEV-088** Aba Estilo: modelo, paleta, fontes, cantos; troca instantânea com aviso "Desfazer".
+- [ ] **DEV-082** Salvar sozinho com debounce, indicador "Salvo ✓" e fila offline que reenvia ao voltar a internet. *Feito só local: salva no aparelho com 600 ms de espera e mostra "Salvo ✓". Falta a fila offline e o envio ao servidor (depende da E2).*
+- [x] **DEV-083** Seleção: primeiro toque no bloco, segundo no elemento; barra flutuante Editar, ↑, ↓, Esconder. *Feito: primeiro toque seleciona, segundo abre a edição, barra com Editar/↑/↓/Esconder. Falta: seleção por elemento dentro do bloco.*
+- [x] **DEV-084** Gaveta de edição (Vaul) com campo focado, contador de letras, dica do bloco, teclado sem cobrir o campo. *Feito (Vaul, contador de letras, rola o bloco para cima da gaveta). Falta: testar com teclado real no celular.*
+- [x] **DEV-085** Painel Seções: visíveis com ↑↓, Guardados com Devolver, Capa e Contato sem opção de remover.
+- [x] **DEV-086** Adicionar bloco: biblioteca com miniaturas no estilo do modelo atual; máximo de 15 blocos. *Feito com lista de nomes e variações; faltam as miniaturas no estilo do modelo.*
+- [x] **DEV-087** Trocar variação de um bloco.
+- [x] **DEV-088** Aba Estilo: modelo, paleta, fontes, cantos; troca instantânea com aviso "Desfazer". *Feito: cor (3 paletas e cor própria), cantos, fonte, clima, aviso com Desfazer. Falta: escolher modelo (só existe o Nuvem).*
 - [ ] **DEV-089** Trocar modelo ou formato (site, mídia kit, os dois) sem perder conteúdo; o que não cabe vai para Guardados.
 - [ ] **DEV-090** Placeholders com etiqueta "Exemplo · toque para trocar"; progresso "X de Y itens já são seus".
 - [ ] **DEV-091** Modo Ver (sem interface) e modo iniciante.

@@ -5,15 +5,17 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Onde parei
 
 - **Fase:** E1 (fundação) em andamento.
-- **Tarefa atual:** E6 em andamento: DEV-060 a 068 prontas e DEV-069 aguardando aprovação visual. Antes: DEV-001 a 005 e 050 a 053 commitadas.
+- **Tarefa atual:** E7 (editor) em andamento: DEV-081, 083 a 088 prontas; 082 só local. Falta 089 (trocar modelo/formato) e 090 (progresso). DEV-069 aguarda aprovação visual.
 - **Modo de trabalho:** o usuário autorizou seguir e commitar na `dev` sem parar, até precisar dele. Nada vai para a `main` nem para produção.
-- **Próximo passo:** DEV-074 (teste comparando editor e servidor, já há a base em `blocks/blocos.test.tsx`), depois E7 (editor: DEV-081 em diante, sem Supabase). `DEV-006` segue bloqueada até o usuário fazer `wrangler login`; E2 até haver projeto Supabase novo.
+- **Próximo passo:** DEV-090 (progresso "X de Y itens já são seus"), DEV-089, depois E8 (mídias, precisa de Cloudinary assinado no servidor) e o fluxo de entrada (quiz, DEV-033). `DEV-006` segue bloqueada até o usuário fazer `wrangler login`; E2 até haver projeto Supabase novo.
 - **Git:** branch `dev`; 3 commits `Setup:` e DEV-001 a DEV-005 commitadas.
 - **OCR:** código removido por ora (pedido do usuário); continua no commit `6ecf8fc`. A spec `docs/04-ocr-prints.md` fica.
 - **Atenção (privacidade):** o `SeoHead` carrega a Amplitude com Session Replay em toda página, inclusive `/app`. Antes de haver login e dados de creators, tirar a Amplitude de `/app` (ou pedir consentimento).
 - **Bloqueios:** preços dos planos, limites do Cloudinary e CNPJ/Termos ainda a definir (não bloqueiam a E1 a E7).
 
 ## Esperando aprovação
+
+- **Editor (`/app/editor/`, funciona em `npm run dev` e no build):** toque no bloco seleciona, toque de novo edita; gavetas de Seções, Adicionar e Estilo; desfazer/refazer; salvo no aparelho. Vale abrir no celular e testar. Pendências visuais conhecidas: miniaturas na biblioteca de blocos, envio de foto/vídeo (hoje só endereço), `viewport-fit=cover` para as áreas seguras do iPhone (o `SeoHead` do site tem o viewport fixo).
 
 - **DEV-069 (visual do modelo Nuvem):** os 8 blocos (2 variações cada) e o modelo Nuvem com 3 paletas (lavanda, pêssego, menta) renderizam em `/app/blocos/?paleta=0&modo=claro` (só no `npm run dev`). Referência: `prototipo/ModeloNuvem` do handoff. **O usuário precisa olhar e aprovar** antes dos modelos Clean, Pop Color, Casual e Glow Rosé (DEV-070 a 073). Pontos a avaliar: paleta Pêssego sai com botão marrom (a regra Fidelity escurece o tom 40); capa e vídeos sem foto mostram "Sua foto"/"Seu vídeo"; as variações escolhidas são as duas primeiras de cada bloco no `docs/02-construtor.md`.
 

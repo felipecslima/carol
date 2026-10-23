@@ -11,6 +11,7 @@ export const PROJETO_DE_EXEMPLO: Projeto = {
   paleta: 0,
   fontes: 'par-nuvem',
   cantos: 'redondos',
+  clima: 'claro',
   modoIniciante: false,
   guardados: [],
   blocos: [
