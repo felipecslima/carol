@@ -281,6 +281,12 @@ Cada uma tem um `README.md` com a regra. Aliases do TypeScript (`tsconfig.json`,
 
 Dependência só para dentro: `app → blocks → themes/lib`; `server → lib`. Segredos nunca chegam a `app/` nem a `blocks/`.
 
+### Qualidade de código (`npm run check`)
+Roda, em ordem: `astro check` (TypeScript estrito, inclusive `.astro`), ESLint, Prettier (só confere) e Vitest. Individuais: `npm run typecheck`, `lint`, `format:check`, `format` (reescreve), `test`; e2e à parte com `npm run test:e2e` (precisa do `npm run build` antes).
+- **Escopo:** lint e Prettier valem só para o código do produto (`src/app`, `blocks`, `themes`, `lib`, `server`, `pages/app`, `pages/api`, `e2e` e configs). O site da Carol não é reformatado nem lintado (ver `eslint.config.js` e `.prettierignore`); o TypeScript estrito vale para tudo e já passa.
+- **TypeScript 6, não 7:** `typescript-eslint` e `astro check` ainda não suportam o 7. Voltar ao 7 quando suportarem.
+- **Sem `eslint-plugin-jsx-a11y`:** ainda não suporta o ESLint 10; acessibilidade fica nas revisões de design e no Playwright.
+
 ### Variáveis de ambiente e segredos
 - **Onde estão declaradas:** `env.schema` em `astro.config.mjs`. Públicas (`PUBLIC_*`, vão para o navegador): `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`. Segredos (só servidor): `SUPABASE_SERVICE_ROLE_KEY`, `CLOUDINARY_URL`, `SLACK_WEBHOOK_URL`, `WHATSAPP_TOKEN`, `AI_API_KEY`. Todas opcionais até as contas existirem.
 - **Como ler:** `import { X } from 'astro:env/server'` (segredos, só em `src/server/` e rotas SSR) ou `astro:env/client`. O Astro recusa importar segredo no código do navegador. `PUBLIC_CLOUDINARY_CLOUD_NAME` continua em `import.meta.env`, como antes.

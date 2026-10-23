@@ -5,7 +5,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Onde parei
 
 - **Fase:** E1 (fundação) em andamento.
-- **Tarefa atual:** `DEV-004` concluída; próxima `DEV-005`. Commits: DEV-001 `ab7d404`, DEV-002 `a842346`, DEV-003 `cfdcd2a`.
+- **Tarefa atual:** `DEV-005` concluída; próxima `DEV-006` (precisa de `wrangler login`). Commits: DEV-004 `6a2782d`, DEV-001 `ab7d404`, DEV-002 `a842346`, DEV-003 `cfdcd2a`.
 - **Modo de trabalho:** o usuário autorizou seguir e commitar na `dev` sem parar, até precisar dele. Nada vai para a `main` nem para produção.
 - **Próximo passo:** depois do ok e do commit da DEV-002, `DEV-005` (TypeScript estrito, ESLint, Prettier), depois `DEV-006` (precisa de `wrangler login`).
 - **Git:** branch `dev`; commits `Setup:` já feitos (página de vendas, docs, ferramentas).

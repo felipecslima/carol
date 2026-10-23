@@ -1,0 +1,23 @@
+dist
+.astro
+node_modules
+.wrangler
+# o site da Carol não é reformatado; só o código do produto passa pelo Prettier (npm run format)
+src/components
+src/data
+src/i18n
+src/scripts
+src/styles
+src/views
+src/pages/*.astro
+src/pages/*.ts
+src/pages/en
+src/pages/es
+src/pages/portfolio-creator
+public
+scripts
+*.md
+package-lock.json
+.impeccable
+astro.config.mjs
+wrangler.jsonc

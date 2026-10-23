@@ -10,12 +10,13 @@ interface Env {
 }
 
 export default {
-  async fetch(request: Request, env: Env, context: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: Env, context: Parameters<typeof astro.fetch>[2]): Promise<Response> {
     const redirect = canonicalRedirect(request);
     if (redirect) return redirect;
 
     const response = await astro.fetch(request, env, context);
-    const isPage = (request.method === 'GET' || request.method === 'HEAD') && !new URL(request.url).pathname.startsWith('/api/');
+    const isPage =
+      (request.method === 'GET' || request.method === 'HEAD') && !new URL(request.url).pathname.startsWith('/api/');
     return response.status === 404 && isPage ? env.ASSETS.fetch(request) : response;
   },
 };

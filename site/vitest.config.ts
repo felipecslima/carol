@@ -6,7 +6,13 @@ const src = (pasta: string) => fileURLToPath(new URL(`./src/${pasta}`, import.me
 
 export default defineConfig({
   resolve: {
-    alias: { '@app': src('app'), '@blocks': src('blocks'), '@themes': src('themes'), '@lib': src('lib'), '@server': src('server') },
+    alias: {
+      '@app': src('app'),
+      '@blocks': src('blocks'),
+      '@themes': src('themes'),
+      '@lib': src('lib'),
+      '@server': src('server'),
+    },
   },
   test: { include: ['src/**/*.test.ts'], passWithNoTests: true },
 });

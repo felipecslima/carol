@@ -7,7 +7,11 @@ const SEGREDOS = ['SUPABASE_SERVICE_ROLE_KEY', 'CLOUDINARY_URL', 'SLACK_WEBHOOK_
 
 function arquivos(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
-    e.isDirectory() ? arquivos(join(dir, e.name)) : /\.(html|js|css|json|txt|xml)$/.test(e.name) ? [join(dir, e.name)] : [],
+    e.isDirectory()
+      ? arquivos(join(dir, e.name))
+      : /\.(html|js|css|json|txt|xml)$/.test(e.name)
+        ? [join(dir, e.name)]
+        : [],
   );
 }
 
