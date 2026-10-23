@@ -266,6 +266,21 @@ Há um evento próprio, `Email Copied`, disparado pelo `main.ts` depois que a c�
 - **Testar local sem publicar:** `npm run build` e `npx wrangler dev --config dist/server/wrangler.json`.
 - **Atenção no deploy:** a pasta servida mudou de `dist/` para `dist/client/` e o Worker é gerado em `dist/server/`. Antes de publicar, conferir no painel do Cloudflare (Builds) o comando de build e se o deploy usa o `wrangler.json` gerado (`wrangler deploy` lê `.wrangler/deploy/config.json` e já aponta para ele).
 
+### Pastas do produto (Portfólio Creator)
+Cada uma tem um `README.md` com a regra. Aliases do TypeScript (`tsconfig.json`, também no Vitest): `@app/*`, `@blocks/*`, `@themes/*`, `@lib/*`, `@server/*`.
+
+| Pasta | Responsabilidade | Pode importar |
+|---|---|---|
+| `src/app/` | ilha React da creator em `/app` (área, editor, assistente) | `blocks`, `themes`, `lib` |
+| `src/blocks/` | componentes dos blocos; **uma renderização só**, no editor e na página publicada | `themes`, `lib` |
+| `src/themes/` | modelos (fonte, cantos, respiro) e paletas como tokens | nada do produto |
+| `src/lib/` | tipos, schema Zod do projeto, regras de acesso | nada de `app`, `blocks`, `server` |
+| `src/server/` | só no Worker: Supabase (service role), Slack, WhatsApp, IA, PDF, redirects | `lib` |
+| `src/ocr/` | reservada para a leitura de prints (depois da v1) | — |
+| `../supabase/migrations/` | SQL versionado (na raiz do repositório) | — |
+
+Dependência só para dentro: `app → blocks → themes/lib`; `server → lib`. Segredos nunca chegam a `app/` nem a `blocks/`.
+
 ### Variáveis de ambiente e segredos
 - **Onde estão declaradas:** `env.schema` em `astro.config.mjs`. Públicas (`PUBLIC_*`, vão para o navegador): `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`. Segredos (só servidor): `SUPABASE_SERVICE_ROLE_KEY`, `CLOUDINARY_URL`, `SLACK_WEBHOOK_URL`, `WHATSAPP_TOKEN`, `AI_API_KEY`. Todas opcionais até as contas existirem.
 - **Como ler:** `import { X } from 'astro:env/server'` (segredos, só em `src/server/` e rotas SSR) ou `astro:env/client`. O Astro recusa importar segredo no código do navegador. `PUBLIC_CLOUDINARY_CLOUD_NAME` continua em `import.meta.env`, como antes.

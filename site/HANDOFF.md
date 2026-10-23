@@ -132,9 +132,11 @@ src/
   components/       ← SeoHead, MediaCard, Lightbox, LangSwitch, SiteFooter, Icons
   scripts/          ← main (faixa, nav, filtros, barras, copiar, CTA fixo), lightbox, menu, niche
   styles/global.css ← todo o sistema visual
+  app/ blocks/ themes/ lib/ server/ ocr/  ← Portfólio Creator (produto); responsabilidades e regras em ARQUITETURA.md, "Pastas do produto"
 scripts/            ← cloudinary-upload, media-kit-pdf, og-image
 public/             ← PDFs, og-*.jpg, fontes, ícones, _headers, robots.txt
-astro.config.mjs    ← site absoluto, CSS embutido, 404 por idioma
+astro.config.mjs    ← site absoluto, CSS embutido, 404 por idioma, adapter do Cloudflare, env.schema
+../supabase/migrations/ ← SQL versionado do produto (ainda vazia)
 ```
 
 **Regra de arquitetura: o texto mora ao lado do dado.** Títulos de vídeos, nichos e formatos ficam traduzidos dentro de `src/data/`. Textos de interface ficam em `src/i18n/ui.ts`. As views não guardam texto solto, e os números chegam formatados no idioma por `num`, `numLong` e `pct`.

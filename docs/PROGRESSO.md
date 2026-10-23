@@ -5,15 +5,16 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Onde parei
 
 - **Fase:** E1 (fundação) em andamento.
-- **Tarefa atual:** `DEV-003` pronta, esperando aprovação. DEV-001 e DEV-002 commitadas (`ab7d404`, `a842346`).
-- **Próximo passo:** depois do ok e do commit da DEV-002, plano da `DEV-004` (estrutura de pastas).
+- **Tarefa atual:** `DEV-004` concluída; próxima `DEV-005`. Commits: DEV-001 `ab7d404`, DEV-002 `a842346`, DEV-003 `cfdcd2a`.
+- **Modo de trabalho:** o usuário autorizou seguir e commitar na `dev` sem parar, até precisar dele. Nada vai para a `main` nem para produção.
+- **Próximo passo:** depois do ok e do commit da DEV-002, `DEV-005` (TypeScript estrito, ESLint, Prettier), depois `DEV-006` (precisa de `wrangler login`).
 - **Git:** branch `dev`; commits `Setup:` já feitos (página de vendas, docs, ferramentas).
 - **OCR:** código removido por ora (pedido do usuário); continua no commit `6ecf8fc`. A spec `docs/04-ocr-prints.md` fica.
 - **Bloqueios:** preços dos planos, limites do Cloudinary e CNPJ/Termos ainda a definir (não bloqueiam a E1 a E7).
 
 ## Esperando aprovação
 
-- **DEV-003:** `env.schema` no `astro.config.mjs` (2 públicas, 5 segredos, todas opcionais), `.env.example`, `.dev.vars.example`, `.gitignore` para `.env.*` e `.dev.vars` (mantendo `.env.example` e `.env.production`), `/api/ping` mostra `true`/`false` dos segredos só em dev, `e2e/segredos.spec.ts` (nenhum nome de segredo no build do navegador) e seção no `ARQUITETURA.md`. Testado no dev server com um segredo falso. Nenhuma chave real criada nem enviada ao Cloudflare.
+Nada no momento.
 
 ## Diário
 
