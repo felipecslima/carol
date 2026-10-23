@@ -3,6 +3,7 @@
 import { useId, useState } from 'react';
 import type { Campo } from '@lib/bloco';
 import { Lixeira } from './icones';
+import { listarMidias, registrarMidia } from './midias';
 import { enviarArquivo, problemaDoArquivo, type TipoDeArquivo } from './upload';
 
 export function CampoDeArquivo({
@@ -22,6 +23,7 @@ export function CampoDeArquivo({
   const tipo: TipoDeArquivo = campo.tipo === 'video' ? 'video' : 'image';
   const [progresso, setProgresso] = useState<number | null>(null);
   const [erro, setErro] = useState<string | null>(null);
+  const [escolhendo, setEscolhendo] = useState(false);
 
   async function escolher(arquivo: File | undefined) {
     if (!arquivo) return;
@@ -31,6 +33,7 @@ export function CampoDeArquivo({
     setProgresso(0);
     try {
       const enviado = await enviarArquivo(arquivo, tipo, setProgresso);
+      registrarMidia({ ...enviado, tipo, nome: arquivo.name, bytes: arquivo.size });
       aoMudar(tipo === 'video' ? { [campo.id]: enviado.url, capa: enviado.capa } : { [campo.id]: enviado.url });
     } catch (e) {
       setErro(e instanceof Error ? e.message : 'O envio falhou. Tente de novo.');
@@ -64,6 +67,16 @@ export function CampoDeArquivo({
               }}
             />
           </label>
+          {!enviando && listarMidias().some((m) => m.tipo === tipo) && (
+            <button
+              type="button"
+              className="ed-link"
+              aria-expanded={escolhendo}
+              onClick={() => setEscolhendo(!escolhendo)}
+            >
+              Das minhas mídias
+            </button>
+          )}
           {valor && !enviando && (
             <button
               type="button"
@@ -75,6 +88,26 @@ export function CampoDeArquivo({
           )}
         </div>
       </div>
+      {escolhendo && (
+        <ul className="ed-escolher" aria-label="Minhas mídias">
+          {listarMidias()
+            .filter((m) => m.tipo === tipo)
+            .map((m) => (
+              <li key={m.id}>
+                <button
+                  type="button"
+                  aria-label={`Usar ${m.nome}`}
+                  onClick={() => {
+                    aoMudar(tipo === 'video' ? { [campo.id]: m.url, capa: m.capa } : { [campo.id]: m.url });
+                    setEscolhendo(false);
+                  }}
+                >
+                  <img src={m.capa} alt="" loading="lazy" />
+                </button>
+              </li>
+            ))}
+        </ul>
+      )}
       {enviando && (
         <div
           className="ed-progresso-envio"

@@ -100,7 +100,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-113** Trocar capa escolhendo o quadro do vídeo.
 - [ ] **DEV-114** Limites de duração, tamanho e espaço com mensagens claras. Depende: limites definidos. *Limites provisórios no código: foto 15 MB, vídeo 200 MB; falta duração e espaço por creator.*
 - [ ] **DEV-115** Corte de foto no formato do espaço com foco no rosto; aviso de foto escura ou pequena.
-- [ ] **DEV-116** Aba Mídias: biblioteca, espaço usado, reaproveitar em qualquer projeto.
+- [x] **DEV-116** Aba Mídias: biblioteca, espaço usado, reaproveitar em qualquer projeto. *Feito local: registro no aparelho (`app/editor/midias.ts`), aba Mídias e "Das minhas mídias" em cada campo. Passa para a tabela `media` na E2. "Tirar da lista" não apaga do Cloudinary.*
 
 ### E10. Números informados pela creator
 

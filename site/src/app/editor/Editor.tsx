@@ -12,15 +12,29 @@ import { criarEditor } from './estado';
 import { progresso } from '@lib/progresso';
 import { aplicarNumeros } from '@lib/numeros';
 import { podePublicar, revisar } from '@lib/revisao';
+import { PainelMidias } from './PainelMidias';
 import { PainelRevisao } from './PainelRevisao';
 import { Gaveta } from './Gaveta';
 import { PainelNumeros } from './PainelNumeros';
-import { Foguete, Camadas, Desfazer, Esconder, Lapis, Olho, Mais, Paleta, Refazer, Subir, Descer } from './icones';
+import {
+  Foguete,
+  Imagem,
+  Camadas,
+  Desfazer,
+  Esconder,
+  Lapis,
+  Olho,
+  Mais,
+  Paleta,
+  Refazer,
+  Subir,
+  Descer,
+} from './icones';
 import { PainelAdicionar, PainelEstilo, PainelSecoes } from './Paineis';
 import { carregarRascunho, salvarRascunho } from './persistencia';
 import './editor.css';
 
-type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | null;
+type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | 'midias' | null;
 
 export default function Editor() {
   const editor = useMemo(() => criarEditor(carregarRascunho() ?? PROJETO_DE_EXEMPLO, REGISTRO), []);
@@ -205,6 +219,13 @@ export default function Editor() {
         </button>
         <button
           type="button"
+          aria-pressed={painel === 'midias'}
+          onClick={() => setPainel(painel === 'midias' ? null : 'midias')}
+        >
+          <Imagem /> Mídias
+        </button>
+        <button
+          type="button"
           aria-pressed={painel === 'estilo'}
           onClick={() => setPainel(painel === 'estilo' ? null : 'estilo')}
         >
@@ -239,6 +260,9 @@ export default function Editor() {
             aoTrocarVariacao={(v) => e.trocarVariacao(bloco.id, v)}
           />
         )}
+      </Gaveta>
+      <Gaveta aberta={painel === 'midias'} aoFechar={() => setPainel(null)} titulo="Minhas mídias">
+        {painel === 'midias' && <PainelMidias />}
       </Gaveta>
       <Gaveta
         aberta={painel === 'revisao'}

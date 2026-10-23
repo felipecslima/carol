@@ -38,3 +38,4 @@ export const Olho = icone(
 export const Foguete = icone(
   <path d="M5 15c-1 1-2 4-2 6 2 0 5-1 6-2M12 15l-3-3c1-4 4-8 11-9 0 7-4 10-9 9zM9 12l-4 1 1-4 4-1M15 9a1 1 0 1 0 0 .01" />,
 );
+export const Imagem = icone(<path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M9 9a1 1 0 1 0 0 .01" />);
