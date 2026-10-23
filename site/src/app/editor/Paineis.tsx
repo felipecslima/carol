@@ -204,6 +204,26 @@ export function PainelEstilo({
         </div>
       </fieldset>
       <fieldset className="ed-variacoes">
+        <legend>Modo iniciante</legend>
+        <p className="ed-dica">
+          Esconde Números, Marcas e Público e destaca seus vídeos e o que você entrega. Nada se perde: é só ligar de
+          novo.
+        </p>
+        <div role="radiogroup">
+          {([false, true] as const).map((v) => (
+            <button
+              key={String(v)}
+              type="button"
+              role="radio"
+              aria-checked={projeto.modoIniciante === v}
+              onClick={() => aoMudar({ modoIniciante: v }, v ? 'Modo iniciante ligado' : 'Modo iniciante desligado')}
+            >
+              {v ? 'Ligado' : 'Desligado'}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset className="ed-variacoes">
         <legend>Clima</legend>
         <div role="radiogroup">
           {(['claro', 'escuro'] as const).map((c) => (

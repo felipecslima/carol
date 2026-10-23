@@ -82,7 +82,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [x] **DEV-088** Aba Estilo: modelo, paleta, fontes, cantos; troca instantânea com aviso "Desfazer". *Feito: cor (3 paletas e cor própria), cantos, fonte, clima, aviso com Desfazer. Falta: escolher modelo (só existe o Nuvem).*
 - [ ] **DEV-089** Trocar modelo ou formato (site, mídia kit, os dois) sem perder conteúdo; o que não cabe vai para Guardados.
 - [x] **DEV-090** Placeholders com etiqueta "Exemplo · toque para trocar"; progresso "X de Y itens já são seus". *Contador feito (`lib/progresso.ts`).*
-- [ ] **DEV-091** Modo Ver (sem interface) e modo iniciante.
+- [x] **DEV-091** Modo Ver (sem interface) e modo iniciante.
 - [ ] **DEV-092** Eventos do editor (bloco adicionado, guardado, placeholder trocado, modelo trocado, publicou).
 
 ### E8. Assistente de início

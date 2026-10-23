@@ -5,7 +5,7 @@ import { useStore } from 'zustand';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
 import { REGISTRO } from '@blocks/registro';
-import type { Projeto } from '@lib/projeto';
+import { blocosVisiveis, type Projeto } from '@lib/projeto';
 import { variaveisDeTema } from '@themes/aplicar';
 import { gerarPaleta } from '@themes/paleta';
 import { NUVEM } from '@themes/modelos/nuvem';
@@ -14,7 +14,7 @@ import { CamposDoBloco } from './CamposDoBloco';
 import { criarEditor } from './estado';
 import { progresso } from '@lib/progresso';
 import { Gaveta } from './Gaveta';
-import { Camadas, Desfazer, Esconder, Lapis, Mais, Paleta, Refazer, Subir, Descer } from './icones';
+import { Camadas, Desfazer, Esconder, Lapis, Olho, Mais, Paleta, Refazer, Subir, Descer } from './icones';
 import { PainelAdicionar, PainelEstilo, PainelSecoes } from './Paineis';
 import { carregarRascunho, salvarRascunho } from './persistencia';
 import './editor.css';
@@ -40,6 +40,7 @@ export default function Editor() {
   const futuros = useStore(editor.temporal, (s) => s.futureStates.length);
   const [painel, setPainel] = useState<Painel>(null);
   const [situacao, setSituacao] = useState<'salvo' | 'salvando' | 'erro'>('salvo');
+  const [ver, setVer] = useState(false);
   const [aviso, setAviso] = useState<string | null>(null);
   const primeiraVez = useRef(true);
 
@@ -71,8 +72,23 @@ export default function Editor() {
   const bloco = projeto.blocos.find((b) => b.id === selecionado);
   const definicao = bloco && REGISTRO[bloco.tipo];
   const indice = bloco ? projeto.blocos.indexOf(bloco) : -1;
+  const visiveis = blocosVisiveis(projeto, REGISTRO);
   const desfazer = () => editor.temporal.getState().undo();
   const refazer = () => editor.temporal.getState().redo();
+
+  // modo Ver: a página como a marca vai ver, sem nenhuma interface do editor
+  if (ver) {
+    return (
+      <div className="pagina ed-ver" style={temaDoProjeto(projeto)}>
+        {visiveis.map((b) => (
+          <Bloco key={b.id} bloco={b} modo="publicado" />
+        ))}
+        <button type="button" className="ed-sair-ver" onClick={() => setVer(false)}>
+          Voltar a editar
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={`ed${painel ? ' ed--gaveta' : ''}`}>
@@ -81,6 +97,14 @@ export default function Editor() {
           portfólio<i>creator</i>
         </span>
         <div className="ed-topo-acoes">
+          <button
+            type="button"
+            className="ed-icone"
+            onClick={() => (e.selecionar(null), setPainel(null), setVer(true))}
+            aria-label="Ver como a marca vê"
+          >
+            <Olho />
+          </button>
           <button type="button" className="ed-icone" onClick={desfazer} disabled={passados === 0} aria-label="Desfazer">
             <Desfazer />
           </button>
@@ -111,7 +135,7 @@ export default function Editor() {
         style={temaDoProjeto(projeto)}
         onClick={(ev) => ev.target === ev.currentTarget && e.selecionar(null)}
       >
-        {projeto.blocos.map((b) => (
+        {visiveis.map((b) => (
           <div
             key={b.id}
             className="ed-bloco"

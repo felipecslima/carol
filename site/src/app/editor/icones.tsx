@@ -29,3 +29,9 @@ export const Paleta = icone(
 );
 export const Fechar = icone(<path d="M6 6l12 12M18 6L6 18" />);
 export const Lixeira = icone(<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />);
+export const Olho = icone(
+  <>
+    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+    <circle cx="12" cy="12" r="3" />
+  </>,
+);
