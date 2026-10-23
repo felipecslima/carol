@@ -284,7 +284,7 @@ Prévia visual dos blocos (só em `npm run dev`, 404 em produção): `/app/bloco
 Dependência só para dentro: `app → blocks → themes/lib`; `server → lib`. Segredos nunca chegam a `app/` nem a `blocks/`.
 
 ### Rotas do produto (Portfólio Creator)
-Todas fora da busca (`noindex`) e sem Amplitude por fazer (ver `docs/PROGRESSO.md`, "Atenção").
+Todas fora da busca (`noindex`) e sem Amplitude (`analytics={false}` no `SeoHead`).
 
 | Rota | O que é | Arquivo |
 |---|---|---|

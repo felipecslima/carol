@@ -21,6 +21,8 @@ interface Props {
   themeColor?: string;
   /** fontes do primeiro desenho (padrão: as do site da Carol) */
   preload?: string[];
+  /** analytics (Amplitude com Session Replay); desligado nas páginas do app, onde a creator digita dados dela */
+  analytics?: boolean;
 }
 const {
   lang, title, description, alternates, ogType = 'website', jsonLd, noindex = false,
@@ -28,6 +30,7 @@ const {
   themeColor = '#17110d',
   // o título do hero é o maior elemento da primeira tela: a serif chega junto com o HTML
   preload = ['/fonts/instrument-serif-normal-latin.woff2', '/fonts/hanken-grotesk-latin.woff2'],
+  analytics = true,
 } = Astro.props;
 const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
 const canonical = abs(alternates[lang]!);
@@ -64,6 +67,7 @@ const langs = LANGS.filter((l) => alternates[l]);
 {CLOUDINARY_ORIGIN && <link rel="preconnect" href={CLOUDINARY_ORIGIN} />}
 {preload.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
 <!-- Amplitude: a chave é a pública do projeto (só envia eventos), por isso fica no HTML -->
+{analytics && <Fragment>
 <script is:inline src="https://cdn.amplitude.com/script/86c8a9bc2c7bbeb3e38d5662653bbf02.js"></script>
 <script is:inline>
   window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1, serverZone: 'US' }));
@@ -72,3 +76,4 @@ const langs = LANGS.filter((l) => alternates[l]);
     autocapture: true,
   });
 </script>
+</Fragment>}

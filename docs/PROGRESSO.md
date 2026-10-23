@@ -11,7 +11,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **Git:** branch `dev`; 3 commits `Setup:` e DEV-001 a DEV-005 commitadas.
 - **OCR:** código removido por ora (pedido do usuário); continua no commit `6ecf8fc`. A spec `docs/04-ocr-prints.md` fica.
 - **Atenção (upload):** `/api/upload/assinatura` ainda não exige login; qualquer aparelho pode pedir assinatura. Exigir sessão (E3) antes de publicar. `CLOUDINARY_URL` já foi gravado como segredo do Worker `carol` no Cloudflare (24/out/2026, `wrangler secret put`); o site no ar seguiu normal (home 200, www 301).
-- **Atenção (privacidade):** o `SeoHead` carrega a Amplitude com Session Replay em toda página, inclusive `/app`. Antes de haver login e dados de creators, tirar a Amplitude de `/app` (ou pedir consentimento).
+- **Privacidade:** o `SeoHead` ganhou a opção `analytics` (padrão ligado, o site da Carol não mudou); as páginas de `/app` passam `analytics={false}`, então a Amplitude com Session Replay não roda onde a creator digita dados dela. Se um dia houver analytics no app, só com consentimento.
 - **Bloqueios:** preços dos planos, limites do Cloudinary e CNPJ/Termos ainda a definir (não bloqueiam a E1 a E7).
 
 ## Esperando aprovação
