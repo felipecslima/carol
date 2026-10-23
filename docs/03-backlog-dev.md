@@ -72,7 +72,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 ### E7. Editor
 
 - [ ] **DEV-080** Teste do Puck (1 a 2 dias) com decisão registrada.
-- [ ] **DEV-081** Estado do editor (Zustand) com o JSON do projeto e histórico de desfazer/refazer (zundo).
+- [x] **DEV-081** Estado do editor (Zustand) com o JSON do projeto e histórico de desfazer/refazer (zundo).
 - [ ] **DEV-082** Salvar sozinho com debounce, indicador "Salvo ✓" e fila offline que reenvia ao voltar a internet.
 - [ ] **DEV-083** Seleção: primeiro toque no bloco, segundo no elemento; barra flutuante Editar, ↑, ↓, Esconder.
 - [ ] **DEV-084** Gaveta de edição (Vaul) com campo focado, contador de letras, dica do bloco, teclado sem cobrir o campo.
