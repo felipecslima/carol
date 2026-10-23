@@ -629,3 +629,66 @@
 .ed-abas button {
   position: relative;
 }
+
+/* envio de foto e vídeo */
+.ed-arquivo {
+  display: grid;
+  gap: 8px;
+}
+.ed-arquivo-rotulo {
+  font-weight: 700;
+  font-size: 14px;
+}
+.ed-arquivo-corpo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.ed-arquivo-previa {
+  width: 72px;
+  height: 72px;
+  flex: none;
+  border-radius: 14px;
+  object-fit: cover;
+  background: var(--ed-borda);
+}
+.ed-arquivo-vazio {
+  display: block;
+  border: 2px dashed #d9bfb2;
+  background: var(--ed-bg);
+}
+.ed-arquivo-acoes {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+}
+.ed-enviar {
+  position: relative;
+  cursor: pointer;
+}
+.ed-enviar input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+}
+.ed-enviar:focus-within {
+  outline: 3px solid var(--ed-foco);
+  outline-offset: 2px;
+}
+.ed-enviar[aria-disabled='true'] {
+  opacity: 0.5;
+}
+.ed-progresso-envio {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--ed-borda);
+  overflow: hidden;
+}
+.ed-progresso-envio span {
+  display: block;
+  height: 100%;
+  background: var(--ed-rosa);
+  transition: width 0.15s;
+}

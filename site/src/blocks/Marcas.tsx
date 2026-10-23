@@ -7,8 +7,8 @@ export function Marcas({ variacao, dados, modo }: PropsDoBloco<DadosDeMarcas, 'l
     <section className={`bl bl-marcas bl-marcas--${variacao}`} id="marcas">
       {titulo && <h2 className="bl-titulo">{titulo}</h2>}
       <ul className="bl-lista-marcas">
-        {itens.map((m) => (
-          <li key={m.nome}>
+        {itens.map((m, n) => (
+          <li key={n}>
             {variacao === 'logos' && m.logo ? <img src={m.logo} alt={m.nome} loading="lazy" /> : <b>{m.nome}</b>}
             {m.resultado && <span>{m.resultado}</span>}
             <Exemplo ativo={m.exemplo} modo={modo} />

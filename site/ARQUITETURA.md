@@ -289,6 +289,9 @@ Roda, em ordem: `astro check` (TypeScript estrito, inclusive `.astro`), ESLint, 
 - **TypeScript 6, não 7:** `typescript-eslint` e `astro check` ainda não suportam o 7. Voltar ao 7 quando suportarem.
 - **Sem `eslint-plugin-jsx-a11y`:** ainda não suporta o ESLint 10; acessibilidade fica nas revisões de design e no Playwright.
 
+### Envio de fotos e vídeos (Cloudinary)
+`POST /api/upload/assinatura` (`src/pages/api/upload/assinatura.ts`, SSR) assina `folder`, `timestamp` e `allowed_formats` com o segredo (`src/server/cloudinary.ts`); o celular envia o arquivo direto a `api.cloudinary.com` (`src/app/editor/upload.ts`, com progresso) na pasta `creators/<aparelho>`. A página usa só endereços de entrega transformados: foto `f_auto,q_auto,w_1200`, vídeo `f_mp4,q_auto,w_720` e capa `so_0` (quadro 0). Pendente: exigir sessão, limites definitivos, quadro de capa escolhido, corte com foco no rosto.
+
 ### Variáveis de ambiente e segredos
 - **Onde estão declaradas:** `env.schema` em `astro.config.mjs`. Públicas (`PUBLIC_*`, vão para o navegador): `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`. Segredos (só servidor): `SUPABASE_SERVICE_ROLE_KEY`, `CLOUDINARY_URL`, `SLACK_WEBHOOK_URL`, `WHATSAPP_TOKEN`, `AI_API_KEY`. Todas opcionais até as contas existirem.
 - **Como ler:** `import { X } from 'astro:env/server'` (segredos, só em `src/server/` e rotas SSR) ou `astro:env/client`. O Astro recusa importar segredo no código do navegador. `PUBLIC_CLOUDINARY_CLOUD_NAME` continua em `import.meta.env`, como antes.

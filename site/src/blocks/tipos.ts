@@ -19,6 +19,8 @@ export interface ItemDeVideo extends Marcavel {
   marca?: string;
   /** URL da capa (Cloudinary); sem ela o bloco desenha um fundo de cor */
   capa?: string;
+  /** URL do vídeo (Cloudinary, leve); na página publicada toca no próprio card */
+  video?: string;
 }
 
 export interface ItemDeMarca extends Marcavel {

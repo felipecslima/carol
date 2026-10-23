@@ -7,8 +7,8 @@ export function Formatos({ variacao, dados, modo }: PropsDoBloco<DadosDeFormatos
     <section className={`bl bl-formatos bl-formatos--${variacao}`} id="formatos">
       {titulo && <h2 className="bl-titulo">{titulo}</h2>}
       <ul className="bl-lista-formatos">
-        {itens.map((f) => (
-          <li key={f.titulo} className={variacao === 'cards' ? 'bl-cartao' : undefined}>
+        {itens.map((f, n) => (
+          <li key={n} className={variacao === 'cards' ? 'bl-cartao' : undefined}>
             <b>{f.titulo}</b>
             {f.descricao && <span>{f.descricao}</span>}
             {f.preco && <em>{f.preco}</em>}

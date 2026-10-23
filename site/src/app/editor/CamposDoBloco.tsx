@@ -2,6 +2,7 @@
 // escolha de variação. Tocar em "Exemplo" e trocar o texto tira a marca de exemplo do item.
 import type { Campo, DefinicaoDeBloco } from '@lib/bloco';
 import type { Bloco } from '@lib/projeto';
+import { CampoDeArquivo } from './CampoDeArquivo';
 import { Lixeira, Mais } from './icones';
 
 type Dados = Record<string, unknown>;
@@ -44,8 +45,9 @@ function CampoDeTexto({
 
 function ListaDeItens({ campo, itens, aoMudar }: { campo: Campo; itens: Dados[]; aoMudar: (itens: Dados[]) => void }) {
   const campos = campo.itens ?? [];
-  const mudarItem = (i: number, id: string, valor: unknown) =>
-    aoMudar(itens.map((item, n) => (n === i ? { ...item, [id]: valor, exemplo: undefined } : item)));
+  const mudarItem = (i: number, id: string, valor: unknown) => mudarItemVarios(i, { [id]: valor });
+  const mudarItemVarios = (i: number, parte: Dados) =>
+    aoMudar(itens.map((item, n) => (n === i ? { ...item, ...parte, exemplo: undefined } : item)));
   return (
     <fieldset className="ed-lista">
       <legend>{campo.rotulo}</legend>
@@ -64,6 +66,14 @@ function ListaDeItens({ campo, itens, aoMudar }: { campo: Campo; itens: Dados[];
                   onChange={(e) => mudarItem(i, c.id, Number(e.target.value))}
                 />
               </div>
+            ) : c.tipo === 'imagem' || c.tipo === 'video' ? (
+              <CampoDeArquivo
+                key={c.id}
+                campo={c}
+                valor={String(item[c.id] ?? '')}
+                capa={String(item.capa ?? '')}
+                aoMudar={(parte) => mudarItemVarios(i, parte)}
+              />
             ) : (
               <CampoDeTexto
                 key={c.id}
@@ -179,17 +189,14 @@ export function CamposDoBloco({
               aoMudar={(itens) => aoMudarDados({ [campo.id]: itens })}
             />
           );
-        if (campo.tipo === 'imagem' || campo.tipo === 'video' || campo.tipo === 'icone')
+        if (campo.tipo === 'imagem' || campo.tipo === 'video')
           return (
-            <CampoDeTexto
+            <CampoDeArquivo
               key={campo.id}
-              campo={{
-                ...campo,
-                rotulo: `${campo.rotulo} (endereço)`,
-                dica: 'O envio de arquivos chega em breve; por enquanto, cole o endereço da imagem.',
-              }}
+              campo={campo}
               valor={String(valor ?? '')}
-              aoMudar={(v) => aoMudarDados({ [campo.id]: v })}
+              capa={String(bloco.dados.capa ?? '')}
+              aoMudar={(parte) => aoMudarDados(parte)}
             />
           );
         return (

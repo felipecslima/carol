@@ -94,11 +94,11 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E9. Mídias
 
-- [ ] **DEV-110** Upload assinado direto do celular para o Cloudinary (pasta por creator).
-- [ ] **DEV-111** Envio em segundo plano com barra no próprio card; editor continua usável.
-- [ ] **DEV-112** Conversão de HEIC e .mov, compressão e capa automática (transformações do Cloudinary).
+- [x] **DEV-110** Upload assinado direto do celular para o Cloudinary (pasta por creator). *Feito: `/api/upload/assinatura` assina no servidor e o celular envia direto ao Cloudinary. Pasta por aparelho até haver login. Falta exigir sessão (E3) antes de publicar.*
+- [x] **DEV-111** Envio em segundo plano com barra no próprio card; editor continua usável. *Feito: barra de progresso no próprio campo, resto da gaveta usável. Falta fila com retomada em internet ruim.*
+- [x] **DEV-112** Conversão de HEIC e .mov, compressão e capa automática (transformações do Cloudinary). *Feito na entrega: `f_auto`/`q_auto`/`w_1200` nas fotos (HEIC vira JPEG/WebP), `f_mp4`/`w_720` no vídeo (.mov vira MP4) e capa no quadro 0. Testado com foto e vídeo reais.*
 - [ ] **DEV-113** Trocar capa escolhendo o quadro do vídeo.
-- [ ] **DEV-114** Limites de duração, tamanho e espaço com mensagens claras. Depende: limites definidos.
+- [ ] **DEV-114** Limites de duração, tamanho e espaço com mensagens claras. Depende: limites definidos. *Limites provisórios no código: foto 15 MB, vídeo 200 MB; falta duração e espaço por creator.*
 - [ ] **DEV-115** Corte de foto no formato do espaço com foco no rosto; aviso de foto escura ou pequena.
 - [ ] **DEV-116** Aba Mídias: biblioteca, espaço usado, reaproveitar em qualquer projeto.
 

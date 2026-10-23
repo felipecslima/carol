@@ -7,14 +7,26 @@ export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'c
     <section className={`bl bl-videos bl-videos--${variacao}`} id="videos">
       {titulo && <h2 className="bl-titulo">{titulo}</h2>}
       <ul className="bl-lista-videos">
-        {itens.map((v) => (
-          <li key={v.titulo} className="bl-video">
-            <div
-              className="bl-video-capa"
-              role={v.capa ? 'img' : undefined}
-              aria-label={v.capa ? v.titulo : undefined}
-              style={v.capa ? { backgroundImage: `url(${v.capa})` } : undefined}
-            />
+        {itens.map((v, n) => (
+          <li key={n} className="bl-video">
+            {v.video && modo === 'publicado' ? (
+              <video
+                className="bl-video-capa"
+                src={v.video}
+                poster={v.capa}
+                controls
+                playsInline
+                preload="none"
+                aria-label={v.titulo}
+              />
+            ) : (
+              <div
+                className="bl-video-capa"
+                role={v.capa ? 'img' : undefined}
+                aria-label={v.capa ? v.titulo : undefined}
+                style={v.capa ? { backgroundImage: `url(${v.capa})` } : undefined}
+              />
+            )}
             <b>{v.titulo}</b>
             <span>
               {v.visualizacoes && `${v.visualizacoes} views`}

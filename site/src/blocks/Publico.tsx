@@ -8,8 +8,8 @@ export function Publico({ variacao, dados, modo }: PropsDoBloco<DadosDePublico, 
       {titulo && <h2 className="bl-titulo">{titulo}</h2>}
       {variacao === 'idade' ? (
         <ul className="bl-cards-numero">
-          {itens.map((i) => (
-            <li key={i.rotulo} className="bl-cartao">
+          {itens.map((i, n) => (
+            <li key={n} className="bl-cartao">
               <b className="bl-numero">{i.valor}</b>
               <span>{i.rotulo}</span>
               <Exemplo ativo={i.exemplo} modo={modo} />
@@ -18,8 +18,8 @@ export function Publico({ variacao, dados, modo }: PropsDoBloco<DadosDePublico, 
         </ul>
       ) : (
         <ul className="bl-barras">
-          {itens.map((i) => (
-            <li key={i.rotulo}>
+          {itens.map((i, n) => (
+            <li key={n}>
               <p className="bl-barra-rotulo">
                 {i.rotulo} <b>{i.valor}</b>
               </p>

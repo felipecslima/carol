@@ -7,8 +7,8 @@ export function Numeros({ variacao, dados, modo }: PropsDoBloco<DadosDeNumeros, 
     return (
       <section className="bl bl-numeros bl-numeros--barras" id="numeros">
         <ul className="bl-barras">
-          {itens.map((i) => (
-            <li key={i.rotulo}>
+          {itens.map((i, n) => (
+            <li key={n}>
               <p className="bl-barra-rotulo">
                 {i.rotulo} <b>{i.valor}</b>
               </p>
@@ -26,8 +26,8 @@ export function Numeros({ variacao, dados, modo }: PropsDoBloco<DadosDeNumeros, 
   return (
     <section className="bl bl-numeros bl-numeros--cards" id="numeros">
       <ul className="bl-cards-numero">
-        {itens.map((i) => (
-          <li key={i.rotulo} className="bl-cartao">
+        {itens.map((i, n) => (
+          <li key={n} className="bl-cartao">
             <b className="bl-numero">{i.valor}</b>
             <span>{i.rotulo}</span>
             <Exemplo ativo={i.exemplo} modo={modo} />
