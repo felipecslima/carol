@@ -1,0 +1,341 @@
+---
+// Home em um idioma (pages/index.astro, pages/en/index.astro, pages/es/index.astro).
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+import LangSwitch from '../components/LangSwitch.astro';
+import MediaCard from '../components/MediaCard.astro';
+import Lightbox from '../components/Lightbox.astro';
+import Icons from '../components/Icons.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { nichePath, nichesIn } from '../data/niches';
+import {
+  AUDIENCE, BRANDS, BRIEF, EMAIL, FILTERS, INSIGHTS, MEDIA, REELS_STATS, RESPONSE_TIME, SERVICES, SOCIAL, TOP_REELS,
+  audienceSummary, groupsOf, mailto, reachMultiple, type Share,
+} from '../data/content';
+import { home, LOCALE, mediaKitPdf, num, numLong, pct, sameIn, type Lang } from '../i18n';
+import { UI } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = UI[lang];
+const MAILTO = mailto(lang);
+
+// cada metade do loop precisa ser mais larga que a tela (até 2560px), por isso a lista se repete
+const marqueeLoop = [...t.marquee, ...t.marquee, ...t.marquee];
+// título e descrição com os termos que as marcas buscam (nome, @, cidade, nichos); até ~60 e ~130 caracteres
+const title = t.homeTitle;
+const description = t.homeDescription;
+const alternates = sameIn();
+// URLs absolutas (og:image, canonical, JSON-LD) vêm do `site` em astro.config.mjs.
+const abs = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
+const canonical = abs(home(lang));
+// a Carol é a mesma pessoa nos três idiomas: o @id fica na home em português
+const personId = `${abs('/')}#carol`;
+
+// barras de público: escala relativa ao maior valor do grupo
+const scaled = <T,>(list: Share<T>[]) => {
+  const max = Math.max(...list.map((s) => s.pct));
+  return list.map((s) => ({ ...s, w: `${((s.pct / max) * 100).toFixed(1)}%` }));
+};
+const photoSrcset = (id: string) => `/media/${id}-600.webp 600w, /media/${id}.webp 1100w`;
+// barras dos reels: escala a partir de zero, relativa ao mais visto
+const topMax = TOP_REELS[0].k;
+const reelTone = (i: number) => Math.min(3, Math.floor(i / 2));
+// comparação seguidores × views por reel, escala relativa ao maior valor
+const compare = [
+  { label: t.cmpFollowers, value: num(INSIGHTS.followers, lang), k: INSIGHTS.followersK, base: true },
+  { label: t.cmpAverage, value: num(REELS_STATS.average, lang), k: REELS_STATS.averageK },
+  { label: t.cmpMl, value: num(REELS_STATS.mlAverage, lang), k: REELS_STATS.mlAverageK },
+];
+const compareMax = Math.max(...compare.map((c) => c.k));
+const resultsP = t.resultsP({
+  viewsLong: numLong(INSIGHTS.views, lang),
+  viewsGrowth: num(INSIGHTS.viewsGrowth, lang),
+  newFollowers: num(INSIGHTS.newFollowers, lang),
+  count: REELS_STATS.count,
+  average: num(REELS_STATS.average, lang),
+  reach: reachMultiple(lang),
+  over500: REELS_STATS.over500,
+  overMillion: REELS_STATS.overMillion,
+});
+// dados estruturados: o Google liga o site ao perfil da Carol (painel de conhecimento, busca pelo nome/@)
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  url: canonical,
+  name: title,
+  description,
+  inLanguage: LOCALE[lang],
+  mainEntity: {
+    '@type': 'Person',
+    '@id': personId,
+    name: 'Carol Limah',
+    alternateName: '@eu.carollimah',
+    url: abs('/'),
+    image: abs('/media/p9.webp'),
+    jobTitle: t.jobTitle,
+    description: t.personDescription,
+    email: `mailto:${EMAIL}`,
+    homeLocation: { '@type': 'Place', name: 'São Paulo, SP, Brasil' },
+    knowsAbout: t.knowsAbout,
+    sameAs: SOCIAL.map((l) => l.href),
+  },
+};
+const filterCount = (key: string) => (key === 'todos' ? MEDIA.length : MEDIA.filter((m) => groupsOf(m).includes(key)).length);
+---
+
+<!doctype html>
+<html lang={LOCALE[lang]}>
+  <head>
+    <SeoHead lang={lang} title={title} description={description} alternates={alternates} ogType="profile" jsonLd={jsonLd} />
+  </head>
+  <body>
+    <Icons />
+    <a class="skip" href="#conteudo">{t.skip}</a>
+    <nav class="nav" aria-label={t.navMain}>
+      <div class="wrap">
+        <a class="logo" href="#topo">Carol <i>Limah</i></a>
+        <LangSwitch lang={lang} alternates={alternates} />
+        <button class="burger" type="button" id="burger" aria-label={t.openMenu} aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+          <a href="#sobre">{t.navAbout}</a>
+          <a href="#portfolio">{t.navPortfolio}</a>
+          <a href="#resultados">{t.navResults}</a>
+          <a href="#servicos">{t.navFormats}</a>
+          <a class="cta" href="#contato">{t.cta}</a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="conteudo" tabindex="-1">
+    <header id="topo" class="wrap hero">
+      <div class="hero-text">
+        <h1 class="h1" set:html={t.heroH1} />
+        <p class="hero-lead">{t.heroLead}</p>
+        <div class="btns">
+          <a class="btn btn-primary" href="#portfolio">{t.seePortfolio}</a>
+          <a class="btn btn-outline" href="#contato">{t.cta}</a>
+        </div>
+        <dl class="stats">
+          <div class="stat"><dt set:html={t.statFollowers(num(INSIGHTS.followersGrowth, lang))} /><dd>{num(INSIGHTS.followers, lang)}</dd></div>
+          <div class="stat"><dt>{t.statViews}</dt><dd>{num(INSIGHTS.views, lang)}</dd></div>
+          <div class="stat"><dt>{t.statAverage}</dt><dd>{num(REELS_STATS.average, lang)}</dd></div>
+        </dl>
+      </div>
+      <div class="collage">
+        <img class="main" src="/media/p9.webp" srcset={photoSrcset('p9')} sizes="(max-width: 600px) 62vw, 340px" alt={t.altP9} width="1100" height="1467" fetchpriority="high" />
+        <img class="small" src="/media/p6.webp" srcset={photoSrcset('p6')} sizes="240px" alt={t.altP6} width="1100" height="1428" loading="lazy" />
+        <img class="vid" src="/media/p10.webp" srcset={photoSrcset('p10')} sizes="220px" alt={t.altP10} width="1100" height="1467" loading="lazy" />
+        <div class="seal">Amazonas<br /><i>→ São Paulo</i></div>
+      </div>
+    </header>
+
+    <div class="marquee">
+      <div class="marquee-track" aria-hidden="true">
+        {[0, 1].map(() => (
+          <span>
+            {marqueeLoop.map((m) => (<><Fragment set:html={m} /><span class="sep"></span></>))}
+          </span>
+        ))}
+      </div>
+      <button class="vid-toggle marquee-toggle" type="button" aria-label={t.pauseAnim} hidden>
+        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1" /><rect x="9.4" y="3" width="2.6" height="10" rx="1" /></svg>
+        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5Z" /></svg>
+      </button>
+    </div>
+
+    <section id="sobre" class="wrap about">
+      <div class="about-photo">
+        <img src="/media/p4.webp" srcset={photoSrcset('p4')} sizes="(max-width: 520px) 92vw, 460px" alt={t.altP4} width="1100" height="1956" loading="lazy" />
+        <a class="about-tag" href={MAILTO}>{EMAIL}</a>
+      </div>
+      <div class="about-text">
+        <h2 class="h2" set:html={t.aboutH2} />
+        <p>{t.aboutP1}</p>
+        <p>{t.aboutP2}</p>
+        <ul class="topics" aria-label={t.topicsLabel}>
+          {t.topics.map((c) => <li>{c}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section id="portfolio" class="portfolio">
+      <div class="wrap">
+        <div class="pf-head">
+          <div class="pf-title">
+            <h2 class="h2" set:html={t.portfolioH2} />
+          </div>
+          <div class="filters" id="filters" role="group" aria-label={t.filtersLabel}>
+            {FILTERS.map((f) => (
+              <button class="filter" type="button" data-filter={f.key} aria-pressed={f.key === 'todos' ? 'true' : 'false'}>
+                {f.label[lang]} <span class="filter-n">{filterCount(f.key)}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="grid" id="grid">
+          {MEDIA.map((m) => <MediaCard m={m} lang={lang} />)}
+        </div>
+        <button class="more" type="button" id="more" aria-controls="grid" hidden>{t.seeAll(MEDIA.length)}</button>
+        <nav class="pf-niches" aria-label={t.footNiches}>
+          <span>{t.byTopic}</span>
+          {nichesIn(lang).map((n) => <a href={nichePath(lang, n.key)}>{n.label}</a>)}
+        </nav>
+      </div>
+    </section>
+
+    <section id="resultados" class="results">
+      <div class="wrap results-reels">
+        <div class="results-text">
+          <h2 class="h2" set:html={t.resultsH2} />
+          <p set:html={resultsP} />
+          <p class="results-case" set:html={t.resultsCase(REELS_STATS.mlCount, num(REELS_STATS.mlAverage, lang))} />
+        </div>
+        <div class="results-charts">
+        <figure class="compare">
+          <figcaption class="chart-title">{t.cmpTitle}</figcaption>
+          <ul class="cmp-list">
+            {compare.map((c) => (
+              <li class:list={['cmp', { base: c.base }]}>
+                <span class="cmp-label">{c.label}</span>
+                <b>{c.value}</b>
+                <span class="cmp-track" aria-hidden="true"><span class="cmp-fill" style={`width:${((c.k / compareMax) * 100).toFixed(1)}%`}></span></span>
+              </li>
+            ))}
+          </ul>
+        </figure>
+        <figure class="bars" id="bars">
+          <figcaption class="chart-title">{t.topTitle(REELS_STATS.count)}</figcaption>
+          <ol class="bar-list">
+            {TOP_REELS.map((r, i) => (
+              <li class="reel-row">
+                <img class="reel-thumb" src={`/media/reels/r${r.k}.webp`} alt={t.reelCover(r.title?.[lang])} width="132" height="176" loading="lazy" />
+                <div class="reel-body">
+                  <span class="reel-title">
+                    {r.title?.[lang] ?? <span class="reel-untitled">{t.reelUntitled}</span>}
+                    {r.brand && <span class="reel-brand">{r.brand}</span>}
+                  </span>
+                  <div class="track" style={`--w:${((r.k / topMax) * 100).toFixed(1)}%`} aria-hidden="true">
+                    <div class={`fill tone-${reelTone(i)}`}></div>
+                  </div>
+                </div>
+                <b>{num(r.views, lang)}<span class="sr-only"> {t.views}</span></b>
+              </li>
+            ))}
+          </ol>
+          <p class="source">{t.topSource(REELS_STATS.count, REELS_STATS.period[lang])}</p>
+        </figure>
+        </div>
+      </div>
+
+      <div class="wrap audience" id="publico">
+        <div class="aud-head">
+          <h3 class="aud-title" set:html={t.audienceH} />
+          <ul class="aud-sum">
+            {audienceSummary(lang).map((s) => <li><b>{s.value}</b> {s.text}</li>)}
+          </ul>
+          <p class="aud-stamp">{t.audienceStamp(INSIGHTS.period[lang])}</p>
+        </div>
+        <div class="aud-grid">
+          <figure class="aud-chart">
+            <figcaption>{t.gender}</figcaption>
+            <div class="split" aria-hidden="true">
+              {AUDIENCE.gender.map((g, i) => <span class={`seg tone-${i === 0 ? 0 : 2}`} style={`flex-basis:${g.pct}%`}></span>)}
+            </div>
+            <ul class="split-legend">
+              {AUDIENCE.gender.map((g) => <li><b>{pct(g.pct, lang)}</b> {g.label[lang]}</li>)}
+            </ul>
+          </figure>
+          <figure class="aud-chart">
+            <figcaption>{t.age}</figcaption>
+            <ul class="hbars">
+              {scaled(AUDIENCE.age).map((s) => (
+                <li class:list={['hbar', { key: s.key }]}>
+                  <span class="hbar-label">{s.label}<span class="sr-only"> {t.ageUnit}:</span></span>
+                  <span class="hbar-track" aria-hidden="true"><span class="hbar-fill" style={`width:${s.w}`}></span></span>
+                  <b>{pct(s.pct, lang)}</b>
+                </li>
+              ))}
+            </ul>
+          </figure>
+          <figure class="aud-chart">
+            <figcaption>{t.cities}</figcaption>
+            <ul class="hbars hbars-cities">
+              {scaled(AUDIENCE.cities).map((s) => (
+                <li class:list={['hbar', { key: s.key }]}>
+                  <span class="hbar-label">{s.label}<span class="sr-only">:</span></span>
+                  <span class="hbar-track" aria-hidden="true"><span class="hbar-fill" style={`width:${s.w}`}></span></span>
+                  <b>{pct(s.pct, lang)}</b>
+                </li>
+              ))}
+            </ul>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicos" class="services">
+      <div class="wrap">
+        <div class="services-head">
+          <h2 class="h2" set:html={t.servicesH2} />
+        </div>
+        <div class="svc-grid">
+          {SERVICES.map((s) => (
+            <div class="svc">
+              <h3 set:html={s.title[lang]} />
+              <p>{s.text[lang]}</p>
+              <a class="svc-link" href={nichePath(lang, s.niche)}>{s.more[lang]}</a>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="brands">
+        <h3 class="wrap brands-t" id="marcas">{t.brandsT}</h3>
+        <ul class="sr-only" aria-labelledby="marcas">{BRANDS.map((b) => <li>{b}</li>)}</ul>
+        <div class="marquee">
+          <div class="marquee-track" aria-hidden="true" style={`--dur:${BRANDS.length * 6}s`}>
+            {[0, 1].map(() => (
+              <span>{BRANDS.map((b, i) => (<>{i % 2 ? <i>{b}</i> : b}<span class="sep"></span></>))}</span>
+            ))}
+          </div>
+          <button class="vid-toggle marquee-toggle" type="button" aria-label={t.pauseAnim} hidden>
+            <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2.6" height="10" rx="1" /><rect x="9.4" y="3" width="2.6" height="10" rx="1" /></svg>
+            <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5Z" /></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="contact">
+      <div class="wrap">
+        <h2 class="h2" set:html={t.contactH2} />
+        <a class="mail-btn" href={MAILTO}>{t.writeEmail}</a>
+        <p class="contact-addr">
+          <span id="email-text">{EMAIL}</span>
+          <button class="copy-btn" type="button" id="copy" data-email={EMAIL} aria-label={t.copyLabel} hidden>{t.copy}</button>
+        </p>
+        <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
+        <div class="contact-note">
+          <p class="contact-time"><img class="avatar" src="/media/carol-avatar.webp" alt="Carol Limah" width="160" height="160" loading="lazy" />{RESPONSE_TIME[lang]}</p>
+          <p class="brief-title">{t.briefTitle}</p>
+          <ul class="brief">{BRIEF[lang].map((b) => <li>{b}</li>)}</ul>
+        </div>
+        <div class="contact-actions">
+          <a class="kit-btn" href={mediaKitPdf(lang)} download>{t.downloadKit}</a>
+        </div>
+      </div>
+    </section>
+
+    <a class="dock" id="dock" href="#contato" hidden>{t.cta}</a>
+    </main>
+
+    <Lightbox lang={lang} />
+    <SiteFooter lang={lang} />
+
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

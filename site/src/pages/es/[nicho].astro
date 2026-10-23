@@ -1,0 +1,9 @@
+---
+import Niche from '../../views/Niche.astro';
+import { nicheStaticPaths } from '../../data/niches';
+
+export function getStaticPaths() {
+  return nicheStaticPaths('es');
+}
+---
+<Niche {...Astro.props} />

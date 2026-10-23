@@ -8,6 +8,15 @@
         "value": "instrument serif",
         "createdAt": "2026-10-20T17:10:36.780Z",
         "reason": "Fonte definida no design handoff da Carol (README: Instrument Serif + Hanken Grotesk, fidelidade alta); decisão do designer do handoff, não confirmada novamente pelo usuário"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/components/MediaCard.astro"
+        ],
+        "createdAt": "2026-10-23T02:39:28.027Z",
+        "reason": "agent: src is the Astro expression posterSrc(m.id) (Cloudinary/local poster), not empty; pre-existing markup"
       }
     ]
   }

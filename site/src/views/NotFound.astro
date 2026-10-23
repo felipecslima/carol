@@ -1,0 +1,41 @@
+---
+// 404 num idioma. O Cloudflare serve a 404.html mais próxima do endereço pedido (not_found_handling em
+// wrangler.jsonc): /en/… cai em /en/404.html, /es/… em /es/404.html e o resto na 404.html da raiz.
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+import LangSwitch from '../components/LangSwitch.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { nichePath, nichesIn } from '../data/niches';
+import { home, LOCALE, type L, type Lang } from '../i18n';
+import { UI } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = UI[lang];
+// a página não existe em nenhum idioma: o seletor leva ao início de cada um
+const alternates: L = { pt: home('pt'), en: home('en'), es: home('es') };
+---
+
+<!doctype html>
+<html lang={LOCALE[lang]}>
+  <head>
+    <SeoHead lang={lang} title={t.nfTitle} description={t.nfDescription} alternates={alternates} noindex />
+  </head>
+  <body>
+    <nav class="nav" aria-label={t.navMain}>
+      <div class="wrap">
+        <a class="logo" href={home(lang)}>Carol <i>Limah</i></a>
+        <LangSwitch lang={lang} alternates={alternates} />
+      </div>
+    </nav>
+    <main class="wrap nf">
+      <h1 class="h1" set:html={t.nfH1} />
+      <p class="hero-lead">{t.nfLead}</p>
+      <ul class="nx-more-list">
+        <li><a href={home(lang)}><b>{t.nfHome}</b><span>{t.nfHomeSub}</span></a></li>
+        {nichesIn(lang).map((n) => <li><a href={nichePath(lang, n.key)}><b>{n.label}</b><span>{n.stops.map((s) => s.name).join(' · ')}</span></a></li>)}
+      </ul>
+    </main>
+    <SiteFooter lang={lang} />
+  </body>
+</html>

@@ -82,8 +82,19 @@ main:focus { outline: none; }
 .burger[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
 .burger[aria-expanded='true'] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* Idioma: no desktop fecha a nav depois do CTA, atrás de um fio; no mobile fica ao lado do menu, fora dele */
+.lang { list-style: none; margin: 0 0 0 auto; padding: 0; display: flex; align-items: center; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; }
+.lang a { display: grid; place-items: center; min-width: 34px; min-height: 34px; color: var(--subtle); }
+.lang a:hover { color: var(--accent); }
+.lang a[aria-current='true'] { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+@media (min-width: 721px) {
+  .nav-links { margin-left: auto; }
+  .nav .wrap:has(> .nav-links) > .lang { order: 1; margin-left: 0; padding-left: 12px; border-left: 1px solid var(--line); }
+}
+
 @media (max-width: 720px) {
   .burger { display: flex; }
+  .lang a { min-height: 44px; }
   .nav .wrap { flex-wrap: wrap; }
   .nav-links { display: none; width: 100%; flex-direction: column; align-items: stretch; gap: 0; padding-bottom: 12px; }
   .nav-links.open { display: flex; }

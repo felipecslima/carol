@@ -1,4 +1,6 @@
 // ---- Menu mobile (home e páginas de nicho) ----
+import { t } from '../i18n/client';
+
 export function initMenu() {
   const burger = document.getElementById('burger')!;
   const links = document.getElementById('nav-links')!;
@@ -6,7 +8,7 @@ export function initMenu() {
   const setMenu = (open: boolean) => {
     links.classList.toggle('open', open);
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    burger.setAttribute('aria-label', open ? t.closeMenu : t.openMenu);
   };
   burger.addEventListener('click', () => setMenu(!isOpen()));
   links.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));

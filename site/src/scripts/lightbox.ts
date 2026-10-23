@@ -1,6 +1,7 @@
 // ---- Lightbox (<dialog> modal: foco preso, fundo inerte e Esc nativos) ----
 // `cards` devolve a lista navegável do momento (na home, só os cards visíveis no filtro).
 import { posterSrc, videoSrc } from '../data/content';
+import { t } from '../i18n/client';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -30,17 +31,17 @@ export function initLightbox(cards: () => HTMLElement[], reduceMotion: boolean) 
       img.alt = title!;
       lbMedia.append(img);
     }
-    $('lb-cat').textContent = `${video === '1' ? 'Vídeo' : 'Foto'} · ${cat}`;
+    $('lb-cat').textContent = `${video === '1' ? t.video : t.photo} · ${cat}`;
     $('lb-title').textContent = title!;
     const b = $('lb-brand');
     b.hidden = !brand;
-    b.textContent = brand ? `Parceria com ${brand}` : '';
+    b.textContent = brand ? t.partnerWith(brand) : '';
     const vw = $('lb-views');
     vw.hidden = !views;
-    vw.textContent = views ? `${views} views no Instagram` : '';
-    $('lb-count').textContent = `${idx! + 1} de ${list.length}`;
+    vw.textContent = views ? t.viewsOn(views) : '';
+    $('lb-count').textContent = t.of(idx! + 1, list.length);
     $('lb-prev').hidden = $('lb-next').hidden = list.length < 2;
-    $('lb-live').textContent = `${title}, ${idx! + 1} de ${list.length}`;
+    $('lb-live').textContent = `${title}, ${t.of(idx! + 1, list.length)}`;
   }
 
   function open(i: number) {

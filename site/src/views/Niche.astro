@@ -1,0 +1,153 @@
+---
+// Páginas de nicho para a busca: o nicho é um roteiro de paradas (lugar, casa ou marca), cada uma com seus vídeos.
+// O índice do roteiro acompanha a rolagem (scripts/niche.ts). Conteúdo em data/niches.ts.
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+import LangSwitch from '../components/LangSwitch.astro';
+import MediaCard from '../components/MediaCard.astro';
+import Lightbox from '../components/Lightbox.astro';
+import Icons from '../components/Icons.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { EMAIL, RESPONSE_TIME, mailto } from '../data/content';
+import { nicheAlternates, nichePath, nichesIn, stopMedia, topViews, type Niche } from '../data/niches';
+import { home, LOCALE, mediaKitPdf, num, type Lang } from '../i18n';
+import { UI } from '../i18n/ui';
+
+interface Props { lang: Lang; niche: Niche }
+const { lang, niche } = Astro.props;
+const t = UI[lang];
+const MAILTO = mailto(lang);
+const MEDIA_KIT_PDF = mediaKitPdf(lang);
+const alternates = nicheAlternates(niche.key);
+const path = alternates[lang];
+const niches = nichesIn(lang);
+const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
+const stops = niche.stops.map((s) => {
+  const top = topViews(s);
+  return { ...s, media: stopMedia(s), top: top && num(top, lang) };
+});
+// o selo de marca some quando repete o nome da parada ("Kome Bela Vista" na parada "Kome")
+const sameName = (a: string, b: string) => a.toLowerCase().includes(b.toLowerCase()) || b.toLowerCase().includes(a.toLowerCase());
+const others = niches.filter((n) => n.key !== niche.key);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      url: abs(path),
+      name: niche.title,
+      description: niche.description,
+      inLanguage: LOCALE[lang],
+      about: { '@id': `${abs('/')}#carol` },
+      isPartOf: { '@type': 'WebSite', url: abs(home(lang)), name: 'Carol Limah' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Carol Limah', item: abs(home(lang)) },
+        { '@type': 'ListItem', position: 2, name: niche.label, item: abs(path) },
+      ],
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={LOCALE[lang]}>
+  <head>
+    <SeoHead lang={lang} title={niche.title} description={niche.description} alternates={alternates} jsonLd={jsonLd} />
+  </head>
+  <body>
+    <Icons />
+    <a class="skip" href="#conteudo">{t.skip}</a>
+    <nav class="nav" aria-label={t.navMain}>
+      <div class="wrap">
+        <a class="logo" href={home(lang)}>Carol <i>Limah</i></a>
+        <LangSwitch lang={lang} alternates={alternates} />
+        <button class="burger" type="button" id="burger" aria-label={t.openMenu} aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+          {niches.map((n) => <a href={nichePath(lang, n.key)} aria-current={n.key === niche.key ? 'page' : undefined}>{n.label}</a>)}
+          <a class="cta" href="#contato">{t.cta}</a>
+        </div>
+        <a class="route-now" id="route-now" href="#route" hidden><span class="route-now-dot" aria-hidden="true"></span><b id="route-now-name"></b><small id="route-now-count"></small></a>
+      </div>
+    </nav>
+
+    <main id="conteudo" tabindex="-1" class="wrap nx">
+      <header class="nx-intro">
+        <nav class="crumbs" aria-label={t.crumbs}>
+          <ol><li><a href={home(lang)}>Carol Limah</a></li><li aria-current="page">{niche.label}</li></ol>
+        </nav>
+        <h1 class="h1" set:html={niche.h1} />
+        <p class="hero-lead">{niche.lead}</p>
+        <div class="btns">
+          <a class="btn btn-primary" href={MAILTO}>{t.cta}</a>
+          <a class="btn btn-outline" href={MEDIA_KIT_PDF} download>{t.downloadKit}</a>
+        </div>
+      </header>
+
+      <aside class="route-wrap">
+        <nav class="route" id="route" aria-label={t.routeLabel}>
+          <ol>
+            {stops.map((s) => (
+              <li>
+                <a href={`#${s.id}`}>
+                  <b>{s.name}</b>
+                  <small>{t.videos(s.media.length)}{s.top && ` · ${t.upTo(s.top)}`}</small>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="stops">
+        {stops.map((s) => (
+          <section class="stop" id={s.id} aria-labelledby={`${s.id}-t`}>
+            <div class="stop-head">
+              <h2 class="stop-name" id={`${s.id}-t`}>{s.name}</h2>
+              <p class="stop-text">{s.where && <span class="stop-where">{s.where}. </span>}{s.text}</p>
+            </div>
+            <div class="stop-grid">
+              {s.media.map((m) => (
+                <MediaCard m={m} lang={lang} sizes="(max-width: 720px) 62vw, 240px" bare hideBrand={!!m.brand && sameName(m.brand, s.name)} />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </main>
+
+    <section class="nx-more" aria-labelledby="mais-t">
+      <div class="wrap">
+        <h2 class="nx-more-t" id="mais-t" set:html={t.otherRoutes} />
+        <ul class="nx-more-list">
+          {others.map((n) => <li><a href={nichePath(lang, n.key)}><b>{n.label}</b><span>{n.stops.map((s) => s.name).join(' · ')}</span></a></li>)}
+          <li><a href={`${home(lang)}#portfolio`}><b>{t.fullPortfolio}</b><span>{t.fullPortfolioSub}</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contato" class="contact">
+      <div class="wrap">
+        <h2 class="h2" set:html={niche.contact ?? t.contactH2} />
+        <a class="mail-btn" href={MAILTO}>{t.writeEmail}</a>
+        <p class="contact-addr"><span>{EMAIL}</span></p>
+        <p class="contact-time nx-time">{RESPONSE_TIME[lang]}</p>
+        <div class="contact-actions">
+          <a class="kit-btn" href={MEDIA_KIT_PDF} download>{t.downloadKit}</a>
+        </div>
+      </div>
+    </section>
+
+    <Lightbox lang={lang} />
+    <SiteFooter lang={lang} />
+
+    <script>
+      import '../scripts/niche';
+    </script>
+  </body>
+</html>

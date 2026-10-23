@@ -1,5 +1,6 @@
 import { initMenu } from './menu';
 import { bindCards, initLightbox } from './lightbox';
+import { t } from '../i18n/client';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 initMenu();
@@ -22,8 +23,8 @@ const updateNow = () => {
   now.hidden = routeSeen || current < 0;
   if (current >= 0) {
     nowName.textContent = stops[current].querySelector('h2')!.textContent;
-    nowCount.textContent = `${current + 1} de ${stops.length}`;
-    now.setAttribute('aria-label', `${nowName.textContent} ${current + 1} de ${stops.length}, voltar ao roteiro`);
+    nowCount.textContent = t.of(current + 1, stops.length);
+    now.setAttribute('aria-label', `${nowName.textContent} ${t.of(current + 1, stops.length)}, ${t.backToRoute}`);
   }
 };
 if (route && 'IntersectionObserver' in window) {

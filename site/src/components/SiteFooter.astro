@@ -1,18 +1,23 @@
 ---
 // Rodapé comum. Os links de nicho também servem de ligação interna para a busca.
 import { SOCIAL } from '../data/content';
-import { NICHES } from '../data/niches';
+import { nichePath, nichesIn } from '../data/niches';
+import { home, type Lang } from '../i18n';
+import { UI } from '../i18n/ui';
 
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = UI[lang];
 ---
 <footer>
   <div class="wrap">
-    <a class="logo" href="/">Carol <i>Limah</i></a>
-    <ul class="foot-niches" aria-label="Portfólio por tema">
-      {NICHES.map((n) => <li><a href={`/${n.slug}/`}>{n.label}</a></li>)}
+    <a class="logo" href={home(lang)}>Carol <i>Limah</i></a>
+    <ul class="foot-niches" aria-label={t.footNiches}>
+      {nichesIn(lang).map((n) => <li><a href={nichePath(lang, n.key)}>{n.label}</a></li>)}
     </ul>
-    <ul class="foot-social" aria-label="Redes sociais">
+    <ul class="foot-social" aria-label={t.footSocial}>
       {SOCIAL.map((l) => <li><a href={l.href} target="_blank" rel="me noopener">{l.label}</a></li>)}
     </ul>
-    <span>© 2026 Carol Limah · São Paulo, SP</span>
+    <span>© 2026 Carol Limah · {t.footPlace}</span>
   </div>
 </footer>

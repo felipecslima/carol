@@ -1,0 +1,216 @@
+---
+// Media kit em 1 página A4, num idioma (/media-kit/, /en/media-kit/, /es/media-kit/). Os PDFs
+// (`public/carol-limah-media-kit*.pdf`) saem daqui com `npm run pdf`; rode de novo sempre que mudar algo em content.ts.
+import '../styles/global.css';
+import {
+  AUDIENCE, BRANDS, EMAIL, posterSrc, INSIGHTS, MEDIA, REELS_STATS, RESPONSE_TIME, SERVICES, TOP_REELS, WHATSAPP,
+  audienceSummary, reachMultiple, type Share,
+} from '../data/content';
+import { LOCALE, num, pct, type Lang } from '../i18n';
+import { UI } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = UI[lang];
+const scaled = <T,>(list: Share<T>[]) => {
+  const max = Math.max(...list.map((s) => s.pct));
+  return list.map((s) => ({ ...s, w: `${((s.pct / max) * 100).toFixed(1)}%` }));
+};
+// 6 publis cabem na folha: segue a ordem do portfólio (por views), no máximo 2 por marca
+const perBrand: Record<string, number> = {};
+const publis = MEDIA.filter((m) => m.brand && (perBrand[m.brand] = (perBrand[m.brand] ?? 0) + 1) <= 2).slice(0, 6);
+const thumb = (id: string, video: boolean) => (video ? posterSrc(id, 480) : `/media/${id}-600.webp`);
+// +55 11 9xxxx-xxxx
+const waLabel = WHATSAPP.replace(/^(\d{2})(\d{2})(\d{4,5})(\d{4})$/, '+$1 $2 $3-$4');
+---
+
+<!doctype html>
+<html lang={LOCALE[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Media kit · Carol Limah</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <style is:global>
+      @page { size: A4; margin: 0; }
+      html, body { background: #0d0907; }
+      @media print { html, body { background: var(--bg); } }
+      .sheet {
+        width: 210mm; height: 297mm; margin: 0 auto; overflow: hidden;
+        display: flex; flex-direction: column;
+        background: var(--bg); color: var(--text);
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      }
+      .mk-body { flex: 1; padding: 12mm 13mm 0; display: flex; flex-direction: column; gap: 4.5mm; }
+      .mk-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+      .mk-h { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1; letter-spacing: -0.01em; }
+      .mk-h em { font-style: italic; color: var(--accent); }
+
+      /* Topo */
+      .mk-top { display: grid; grid-template-columns: 1fr 52mm; gap: 8mm; align-items: stretch; }
+      .mk-intro { display: flex; flex-direction: column; gap: 4mm; }
+      .mk-name { font-family: var(--serif); font-weight: 400; font-size: 64px; line-height: 0.9; letter-spacing: -0.02em; }
+      .mk-name i { color: var(--accent); }
+      .mk-lead { font-family: var(--serif); font-size: 22px; line-height: 1.2; color: var(--text-2); max-width: 105mm; }
+      .mk-lead em { font-style: italic; color: var(--accent); }
+      .mk-handle { font-size: 12px; color: var(--muted); }
+      .mk-stats { margin: 3mm 0 0; display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 4mm; padding-top: 4mm; border-top: 1px solid rgba(243, 236, 226, 0.14); }
+      .mk-stats div { display: flex; flex-direction: column-reverse; gap: 2px; }
+      .mk-stats dd { margin: 0; font-family: var(--serif); font-size: 32px; line-height: 1; }
+      .mk-stats dt { font-size: 11px; line-height: 1.3; color: var(--subtle); }
+      .mk-photo { position: relative; }
+      .mk-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; border-radius: 14px; display: block; }
+      .mk-photo .seal { position: absolute; left: -6mm; bottom: 6mm; padding: 7px 10px; border-radius: 10px; background: var(--cream); color: var(--bg); font-size: 11px; font-weight: 600; line-height: 1.25; transform: rotate(-3deg); }
+      .mk-photo .seal i { font-family: var(--serif); font-size: 15px; font-weight: 400; }
+
+      /* Público + publis */
+      .mk-mid { display: grid; grid-template-columns: 70mm 1fr; gap: 8mm; }
+      .mk-block { display: flex; flex-direction: column; gap: 3.5mm; }
+      .mk-sum { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; font-size: 12px; line-height: 1.4; color: var(--muted); }
+      .mk-sum b { font-weight: 600; color: var(--text); }
+      .mk-block .split { height: 14px; border-radius: 4px; }
+      .mk-block .split-legend { font-size: 11px; }
+      .mk-block .split-legend b { display: inline; font-family: var(--sans); font-weight: 600; font-size: 12px; }
+      .mk-label { font-size: 11px; font-weight: 600; color: var(--text-2); }
+      .mk-block .hbars { gap: 3px; }
+      .mk-block .hbar { gap: 2px 8px; }
+      .mk-block .hbar-label { font-size: 11px; }
+      .mk-block .hbar b { font-family: var(--sans); font-weight: 600; font-size: 11px; }
+      .mk-block .hbar-track { height: 4px; }
+      .mk-publis { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+      .mk-publis li { position: relative; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: var(--bg-video); }
+      .mk-publis img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block; }
+      .mk-publis .cap { position: absolute; inset: auto 0 0; padding: 14mm 2.5mm 2.5mm; background: linear-gradient(180deg, rgba(23, 17, 13, 0), rgba(23, 17, 13, 0.94)); display: flex; flex-direction: column; gap: 1px; }
+      .mk-publis small { font-size: 10px; font-weight: 700; letter-spacing: 0.03em; white-space: nowrap; text-transform: uppercase; color: var(--accent-light); }
+      .mk-publis strong { font-family: var(--serif); font-weight: 400; font-size: 15px; line-height: 1.05; }
+      .mk-publis span { font-size: 11px; font-weight: 600; color: var(--text-2); }
+      .mk-case { font-size: 12px; line-height: 1.45; color: var(--muted); }
+      .mk-case b { font-weight: 600; color: var(--text); }
+
+      /* Formatos */
+      .mk-svc { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(243, 236, 226, 0.12); border: 1px solid rgba(243, 236, 226, 0.12); border-radius: 12px; overflow: hidden; }
+      .mk-svc li { background: var(--bg); padding: 3.5mm 3.5mm 4mm; display: flex; flex-direction: column; gap: 1.5mm; }
+      .mk-svc h3 { font-family: var(--serif); font-weight: 400; font-size: 17px; line-height: 1.05; }
+      .mk-svc p { font-size: 11px; line-height: 1.45; color: var(--muted); }
+
+      /* Marcas */
+      .mk-brands { display: flex; flex-direction: column; gap: 2mm; }
+      .mk-brands ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 1mm 14px; font-family: var(--serif); font-size: 14px; line-height: 1.25; color: var(--text-2); }
+      .mk-brands li.it { font-style: italic; }
+
+      /* Rodapé de contato */
+      .mk-source { padding: 2mm 13mm 3mm; font-size: 10px; color: var(--subtle); }
+      .mk-contact { padding: 5.5mm 13mm 6.5mm; background: var(--accent); color: var(--bg); display: grid; grid-template-columns: 1fr auto; gap: 2mm 8mm; align-items: end; }
+      .mk-contact .mk-h { font-size: 28px; white-space: nowrap; }
+      .mk-contact .mk-h em { color: inherit; }
+      .mk-contact a { color: var(--bg); }
+      .mk-mail { font-size: 15px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+      .mk-meta { grid-column: 1 / -1; display: flex; gap: 6mm; font-size: 11px; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <main class="sheet">
+      <div class="mk-body">
+        <header class="mk-top">
+          <div class="mk-intro">
+            <span class="mk-eyebrow">{t.mkEyebrow}</span>
+            <h1 class="mk-name">Carol <i>Limah</i></h1>
+            <p class="mk-lead" set:html={t.heroH1} />
+            <p class="mk-handle">{t.mkHandle}</p>
+            <dl class="mk-stats">
+              <div><dt>{t.mkFollowers}</dt><dd>{num(INSIGHTS.followers, lang)}</dd></div>
+              <div><dt>{t.mkViews}</dt><dd>{num(INSIGHTS.views, lang)}</dd></div>
+              <div><dt>{t.mkAverage}</dt><dd>{num(REELS_STATS.average, lang)}</dd></div>
+              <div><dt>{t.mkTop}</dt><dd>{num(TOP_REELS[0].views, lang)}</dd></div>
+            </dl>
+          </div>
+          <div class="mk-photo">
+            <img src="/media/p9.webp" alt={t.altP9} />
+            <div class="seal">Amazonas<br /><i>→ São Paulo</i></div>
+          </div>
+        </header>
+
+        <section class="mk-mid">
+          <div class="mk-block">
+            <h2 class="mk-h" set:html={t.audienceH} />
+            <ul class="mk-sum">
+              {audienceSummary(lang).map((s) => <li><b>{s.value}</b> {s.text}</li>)}
+            </ul>
+            <div class="split" aria-hidden="true">
+              {AUDIENCE.gender.map((g, i) => <span class={`seg tone-${i === 0 ? 0 : 2}`} style={`flex-basis:${g.pct}%`}></span>)}
+            </div>
+            <ul class="split-legend">
+              {AUDIENCE.gender.map((g) => <li><b>{pct(g.pct, lang)}</b> {g.label[lang]}</li>)}
+            </ul>
+            <span class="mk-label">{t.age}</span>
+            <ul class="hbars">
+              {scaled(AUDIENCE.age).filter((s) => s.pct >= 5).map((s) => (
+                <li class:list={['hbar', { key: s.key }]}>
+                  <span class="hbar-label">{s.label} {t.ageUnit}</span>
+                  <span class="hbar-track" aria-hidden="true"><span class="hbar-fill" style={`width:${s.w}`}></span></span>
+                  <b>{pct(s.pct, lang)}</b>
+                </li>
+              ))}
+            </ul>
+            <span class="mk-label">{t.cities}</span>
+            <ul class="hbars">
+              {scaled(AUDIENCE.cities).filter((s) => s.pct >= 5).map((s) => (
+                <li class:list={['hbar', { key: s.key }]}>
+                  <span class="hbar-label">{s.label}</span>
+                  <span class="hbar-track" aria-hidden="true"><span class="hbar-fill" style={`width:${s.w}`}></span></span>
+                  <b>{pct(s.pct, lang)}</b>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="mk-block">
+            <h2 class="mk-h" set:html={t.mkPublisH} />
+            <ul class="mk-publis">
+              {publis.map((m) => (
+                <li>
+                  <img src={thumb(m.id, m.video)} alt="" />
+                  <div class="cap">
+                    <small>{m.brand}</small>
+                    <strong>{m.title[lang]}</strong>
+                    {m.views && <span>{num(m.views, lang)} {t.views}</span>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <p class="mk-case" set:html={t.mkCase({
+              mlCount: REELS_STATS.mlCount, mlAverage: num(REELS_STATS.mlAverage, lang), count: REELS_STATS.count,
+              average: num(REELS_STATS.average, lang), reach: reachMultiple(lang),
+            })} />
+          </div>
+        </section>
+
+        <section class="mk-block">
+          <h2 class="mk-h" set:html={t.mkFormatsH} />
+          <ul class="mk-svc">
+            {SERVICES.map((s) => (
+              <li><h3 set:html={s.title[lang]} /><p>{s.text[lang]}</p></li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="mk-brands">
+          <h2 class="mk-label">{t.brandsT}</h2>
+          <ul>{BRANDS.map((b, i) => <li class:list={{ it: i % 2 }}>{b}</li>)}</ul>
+        </section>
+      </div>
+
+      <p class="mk-source">{t.mkSource(INSIGHTS.period[lang], REELS_STATS.count, REELS_STATS.period[lang])}</p>
+      <footer class="mk-contact">
+        <h2 class="mk-h" set:html={t.contactH2} />
+        <a class="mk-mail" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        <div class="mk-meta">
+          <span>{RESPONSE_TIME[lang]}</span>
+          <a href="https://www.instagram.com/eu.carollimah">instagram.com/eu.carollimah</a>
+          {WHATSAPP && <a href={`https://wa.me/${WHATSAPP}`}>WhatsApp {waLabel}</a>}
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

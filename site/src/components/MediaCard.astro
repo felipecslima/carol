@@ -1,44 +1,50 @@
 ---
 // Card 9:16 do portfólio (home e páginas de nicho). Abre o lightbox via scripts/lightbox.ts.
-import { groupsOf, posterSrc, videoSrc, type MediaItem } from '../data/content';
+import { CAT_LABEL, groupsOf, posterSrc, videoSrc, type MediaItem } from '../data/content';
+import { num, type Lang } from '../i18n';
+import { UI } from '../i18n/ui';
 
 interface Props {
   m: MediaItem;
+  lang: Lang;
   sizes?: string;
   /** páginas de nicho: sem rótulo de categoria e sem selo de marca quando a parada já tem o nome dela */
   bare?: boolean;
   hideBrand?: boolean;
 }
-const { m, sizes = '(max-width: 720px) 50vw, 300px', bare = false, hideBrand = false } = Astro.props;
+const { m, lang, sizes = '(max-width: 720px) 50vw, 300px', bare = false, hideBrand = false } = Astro.props;
+const t = UI[lang];
+const title = m.title[lang];
+const views = m.views && num(m.views, lang);
 const photoSrcset = (id: string) => `/media/${id}-600.webp 600w, /media/${id}.webp 1100w`;
 ---
 <button
   class="card" type="button"
-  data-cat={m.cat} data-groups={groupsOf(m).join(' ')} data-title={m.title} data-brand={m.brand ?? ''}
-  data-video={m.video ? '1' : '0'} data-id={m.id} data-views={m.views ?? ''}
+  data-cat={CAT_LABEL[m.cat][lang]} data-groups={groupsOf(m).join(' ')} data-title={title} data-brand={m.brand ?? ''}
+  data-video={m.video ? '1' : '0'} data-id={m.id} data-views={views || ''}
 >
   {m.video
     // capa num <img loading="lazy">: só baixa perto da tela (o poster do <video> baixaria todas de uma vez).
     // O vídeo fica por cima, invisível até começar a tocar no hover (scripts/lightbox.ts).
     ? <Fragment>
-        <img class="media" src={posterSrc(m.id)} srcset={`${posterSrc(m.id)} 360w, ${posterSrc(m.id, 720)} 720w`} sizes={sizes} alt={`Capa do vídeo ${m.title}, Carol Limah`} aria-hidden="true" loading="lazy" decoding="async" />
+        <img class="media" src={posterSrc(m.id)} srcset={`${posterSrc(m.id)} 360w, ${posterSrc(m.id, 720)} 720w`} sizes={sizes} alt={t.videoCover(title)} aria-hidden="true" loading="lazy" decoding="async" />
         <video src={`${videoSrc(m.id)}#t=0.8`} muted loop playsinline preload="none" aria-hidden="true"></video>
       </Fragment>
-    : <img class="media" src={`/media/${m.id}.webp`} srcset={photoSrcset(m.id)} sizes={sizes} alt={`Foto: ${m.title}, Carol Limah`} loading="lazy" />}
+    : <img class="media" src={`/media/${m.id}.webp`} srcset={photoSrcset(m.id)} sizes={sizes} alt={t.photo(title)} loading="lazy" />}
   <div class="shade"></div>
   <!-- o nome do botão é o próprio texto visível (WCAG 2.5.3); o que só o leitor de tela precisa vai em sr-only -->
   <div class="cap">
-    {m.video && <span class="sr-only">Vídeo: </span>}<strong>{m.title}</strong>
-    {m.views ? (
+    {m.video && <span class="sr-only">{t.video}: </span>}<strong>{title}</strong>
+    {views ? (
       <span class="views">
         <svg aria-hidden="true"><use href="#i-eye" /></svg>
-        {m.views} views
+        {views} {t.views}
       </span>
     ) : <span class="views" aria-hidden="true" style="visibility: hidden">&nbsp;</span>}
   </div>
   {m.brand && (hideBrand
-    ? <span class="sr-only">, parceria com {m.brand}</span>
-    : <span class="brand"><span class="sr-only">, parceria com </span>{m.brand}</span>)}
+    ? <span class="sr-only">, {t.partnerWith} {m.brand}</span>
+    : <span class="brand"><span class="sr-only">, {t.partnerWith} </span>{m.brand}</span>)}
   {m.video && (
     <span class="play" aria-hidden="true">
       <svg><use href="#i-play" /></svg>

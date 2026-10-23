@@ -1,20 +1,24 @@
 ---
-// <head> comum: título, descrição, canonical, prévia de link e JSON-LD. URLs absolutas vêm do `site` em astro.config.mjs.
+// <head> comum: título, descrição, canonical, versões em outros idiomas, prévia de link e JSON-LD.
+// URLs absolutas vêm do `site` em astro.config.mjs.
 import { CLOUDINARY_ORIGIN } from '../data/content';
+import { LANGS, LOCALE, OG_LOCALE, type L, type Lang } from '../i18n';
+import { UI } from '../i18n/ui';
 
 interface Props {
+  lang: Lang;
   title: string;
   description: string;
-  /** caminho da página, ex. '/' ou '/viagens-e-hospedagem/' */
-  path: string;
+  /** caminho desta página em cada idioma, ex. { pt: '/viagens-e-hospedagem/', en: '/en/travel-and-stays/', … } */
+  alternates: L;
   ogType?: string;
   jsonLd?: object;
   /** páginas fora da busca (404): sem canonical nem prévia de link */
   noindex?: boolean;
 }
-const { title, description, path, ogType = 'website', jsonLd, noindex = false } = Astro.props;
+const { lang, title, description, alternates, ogType = 'website', jsonLd, noindex = false } = Astro.props;
 const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
-const canonical = abs(path);
+const canonical = abs(alternates[lang]);
 const ogImage = abs('/og.jpg');
 ---
 <meta charset="utf-8" />
@@ -23,18 +27,19 @@ const ogImage = abs('/og.jpg');
 <meta name="description" content={description} />
 {noindex ? <meta name="robots" content="noindex" /> : <Fragment>
 <link rel="canonical" href={canonical} />
-<link rel="alternate" hreflang="pt-BR" href={canonical} />
-<link rel="alternate" hreflang="x-default" href={canonical} />
+{LANGS.map((l) => <link rel="alternate" hreflang={LOCALE[l]} href={abs(alternates[l])} />)}
+<link rel="alternate" hreflang="x-default" href={abs(alternates.pt)} />
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonical} />
 <meta property="og:site_name" content="Carol Limah" />
-<meta property="og:locale" content="pt_BR" />
+<meta property="og:locale" content={OG_LOCALE[lang]} />
+{LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={OG_LOCALE[l]} />)}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Carol Limah, criadora de conteúdo em São Paulo" />
+<meta property="og:image:alt" content={UI[lang].ogImageAlt} />
 <meta name="twitter:card" content="summary_large_image" />
 </Fragment>}
 {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}

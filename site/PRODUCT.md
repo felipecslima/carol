@@ -20,6 +20,7 @@ Amazonense em São Paulo que mostra restaurantes, hotéis, pousadas e viagens de
 - Vídeos no Cloudinary; dados de alcance e público vêm de prints do Instagram Insights e da aba Reels, registrados em `src/data/content.ts`.
 - Media kit em PDF gerado da página `/media-kit/` (`npm run pdf`).
 - Páginas por nicho para busca: Restaurantes em SP, Viagens e hospedagem, Publis e UGC.
+- Três idiomas: português na raiz (`/`), inglês em `/en/` e espanhol latino-americano neutro em `/es/`, com slugs traduzidos e um media kit em PDF por idioma. Textos das páginas em `src/i18n/ui.ts`; textos do conteúdo ao lado do dado em `src/data/`. O seletor PT · EN · ES fica sempre visível na nav.
 
 ## Capabilities and Constraints
 - Formatos vendidos: Reels & stories, Hotéis & pousadas, Restaurantes em SP, Vídeos UGC.
@@ -27,7 +28,7 @@ Amazonense em São Paulo que mostra restaurantes, hotéis, pousadas e viagens de
 - Sem preços, pacotes, taxa de engajamento ou métricas de stories confirmados.
 
 ## Brand Commitments
-- Nome "Carol Limah", @eu.carollimah. Voz em primeira pessoa, espontânea, divertida e sincera; português do Brasil.
+- Nome "Carol Limah", @eu.carollimah. Voz em primeira pessoa, espontânea, divertida e sincera; português do Brasil como original, e as versões em inglês e espanhol no mesmo tom.
 - Tom visual chique e editorial; nada de ornamentos kitsch.
 - Nunca mencionar a avó da Carol ("vozinha") em site, PDF ou textos.
 

@@ -1,5 +1,6 @@
 import { initMenu } from './menu';
 import { bindCards, initLightbox } from './lightbox';
+import { t as tr } from '../i18n/client';
 
 // carregado pelo script da Amplitude no SeoHead; pode faltar se um bloqueador barrar o CDN
 declare global {
@@ -23,7 +24,7 @@ if (!reduceMotion) {
       marquees.forEach((m) => m.classList.toggle('paused', paused));
       marqueeToggles.forEach((b) => {
         b.classList.toggle('paused', paused);
-        b.setAttribute('aria-label', paused ? 'Retomar animação' : 'Pausar animação');
+        b.setAttribute('aria-label', paused ? tr.resumeAnim : tr.pauseAnim);
       });
     });
   });
@@ -107,22 +108,22 @@ if (navigator.clipboard?.writeText) {
     try {
       await navigator.clipboard.writeText(copy.dataset.email!);
       window.amplitude?.track('Email Copied');
-      copy.textContent = 'Copiado!';
-      status.textContent = 'E-mail copiado.';
+      copy.textContent = tr.copied;
+      status.textContent = tr.copiedStatus;
       status.classList.add('sr-only');
       t = window.setTimeout(() => {
-        copy.textContent = 'Copiar';
+        copy.textContent = tr.copy;
         status.textContent = '';
       }, 2500);
     } catch {
-      copy.textContent = 'Copiar';
+      copy.textContent = tr.copy;
       const range = document.createRange();
       range.selectNodeContents(emailText);
       const sel = window.getSelection();
       sel?.removeAllRanges();
       sel?.addRange(range);
       status.classList.remove('sr-only');
-      status.textContent = 'Não deu pra copiar. O e-mail está selecionado: é só copiar.';
+      status.textContent = tr.copyFailed;
     }
   });
 }
