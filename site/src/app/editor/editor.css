@@ -745,3 +745,37 @@
   object-fit: cover;
   display: block;
 }
+
+.ed-link-campo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 14px;
+  border: 2px solid var(--ed-borda);
+  border-radius: 14px;
+  background: #fff;
+}
+.ed-link-campo:focus-within {
+  border-color: var(--ed-escuro);
+}
+.ed-link-campo span {
+  font-weight: 700;
+  color: var(--ed-suave);
+}
+.ed-form .ed-link-campo input[type='text'] {
+  border: 0;
+  padding: 12px 0;
+}
+.ed-form .ed-link-campo input[type='text']:focus {
+  outline: none;
+}
+.ed-erro {
+  font-size: 13px;
+  color: var(--ed-rosa-escuro);
+  font-weight: 600;
+}
+.ed-sugestoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

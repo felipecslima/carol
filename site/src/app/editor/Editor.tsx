@@ -271,6 +271,13 @@ export default function Editor() {
         descricao="Confira antes de publicar."
       >
         <PainelRevisao
+          link={projeto.link ?? ''}
+          arroba={
+            String(projeto.blocos.find((b) => b.tipo === 'capa')?.dados.arroba ?? '')
+              .split('·')[0]
+              ?.trim() ?? ''
+          }
+          aoMudarLink={(link) => e.substituir({ ...projeto, link })}
           alertas={alertas}
           aoIr={(id) => {
             e.selecionar(id);

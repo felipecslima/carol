@@ -2,6 +2,7 @@
 // faltando ou inválido. Amarelo a creator pode ignorar: foto, vídeo e @ vazios. Só olha as seções visíveis.
 import type { Registro } from './bloco';
 import { blocosVisiveis, type Bloco, type Projeto } from './projeto';
+import { problemaDoSlug } from './slug';
 
 export type Gravidade = 'vermelho' | 'amarelo';
 
@@ -52,6 +53,9 @@ export function revisar(projeto: Projeto, referencia: Projeto, registro: Registr
         mensagem: `${nomeDe(b)}: ${iguais.map((c) => `“${c.rotulo}”`).join(', ')} ainda ${iguais.length === 1 ? 'está' : 'estão'} com o texto de exemplo.`,
       });
   }
+
+  const problemaLink = projeto.link ? problemaDoSlug(projeto.link) : 'Escolha o link do seu portfólio.';
+  if (problemaLink) alertas.push({ gravidade: 'vermelho', mensagem: `Link: ${problemaLink}` });
 
   const contato = blocosVisiveis(projeto, registro).find((b) => b.tipo === 'contato');
   if (!contato) {

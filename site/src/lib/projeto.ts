@@ -28,6 +28,8 @@ export const projetoSchema = z.object({
   cantos: z.enum(['retos', 'suaves', 'redondos']),
   clima: z.enum(['claro', 'escuro']).default('claro'),
   modoIniciante: z.boolean().default(false),
+  /** link escolhido para publicar (`/c/<link>`); vira `projects.slug` quando o servidor reservar */
+  link: z.string().optional(),
   /** números informados pela creator (formato do docs/04-ocr-prints.md, 3.2); alimentam Números e Público */
   numeros: numerosSchema.optional(),
   blocos: z.array(bloco).max(MAXIMO_DE_BLOCOS, `No máximo ${MAXIMO_DE_BLOCOS} blocos`),
