@@ -14,14 +14,16 @@ import { CamposDoBloco } from './CamposDoBloco';
 import { criarEditor } from './estado';
 import { progresso } from '@lib/progresso';
 import { aplicarNumeros } from '@lib/numeros';
+import { podePublicar, revisar } from '@lib/revisao';
+import { PainelRevisao } from './PainelRevisao';
 import { Gaveta } from './Gaveta';
 import { PainelNumeros } from './PainelNumeros';
-import { Camadas, Desfazer, Esconder, Lapis, Olho, Mais, Paleta, Refazer, Subir, Descer } from './icones';
+import { Foguete, Camadas, Desfazer, Esconder, Lapis, Olho, Mais, Paleta, Refazer, Subir, Descer } from './icones';
 import { PainelAdicionar, PainelEstilo, PainelSecoes } from './Paineis';
 import { carregarRascunho, salvarRascunho } from './persistencia';
 import './editor.css';
 
-type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | null;
+type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | null;
 
 function temaDoProjeto(p: Projeto): CSSProperties {
   const origem = p.corPropria ?? NUVEM.paletas[p.paleta]?.origem ?? NUVEM.paletas[0].origem;
@@ -71,6 +73,8 @@ export default function Editor() {
   }, [painel, selecionado]);
 
   const { seus, total } = useMemo(() => progresso(projeto, PROJETO_DE_EXEMPLO, REGISTRO), [projeto]);
+  const alertas = useMemo(() => revisar(projeto, PROJETO_DE_EXEMPLO, REGISTRO), [projeto]);
+  const vermelhos = alertas.filter((x) => x.gravidade === 'vermelho').length;
   const bloco = projeto.blocos.find((b) => b.id === selecionado);
   const definicao = bloco && REGISTRO[bloco.tipo];
   const indice = bloco ? projeto.blocos.indexOf(bloco) : -1;
@@ -220,6 +224,18 @@ export default function Editor() {
         >
           <Paleta /> Estilo
         </button>
+        <button
+          type="button"
+          aria-pressed={painel === 'revisao'}
+          onClick={() => setPainel(painel === 'revisao' ? null : 'revisao')}
+        >
+          <Foguete /> Publicar
+          {!podePublicar(alertas) && (
+            <span className="ed-pendencias" aria-label={`${vermelhos} pontos a resolver`}>
+              {vermelhos}
+            </span>
+          )}
+        </button>
       </nav>
 
       <Gaveta
@@ -237,6 +253,20 @@ export default function Editor() {
             aoTrocarVariacao={(v) => e.trocarVariacao(bloco.id, v)}
           />
         )}
+      </Gaveta>
+      <Gaveta
+        aberta={painel === 'revisao'}
+        aoFechar={() => setPainel(null)}
+        titulo="Revisão final"
+        descricao="Confira antes de publicar."
+      >
+        <PainelRevisao
+          alertas={alertas}
+          aoIr={(id) => {
+            e.selecionar(id);
+            setPainel('editar');
+          }}
+        />
       </Gaveta>
       <Gaveta
         aberta={painel === 'numeros'}

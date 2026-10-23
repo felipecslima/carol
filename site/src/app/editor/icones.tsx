@@ -35,3 +35,6 @@ export const Olho = icone(
     <circle cx="12" cy="12" r="3" />
   </>,
 );
+export const Foguete = icone(
+  <path d="M5 15c-1 1-2 4-2 6 2 0 5-1 6-2M12 15l-3-3c1-4 4-8 11-9 0 7-4 10-9 9zM9 12l-4 1 1-4 4-1M15 9a1 1 0 1 0 0 .01" />,
+);

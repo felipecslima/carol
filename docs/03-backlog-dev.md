@@ -109,7 +109,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E11. Publicação e páginas públicas
 
-- [ ] **DEV-140** Revisão final: alertas vermelhos (placeholder, número de exemplo, sem contato) e amarelos.
+- [x] **DEV-140** Revisão final: alertas vermelhos (placeholder, número de exemplo, sem contato) e amarelos. *`lib/revisao.ts` e aba Publicar; o botão Publicar fica desabilitado até a E11 a E13.*
 - [ ] **DEV-141** Escolha do link `/nome`: regras de formato, checagem em tempo real, sugestões, nomes reservados.
 - [ ] **DEV-142** Rota pública `/c/[slug]` renderizada no servidor a partir do JSON publicado, quase sem JavaScript.
 - [ ] **DEV-143** Versão publicada separada do rascunho (editar não muda o que está no ar até publicar de novo).
