@@ -283,6 +283,23 @@ Prévia visual dos blocos (só em `npm run dev`, 404 em produção): `/app/bloco
 
 Dependência só para dentro: `app → blocks → themes/lib`; `server → lib`. Segredos nunca chegam a `app/` nem a `blocks/`.
 
+### Rotas do produto (Portfólio Creator)
+Todas fora da busca (`noindex`) e sem Amplitude por fazer (ver `docs/PROGRESSO.md`, "Atenção").
+
+| Rota | O que é | Arquivo |
+|---|---|---|
+| `/app/` | entrada: leva ao assistente ou ao editor conforme haja rascunho | `app/App.tsx` |
+| `/app/novo/` | assistente: modelo, 7 perguntas, vídeos e números (sem IA) | `app/assistente/`, `lib/montagem.ts` |
+| `/app/editor/` | editor mobile: seleção por toque, gaveta de edição, Seções, Adicionar, Mídias, Estilo, Publicar (revisão final e link), Ver, números | `app/editor/` |
+| `/app/midia-kit/` | mídia kit em 1 página A4 (mesmos blocos, escala automática, marca d'água de teste, PDF pela impressão) | `app/midia-kit/` |
+| `/app/blocos/` | prévia dos blocos e do modelo Nuvem (só em `npm run dev`; 404 em produção) | `pages/app/blocos.astro` |
+| `/api/upload/assinatura` | assina o envio de foto/vídeo ao Cloudinary (SSR) | `pages/api/upload/assinatura.ts` |
+| `/api/ping` | teste do servidor (SSR) | `pages/api/ping.ts` |
+
+**Estado hoje:** tudo salva no aparelho (`localStorage`: rascunho `pc:rascunho:v1`, mídias `pc:midias:v1`, aparelho `pc:aparelho`). Não há login, banco ligado nem publicação: a E2 (banco), E3 (login) e E11 a E13 (publicar, pedidos) dependem de um projeto Supabase novo. As migrations já estão em `supabase/migrations/` (validadas em PGlite, ainda não aplicadas) e o roteiro de RLS em `supabase/tests/rls.mjs`.
+
+**Módulos de `src/lib/` (puros, sem interface):** `bloco.ts` (contrato), `projeto.ts` (schema do projeto e validação), `operacoes.ts` (mover, esconder, devolver…), `montagem.ts` (respostas → projeto), `numeros.ts` (números informados e seu preenchimento nos blocos), `progresso.ts` ("X de Y já são seus"), `revisao.ts` (alertas vermelhos e amarelos), `slug.ts` (link `/c/<link>`).
+
 ### Qualidade de código (`npm run check`)
 Roda, em ordem: `astro check` (TypeScript estrito, inclusive `.astro`), ESLint, Prettier (só confere) e Vitest. Individuais: `npm run typecheck`, `lint`, `format:check`, `format` (reescreve), `test`; e2e à parte com `npm run test:e2e` (precisa do `npm run build` antes).
 - **Escopo:** lint e Prettier valem só para o código do produto (`src/app`, `blocks`, `themes`, `lib`, `server`, `pages/app`, `pages/api`, `e2e` e configs). O site da Carol não é reformatado nem lintado (ver `eslint.config.js` e `.prettierignore`); o TypeScript estrito vale para tudo e já passa.
