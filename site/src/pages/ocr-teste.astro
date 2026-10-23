@@ -1,0 +1,152 @@
+---
+// Harness de teste da leitura de prints (só em desenvolvimento; no build vira redirect para a home).
+if (!import.meta.env.DEV) return Astro.redirect('/');
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Teste de leitura de prints</title>
+    <style>
+      body { font: 15px/1.5 system-ui, sans-serif; max-width: 920px; margin: 0 auto; padding: 24px 16px 80px; color: #1d1d1b; }
+      h1 { font-size: 22px; margin: 0 0 4px; }
+      p.sub { color: #666; margin: 0 0 20px; }
+      label.drop { display: block; border: 1.5px dashed #999; border-radius: 10px; padding: 28px; text-align: center; cursor: pointer; }
+      .linha { display: flex; gap: 12px; align-items: center; margin: 14px 0; flex-wrap: wrap; }
+      input[type=text] { padding: 8px 10px; border: 1px solid #bbb; border-radius: 6px; }
+      button { padding: 9px 16px; border: 0; border-radius: 6px; background: #1d1d1b; color: #fff; font: inherit; cursor: pointer; }
+      button:disabled { opacity: .5; cursor: wait; }
+      .print { border: 1px solid #ddd; border-radius: 10px; padding: 14px; margin: 16px 0; }
+      .print h2 { font-size: 16px; margin: 0 0 6px; word-break: break-all; }
+      .tag { display: inline-block; padding: 1px 8px; border-radius: 99px; background: #eee; font-size: 12px; margin-right: 4px; }
+      .tag.ok { background: #d9f2dd; } .tag.reserva { background: #ffe0d6; }
+      table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 14px; }
+      th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid #eee; }
+      .baixa { color: #b3261e; font-weight: 600; }
+      pre { background: #f6f6f4; padding: 10px; border-radius: 8px; overflow: auto; font-size: 12px; max-height: 360px; }
+      details { margin-top: 8px; }
+      #estado { color: #666; }
+    </style>
+  </head>
+  <body>
+    <h1>Teste de leitura de prints</h1>
+    <p class="sub">Tudo roda no seu navegador: o print não sai daqui. Na primeira vez, baixa o modelo de OCR (alguns MB).</p>
+
+    <label class="drop">
+      <input id="arquivos" type="file" accept="image/*" multiple hidden />
+      <span id="rotulo">Escolher de 1 a 7 prints</span>
+    </label>
+    <div class="linha">
+      <input id="conta" type="text" placeholder="@conta cadastrada (opcional)" />
+      <button id="ler" disabled>Ler prints</button>
+      <span id="estado"></span>
+    </div>
+    <div id="saida"></div>
+
+    <script>
+      import { lerPrints, LIMITE_CONFIANCA, MAX_PRINTS } from '../../ocr/index';
+      import { criarMotorTesseract, type Gravacao } from '../../ocr/motor-tesseract';
+      import type { PrintLido } from '../../ocr/tipos';
+
+      const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+      const input = $<HTMLInputElement>('arquivos');
+      const botao = $<HTMLButtonElement>('ler');
+      const estado = $('estado');
+      const saida = $('saida');
+
+      input.addEventListener('change', () => {
+        const n = input.files?.length ?? 0;
+        $('rotulo').textContent = n ? `${n} print(s) escolhido(s)` : 'Escolher de 1 a 7 prints';
+        botao.disabled = n < 1 || n > MAX_PRINTS;
+        if (n > MAX_PRINTS) estado.textContent = `No máximo ${MAX_PRINTS} prints.`;
+      });
+
+      const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!);
+      const conf = (c: number) => `<span class="${c < LIMITE_CONFIANCA ? 'baixa' : ''}">${c.toFixed(2)}</span>`;
+
+      function linhasTabela(p: PrintLido): string {
+        const l: string[] = [];
+        for (const [nome, c] of Object.entries(p.campos)) {
+          l.push(`<tr><td>${nome}</td><td>${esc(c.texto)}${c.confirmado ? ' ✓' : ''}</td><td>${c.valor}</td><td>${conf(c.confianca)}</td></tr>`);
+        }
+        for (const [lista, itens] of Object.entries(p.listas ?? {})) {
+          for (const i of itens) l.push(`<tr><td>${lista}</td><td>${esc(i.nome)} · ${esc(i.texto)}</td><td>${i.pct}</td><td>${conf(i.confianca)}</td></tr>`);
+        }
+        for (const c of p.reels ?? []) {
+          l.push(`<tr><td>reel L${c.linha} C${c.coluna}</td><td>${esc(c.texto)}</td><td>${c.valor}</td><td>${conf(c.confianca)}</td></tr>`);
+        }
+        return l.length ? `<table><tr><th>campo</th><th>lido</th><th>valor</th><th>confiança</th></tr>${l.join('')}</table>` : '<p>Nenhum campo lido.</p>';
+      }
+
+      function textoCru(g: Gravacao | undefined): string {
+        if (!g) return '';
+        const pagina = (g.pagina?.linhas ?? []).map((l) => l.palavras.map((w) => `${w.texto}(${w.confianca.toFixed(2)})`).join(' ')).join('\n');
+        const recortes = g.regioes.map((r) => `[${r.modo} ${r.caixa.map(Math.round).join(',')}] ${r.palavras.map((w) => `${w.texto}(${w.confianca.toFixed(2)})`).join(' ') || '∅'}`).join('\n');
+        return `${pagina}\n\n--- recortes da segunda passada ---\n${recortes}`;
+      }
+
+      // Experimento (só para o script scripts/ocr-experimento.mjs): lê recortes de um dos arquivos
+      // escolhidos com variantes de pré-processamento e devolve texto e imagem de cada recorte.
+      (window as unknown as { __experimento: unknown }).__experimento = async (
+        indice: number, caixas: [number, number, number, number][], modo: 'numero' | 'numero_branco' | 'texto', recorte: Record<string, unknown>,
+      ) => {
+        const f = input.files![indice];
+        const motor = criarMotorTesseract({ recorte: { ...recorte, depurar: true } as never });
+        const img = await motor({ nome: f.name, dados: f as Blob }) as Awaited<ReturnType<typeof motor>> & { gravacao: Gravacao };
+        const saida = [];
+        for (const caixa of caixas) {
+          const palavras = await img.regiao(caixa, modo);
+          const r = img.gravacao.regioes.at(-1)!;
+          saida.push({ caixa, texto: palavras.map((w) => `${w.texto}(${w.confianca.toFixed(2)})`).join(' '), imagem: r.imagem });
+        }
+        img.liberar?.();
+        return saida;
+      };
+
+      botao.addEventListener('click', async () => {
+        const arquivos = [...(input.files ?? [])].map((f) => ({ nome: f.name, dados: f as Blob }));
+        botao.disabled = true;
+        saida.innerHTML = '';
+        const gravacoes: Record<string, Gravacao> = {};
+        (window as unknown as { __gravacoes: unknown }).__gravacoes = gravacoes;
+        const base = criarMotorTesseract({ gravar: (g) => (gravacoes[g.nome] = g) });
+        const motor = async (a: { nome: string; dados: Blob }) => {
+          estado.textContent = `Lendo ${a.nome}…`;
+          return base(a);
+        };
+        const t0 = performance.now();
+        try {
+          const conta = $<HTMLInputElement>('conta').value.trim() || undefined;
+          const { prints, consolidado } = await lerPrints(arquivos, conta, { ocr: motor });
+          estado.textContent = `Pronto em ${((performance.now() - t0) / 1000).toFixed(1)} s.`;
+
+          const html = prints.map((p) => {
+            const g = gravacoes[p.arquivo];
+            const t = g?.tempos;
+            return `<div class="print">
+              <h2>${esc(p.arquivo)}</h2>
+              <span class="tag">${p.tela}</span><span class="tag">${p.idioma}</span><span class="tag">${p.tema ?? '?'}</span>
+              <span class="tag ${p.precisa_reserva ? 'reserva' : 'ok'}">${p.precisa_reserva ? 'vai para a reserva' : 'ok'}</span>
+              ${t ? `<span class="tag">página ${t.pagina.toFixed(0)} ms · ${g.regioes.length} recortes ${t.regioes.toFixed(0)} ms</span>` : ''}
+              ${p.periodo ? `<div>Período: ${esc(p.periodo.texto)} → ${p.periodo.dias} dias${p.periodo.inicio ? ` (${p.periodo.inicio} a ${p.periodo.fim})` : ''}</div>` : ''}
+              ${p.conta ? `<div>Conta: ${esc(p.conta.texto)}</div>` : ''}
+              ${linhasTabela(p)}
+              ${p.nao_lidos.length ? `<div>Não lidos: <b>${p.nao_lidos.join(', ')}</b></div>` : ''}
+              ${p.avisos.length ? `<div>Avisos: <b>${p.avisos.join(', ')}</b></div>` : ''}
+              <details><summary>JSON do print</summary><pre>${esc(JSON.stringify(p, null, 2))}</pre></details>
+              <details><summary>Texto cru do OCR (palavra e confiança)</summary><pre>${esc(textoCru(g))}</pre></details>
+            </div>`;
+          }).join('');
+          saida.innerHTML = html + `<div class="print"><h2>Consolidado</h2><pre>${esc(JSON.stringify(consolidado, null, 2))}</pre></div>`;
+        } catch (e) {
+          estado.textContent = `Erro: ${(e as Error).message}`;
+          console.error(e);
+        } finally {
+          botao.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

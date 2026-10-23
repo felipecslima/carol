@@ -9,13 +9,18 @@
     "preview": "astro preview",
     "test:e2e": "playwright test",
     "pdf": "astro build && node scripts/media-kit-pdf.mjs",
-    "og": "node scripts/og-image.mjs"
+    "og": "node scripts/og-image.mjs",
+    "test:ocr": "vitest run"
   },
   "dependencies": {
     "astro": "^7.4.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
-    "cloudinary": "^2.11.0"
+    "@types/node": "^26.6.5",
+    "cloudinary": "^2.11.0",
+    "tesseract.js": "^7.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
   }
 }
