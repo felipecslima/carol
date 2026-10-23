@@ -1,5 +1,6 @@
 import { renameSync, rmdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import cloudflare from '@astrojs/cloudflare';
 import { defineConfig } from 'astro/config';
 
 import react from '@astrojs/react';
@@ -24,5 +25,10 @@ export default defineConfig({
   site: 'https://eucarollimah.com.br',
   // CSS dentro do HTML: um pedido a menos bloqueando o primeiro desenho
   build: { inlineStylesheets: 'always' },
+  // adapter só para as rotas com `prerender = false` (src/pages/api/); o resto do site continua estático.
+  // imageService passthrough: sem Cloudflare Images (o site usa só imagens prontas em public/).
+  // sem sessões: evita o KV `SESSION` que o adapter cria sozinho no deploy
+  session: false,
+  adapter: cloudflare({ imageService: 'passthrough' }),
   integrations: [localized404, react()],
 });

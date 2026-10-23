@@ -16,13 +16,13 @@ Atualizado em 23/out/2026. Descreve como o código em `site/` está organizado e
                                                                                                │
  scripts/*.mjs (Playwright, Cloudinary) ──► public/ (PDFs, og-*.jpg)  ◄── rodados à mão         │
                                                                                                ▼
- Navegador ──► Cloudflare Worker (worker.js: 301 www/http → https) ──► ASSETS (dist/, _headers, 404.html)
+ Navegador ──► Cloudflare Worker (src/server/worker.ts: 301 www/http → https; SSR em /api/) ──► ASSETS (dist/client/, _headers, 404.html)
      │
      ├──► res.cloudinary.com  (vídeos e capas dos vídeos)
      └──► cdn.amplitude.com   (analytics + Session Replay)
 ```
 
-O site é **100% estático**. Não há servidor, banco nem API: tudo vira HTML no build, a partir de arquivos TypeScript de dados. O único código no servidor é um Worker de 15 linhas que faz redirecionamentos.
+As páginas do site são **100% estáticas**: tudo vira HTML no build, a partir de arquivos TypeScript de dados. O código no servidor é um Worker (`src/server/worker.ts`) que faz os redirecionamentos e atende as rotas com `prerender = false` (hoje só `/api/ping`, de teste; a área `/app` do Portfólio Creator virá depois).
 
 ### Princípios que moldaram as escolhas
 1. **Os dados são a fonte da verdade.** Números, vídeos, marcas e textos de conteúdo moram em `src/data/`. As views só montam a página a partir deles e não guardam texto solto.
@@ -40,7 +40,7 @@ O site é **100% estático**. Não há servidor, banco nem API: tudo vira HTML n
 | Gerador | Astro | 7.4 (`astro` é a única dependência de produção) |
 | Linguagem | TypeScript nos dados e scripts; `.astro` nas views | Sem `tsconfig.json`: vale o padrão do Astro e não há checagem de tipos no build |
 | Runtime local | Node | 22 (usa `process.loadEnvFile`) |
-| Hospedagem | Cloudflare Workers + Static Assets | `wrangler.jsonc`, `worker.js` |
+| Hospedagem | Cloudflare Workers + Static Assets, com `@astrojs/cloudflare` | `wrangler.jsonc`, `src/server/worker.ts` |
 | Vídeo | Cloudinary | Conta `nepuxjxx`, plano Free, pasta `carol-limah/` |
 | Analytics | Amplitude | Browser SDK via CDN, região US, autocapture + Session Replay |
 | Automação | Playwright (Chromium) | Gera PDFs, imagens de prévia e capturas do Portfólio Creator |
@@ -61,11 +61,11 @@ carol/                          ← raiz do git (github.com/felipecslima/carol)
     ├── public/                 arquivos servidos como estão
     ├── scripts/                geradores rodados à mão (seção 11)
     ├── media-backup/           ✗ fora do git: MP4 720p já enviados ao Cloudinary
-    ├── dist/                   ✗ fora do git: saída do build
+    ├── dist/                   ✗ fora do git: saída do build (dist/client = site, dist/server = Worker)
     ├── .env                    ✗ fora do git: credenciais do Cloudinary
     ├── .env.production         versionado: só o cloud name público
     ├── .impeccable/            config e críticas do fluxo de design /impeccable
-    ├── astro.config.mjs, wrangler.jsonc, worker.js
+    ├── astro.config.mjs, wrangler.jsonc
     └── PRODUCT.md, DESIGN.md, HANDOFF.md, ARQUITETURA.md
 ```
 
@@ -256,14 +256,15 @@ Há um evento próprio, `Email Copied`, disparado pelo `main.ts` depois que a c�
 
 ### Cloudflare Workers (`wrangler.jsonc`)
 ```jsonc
-{ "main": "./worker.js",
-  "assets": { "directory": "./dist", "binding": "ASSETS",
-              "run_worker_first": true, "not_found_handling": "404-page" } }
+{ "main": "./src/server/worker.ts",
+  "assets": { "binding": "ASSETS", "run_worker_first": true, "not_found_handling": "404-page" } }
 ```
-- **`run_worker_first`:** toda requisição passa pelo `worker.js` antes dos arquivos.
-- **`worker.js`:** se o host for `www.eucarollimah.com.br` ou o protocolo for `http`, responde com 301 para `https://eucarollimah.com.br` mantendo o caminho. O resto vai para `env.ASSETS.fetch`. Assim o Google vê um endereço só.
-- **`not_found_handling: 404-page`:** o Cloudflare serve a `404.html` mais próxima do caminho, por isso cada idioma tem a sua.
-- O Worker serve só `dist/` como arquivos estáticos. A escolha evita a configuração automática com adaptador, KV e Images.
+- **Adapter (`@astrojs/cloudflare`, `output: 'static'`):** o `astro build` gera `dist/client/` (o site, com `_headers` e `404.html`) e `dist/server/` (Worker e `wrangler.json` final). `assets.directory` vem do adapter. `session: false` evita o KV `SESSION` que ele criaria sozinho; `imageService: 'passthrough'` evita o Cloudflare Images.
+- **`run_worker_first`:** toda requisição passa pelo Worker antes dos arquivos.
+- **`src/server/worker.ts`:** (1) se o host for `www.eucarollimah.com.br` ou o protocolo for `http`, responde 301 para `https://eucarollimah.com.br` mantendo o caminho (regra em `src/server/redirects.ts`, com teste); (2) entrega o resto ao adapter, que serve os estáticos e as rotas SSR; (3) se o adapter devolver 404 para uma página, pede ao `ASSETS`, que serve a `404.html` mais próxima (cada idioma tem a sua).
+- **Rotas SSR:** só com `export const prerender = false` (hoje `src/pages/api/ping.ts`). O resto continua estático.
+- **Testar local sem publicar:** `npm run build` e `npx wrangler dev --config dist/server/wrangler.json`.
+- **Atenção no deploy:** a pasta servida mudou de `dist/` para `dist/client/` e o Worker é gerado em `dist/server/`. Antes de publicar, conferir no painel do Cloudflare (Builds) o comando de build e se o deploy usa o `wrangler.json` gerado (`wrangler deploy` lê `.wrangler/deploy/config.json` e já aponta para ele).
 
 ### Cabeçalhos (`public/_headers`)
 | Caminho | Cabeçalho |

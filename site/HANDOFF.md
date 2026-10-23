@@ -103,7 +103,7 @@ Uma página A4 com números, publis que entregaram, formatos, público e contato
 |---|---|---|
 | Framework | **Astro 7**, 100% estático, CSS embutido no HTML | Rápido, quase sem JS; todo o conteúdo cabe em arquivos de dados |
 | Hospedagem | **Cloudflare Workers** com assets estáticos (`wrangler.jsonc`) | Domínio próprio, HTTPS, cache na borda, sem servidor |
-| `worker.js` | Redireciona `www` e `http` com 301 para `https://eucarollimah.com.br` | Um endereço só para o Google |
+| `src/server/worker.ts` | Redireciona `www` e `http` com 301 para `https://eucarollimah.com.br`; 404 por idioma; rotas SSR via adapter | Um endereço só para o Google |
 | Vídeos | **Cloudinary** (conta `nepuxjxx`, plano Free, pasta `carol-limah/`) | Tira os MP4 do repositório; as capas são quadros do próprio vídeo |
 | Fontes | Arquivos próprios em `public/fonts`, com preload | Sem Google Fonts atrasando o título do hero |
 | Cache | `public/_headers`: HSTS; `_astro/` e `fonts/` imutáveis; `media/` por 30 dias | |
@@ -155,7 +155,7 @@ Todos os comandos rodam em `site/`.
 | Tarefa | Como |
 |---|---|
 | Rodar local | `npm run dev` (porta 4321; também existe a config `site` em `../.claude/launch.json`) |
-| Build | `npm run build` → `dist/` |
+| Build | `npm run build` → `dist/client/` (site) e `dist/server/` (Worker) |
 | Atualizar números | Editar `INSIGHTS`, `REELS_STATS`, `TOP_REELS` ou `AUDIENCE` em `content.ts` a partir de prints novos. Depois, `npm run pdf` |
 | Media kit em PDF | `npm run pdf`. **Rodar sempre que mudar `content.ts`**: os PDFs ficam em `public/` e são commitados |
 | Prévia de link | `npm run og`. Rodar sempre que mudar o título do hero (`heroH1` em `ui.ts`) |

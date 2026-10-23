@@ -1,6 +1,6 @@
 // Gera public/carol-limah-media-kit.pdf (e -en.pdf, -es.pdf) a partir de /media-kit/, /en/media-kit/ e /es/media-kit/
 // (rode depois do build: `npm run pdf`).
-// Serve o dist/ com um servidor estático próprio: o `astro preview` do Astro 7 vira daemon e não encerra junto.
+// Serve o dist/client/ com um servidor estático próprio: o `astro preview` do Astro 7 vira daemon e não encerra junto.
 import { copyFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -8,7 +8,7 @@ import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 
-const dist = fileURLToPath(new URL('../dist/', import.meta.url));
+const dist = fileURLToPath(new URL('../dist/client/', import.meta.url));
 const publicDir = fileURLToPath(new URL('../public/', import.meta.url));
 // mesmo nome de i18n/index.ts (mediaKitPdf)
 const KITS = [
