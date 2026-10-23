@@ -20,7 +20,7 @@ const { lang, title, description, alternates, ogType = 'website', jsonLd, noinde
 const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
 const canonical = abs(alternates[lang]);
 // prévia de link com o título no idioma (gerada por `npm run og`)
-const ogImage = abs(lang === 'pt' ? '/og.jpg' : `/og-${lang}.jpg`);
+const ogImage = abs(`/og-${lang}.jpg`);
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -46,9 +46,9 @@ const SRC: NicheSrc[] = [
     slug: { pt: 'restaurantes-em-sao-paulo', en: 'restaurants-in-sao-paulo', es: 'restaurantes-en-sao-paulo' },
     label: { pt: 'Restaurantes em SP', en: 'Restaurants in São Paulo', es: 'Restaurantes en São Paulo' },
     title: {
-      pt: 'Restaurantes em SP · Carol Limah, influenciadora de gastronomia',
+      pt: 'Restaurantes em SP · Carol Limah, influencer de gastronomia',
       en: 'Restaurants in São Paulo · Carol Limah, food influencer',
-      es: 'Restaurantes en São Paulo · Carol Limah, influencer de gastronomía',
+      es: 'Restaurantes en São Paulo · Carol Limah, influencer foodie',
     },
     description: {
       pt: 'Restaurantes de SP nos reels da Carol Limah (@eu.carollimah): tacacá perto da Paulista, Kome, Gusto Cucina e On Fire.',
@@ -117,9 +117,9 @@ const SRC: NicheSrc[] = [
     slug: { pt: 'viagens-e-hospedagem', en: 'travel-and-stays', es: 'viajes-y-hospedaje' },
     label: { pt: 'Viagens e hospedagem', en: 'Travel and stays', es: 'Viajes y hospedaje' },
     title: {
-      pt: 'Viagens e hospedagem no interior e litoral de SP · Carol Limah',
-      en: 'Travel and stays in São Paulo’s countryside and coast · Carol Limah',
-      es: 'Viajes y hospedaje en el interior y la costa de São Paulo · Carol Limah',
+      pt: 'Viagens e hospedagem em SP: interior e litoral · Carol Limah',
+      en: 'Travel and stays around São Paulo · Carol Limah',
+      es: 'Viajes y hospedaje cerca de São Paulo · Carol Limah',
     },
     description: {
       pt: 'Passeios e hospedagem da Carol Limah (@eu.carollimah): Jacareí, Igaratá, Campos do Jordão, Ilhabela e pousadas.',
@@ -188,9 +188,9 @@ const SRC: NicheSrc[] = [
     slug: { pt: 'publis-e-ugc', en: 'brand-deals-and-ugc', es: 'colaboraciones-y-ugc' },
     label: { pt: 'Publis e UGC', en: 'Brand deals and UGC', es: 'Colaboraciones y UGC' },
     title: {
-      pt: 'Publis e vídeos UGC · Carol Limah, criadora de conteúdo em SP',
-      en: 'Brand deals and UGC videos · Carol Limah, São Paulo content creator',
-      es: 'Colaboraciones y videos UGC · Carol Limah, creadora de contenido en São Paulo',
+      pt: 'Publis e vídeos UGC · Carol Limah, criadora em SP',
+      en: 'Brand deals and UGC videos · Carol Limah, São Paulo creator',
+      es: 'Colaboraciones y UGC · Carol Limah, creadora en São Paulo',
     },
     description: {
       pt: `Publis e UGC da Carol Limah (@eu.carollimah): Mercado Livre, Shein e Kome. Média de ${mlAverage('pt')} views nos reels do Mercado Livre.`,

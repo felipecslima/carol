@@ -1,4 +1,4 @@
-// Gera public/og.jpg, og-en.jpg e og-es.jpg (1200×630, prévia de link no WhatsApp/Instagram) com o mesmo título
+// Gera public/og-pt.jpg, og-en.jpg e og-es.jpg (1200×630, prévia de link no WhatsApp/Instagram) com o mesmo título
 // do hero em cada idioma (heroH1 em src/i18n/ui.ts). Rode de novo sempre que o título mudar: `npm run og`.
 // A foto vem de scripts/og-photo.png.
 import { readFileSync } from 'node:fs';
@@ -9,7 +9,7 @@ const photo = readFileSync(fileURLToPath(new URL('./og-photo.png', import.meta.u
 // mesmo nome usado no SeoHead
 const OG = [
   {
-    file: 'og.jpg',
+    file: 'og-pt.jpg',
     title: 'Uma amazonense morando em São&nbsp;Paulo te levando em <em>lugares incríveis.</em>',
     topics: 'Viagem · Gastronomia · Hospedagem',
     cta: 'Portfólio e media kit',

@@ -1,5 +1,6 @@
 // Textos fixos das páginas e componentes nos três idiomas. Trechos com <em>/<strong> vão com set:html.
-// Descrições (homeDescription e as de data/niches.ts) com até ~125 caracteres: a prévia de link corta o resto.
+// Títulos com até 60 caracteres e descrições com até ~125 (homeTitle/homeDescription e os de data/niches.ts):
+// a busca e a prévia de link cortam o resto.
 // Os números chegam já escritos no idioma (i18n/index.ts: num, numLong, pct).
 import type { L } from '.';
 
@@ -241,7 +242,7 @@ const es: UI = {
   partnerWith: 'colaboración con',
   videoCover: (t) => `Portada del video ${t}, Carol Limah`,
   photo: (t) => `Foto: ${t}, Carol Limah`,
-  homeTitle: 'Carol Limah · Influencer de viajes y gastronomía en São Paulo',
+  homeTitle: 'Carol Limah · Influencer de viajes y gastronomía, São Paulo',
   homeDescription: 'Carol Limah (@eu.carollimah), influencer de viajes y gastronomía en São Paulo, Brasil: restaurantes y hoteles. Media kit.',
   jobTitle: 'Creadora de contenido',
   personDescription: 'Amazonense que vive en São Paulo y crea contenido sobre restaurantes, hoteles, posadas y viajes.',
