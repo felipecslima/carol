@@ -8,11 +8,11 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E1. Repositório e infraestrutura
 
-- [ ] **DEV-001** Integrar React ao Astro (`@astrojs/react`) e criar a rota `/app` como ilha `client:only`. Pronto quando: `/app` abre uma tela React no deploy atual sem afetar o site da Carol.
-- [ ] **DEV-002** Adapter do Cloudflare para páginas renderizadas no servidor, mantendo o site estático. Pronto quando: uma rota de teste SSR responde no Worker e as páginas atuais continuam estáticas.
-- [ ] **DEV-003** Variáveis de ambiente e segredos (Supabase, Cloudinary, Slack, WhatsApp, IA) no Wrangler e no `.env`, fora do Git. Depende: DEV-002.
-- [ ] **DEV-004** Estrutura de pastas `src/app/` (editor e área), `src/blocks/`, `src/themes/`, `src/ocr/`, `src/server/`. Pronto quando: documentada no HANDOFF.
-- [ ] **DEV-005** TypeScript estrito, ESLint, Prettier e Vitest configurados; Playwright já existente reaproveitado.
+- [x] **DEV-001** Integrar React ao Astro (`@astrojs/react`) e criar a rota `/app` como ilha `client:only`. Pronto quando: `/app` abre uma tela React no deploy atual sem afetar o site da Carol.
+- [x] **DEV-002** Adapter do Cloudflare para páginas renderizadas no servidor, mantendo o site estático. Pronto quando: uma rota de teste SSR responde no Worker e as páginas atuais continuam estáticas.
+- [x] **DEV-003** Variáveis de ambiente e segredos (Supabase, Cloudinary, Slack, WhatsApp, IA) no Wrangler e no `.env`, fora do Git. Depende: DEV-002.
+- [x] **DEV-004** Estrutura de pastas `src/app/` (editor e área), `src/blocks/`, `src/themes/`, `src/ocr/`, `src/server/`. Pronto quando: documentada no HANDOFF.
+- [x] **DEV-005** TypeScript estrito, ESLint, Prettier e Vitest configurados; Playwright já existente reaproveitado.
 - [ ] **DEV-006** Ambiente de prévia por branch (Cloudflare) para testar antes de publicar.
 
 ### E2. Banco e segurança (Supabase)
@@ -46,10 +46,10 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E5. Cores e temas
 
-- [ ] **DEV-050** Módulo de paleta com `@material/material-color-utilities`: de uma cor de origem e um esquema (Fidelity, Vibrant, Neutral...) gerar os papéis claro e escuro.
-- [ ] **DEV-051** Mapa de papéis para variáveis CSS (`--destaque`, `--fundo`, `--texto`...). Pronto quando: trocar a cor recalcula a página sem recarregar.
-- [ ] **DEV-052** Teste automático de contraste: todos os pares texto/fundo de todas as paletas passam 4,5:1.
-- [ ] **DEV-053** Tokens de modelo (fontes, cantos, respiro, ornamentos) separados das cores.
+- [x] **DEV-050** Módulo de paleta com `@material/material-color-utilities`: de uma cor de origem e um esquema (Fidelity, Vibrant, Neutral...) gerar os papéis claro e escuro.
+- [x] **DEV-051** Mapa de papéis para variáveis CSS (`--destaque`, `--fundo`, `--texto`...). Pronto quando: trocar a cor recalcula a página sem recarregar.
+- [x] **DEV-052** Teste automático de contraste: todos os pares texto/fundo de todas as paletas passam 4,5:1.
+- [x] **DEV-053** Tokens de modelo (fontes, cantos, respiro, ornamentos) separados das cores.
 
 ### E6. Blocos e modelos
 
