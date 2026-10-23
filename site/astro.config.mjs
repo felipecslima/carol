@@ -41,6 +41,8 @@ export default defineConfig({
       AI_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
+  // a barra do Astro (só em `npm run dev`) cobria os botões de baixo do editor no celular
+  devToolbar: { enabled: false },
   // sem sessões: evita o KV `SESSION` que o adapter cria sozinho no deploy
   session: false,
   adapter: cloudflare({ imageService: 'passthrough' }),
