@@ -16,6 +16,8 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Esperando aprovação
 
+- **Supabase do produto:** projeto `Creators` (`djuzcmnvwkethwlilhik`, região us-east-1, vazio). Chaves no `site/.env` local (URL, publishable, secret); a secret foi colada na conversa e deve ser regerada no painel. O token do MCP é de outra organização, então as migrations (`supabase/migrations/`) precisam ser aplicadas pelo SQL Editor do painel (ou com um token da conta dona do projeto). Depois: gerar tipos (DEV-020), ligar login (E3).
+
 - **Banco (E2) escrito, não aplicado:** `supabase/migrations/` tem as tabelas `profiles`, `projects`, `media`, `orders`, `premium_grants`, `brand_links`, `brand_opens`, `events`, `audit_log`, `waitlist` com RLS, validadas em PGlite. Decisões: o papel da equipe fica em `app_metadata` do Auth (só o servidor grava), não em `profiles`; estado, link e versão publicada do projeto só o servidor muda (gatilho); 1 site e 1 mídia kit por creator. Aplicar no projeto novo quando existir (DEV-010).
 
 - **Mídia kit em 1 página A4 (`/app/midia-kit/`)**: primeira versão a partir dos mesmos blocos, com marca d'água de teste e "Salvar como PDF" pela impressão do navegador. Precisa do seu olho: a ordem das seções na folha e o tamanho do texto.
