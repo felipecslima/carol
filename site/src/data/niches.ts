@@ -53,7 +53,7 @@ const SRC: NicheSrc[] = [
     description: {
       pt: 'Restaurantes de SP nos reels da Carol Limah (@eu.carollimah): tacacá perto da Paulista, Kome, Gusto Cucina e On Fire.',
       en: 'São Paulo restaurants in Carol Limah’s reels (@eu.carollimah): tacacá near Avenida Paulista, Kome, Gusto Cucina and On Fire.',
-      es: 'Restaurantes de São Paulo en los reels de Carol Limah (@eu.carollimah): tacacá cerca de la Paulista, Kome, Gusto Cucina y On Fire.',
+      es: 'Restaurantes de São Paulo en los reels de Carol Limah (@eu.carollimah): tacacá en la Paulista, Kome, Gusto Cucina y On Fire.',
     },
     h1: {
       pt: 'Restaurantes em São Paulo, <em>prato a prato.</em>',
@@ -193,9 +193,9 @@ const SRC: NicheSrc[] = [
       es: 'Colaboraciones y videos UGC · Carol Limah, creadora de contenido en São Paulo',
     },
     description: {
-      pt: `Publis e UGC da Carol Limah (@eu.carollimah) para Mercado Livre, Shein e Kome. Média de ${mlAverage('pt')} views nos reels do Mercado Livre.`,
-      en: `Carol Limah’s brand deals and UGC (@eu.carollimah) for Mercado Livre, Shein and Kome. The Mercado Livre reels average ${mlAverage('en')} views.`,
-      es: `Colaboraciones y UGC de Carol Limah (@eu.carollimah) para Mercado Livre, Shein y Kome. Promedio de ${mlAverage('es')} vistas en los reels de Mercado Livre.`,
+      pt: `Publis e UGC da Carol Limah (@eu.carollimah): Mercado Livre, Shein e Kome. Média de ${mlAverage('pt')} views nos reels do Mercado Livre.`,
+      en: `Carol Limah’s brand deals and UGC (@eu.carollimah) for Mercado Livre, Shein and Kome. Mercado Livre reels average ${mlAverage('en')} views.`,
+      es: `Colaboraciones y UGC de Carol Limah (@eu.carollimah): Mercado Livre, Shein y Kome. Media de ${mlAverage('es')} vistas en Mercado Livre.`,
     },
     h1: {
       pt: 'Publis que <em>entregam alcance.</em>',

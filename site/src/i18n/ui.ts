@@ -1,4 +1,5 @@
 // Textos fixos das páginas e componentes nos três idiomas. Trechos com <em>/<strong> vão com set:html.
+// Descrições (homeDescription e as de data/niches.ts) com até ~125 caracteres: a prévia de link corta o resto.
 // Os números chegam já escritos no idioma (i18n/index.ts: num, numLong, pct).
 import type { L } from '.';
 
@@ -28,7 +29,7 @@ const pt = {
   photo: (t: string) => `Foto: ${t}, Carol Limah`,
   // home
   homeTitle: 'Carol Limah · Influenciadora de viagem e gastronomia em SP',
-  homeDescription: 'Carol Limah (@eu.carollimah), influenciadora de viagens e gastronomia em SP: restaurantes, hotéis e pousadas. Portfólio e media kit.',
+  homeDescription: 'Carol Limah (@eu.carollimah), influenciadora de viagem e gastronomia em SP: restaurantes e hotéis. Portfólio e media kit.',
   jobTitle: 'Criadora de conteúdo',
   personDescription: 'Amazonense morando em São Paulo, cria conteúdo sobre restaurantes, hotéis, pousadas e viagens.',
   knowsAbout: ['Viagem', 'Gastronomia', 'Hospedagem', 'Restaurantes em São Paulo', 'Lifestyle', 'Moda', 'UGC'],
@@ -139,7 +140,7 @@ const en: UI = {
   videoCover: (t) => `Cover of the video ${t}, Carol Limah`,
   photo: (t) => `Photo: ${t}, Carol Limah`,
   homeTitle: 'Carol Limah · Travel and food influencer in São Paulo',
-  homeDescription: 'Carol Limah (@eu.carollimah), travel and food influencer in São Paulo, Brazil: restaurants, hotels and inns. Portfolio and media kit.',
+  homeDescription: 'Carol Limah (@eu.carollimah), travel & food influencer in São Paulo, Brazil: restaurants and hotels. Portfolio and media kit.',
   jobTitle: 'Content creator',
   personDescription: 'Creator from the Amazon living in São Paulo, making content about restaurants, hotels, inns and travel.',
   knowsAbout: ['Travel', 'Food', 'Hospitality', 'Restaurants in São Paulo', 'Lifestyle', 'Fashion', 'UGC'],
@@ -241,7 +242,7 @@ const es: UI = {
   videoCover: (t) => `Portada del video ${t}, Carol Limah`,
   photo: (t) => `Foto: ${t}, Carol Limah`,
   homeTitle: 'Carol Limah · Influencer de viajes y gastronomía en São Paulo',
-  homeDescription: 'Carol Limah (@eu.carollimah), influencer de viajes y gastronomía en São Paulo, Brasil: restaurantes, hoteles y posadas. Portafolio y media kit.',
+  homeDescription: 'Carol Limah (@eu.carollimah), influencer de viajes y gastronomía en São Paulo, Brasil: restaurantes y hoteles. Media kit.',
   jobTitle: 'Creadora de contenido',
   personDescription: 'Amazonense que vive en São Paulo y crea contenido sobre restaurantes, hoteles, posadas y viajes.',
   knowsAbout: ['Viajes', 'Gastronomía', 'Hospedaje', 'Restaurantes en São Paulo', 'Lifestyle', 'Moda', 'UGC'],
