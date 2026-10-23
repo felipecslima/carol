@@ -273,7 +273,7 @@ Cada uma tem um `README.md` com a regra. Aliases do TypeScript (`tsconfig.json`,
 |---|---|---|
 | `src/app/` | ilha React da creator em `/app` (área, editor, assistente) | `blocks`, `themes`, `lib` |
 | `src/blocks/` | componentes dos blocos; **uma renderização só**, no editor e na página publicada | `themes`, `lib` |
-| `src/themes/` | modelos (fonte, cantos, respiro) e paletas como tokens | nada do produto |
+| `src/themes/` | `paleta.ts` (cor de origem → 9 papéis claro/escuro, regra Material 3, contraste verificado), `tokens.ts` (fontes, cantos, respiro, ornamentos), `aplicar.ts` (variáveis CSS no elemento ou como `style` inline) | nada do produto |
 | `src/lib/` | tipos, schema Zod do projeto, regras de acesso | nada de `app`, `blocks`, `server` |
 | `src/server/` | só no Worker: Supabase (service role), Slack, WhatsApp, IA, PDF, redirects | `lib` |
 | `src/ocr/` | reservada para a leitura de prints (depois da v1) | — |
