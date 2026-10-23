@@ -266,6 +266,13 @@ Há um evento próprio, `Email Copied`, disparado pelo `main.ts` depois que a c�
 - **Testar local sem publicar:** `npm run build` e `npx wrangler dev --config dist/server/wrangler.json`.
 - **Atenção no deploy:** a pasta servida mudou de `dist/` para `dist/client/` e o Worker é gerado em `dist/server/`. Antes de publicar, conferir no painel do Cloudflare (Builds) o comando de build e se o deploy usa o `wrangler.json` gerado (`wrangler deploy` lê `.wrangler/deploy/config.json` e já aponta para ele).
 
+### Variáveis de ambiente e segredos
+- **Onde estão declaradas:** `env.schema` em `astro.config.mjs`. Públicas (`PUBLIC_*`, vão para o navegador): `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`. Segredos (só servidor): `SUPABASE_SERVICE_ROLE_KEY`, `CLOUDINARY_URL`, `SLACK_WEBHOOK_URL`, `WHATSAPP_TOKEN`, `AI_API_KEY`. Todas opcionais até as contas existirem.
+- **Como ler:** `import { X } from 'astro:env/server'` (segredos, só em `src/server/` e rotas SSR) ou `astro:env/client`. O Astro recusa importar segredo no código do navegador. `PUBLIC_CLOUDINARY_CLOUD_NAME` continua em `import.meta.env`, como antes.
+- **Local:** copiar `.env.example` para `.env` (Astro) e `.dev.vars.example` para `.dev.vars` (`wrangler dev`). Ambos ignorados pelo Git; `.env.production` (só o nome público do Cloudinary) é versionado.
+- **Produção:** segredos com `npx wrangler secret put NOME`; públicos em `vars` no `wrangler.jsonc`. Nada de chave real no Git.
+- **Teste:** `e2e/segredos.spec.ts` falha se o build do navegador contiver o nome de algum segredo. `/api/ping` mostra `true`/`false` por segredo, só em desenvolvimento.
+
 ### Cabeçalhos (`public/_headers`)
 | Caminho | Cabeçalho |
 |---|---|

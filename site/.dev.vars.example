@@ -1,0 +1,7 @@
+# Copie para .dev.vars (fora do Git): o `wrangler dev` lê este arquivo como segredos do Worker.
+# Mesmos nomes dos segredos do .env.example; só os de servidor.
+SUPABASE_SERVICE_ROLE_KEY=
+CLOUDINARY_URL=
+SLACK_WEBHOOK_URL=
+WHATSAPP_TOKEN=
+AI_API_KEY=

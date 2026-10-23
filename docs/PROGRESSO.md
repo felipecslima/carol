@@ -5,15 +5,15 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Onde parei
 
 - **Fase:** E1 (fundação) em andamento.
-- **Tarefa atual:** `DEV-002` pronta (local), esperando aprovação. DEV-001 commitada (`ab7d404`).
-- **Próximo passo:** depois do ok e do commit da DEV-002, plano da `DEV-003` (variáveis de ambiente e segredos).
+- **Tarefa atual:** `DEV-003` pronta, esperando aprovação. DEV-001 e DEV-002 commitadas (`ab7d404`, `a842346`).
+- **Próximo passo:** depois do ok e do commit da DEV-002, plano da `DEV-004` (estrutura de pastas).
 - **Git:** branch `dev`; commits `Setup:` já feitos (página de vendas, docs, ferramentas).
 - **OCR:** código removido por ora (pedido do usuário); continua no commit `6ecf8fc`. A spec `docs/04-ocr-prints.md` fica.
 - **Bloqueios:** preços dos planos, limites do Cloudinary e CNPJ/Termos ainda a definir (não bloqueiam a E1 a E7).
 
 ## Esperando aprovação
 
-- **DEV-002:** `@astrojs/cloudflare` (`output: 'static'`, `session: false`, imagens passthrough). `src/server/worker.ts` assume o lugar do `worker.js` (redirects www/http → https com teste unitário, 404 por idioma, SSR para o adapter). Rota de teste `/api/ping`. Verificado só local (`wrangler dev`): estáticos, `/app`, redirects em todos os caminhos, 404 pt/en/es, `_headers`. Testes: Vitest 4/4, Playwright 2/2. `scripts/media-kit-pdf.mjs` agora lê `dist/client/`. **Nada publicado.** Diferença no HTML: o CSS ganhou prefixos `-webkit-` (efeito do adapter), sem mudança visual. **Antes de publicar na `main`:** conferir no painel do Cloudflare o comando de build e o deploy, porque a pasta servida agora é `dist/client/`.
+- **DEV-003:** `env.schema` no `astro.config.mjs` (2 públicas, 5 segredos, todas opcionais), `.env.example`, `.dev.vars.example`, `.gitignore` para `.env.*` e `.dev.vars` (mantendo `.env.example` e `.env.production`), `/api/ping` mostra `true`/`false` dos segredos só em dev, `e2e/segredos.spec.ts` (nenhum nome de segredo no build do navegador) e seção no `ARQUITETURA.md`. Testado no dev server com um segredo falso. Nenhuma chave real criada nem enviada ao Cloudflare.
 
 ## Diário
 

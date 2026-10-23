@@ -1,7 +1,7 @@
 import { renameSync, rmdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import cloudflare from '@astrojs/cloudflare';
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 
 import react from '@astrojs/react';
 
@@ -27,6 +27,20 @@ export default defineConfig({
   build: { inlineStylesheets: 'always' },
   // adapter só para as rotas com `prerender = false` (src/pages/api/); o resto do site continua estático.
   // imageService passthrough: sem Cloudflare Images (o site usa só imagens prontas em public/).
+  // Variáveis do produto (lidas com `astro:env/server` e `astro:env/client`). Segredos são só do servidor: o
+  // Astro recusa importá-los no navegador. Todas opcionais por enquanto, porque as contas ainda não existem;
+  // quando uma virar obrigatória, tirar o `optional`. Valores em .env (local) e `wrangler secret put` (produção).
+  env: {
+    schema: {
+      PUBLIC_SUPABASE_URL: envField.string({ context: 'client', access: 'public', optional: true }),
+      PUBLIC_SUPABASE_ANON_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
+      SUPABASE_SERVICE_ROLE_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CLOUDINARY_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      SLACK_WEBHOOK_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      WHATSAPP_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
+      AI_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+    },
+  },
   // sem sessões: evita o KV `SESSION` que o adapter cria sozinho no deploy
   session: false,
   adapter: cloudflare({ imageService: 'passthrough' }),
