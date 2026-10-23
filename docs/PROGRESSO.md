@@ -16,7 +16,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Esperando aprovação
 
-- **Supabase do produto:** projeto `Creators` (`djuzcmnvwkethwlilhik`, região us-east-1, vazio). Chaves no `site/.env` local (URL, publishable, secret); a secret foi colada na conversa e deve ser regerada no painel. O token do MCP é de outra organização, então as migrations (`supabase/migrations/`) precisam ser aplicadas pelo SQL Editor do painel (ou com um token da conta dona do projeto). Depois: gerar tipos (DEV-020), ligar login (E3).
+- **Supabase do produto:** projeto `Creators` (`djuzcmnvwkethwlilhik`, us-east-1). 7 migrations aplicadas (10 tabelas com RLS) e RLS verificada no banco real (transação desfeita). Achado: tabelas novas não dão permissão ao `authenticated` por padrão, por isso a migration `grants`. Token de acesso do CLI/MCP na variável `SUPABASE_CAROL` (`~/.zshrc`); chaves da API no `site/.env`. A secret key e o token foram colados na conversa: regerar quando terminarmos.
 
 - **Banco (E2) escrito, não aplicado:** `supabase/migrations/` tem as tabelas `profiles`, `projects`, `media`, `orders`, `premium_grants`, `brand_links`, `brand_opens`, `events`, `audit_log`, `waitlist` com RLS, validadas em PGlite. Decisões: o papel da equipe fica em `app_metadata` do Auth (só o servidor grava), não em `profiles`; estado, link e versão publicada do projeto só o servidor muda (gatilho); 1 site e 1 mídia kit por creator. Aplicar no projeto novo quando existir (DEV-010).
 
