@@ -21,7 +21,7 @@ const PRODUTO = [
 ];
 
 export default defineConfig(
-  { ignores: ['dist/**', '.astro/**', 'node_modules/**', '.wrangler/**', 'test-results/**'] },
+  { ignores: ['src/lib/banco.tipos.ts', 'dist/**', '.astro/**', 'node_modules/**', '.wrangler/**', 'test-results/**'] },
   {
     files: PRODUTO,
     extends: [js.configs.recommended, ...tseslint.configs.recommended, ...astro.configs.recommended],

@@ -21,3 +21,4 @@ package-lock.json
 .impeccable
 astro.config.mjs
 wrangler.jsonc
+src/lib/banco.tipos.ts

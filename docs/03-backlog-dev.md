@@ -27,7 +27,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [x] **DEV-017** Tabelas `events` (eventos do editor) e `audit_log` (ações da equipe). *Migration escrita em `supabase/migrations/` e validada num Postgres local (PGlite); aplicada no projeto `Creators` em 24/out/2026.*
 - [x] **DEV-018** Tabela `waitlist` (nome, WhatsApp, @, data). *Migration escrita em `supabase/migrations/` e validada num Postgres local (PGlite); aplicada no projeto `Creators` em 24/out/2026.*
 - [x] **DEV-019** RLS em todas as tabelas: creator só lê e altera o que é dela; papel de equipe gravado no usuário, alterável só pelo servidor. Pronto quando: teste automatizado prova que uma creator não lê dados de outra. *Políticas escritas e verificadas com 30 cenários em PGlite (`supabase/tests/rls.mjs`, ainda fora do npm). Falta rodar no projeto real.*
-- [ ] **DEV-020** Tipos TypeScript gerados do banco.
+- [x] **DEV-020** Tipos TypeScript gerados do banco. *`src/lib/banco.tipos.ts` (regerar após mudar o banco).*
 
 ### E3. Autenticação
 
