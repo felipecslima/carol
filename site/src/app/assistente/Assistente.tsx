@@ -7,13 +7,17 @@ import { montarProjeto, normalizarArroba, type Respostas } from '@lib/montagem';
 import { variaveisDeTema } from '@themes/aplicar';
 import { gerarPaleta } from '@themes/paleta';
 import { NUVEM } from '@themes/modelos/nuvem';
+import type { Numeros } from '@lib/numeros';
+import { CampoDeArquivo } from '../editor/CampoDeArquivo';
+import { PainelNumeros } from '../editor/PainelNumeros';
 import { salvarRascunho } from '../editor/persistencia';
+import '../editor/editor.css';
 import './assistente.css';
 
 const NICHOS = ['Gastronomia', 'Viagem', 'Beleza', 'Lifestyle', 'Moda', 'Casa', 'Maternidade', 'Fitness'];
 
-type Etapa = 'modelo' | 'nome' | 'arroba' | 'cidade' | 'nicho' | 'publi' | 'grava' | 'frase';
-const ETAPAS: Etapa[] = ['modelo', 'nome', 'arroba', 'cidade', 'nicho', 'publi', 'grava', 'frase'];
+type Etapa = 'modelo' | 'nome' | 'arroba' | 'cidade' | 'nicho' | 'publi' | 'grava' | 'frase' | 'videos' | 'numeros';
+const ETAPAS_BASE: Etapa[] = ['modelo', 'nome', 'arroba', 'cidade', 'nicho', 'publi', 'grava', 'frase', 'videos'];
 
 function PreviaDoModelo({ paleta }: { paleta: number }) {
   const origem = NUVEM.paletas[paleta]?.origem ?? NUVEM.paletas[0].origem;
@@ -41,7 +45,11 @@ export default function Assistente() {
     frase: '',
   });
   const [publiRespondida, setPubliRespondida] = useState(false);
+  const [videos, setVideos] = useState<Array<{ titulo: string; video: string; capa: string }>>([]);
+  const [numeros, setNumeros] = useState<Numeros | undefined>(undefined);
   const campo = useRef<HTMLInputElement>(null);
+  // quem ainda não fez publi não tem números para mostrar: a etapa de números não aparece
+  const ETAPAS: Etapa[] = r.jaFezPubli ? [...ETAPAS_BASE, 'numeros'] : ETAPAS_BASE;
   const etapa = ETAPAS[indice]!;
 
   useEffect(() => campo.current?.focus(), [indice]);
@@ -55,14 +63,23 @@ export default function Assistente() {
     (etapa === 'grava' && r.oQueGrava.trim().length > 0) ||
     etapa === 'arroba' ||
     etapa === 'cidade' ||
-    etapa === 'frase';
+    etapa === 'frase' ||
+    etapa === 'videos' ||
+    etapa === 'numeros';
+
+  function concluir(numerosFinais: Numeros | undefined) {
+    const projeto = montarProjeto(
+      { ...PROJETO_DE_EXEMPLO, paleta },
+      { ...r, videos: videos.filter((v) => v.video), numeros: numerosFinais },
+    );
+    salvarRascunho(projeto);
+    window.location.href = '/app/editor/';
+  }
 
   function avancar() {
     if (!valido) return;
     if (!ultima) return setIndice(indice + 1);
-    const projeto = montarProjeto({ ...PROJETO_DE_EXEMPLO, paleta }, r);
-    salvarRascunho(projeto);
-    window.location.href = '/app/editor/';
+    concluir(numeros);
   }
 
   const mudar = (parte: Partial<Respostas>) => setR({ ...r, ...parte });
@@ -251,6 +268,65 @@ export default function Assistente() {
             </div>
           </>
         )}
+        {etapa === 'videos' && (
+          <>
+            <h1 className="as-titulo">Mostre seus melhores vídeos</h1>
+            <p className="as-texto">
+              Escolha até 4 vídeos da sua galeria. A marca procura prova antes de argumento. Pode pular e enviar depois.
+            </p>
+            {videos.map((v, i) => (
+              <div className="as-video" key={i}>
+                <CampoDeArquivo
+                  campo={{ id: 'video', rotulo: `Vídeo ${i + 1}`, tipo: 'video' }}
+                  valor={v.video}
+                  capa={v.capa}
+                  aoMudar={(parte) =>
+                    setVideos(
+                      videos.map((x, k) => (k === i ? { ...x, video: parte.video ?? '', capa: parte.capa ?? '' } : x)),
+                    )
+                  }
+                />
+                <div className="as-campo">
+                  <label htmlFor={`titulo-${i}`}>Título do vídeo</label>
+                  <input
+                    id={`titulo-${i}`}
+                    value={v.titulo}
+                    maxLength={60}
+                    onChange={(e) => setVideos(videos.map((x, k) => (k === i ? { ...x, titulo: e.target.value } : x)))}
+                  />
+                </div>
+                <button type="button" className="as-link" onClick={() => setVideos(videos.filter((_, k) => k !== i))}>
+                  Remover vídeo
+                </button>
+              </div>
+            ))}
+            {videos.length < 4 && (
+              <button
+                type="button"
+                className="as-botao as-botao--vazado as-adicionar"
+                onClick={() => setVideos([...videos, { titulo: '', video: '', capa: '' }])}
+              >
+                {videos.length === 0 ? 'Adicionar um vídeo' : 'Adicionar outro vídeo'}
+              </button>
+            )}
+          </>
+        )}
+        {etapa === 'numeros' && (
+          <>
+            <h1 className="as-titulo">Seus números do Instagram</h1>
+            <p className="as-texto">
+              Só você sabe esses números, e a página mostra o selo “Informado pela creator”. Pode pular e preencher
+              depois.
+            </p>
+            <PainelNumeros
+              inicial={numeros}
+              aoSalvar={(n) => {
+                setNumeros(n);
+                concluir(n);
+              }}
+            />
+          </>
+        )}
       </main>
 
       <div className="as-acoes">
@@ -260,7 +336,17 @@ export default function Assistente() {
           </button>
         )}
         <button type="button" className="as-botao" disabled={!valido} onClick={avancar}>
-          {etapa === 'modelo' ? 'Usar este' : ultima ? 'Ver meu portfólio' : 'Continuar'}
+          {etapa === 'modelo'
+            ? 'Usar este'
+            : etapa === 'numeros'
+              ? numeros
+                ? 'Ver meu portfólio'
+                : 'Pular e ver meu portfólio'
+              : ultima
+                ? 'Ver meu portfólio'
+                : etapa === 'videos' && videos.every((v) => !v.video)
+                  ? 'Pular'
+                  : 'Continuar'}
         </button>
       </div>
     </div>

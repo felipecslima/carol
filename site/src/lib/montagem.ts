@@ -1,5 +1,6 @@
 // Montagem do projeto a partir das respostas do assistente (sem IA): as respostas entram nos blocos do modelo
 // e o resto continua como exemplo (placeholder). O que a creator escreve nunca é trocado por exemplo.
+import { aplicarNumeros, type Numeros } from './numeros';
 import type { Projeto } from './projeto';
 
 export interface Respostas {
@@ -13,6 +14,10 @@ export interface Respostas {
   oQueGrava: string;
   /** frase opcional que a define (vira o subtítulo da capa) */
   frase?: string;
+  /** vídeos que ela enviou no assistente (já no Cloudinary) */
+  videos?: Array<{ titulo: string; video: string; capa: string }>;
+  /** números que ela digitou no assistente */
+  numeros?: Numeros;
 }
 
 const MAXIMO_TITULO_CAPA = 90;
@@ -38,8 +43,13 @@ export function montarProjeto(base: Projeto, r: Respostas): Projeto {
         dados: { ...b.dados, titulo, ...(arroba && { arroba }), ...(r.frase?.trim() && { subtitulo: r.frase.trim() }) },
       };
     }
+    if (b.tipo === 'videos' && r.videos?.length) {
+      const itens = r.videos.map((v) => ({ titulo: v.titulo.trim() || 'Meu vídeo', video: v.video, capa: v.capa }));
+      return { ...b, dados: { ...b.dados, itens } };
+    }
     if (b.tipo === 'sobre' && nicho) return { ...b, dados: { ...b.dados, nichos: [nicho] } };
     return b;
   });
-  return { ...base, modoIniciante: !r.jaFezPubli, blocos };
+  const projeto = { ...base, modoIniciante: !r.jaFezPubli, blocos };
+  return r.jaFezPubli && r.numeros ? aplicarNumeros(projeto, r.numeros) : projeto;
 }

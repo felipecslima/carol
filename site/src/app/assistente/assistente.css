@@ -196,3 +196,25 @@
 .as-bolinhas button[aria-checked='true'] {
   box-shadow: 0 0 0 3px #24130f;
 }
+
+.as-video {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--as-borda);
+  border-radius: 22px;
+  background: #fff;
+}
+.as-link {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--as-rosa-escuro);
+  font-weight: 700;
+}
+.as-adicionar {
+  flex: none;
+  justify-self: start;
+}
