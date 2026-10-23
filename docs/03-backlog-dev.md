@@ -54,15 +54,15 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 ### E6. Blocos e modelos
 
 - [x] **DEV-060** Contrato de bloco: tipo, variações, campos (com limite de letras), placeholders, regras (obrigatório, máximo). Pronto quando: um registro central lista os blocos.
-- [ ] **DEV-061** Bloco Capa (2 variações).
-- [ ] **DEV-062** Bloco Sobre mim (2 variações).
-- [ ] **DEV-063** Bloco Números (2 variações), escondido no modo iniciante.
-- [ ] **DEV-064** Bloco Vídeos (2 variações), com vídeo leve e capa.
-- [ ] **DEV-065** Bloco Marcas (2 variações), escondido no modo iniciante.
-- [ ] **DEV-066** Bloco Público (2 variações), escondido no modo iniciante.
-- [ ] **DEV-067** Bloco Formatos (2 variações).
-- [ ] **DEV-068** Bloco Contato (2 variações), obrigatório, com WhatsApp e e-mail validados.
-- [ ] **DEV-069** Modelo Nuvem completo (tokens + 3 paletas).
+- [x] **DEV-061** Bloco Capa (2 variações).
+- [x] **DEV-062** Bloco Sobre mim (2 variações).
+- [x] **DEV-063** Bloco Números (2 variações), escondido no modo iniciante.
+- [x] **DEV-064** Bloco Vídeos (2 variações), com vídeo leve e capa.
+- [x] **DEV-065** Bloco Marcas (2 variações), escondido no modo iniciante.
+- [x] **DEV-066** Bloco Público (2 variações), escondido no modo iniciante.
+- [x] **DEV-067** Bloco Formatos (2 variações).
+- [x] **DEV-068** Bloco Contato (2 variações), obrigatório, com WhatsApp e e-mail validados.
+- [ ] **DEV-069** Modelo Nuvem completo (tokens + 3 paletas). *Feito em código (`themes/modelos/nuvem.ts`, `blocks/blocos.css`); falta a aprovação visual do usuário.*
 - [ ] **DEV-070** Modelo Clean. Depende: Nuvem aprovado.
 - [ ] **DEV-071** Modelo Pop Color.
 - [ ] **DEV-072** Modelo Casual.

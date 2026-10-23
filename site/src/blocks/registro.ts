@@ -17,9 +17,10 @@ export const BLOCOS = {
     ],
     campos: [
       { ...titulo, obrigatorio: true },
+      { id: 'arroba', rotulo: '@ e cidade', tipo: 'etiqueta', maximo: 40 },
       { id: 'subtitulo', rotulo: 'Subtítulo', tipo: 'texto', maximo: 120 },
       { id: 'foto', rotulo: 'Foto', tipo: 'imagem' },
-      { id: 'botao', rotulo: 'Botão', tipo: 'botao', maximo: 24 },
+      { id: 'botao', rotulo: 'Botão', tipo: 'botao', maximo: 30 },
     ],
   },
   sobre: {
@@ -97,6 +98,7 @@ export const BLOCOS = {
       titulo,
       { id: 'whatsapp', rotulo: 'WhatsApp', tipo: 'botao', obrigatorio: true, maximo: 20 },
       { id: 'email', rotulo: 'E-mail', tipo: 'botao', obrigatorio: true, maximo: 120 },
+      { id: 'prazo', rotulo: 'Prazo de resposta', tipo: 'etiqueta', maximo: 60 },
     ],
   },
 } as const satisfies Record<string, DefinicaoDeBloco>;

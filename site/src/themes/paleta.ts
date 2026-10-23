@@ -113,6 +113,8 @@ export const PARES_DE_TEXTO: ReadonlyArray<readonly [Papel, Papel]> = [
   ['destaque', 'superficie'],
   ['apoio', 'fundo'],
   ['apoio', 'superficie'],
+  ['texto-suave', 'destaque-suave'],
+  ['destaque', 'destaque-suave'],
   ['sobre-destaque', 'destaque'],
 ];
 

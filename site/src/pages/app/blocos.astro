@@ -1,0 +1,38 @@
+---
+// Prévia dos blocos e do modelo Nuvem, só em desenvolvimento (em produção responde 404). Mostra o projeto de
+// exemplo nas 3 paletas e nos modos claro e escuro, renderizado no servidor, sem JavaScript no navegador.
+import '../../styles/global.css';
+import '../../blocks/blocos.css';
+import SeoHead from '../../components/SeoHead.astro';
+import { Bloco } from '@blocks/Bloco';
+import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
+import { estiloInline } from '@themes/aplicar';
+import { gerarPaleta } from '@themes/paleta';
+import { NUVEM } from '@themes/modelos/nuvem';
+
+export const prerender = false;
+if (!import.meta.env.DEV) return new Response(null, { status: 404 });
+
+const url = new URL(Astro.request.url);
+const paleta = Math.min(NUVEM.paletas.length - 1, Number(url.searchParams.get('paleta') ?? 0) || 0);
+const modo = url.searchParams.get('modo') === 'escuro' ? 'escuro' : 'claro';
+const tema = gerarPaleta(NUVEM.paletas[paleta]!.origem, NUVEM.esquema);
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Prévia dos blocos"
+      description="Prévia interna."
+      alternates={{ pt: '/app/blocos/' }}
+      noindex
+    />
+  </head>
+  <body class="pagina" style={estiloInline(tema, NUVEM.estilo, modo)}>
+    {PROJETO_DE_EXEMPLO.blocos.map((bloco) => (
+      <Bloco bloco={bloco} modo="editor" />
+    ))}
+  </body>
+</html>

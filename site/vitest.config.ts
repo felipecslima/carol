@@ -15,7 +15,7 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
     passWithNoTests: true,
     // os imports da biblioteca de cores não têm extensão `.js`; o Vite precisa processá-la
     server: { deps: { inline: ['@material/material-color-utilities'] } },

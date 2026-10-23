@@ -22,6 +22,10 @@ export const FONTES = {
     '--fonte-titulo': "'Instrument Serif', serif",
     '--fonte-texto': "'Hanken Grotesk', system-ui, sans-serif",
   },
+  'par-nuvem': {
+    '--fonte-titulo': "'Nunito', system-ui, sans-serif",
+    '--fonte-texto': "'Nunito', system-ui, sans-serif",
+  },
 } as const;
 export type Fontes = keyof typeof FONTES;
 
@@ -31,7 +35,16 @@ export const ORNAMENTOS = {
 } as const;
 export type Ornamento = keyof typeof ORNAMENTOS;
 
+/** Em que papel de cor ficam o fundo da página e os cartões (o modelo decide; os blocos só leem `--pagina` e `--cartao`). */
+export const CENARIOS = {
+  claro: { '--pagina': 'var(--fundo)', '--cartao': 'var(--superficie)' },
+  /** página na cor suave da paleta, cartões quase brancos (modelo Nuvem) */
+  nuvem: { '--pagina': 'var(--destaque-suave)', '--cartao': 'var(--fundo)' },
+} as const;
+export type Cenario = keyof typeof CENARIOS;
+
 export interface EstiloGlobal {
+  cenario: Cenario;
   fontes: Fontes;
   cantos: Cantos;
   respiro: Respiro;
@@ -39,6 +52,12 @@ export interface EstiloGlobal {
 }
 
 /** Variáveis CSS de um estilo global (sem cores). */
-export function variaveisDeEstilo({ fontes, cantos, respiro, ornamento }: EstiloGlobal): Record<string, string> {
-  return { ...FONTES[fontes], ...CANTOS[cantos], ...RESPIRO[respiro], ...ORNAMENTOS[ornamento] };
+export function variaveisDeEstilo({
+  cenario,
+  fontes,
+  cantos,
+  respiro,
+  ornamento,
+}: EstiloGlobal): Record<string, string> {
+  return { ...CENARIOS[cenario], ...FONTES[fontes], ...CANTOS[cantos], ...RESPIRO[respiro], ...ORNAMENTOS[ornamento] };
 }

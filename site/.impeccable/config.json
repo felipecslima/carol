@@ -35,6 +35,12 @@
         "value": "caveat",
         "createdAt": "2026-10-23T16:00:05.066Z",
         "reason": "Portfólio Creator brand fonts from the product handoff (portfolio-creator-handoff/marca/cores-e-fontes.md), used only on /portfolio-creator/"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "nunito",
+        "createdAt": "2026-10-23T22:21:27.673Z",
+        "reason": "Fonte do modelo Nuvem do Portfólio Creator (prototipo/ModeloNuvem do handoff); o DESIGN.md descreve só o site da Carol. Decisão do agente, não confirmada pelo usuário."
       }
     ]
   }

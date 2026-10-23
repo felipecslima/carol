@@ -3,7 +3,13 @@ import { aplicarTema, estiloInline, variaveisDeTema } from './aplicar';
 import { gerarPaleta } from './paleta';
 import { CANTOS, FONTES, RESPIRO, type EstiloGlobal } from './tokens';
 
-const ESTILO: EstiloGlobal = { fontes: 'par-1', cantos: 'suaves', respiro: 'normal', ornamento: 'nenhum' };
+const ESTILO: EstiloGlobal = {
+  cenario: 'claro',
+  fontes: 'par-1',
+  cantos: 'suaves',
+  respiro: 'normal',
+  ornamento: 'nenhum',
+};
 
 // elemento falso: só guarda o que for escrito em style.setProperty
 function elementoFalso() {
