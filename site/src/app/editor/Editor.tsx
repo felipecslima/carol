@@ -5,7 +5,7 @@ import { useStore } from 'zustand';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
 import { REGISTRO } from '@blocks/registro';
-import { blocosVisiveis } from '@lib/projeto';
+import { blocosVisiveis, type Projeto } from '@lib/projeto';
 import { temaDoProjeto } from './tema';
 import { CamposDoBloco } from './CamposDoBloco';
 import { criarEditor } from './estado';
@@ -32,18 +32,21 @@ import {
 } from './icones';
 import { PainelAdicionar, PainelEstilo, PainelSecoes } from './Paineis';
 import { carregarRascunho, salvarRascunho } from './persistencia';
+import { carregarDaNuvem, salvarNaNuvem } from '../nuvem';
+import { useSessao } from '../sessao';
+import { supabaseConfigurado } from '../supabase';
 import './editor.css';
 
 type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | 'midias' | null;
 
-export default function Editor() {
-  const editor = useMemo(() => criarEditor(carregarRascunho() ?? PROJETO_DE_EXEMPLO, REGISTRO), []);
+function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string | null }) {
+  const editor = useMemo(() => criarEditor(inicial, REGISTRO), [inicial]);
   const e = useStore(editor);
   const { projeto, selecionado } = e;
   const passados = useStore(editor.temporal, (s) => s.pastStates.length);
   const futuros = useStore(editor.temporal, (s) => s.futureStates.length);
   const [painel, setPainel] = useState<Painel>(null);
-  const [situacao, setSituacao] = useState<'salvo' | 'salvando' | 'erro'>('salvo');
+  const [situacao, setSituacao] = useState<'salvo' | 'salvando' | 'erro' | 'offline'>('salvo');
   const [ver, setVer] = useState(false);
   const [aviso, setAviso] = useState<string | null>(null);
   const primeiraVez = useRef(true);
@@ -55,9 +58,15 @@ export default function Editor() {
       return;
     }
     setSituacao('salvando');
-    const espera = setTimeout(() => setSituacao(salvarRascunho(projeto) ? 'salvo' : 'erro'), 600);
+    const espera = setTimeout(() => {
+      void (async () => {
+        const noAparelho = salvarRascunho(projeto);
+        const naNuvem = donoId ? await salvarNaNuvem(donoId, projeto) : true;
+        setSituacao(!naNuvem ? 'offline' : !noAparelho && !donoId ? 'erro' : 'salvo');
+      })();
+    }, 600);
     return () => clearTimeout(espera);
-  }, [projeto]);
+  }, [projeto, donoId]);
 
   useEffect(() => {
     if (!aviso) return;
@@ -119,11 +128,20 @@ export default function Editor() {
           </button>
           <span className={`ed-salvo ed-salvo--${situacao}`} role="status">
             {situacao === 'salvo'
-              ? 'Salvo ✓'
+              ? donoId
+                ? 'Salvo ✓'
+                : 'Salvo no aparelho'
               : situacao === 'salvando'
                 ? 'Salvando…'
-                : 'Não salvou: sem espaço no aparelho'}
+                : situacao === 'offline'
+                  ? 'Sem conexão: salvo no aparelho'
+                  : 'Não salvou: sem espaço no aparelho'}
           </span>
+          {!donoId && supabaseConfigurado && (
+            <a className="ed-entrar" href="/app/entrar/">
+              Entrar
+            </a>
+          )}
         </div>
       </header>
 
@@ -324,4 +342,36 @@ export default function Editor() {
       </Gaveta>
     </div>
   );
+}
+
+/** Carrega o projeto certo (da conta, se houver sessão; senão o rascunho do aparelho) e abre o editor. */
+export default function Editor() {
+  const sessao = useSessao();
+  const [inicial, setInicial] = useState<Projeto | null>(null);
+  const donoId = sessao?.user.id ?? null;
+
+  useEffect(() => {
+    if (sessao === undefined) return;
+    let vivo = true;
+    void (async () => {
+      const local = carregarRascunho();
+      if (!sessao) return vivo && setInicial(local ?? PROJETO_DE_EXEMPLO);
+      const nuvem = await carregarDaNuvem();
+      // primeira entrada: o rascunho feito antes do login vai junto para a conta (DEV-033)
+      if (!nuvem && local) await salvarNaNuvem(sessao.user.id, local);
+      if (nuvem) salvarRascunho(nuvem);
+      if (vivo) setInicial(nuvem ?? local ?? PROJETO_DE_EXEMPLO);
+    })();
+    return () => {
+      vivo = false;
+    };
+  }, [sessao, donoId]);
+
+  if (!inicial)
+    return (
+      <p className="ed-carregando" role="status">
+        Carregando seu portfólio…
+      </p>
+    );
+  return <EditorInterno key={donoId ?? 'aparelho'} inicial={inicial} donoId={donoId} />;
 }

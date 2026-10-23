@@ -16,6 +16,8 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Esperando aprovação
 
+- **Login e nuvem (E3):** `/app/entrar/` entra por código de 6 números; o editor salva na conta (`projects`) e migra o rascunho do aparelho no primeiro login. **Preciso do usuário:** (1) um SMTP próprio (por exemplo, Resend com o domínio) para o e-mail trazer o código: hoje o Supabase só manda o link, não deixa editar o modelo no plano Free e limita a 2 e-mails por hora; (2) regerar a secret key e o token do Supabase (foram colados na conversa). Nos testes o código sai do servidor (`admin.generate_link`) e o envio do e-mail é simulado.
+
 - **Supabase do produto:** projeto `Creators` (`djuzcmnvwkethwlilhik`, us-east-1). 7 migrations aplicadas (10 tabelas com RLS) e RLS verificada no banco real (transação desfeita). Achado: tabelas novas não dão permissão ao `authenticated` por padrão, por isso a migration `grants`. Token de acesso do CLI/MCP na variável `SUPABASE_CAROL` (`~/.zshrc`); chaves da API no `site/.env`. A secret key e o token foram colados na conversa: regerar quando terminarmos.
 
 - **Banco (E2) escrito, não aplicado:** `supabase/migrations/` tem as tabelas `profiles`, `projects`, `media`, `orders`, `premium_grants`, `brand_links`, `brand_opens`, `events`, `audit_log`, `waitlist` com RLS, validadas em PGlite. Decisões: o papel da equipe fica em `app_metadata` do Auth (só o servidor grava), não em `profiles`; estado, link e versão publicada do projeto só o servidor muda (gatilho); 1 site e 1 mídia kit por creator. Aplicar no projeto novo quando existir (DEV-010).

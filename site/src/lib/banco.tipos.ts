@@ -329,6 +329,7 @@ export type Database = {
           fontes: string
           guardados: Json
           id: string
+          link_desejado: string | null
           modelo: string
           modo_iniciante: boolean
           numeros: Json | null
@@ -351,6 +352,7 @@ export type Database = {
           fontes: string
           guardados?: Json
           id?: string
+          link_desejado?: string | null
           modelo: string
           modo_iniciante?: boolean
           numeros?: Json | null
@@ -373,6 +375,7 @@ export type Database = {
           fontes?: string
           guardados?: Json
           id?: string
+          link_desejado?: string | null
           modelo?: string
           modo_iniciante?: boolean
           numeros?: Json | null

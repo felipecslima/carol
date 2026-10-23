@@ -31,9 +31,9 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E3. Autenticação
 
-- [ ] **DEV-030** Login por e-mail com código de 6 dígitos (Supabase OTP), tela pensada para celular.
-- [ ] **DEV-032** Sessão longa e renovação automática.
-- [ ] **DEV-033** Começar sem conta: rascunho salvo no aparelho e migrado para a conta ao entrar. Pronto quando: o rascunho aparece igual depois do login.
+- [x] **DEV-030** Login por e-mail com código de 6 dígitos (Supabase OTP), tela pensada para celular. *Feito: `/app/entrar/` (e-mail → código de 6 números), testado ponta a ponta. Falta o e-mail trazer o código: precisa de SMTP próprio (o modelo padrão só tem link e o plano Free não deixa editá-lo).*
+- [x] **DEV-032** Sessão longa e renovação automática. *Sessão no aparelho com renovação automática (`app/supabase.ts`).*
+- [x] **DEV-033** Começar sem conta: rascunho salvo no aparelho e migrado para a conta ao entrar. Pronto quando: o rascunho aparece igual depois do login. *Feito: sem conta o rascunho fica no aparelho e, no primeiro login, vai para a conta (`Editor.tsx`).*
 - [ ] **DEV-034** Proteção das rotas `/app` e `/admin` por sessão e papel.
 
 ### E4. Área da creator
@@ -73,7 +73,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 - [ ] **DEV-080** Teste do Puck (1 a 2 dias) com decisão registrada.
 - [x] **DEV-081** Estado do editor (Zustand) com o JSON do projeto e histórico de desfazer/refazer (zundo).
-- [ ] **DEV-082** Salvar sozinho com debounce, indicador "Salvo ✓" e fila offline que reenvia ao voltar a internet. *Feito só local: salva no aparelho com 600 ms de espera e mostra "Salvo ✓". Falta a fila offline e o envio ao servidor (depende da E2).*
+- [ ] **DEV-082** Salvar sozinho com debounce, indicador "Salvo ✓" e fila offline que reenvia ao voltar a internet. *Feito: salva no aparelho e, com conta, na tabela `projects` (600 ms de espera). Falta a fila com reenvio em internet ruim.*
 - [x] **DEV-083** Seleção: primeiro toque no bloco, segundo no elemento; barra flutuante Editar, ↑, ↓, Esconder. *Feito: primeiro toque seleciona, segundo abre a edição, barra com Editar/↑/↓/Esconder. Falta: seleção por elemento dentro do bloco.*
 - [x] **DEV-084** Gaveta de edição (Vaul) com campo focado, contador de letras, dica do bloco, teclado sem cobrir o campo. *Feito (Vaul, contador de letras, rola o bloco para cima da gaveta). Falta: testar com teclado real no celular.*
 - [x] **DEV-085** Painel Seções: visíveis com ↑↓, Guardados com Devolver, Capa e Contato sem opção de remover.

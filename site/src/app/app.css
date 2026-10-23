@@ -85,3 +85,20 @@
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+.app-conta {
+  font-size: 15px;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+button.app-link {
+  background: none;
+  border: 0;
+  padding: 0 4px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}

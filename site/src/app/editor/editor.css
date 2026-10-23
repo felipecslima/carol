@@ -779,3 +779,23 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+.ed-entrar {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ed-rosa-escuro);
+  text-decoration: none;
+}
+.ed-carregando {
+  padding: 80px 20px;
+  text-align: center;
+  font:
+    600 16px 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  color: #5e4842;
+}
