@@ -12,6 +12,7 @@ import { NUVEM } from '@themes/modelos/nuvem';
 import type { Fontes } from '@themes/tokens';
 import { CamposDoBloco } from './CamposDoBloco';
 import { criarEditor } from './estado';
+import { progresso } from '@lib/progresso';
 import { Gaveta } from './Gaveta';
 import { Camadas, Desfazer, Esconder, Lapis, Mais, Paleta, Refazer, Subir, Descer } from './icones';
 import { PainelAdicionar, PainelEstilo, PainelSecoes } from './Paineis';
@@ -66,6 +67,7 @@ export default function Editor() {
     }
   }, [painel, selecionado]);
 
+  const { seus, total } = useMemo(() => progresso(projeto, PROJETO_DE_EXEMPLO, REGISTRO), [projeto]);
   const bloco = projeto.blocos.find((b) => b.id === selecionado);
   const definicao = bloco && REGISTRO[bloco.tipo];
   const indice = bloco ? projeto.blocos.indexOf(bloco) : -1;
@@ -94,6 +96,15 @@ export default function Editor() {
           </span>
         </div>
       </header>
+
+      <div className="ed-progresso" role="status">
+        <span>
+          {seus} de {total} itens já são seus
+        </span>
+        <span className="ed-progresso-barra" aria-hidden="true">
+          <span style={{ width: `${total ? (seus / total) * 100 : 0}%` }} />
+        </span>
+      </div>
 
       <main
         className="ed-tela pagina"

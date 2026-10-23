@@ -9,3 +9,4 @@ Decisão de 23/out/2026: focar na entrega do produto e escrever os testes unitá
 | DEV-069 | Contraste dos pares de texto/fundo com `--pagina` e `--cartao` do cenário Nuvem nas 3 paletas | `src/themes/modelos/nuvem.ts` |
 | DEV-082 a 088 | Editor (`app/editor/`): selecionar e abrir edição por toque, barra flutuante, gaveta de edição (contador, itens de lista, trocar variação), painéis Seções/Adicionar/Estilo, desfazer pelo aviso, salvar no aparelho (`persistencia.ts`) e recarregar. Sugestão: Playwright em 390 px, a partir do roteiro que já rodei à mão (`/app/editor/`) | `src/app/editor/` |
 | DEV-060/081 | Schema dos campos de item de lista (`schemaDosDados` com `itens`, `proporcao`, `exemplo`) | `src/lib/bloco.ts` |
+| DEV-090 | `progresso()`: texto igual ao exemplo não conta; item marcado `exemplo` não conta; item novo preenchido conta; item vazio não conta | `src/lib/progresso.ts` |

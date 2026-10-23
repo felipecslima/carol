@@ -466,3 +466,35 @@
     }
   }
 }
+
+.ed-progresso {
+  position: sticky;
+  top: 56px;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--ed-bg);
+  border-bottom: 1px solid var(--ed-borda);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ed-suave);
+}
+.ed-progresso-barra {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ed-borda);
+  overflow: hidden;
+}
+.ed-progresso-barra span {
+  display: block;
+  height: 100%;
+  background: var(--ed-rosa);
+  border-radius: inherit;
+  transition: width 0.2s;
+}
+.ed-bloco {
+  scroll-margin-top: 104px;
+}
