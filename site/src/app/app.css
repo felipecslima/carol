@@ -1,0 +1,18 @@
+/* Tela do /app. As fontes vêm do global.css (carregado pela página); as cores seguem o Creators:
+   marrom-escuro com rosa no escuro, creme com rosa no claro. */
+.app-root {
+  --bg: #24130F; --text: #FBF4EC; --muted: #D2BFB6; --accent: #FF8FB0; --btn: #D42A5B; --btn-hover: #B71F4E;
+  --serif: 'Instrument Serif', serif; --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  min-height: 100dvh; background: var(--bg); color: var(--text); font-family: var(--sans);
+}
+@media (prefers-color-scheme: light) {
+  .app-root { --bg: #FBF4EC; --text: #24130F; --muted: #4A3A34; --accent: #B71F4E; }
+}
+.app-shell { max-width: 640px; min-height: 100dvh; margin: 0 auto; padding: 32px 24px; display: flex; flex-direction: column; justify-content: center; gap: 24px; }
+.app-brand { font-family: var(--serif); font-size: 24px; }
+.app-brand i, .app-title em { color: var(--accent); }
+.app-title { font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 9vw, 72px); line-height: 1; text-wrap: balance; }
+.app-lead { font-size: 18px; line-height: 1.6; color: var(--muted); text-wrap: pretty; }
+.app-cta { align-self: flex-start; min-height: 48px; display: inline-flex; align-items: center; padding: 0 24px; border-radius: 999px; background: var(--btn); color: #fff; font-weight: 600; text-decoration: none; transition: background .2s; }
+.app-cta:hover { background: var(--btn-hover); }
+.app-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

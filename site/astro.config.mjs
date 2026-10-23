@@ -2,6 +2,8 @@ import { renameSync, rmdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 
+import react from '@astrojs/react';
+
 // O Astro só gera 404.html na raiz; em /en/ e /es/ sai en/404/index.html. O Cloudflare serve a 404.html
 // mais próxima do endereço pedido, então cada idioma ganha a sua.
 const localized404 = {
@@ -22,5 +24,5 @@ export default defineConfig({
   site: 'https://eucarollimah.com.br',
   // CSS dentro do HTML: um pedido a menos bloqueando o primeiro desenho
   build: { inlineStylesheets: 'always' },
-  integrations: [localized404],
+  integrations: [localized404, react()],
 });

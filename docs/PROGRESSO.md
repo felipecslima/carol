@@ -5,16 +5,20 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Onde parei
 
 - **Fase:** E1 (fundação) em andamento.
-- **Tarefa atual:** `DEV-001` (React + rota `/app`), ainda sem código.
-- **Próximo passo:** plano curto da DEV-001, esperar o ok, implementar.
-- **Git:** branch `dev` criada; página de vendas commitada (`3251eea`). Faltam commitar docs/skills e ferramentas de OCR.
-- **Bloqueios:** preços dos planos, limites do Cloudinary e CNPJ/Termos ainda a definir (não bloqueiam a E1 a E7). A DEV-002 mexe no deploy do site em produção: pedir confirmação antes.
+- **Tarefa atual:** `DEV-001` pronta, esperando aprovação.
+- **Próximo passo:** depois do ok e do commit da DEV-001, plano da `DEV-002` (adapter do Cloudflare; mexe no deploy do site em produção, pedir confirmação).
+- **Git:** branch `dev`; commits `Setup:` já feitos (página de vendas, docs, ferramentas).
+- **OCR:** código removido por ora (pedido do usuário); continua no commit `6ecf8fc`. A spec `docs/04-ocr-prints.md` fica.
+- **Bloqueios:** preços dos planos, limites do Cloudinary e CNPJ/Termos ainda a definir (não bloqueiam a E1 a E7).
 
 ## Esperando aprovação
 
-Nada no momento.
+- **DEV-001:** `@astrojs/react` instalado; `/app` abre tela React (ilha `client:only`, noindex, fora do sitemap, tema claro/escuro). Páginas do site idênticas no `dist/`. `playwright.config.ts` e `e2e/app.spec.ts` criados (2 testes passando). OCR removido (`site/ocr`, `ocr-teste`, scripts, `tesseract.js`); `test:ocr` virou `test` (Vitest, sem testes ainda).
 
 ## Diário
+
+### 23/out/2026 (tarde)
+- `dev` criada, 3 commits `Setup:`; DEV-001 implementada.
 
 ### 23/out/2026
 - Planejamento fechado: PRD, construtor, backlog de desenvolvimento, especificação de OCR e este guia, em `docs/`.
