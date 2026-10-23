@@ -73,3 +73,15 @@
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+.app-link {
+  align-self: flex-start;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  font-weight: 600;
+}
+.app-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}

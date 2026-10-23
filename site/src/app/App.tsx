@@ -1,21 +1,31 @@
-// Raiz da área logada do Portfólio Creator (/app). Por enquanto só marca o lugar: login, painel e editor
-// entram nas próximas tarefas (E3 em diante).
+// Raiz da área da creator (/app). Por enquanto leva ao assistente (quem não tem rascunho) ou ao editor (quem
+// tem); login, painel e Projetos entram na E3 e na E4.
+import { carregarRascunho } from './editor/persistencia';
+
 export default function App() {
+  const temRascunho = carregarRascunho() !== null;
   return (
     <main className="app-shell">
       <p className="app-brand">
         Portfólio <i>Creator</i>
       </p>
       <h1 className="app-title">
-        Sua área está <em>chegando.</em>
+        {temRascunho ? 'Seu portfólio está ' : 'Monte seu portfólio '}
+        <em>{temRascunho ? 'te esperando.' : 'em minutos.'}</em>
       </h1>
       <p className="app-lead">
-        Aqui você vai montar o portfólio e o mídia kit, baixar o PDF e publicar o seu link. Enquanto isso, a Carol
-        atende pelo Instagram.
+        {temRascunho
+          ? 'Continue de onde parou: tudo o que você escreveu está salvo neste aparelho.'
+          : 'Responda algumas perguntas, escolha o modelo e ajuste tudo no celular, em cima do resultado final.'}
       </p>
-      <a className="app-cta" href="/portfolio-creator/">
-        Voltar para a página do produto
+      <a className="app-cta" href={temRascunho ? '/app/editor/' : '/app/novo/'}>
+        {temRascunho ? 'Continuar editando' : 'Começar'}
       </a>
+      {temRascunho && (
+        <a className="app-link" href="/app/novo/">
+          Começar um novo
+        </a>
+      )}
     </main>
   );
 }

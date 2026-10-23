@@ -1,0 +1,268 @@
+// Assistente de início: escolher o modelo (cartões que deslizam, bolinhas de paleta) e responder uma pergunta
+// por tela. No fim monta o projeto (lib/montagem.ts), grava o rascunho e abre o editor. Sem IA.
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { Bloco } from '@blocks/Bloco';
+import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
+import { montarProjeto, normalizarArroba, type Respostas } from '@lib/montagem';
+import { variaveisDeTema } from '@themes/aplicar';
+import { gerarPaleta } from '@themes/paleta';
+import { NUVEM } from '@themes/modelos/nuvem';
+import { salvarRascunho } from '../editor/persistencia';
+import './assistente.css';
+
+const NICHOS = ['Gastronomia', 'Viagem', 'Beleza', 'Lifestyle', 'Moda', 'Casa', 'Maternidade', 'Fitness'];
+
+type Etapa = 'modelo' | 'nome' | 'arroba' | 'cidade' | 'nicho' | 'publi' | 'grava' | 'frase';
+const ETAPAS: Etapa[] = ['modelo', 'nome', 'arroba', 'cidade', 'nicho', 'publi', 'grava', 'frase'];
+
+function PreviaDoModelo({ paleta }: { paleta: number }) {
+  const origem = NUVEM.paletas[paleta]?.origem ?? NUVEM.paletas[0].origem;
+  const tema = variaveisDeTema(gerarPaleta(origem, NUVEM.esquema), NUVEM.estilo, 'claro') as CSSProperties;
+  const mostrar = PROJETO_DE_EXEMPLO.blocos.filter((b) => b.tipo === 'capa' || b.tipo === 'numeros');
+  return (
+    <div className="as-previa pagina" style={tema} aria-hidden="true">
+      {mostrar.map((b) => (
+        <Bloco key={b.id} bloco={b} modo="publicado" />
+      ))}
+    </div>
+  );
+}
+
+export default function Assistente() {
+  const [indice, setIndice] = useState(0);
+  const [paleta, setPaleta] = useState(0);
+  const [r, setR] = useState<Respostas>({
+    nome: '',
+    arroba: '',
+    cidade: '',
+    nicho: '',
+    jaFezPubli: true,
+    oQueGrava: '',
+    frase: '',
+  });
+  const [publiRespondida, setPubliRespondida] = useState(false);
+  const campo = useRef<HTMLInputElement>(null);
+  const etapa = ETAPAS[indice]!;
+
+  useEffect(() => campo.current?.focus(), [indice]);
+
+  const ultima = indice === ETAPAS.length - 1;
+  const valido =
+    etapa === 'modelo' ||
+    (etapa === 'nome' && r.nome.trim().length > 0) ||
+    (etapa === 'nicho' && r.nicho.trim().length > 0) ||
+    (etapa === 'publi' && publiRespondida) ||
+    (etapa === 'grava' && r.oQueGrava.trim().length > 0) ||
+    etapa === 'arroba' ||
+    etapa === 'cidade' ||
+    etapa === 'frase';
+
+  function avancar() {
+    if (!valido) return;
+    if (!ultima) return setIndice(indice + 1);
+    const projeto = montarProjeto({ ...PROJETO_DE_EXEMPLO, paleta }, r);
+    salvarRascunho(projeto);
+    window.location.href = '/app/editor/';
+  }
+
+  const mudar = (parte: Partial<Respostas>) => setR({ ...r, ...parte });
+  const aoDigitar = { onKeyDown: (ev: React.KeyboardEvent) => ev.key === 'Enter' && avancar() };
+
+  return (
+    <div className="as">
+      <header className="as-topo">
+        <span className="as-marca">
+          portfólio<i>creator</i>
+        </span>
+        <div className="as-passos" role="img" aria-label={`Passo ${indice + 1} de ${ETAPAS.length}`}>
+          {ETAPAS.map((e, i) => (
+            <span key={e} data-feito={i <= indice || undefined} />
+          ))}
+        </div>
+      </header>
+
+      <main className="as-corpo">
+        {etapa === 'modelo' && (
+          <>
+            <h1 className="as-titulo">Escolha o jeito do seu portfólio</h1>
+            <p className="as-texto">Você troca modelo e cor quando quiser, e o que escrever vai junto.</p>
+            <div className="as-modelos" role="group" aria-label="Modelos">
+              <div className="as-modelo">
+                <PreviaDoModelo paleta={paleta} />
+                <h2>{NUVEM.nome}</h2>
+                <div className="as-bolinhas" role="radiogroup" aria-label="Cor">
+                  {NUVEM.paletas.map((p, i) => (
+                    <button
+                      key={p.nome}
+                      type="button"
+                      role="radio"
+                      aria-checked={paleta === i}
+                      aria-label={p.nome}
+                      style={{ background: gerarPaleta(p.origem, NUVEM.esquema).claro.destaque }}
+                      onClick={() => setPaleta(i)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {etapa === 'nome' && (
+          <>
+            <h1 className="as-titulo">Como você quer ser chamada?</h1>
+            <div className="as-campo">
+              <label htmlFor="nome">Seu nome</label>
+              <input
+                id="nome"
+                ref={campo}
+                value={r.nome}
+                maxLength={40}
+                autoComplete="given-name"
+                onChange={(e) => mudar({ nome: e.target.value })}
+                {...aoDigitar}
+              />
+            </div>
+          </>
+        )}
+        {etapa === 'arroba' && (
+          <>
+            <h1 className="as-titulo">Qual é o seu @?</h1>
+            <div className="as-campo">
+              <label htmlFor="arroba">Seu @ no Instagram</label>
+              <input
+                id="arroba"
+                ref={campo}
+                value={r.arroba}
+                maxLength={30}
+                autoCapitalize="none"
+                autoCorrect="off"
+                inputMode="url"
+                onChange={(e) => mudar({ arroba: e.target.value })}
+                onBlur={() => mudar({ arroba: normalizarArroba(r.arroba) })}
+                {...aoDigitar}
+              />
+              <span className="as-dica">Pode pular e preencher depois.</span>
+            </div>
+          </>
+        )}
+        {etapa === 'cidade' && (
+          <>
+            <h1 className="as-titulo">De onde você fala?</h1>
+            <div className="as-campo">
+              <label htmlFor="cidade">Sua cidade</label>
+              <input
+                id="cidade"
+                ref={campo}
+                value={r.cidade}
+                maxLength={40}
+                autoComplete="address-level2"
+                onChange={(e) => mudar({ cidade: e.target.value })}
+                {...aoDigitar}
+              />
+              <span className="as-dica">Pode pular.</span>
+            </div>
+          </>
+        )}
+        {etapa === 'nicho' && (
+          <>
+            <h1 className="as-titulo">Sobre o que você fala?</h1>
+            <div className="as-opcoes" role="group" aria-label="Nicho">
+              {NICHOS.map((n) => (
+                <button key={n} type="button" aria-pressed={r.nicho === n} onClick={() => mudar({ nicho: n })}>
+                  {n}
+                </button>
+              ))}
+            </div>
+            <div className="as-campo">
+              <label htmlFor="nicho">Ou escreva o seu</label>
+              <input
+                id="nicho"
+                ref={campo}
+                value={NICHOS.includes(r.nicho) ? '' : r.nicho}
+                maxLength={30}
+                onChange={(e) => mudar({ nicho: e.target.value })}
+                {...aoDigitar}
+              />
+            </div>
+          </>
+        )}
+        {etapa === 'publi' && (
+          <>
+            <h1 className="as-titulo">Você já fez alguma publi?</h1>
+            <p className="as-texto">
+              Se ainda não, o portfólio destaca seus vídeos e o que você entrega, e esconde as seções de números,
+              público e marcas até você ter o que mostrar.
+            </p>
+            <div className="as-opcoes" role="radiogroup" aria-label="Já fez publi">
+              {(
+                [
+                  [true, 'Já fiz'],
+                  [false, 'Ainda não'],
+                ] as const
+              ).map(([valor, texto]) => (
+                <button
+                  key={texto}
+                  type="button"
+                  role="radio"
+                  aria-checked={publiRespondida && r.jaFezPubli === valor}
+                  onClick={() => (mudar({ jaFezPubli: valor }), setPubliRespondida(true))}
+                >
+                  {texto}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+        {etapa === 'grava' && (
+          <>
+            <h1 className="as-titulo">O que você mostra nos vídeos?</h1>
+            <div className="as-campo">
+              <label htmlFor="grava">Em poucas palavras</label>
+              <input
+                id="grava"
+                ref={campo}
+                value={r.oQueGrava}
+                maxLength={40}
+                onChange={(e) => mudar({ oQueGrava: e.target.value })}
+                {...aoDigitar}
+              />
+              <span className="as-dica">
+                Vira a frase da sua capa: “Oi, eu sou {r.nome.trim() || 'você'} e mostro {r.oQueGrava.trim() || '…'} do
+                meu jeito”.
+              </span>
+            </div>
+          </>
+        )}
+        {etapa === 'frase' && (
+          <>
+            <h1 className="as-titulo">Uma frase que te define?</h1>
+            <div className="as-campo">
+              <label htmlFor="frase">Fica embaixo do seu nome</label>
+              <input
+                id="frase"
+                ref={campo}
+                value={r.frase}
+                maxLength={120}
+                onChange={(e) => mudar({ frase: e.target.value })}
+                {...aoDigitar}
+              />
+              <span className="as-dica">Opcional. Você pode escrever depois, no editor.</span>
+            </div>
+          </>
+        )}
+      </main>
+
+      <div className="as-acoes">
+        {indice > 0 && (
+          <button type="button" className="as-botao as-botao--vazado" onClick={() => setIndice(indice - 1)}>
+            Voltar
+          </button>
+        )}
+        <button type="button" className="as-botao" disabled={!valido} onClick={avancar}>
+          {etapa === 'modelo' ? 'Usar este' : ultima ? 'Ver meu portfólio' : 'Continuar'}
+        </button>
+      </div>
+    </div>
+  );
+}

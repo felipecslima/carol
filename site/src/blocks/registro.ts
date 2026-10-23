@@ -23,7 +23,7 @@ export const BLOCOS = {
       { id: 'foto-redonda', nome: 'Foto redonda centralizada' },
     ],
     campos: [
-      { ...titulo, obrigatorio: true },
+      { ...titulo, maximo: 90, obrigatorio: true },
       { id: 'arroba', rotulo: '@ e cidade', tipo: 'etiqueta', maximo: 40 },
       { id: 'subtitulo', rotulo: 'Subtítulo', tipo: 'texto', maximo: 120 },
       { id: 'foto', rotulo: 'Foto', tipo: 'imagem' },

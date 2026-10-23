@@ -72,10 +72,10 @@ describe('validarProjeto', () => {
 
   it('respeita o limite de letras e a obrigatoriedade', () => {
     const blocos = structuredClone(base.blocos);
-    blocos[0]!.dados = { titulo: 'x'.repeat(61) };
+    blocos[0]!.dados = { titulo: 'x'.repeat(91) };
     blocos[2]!.dados = { titulo: 'ok', whatsapp: '', email: 'a@b.com' };
     const problemas = validarProjeto(com({ blocos }), REGISTRO);
-    expect(problemas.find((p) => p.onde === 'b1')?.mensagem).toContain('No máximo 60 letras');
+    expect(problemas.find((p) => p.onde === 'b1')?.mensagem).toContain('No máximo 90 letras');
     expect(problemas.find((p) => p.onde === 'b3')?.mensagem).toContain('Campo obrigatório');
   });
 

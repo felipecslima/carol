@@ -87,10 +87,10 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E8. Assistente de início
 
-- [ ] **DEV-100** Escolha do modelo: cards em tela cheia, deslizando, com bolinhas de paleta.
-- [ ] **DEV-101** Perguntas do assistente (nome, @, cidade, nicho, já fez publi, o que grava, frase).
+- [x] **DEV-100** Escolha do modelo: cards em tela cheia, deslizando, com bolinhas de paleta. *Feito com um modelo (Nuvem) e 3 paletas; os demais entram com DEV-070 a 073.*
+- [x] **DEV-101** Perguntas do assistente (nome, @, cidade, nicho, já fez publi, o que grava, frase).
 - [ ] **DEV-102** Pedido de vídeos dentro do assistente (usa E9) e dos números (usa DEV-130).
-- [ ] **DEV-104** Montagem do projeto: respostas, vídeos e números entram nos blocos; placeholder só onde faltou. Sem IA.
+- [x] **DEV-104** Montagem do projeto: respostas, vídeos e números entram nos blocos; placeholder só onde faltou. Sem IA. *`lib/montagem.ts`.*
 
 ### E9. Mídias
 
