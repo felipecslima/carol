@@ -21,7 +21,7 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
   });
   const incompleto = Boolean(projeto) && seus < total;
   return (
-    <section className="ar-secao">
+    <section className="ar-secao ar-secao--inicio">
       <h1 className="ar-ola">
         Oi{nome ? ', ' : ''}
         {nome && <em>{nome}</em>}

@@ -601,3 +601,27 @@
 .ar .ed-link {
   padding-left: 0;
 }
+
+/* acertos do desktop e do assistente */
+.as .as-passos .as-passo-texto {
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+}
+.as .as-corpo {
+  padding-bottom: 130px;
+}
+
+/* celular: o contador em texto basta; os pontos só aparecem onde há espaço (a marca em serifa ocupa mais) */
+@media (max-width: 520px) {
+  .as .as-passos span:not(.as-passo-texto) {
+    display: none;
+  }
+}
+
+@media (min-width: 960px) {
+  .ar .ar-secao--inicio .ar-portfolio .ar-miniatura {
+    height: 210px;
+  }
+}

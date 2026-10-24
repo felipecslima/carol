@@ -1,14 +1,13 @@
 // Assistente de início: escolher o modelo (cartões que deslizam, bolinhas de paleta) e responder uma pergunta
 // por tela. No fim monta o projeto (lib/montagem.ts), grava o rascunho e abre o editor. Sem IA.
 import { Marca } from '../Marca';
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { Bloco } from '@blocks/Bloco';
+import { useEffect, useRef, useState } from 'react';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
 import { montarProjeto, normalizarArroba, type Respostas } from '@lib/montagem';
-import { variaveisDeTema } from '@themes/aplicar';
 import { gerarPaleta } from '@themes/paleta';
 import { NUVEM } from '@themes/modelos/nuvem';
 import type { Numeros } from '@lib/numeros';
+import { Miniatura } from '../area/Miniatura';
 import { CampoDeArquivo } from '../editor/CampoDeArquivo';
 import { PainelNumeros } from '../editor/PainelNumeros';
 import { salvarPerfil } from '../nuvem';
@@ -25,14 +24,9 @@ type Etapa = 'modelo' | 'nome' | 'arroba' | 'cidade' | 'nicho' | 'publi' | 'grav
 const ETAPAS_BASE: Etapa[] = ['modelo', 'nome', 'arroba', 'cidade', 'nicho', 'publi', 'grava', 'frase', 'videos'];
 
 function PreviaDoModelo({ paleta }: { paleta: number }) {
-  const origem = NUVEM.paletas[paleta]?.origem ?? NUVEM.paletas[0].origem;
-  const tema = variaveisDeTema(gerarPaleta(origem, NUVEM.esquema), NUVEM.estilo, 'claro') as CSSProperties;
-  const mostrar = PROJETO_DE_EXEMPLO.blocos.filter((b) => b.tipo === 'capa' || b.tipo === 'numeros');
   return (
-    <div className="as-previa pagina" style={tema} aria-hidden="true">
-      {mostrar.map((b) => (
-        <Bloco key={b.id} bloco={b} modo="publicado" />
-      ))}
+    <div className="as-previa">
+      <Miniatura projeto={{ ...PROJETO_DE_EXEMPLO, paleta }} blocos={['capa', 'numeros']} />
     </div>
   );
 }

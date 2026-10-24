@@ -82,7 +82,7 @@ export function Conta({
   }
 
   return (
-    <section className="ar-secao">
+    <section className="ar-secao ar-secao--estreita">
       <h1 className="ar-titulo">Conta</h1>
 
       <form className="ed-form ar-bloco" onSubmit={(e) => (e.preventDefault(), void salvar())}>

@@ -37,7 +37,7 @@
   line-height: 1.55;
 }
 .bl {
-  padding: var(--respiro) clamp(20px, 5vw, 64px) 0;
+  padding: var(--respiro) clamp(20px, 5cqi, 64px) 0;
   max-width: 1120px;
   margin-inline: auto;
 }
@@ -54,13 +54,13 @@
   font-weight: 900;
 }
 .bl-titulo-grande {
-  font-size: clamp(34px, 7vw, 60px);
+  font-size: clamp(34px, 7cqi, 60px);
   line-height: 1.04;
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
 .bl-titulo {
-  font-size: clamp(26px, 4.4vw, 36px);
+  font-size: clamp(26px, 4.4cqi, 36px);
   line-height: 1.1;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
@@ -184,7 +184,7 @@
   justify-items: start;
 }
 @media (min-width: 880px) {
-  .bl-capa--foto-grande {
+  .pagina:not(.mini-tela) .bl-capa--foto-grande {
     grid-template-columns: 5fr 7fr;
     align-items: center;
     gap: 56px;
@@ -220,7 +220,7 @@
   font-weight: 700;
 }
 @media (min-width: 880px) {
-  .bl-sobre--texto-foto {
+  .pagina:not(.mini-tela) .bl-sobre--texto-foto {
     grid-template-columns: 4fr 6fr;
     gap: 56px;
     align-items: center;
@@ -241,7 +241,7 @@
   text-align: center;
 }
 .bl-numero {
-  font-size: clamp(30px, 6vw, 40px);
+  font-size: clamp(30px, 6cqi, 40px);
   line-height: 1.05;
 }
 
@@ -380,9 +380,9 @@
 
 /* contato: faixa de destaque no fim da página */
 .bl-contato {
-  margin: var(--respiro) clamp(12px, 3vw, 32px);
+  margin: var(--respiro) clamp(12px, 3cqi, 32px);
   max-width: none;
-  padding: clamp(40px, 8vw, 72px) clamp(20px, 5vw, 64px);
+  padding: clamp(40px, 8cqi, 72px) clamp(20px, 5cqi, 64px);
   background: var(--texto);
   color: var(--fundo);
   border-radius: calc(var(--raio-grande) * 1.5);

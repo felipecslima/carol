@@ -314,16 +314,6 @@
   color: inherit;
   text-decoration: none;
 }
-.ar .ar-portfolio .ar-miniatura {
-  height: 112px;
-  border-radius: 14px;
-}
-.ar .ar-portfolio .ar-miniatura .bl {
-  transform: scale(0.3);
-  width: 333%;
-  margin-left: -116%;
-  padding-top: 6px;
-}
 .ar .ar-portfolio-info {
   display: grid;
   gap: 2px;
@@ -366,4 +356,81 @@
 .ar .ar-portfolio:has(.ar-portfolio-link:focus-visible) {
   outline: 3px solid #24130f;
   outline-offset: 2px;
+}
+
+/* miniatura: moldura recorta, o quadro de 390 px é reduzido por JS (Miniatura.tsx) */
+.ar-miniatura {
+  position: relative;
+  overflow: hidden;
+}
+.mini-tela {
+  transform-origin: top left;
+  container-type: inline-size;
+  min-height: 100%;
+}
+.ar .ar-miniatura .mini-tela .bl {
+  transform: none;
+  width: auto;
+  margin-left: auto;
+  padding-top: 24px;
+}
+
+/* previa do assistente: moldura de altura fixa (o recorte mostra o topo da capa e dos números) */
+.as .as-previa {
+  height: 380px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+.as .as-previa .ar-miniatura {
+  height: 100%;
+}
+.as .as-previa .mini-tela .bl {
+  transform: none;
+  width: auto;
+  margin-left: auto;
+}
+
+/* desktop: a área ocupa a largura com composição própria, em vez de uma coluna colada à esquerda */
+.ar .ar-corpo {
+  max-width: 640px;
+}
+@media (min-width: 960px) {
+  .ar .ar-corpo {
+    max-width: 1120px;
+    padding: 40px 40px 0;
+  }
+  .ar .ar-secao--estreita {
+    max-width: 640px;
+  }
+  .ar .ar-secao--inicio {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    grid-template-areas: 'ola ola' 'passo portfolio';
+    column-gap: 32px;
+    align-items: start;
+  }
+  .ar .ar-secao--inicio .ar-ola {
+    grid-area: ola;
+  }
+  .ar .ar-secao--inicio .ar-passo {
+    grid-area: passo;
+  }
+  .ar .ar-secao--inicio .ar-portfolio {
+    grid-area: portfolio;
+    grid-template-columns: 1fr;
+    padding: 12px 12px 18px;
+    gap: 16px;
+  }
+  .ar .ar-secao--inicio .ar-portfolio .ar-miniatura {
+    height: 300px;
+    border-radius: 14px;
+  }
+  .ar .ar-secao--inicio .ar-portfolio-info {
+    padding: 0 6px;
+  }
+}
+
+/* miniatura do portfólio no cartão do Início: quadrado no celular, alto no desktop */
+.ar .ar-portfolio .ar-miniatura {
+  height: 112px;
+  border-radius: 14px;
 }

@@ -10,9 +10,9 @@ export type Cantos = keyof typeof CANTOS;
 
 /** Espaço vertical entre seções e dentro dos blocos. */
 export const RESPIRO = {
-  compacto: { '--respiro': 'clamp(32px, 6vw, 56px)' },
-  normal: { '--respiro': 'clamp(48px, 8vw, 96px)' },
-  amplo: { '--respiro': 'clamp(72px, 12vw, 144px)' },
+  compacto: { '--respiro': 'clamp(32px, 6cqi, 56px)' },
+  normal: { '--respiro': 'clamp(48px, 8cqi, 96px)' },
+  amplo: { '--respiro': 'clamp(72px, 12cqi, 144px)' },
 } as const;
 export type Respiro = keyof typeof RESPIRO;
 
