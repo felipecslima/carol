@@ -25,8 +25,8 @@ const base = {
 const com = (mudanca: object) => ({ ...base, ...mudanca });
 
 describe('registro de blocos', () => {
-  it('lista os 8 blocos, cada um com variação e tipo igual à chave', () => {
-    expect(Object.keys(REGISTRO)).toHaveLength(8);
+  it('lista os 11 blocos, cada um com variação e tipo igual à chave', () => {
+    expect(Object.keys(REGISTRO)).toHaveLength(11);
     for (const [chave, d] of Object.entries(REGISTRO)) {
       expect(d.tipo).toBe(chave);
       expect(d.variacoes.length).toBeGreaterThanOrEqual(2);

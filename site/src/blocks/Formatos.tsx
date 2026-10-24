@@ -9,9 +9,13 @@ export function Formatos({ variacao, dados, modo }: PropsDoBloco<DadosDeFormatos
       <ul className="bl-lista-formatos">
         {itens.map((f, n) => (
           <li key={n} className={variacao === 'cards' ? 'bl-cartao' : undefined}>
-            <b>{f.titulo}</b>
-            {f.descricao && <span>{f.descricao}</span>}
-            {f.preco && <em>{f.preco}</em>}
+            <div className="bl-formato-corpo">
+              <b>{f.titulo}</b>
+              {f.descricao && <span>{f.descricao}</span>}
+              {f.inclui && <span className="bl-inclui">{f.inclui}</span>}
+              {f.prazo && <small className="bl-prazo-formato">Prazo: {f.prazo}</small>}
+            </div>
+            {f.preco ? <em>{f.preco}</em> : <em className="bl-sob-consulta">Valor sob consulta</em>}
             <Exemplo ativo={f.exemplo} modo={modo} />
           </li>
         ))}

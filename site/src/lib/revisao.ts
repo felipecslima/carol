@@ -44,7 +44,11 @@ export function revisar(projeto: Projeto, referencia: Projeto, registro: Registr
 
     // texto igual ao do exemplo = placeholder que ficou
     const iguais = definicao.campos.filter(
-      (c) => ESCALARES.has(c.tipo) && !vazio(exemplo?.dados[c.id]) && b.dados[c.id] === exemplo?.dados[c.id],
+      (c) =>
+        ESCALARES.has(c.tipo) &&
+        !c.serveComoEsta &&
+        !vazio(exemplo?.dados[c.id]) &&
+        b.dados[c.id] === exemplo?.dados[c.id],
     );
     if (iguais.length > 0)
       alertas.push({

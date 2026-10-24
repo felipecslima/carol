@@ -40,6 +40,32 @@ export const BLOCOS = {
       { id: 'botao', rotulo: 'Botão', tipo: 'botao', maximo: 30 },
     ],
   },
+  resumo: {
+    tipo: 'resumo',
+    nome: 'Em 1 olhada',
+    variacoes: [
+      { id: 'faixa', nome: 'Faixa' },
+      { id: 'lista', nome: 'Lista' },
+    ],
+    campos: [
+      {
+        id: 'itens',
+        rotulo: 'Itens',
+        tipo: 'lista',
+        itens: [
+          { id: 'rotulo', rotulo: 'O que é (ex.: Nicho)', tipo: 'etiqueta', maximo: 24, obrigatorio: true },
+          { id: 'valor', rotulo: 'Resposta', tipo: 'etiqueta', maximo: 48, obrigatorio: true },
+        ],
+      },
+    ],
+    inicial: {
+      itens: [
+        { rotulo: 'Nicho', valor: 'seu nicho', exemplo: true },
+        { rotulo: 'Cidade', valor: 'sua cidade', exemplo: true },
+        { rotulo: 'Faço', valor: 'o que você grava', exemplo: true },
+      ],
+    },
+  },
   sobre: {
     tipo: 'sobre',
     nome: 'Sobre mim',
@@ -53,6 +79,41 @@ export const BLOCOS = {
       { id: 'foto', rotulo: 'Foto', tipo: 'imagem' },
       { id: 'nichos', rotulo: 'Nichos', tipo: 'lista' },
     ],
+  },
+  motivos: {
+    tipo: 'motivos',
+    nome: 'Por que eu',
+    variacoes: [
+      { id: 'lista', nome: 'Lista' },
+      { id: 'cards', nome: 'Cards' },
+    ],
+    campos: [
+      { ...titulo, serveComoEsta: true },
+      {
+        id: 'itens',
+        rotulo: 'Motivos',
+        tipo: 'lista',
+        itens: [
+          {
+            id: 'titulo',
+            rotulo: 'Motivo',
+            tipo: 'titulo',
+            maximo: 50,
+            obrigatorio: true,
+            dica: 'Escreva só o que é verdade para você.',
+          },
+          { id: 'texto', rotulo: 'Em uma frase', tipo: 'texto', maximo: 140 },
+        ],
+      },
+    ],
+    inicial: {
+      titulo: 'Por que trabalhar comigo',
+      itens: [
+        { titulo: 'Um motivo seu', texto: 'Ex.: o que você faz de melhor ou de diferente.', exemplo: true },
+        { titulo: 'Outro motivo seu', texto: 'Ex.: como você cuida da entrega.', exemplo: true },
+        { titulo: 'Mais um motivo', texto: 'Ex.: o que a marca ganha com o seu público.', exemplo: true },
+      ],
+    },
   },
   numeros: {
     tipo: 'numeros',
@@ -74,6 +135,7 @@ export const BLOCOS = {
     variacoes: [
       { id: 'carrossel', nome: 'Carrossel' },
       { id: 'grade', nome: 'Grade' },
+      { id: 'destaque', nome: 'Um grande e os outros pequenos' },
     ],
     campos: [
       titulo,
@@ -143,10 +205,48 @@ export const BLOCOS = {
         itens: [
           { id: 'titulo', rotulo: 'Nome do formato', tipo: 'titulo', maximo: 40, obrigatorio: true },
           { id: 'descricao', rotulo: 'Descrição', tipo: 'texto', maximo: 140 },
+          {
+            id: 'inclui',
+            rotulo: 'O que inclui',
+            tipo: 'texto',
+            maximo: 140,
+            dica: 'Ex.: quantos vídeos, formato, uso do conteúdo.',
+          },
+          { id: 'prazo', rotulo: 'Prazo de entrega (opcional)', tipo: 'etiqueta', maximo: 30 },
           { id: 'preco', rotulo: 'Preço (só se você quiser mostrar)', tipo: 'etiqueta', maximo: 30 },
         ],
       },
     ],
+  },
+  processo: {
+    tipo: 'processo',
+    nome: 'Como eu trabalho',
+    variacoes: [
+      { id: 'passos', nome: 'Passos em cartões' },
+      { id: 'linha', nome: 'Linha' },
+    ],
+    campos: [
+      { ...titulo, serveComoEsta: true },
+      {
+        id: 'itens',
+        rotulo: 'Etapas',
+        tipo: 'lista',
+        itens: [
+          { id: 'titulo', rotulo: 'Etapa', tipo: 'titulo', maximo: 30, obrigatorio: true },
+          { id: 'texto', rotulo: 'O que acontece', tipo: 'texto', maximo: 100 },
+          { id: 'prazo', rotulo: 'Prazo (opcional)', tipo: 'etiqueta', maximo: 24 },
+        ],
+      },
+    ],
+    inicial: {
+      titulo: 'Como eu trabalho',
+      itens: [
+        { titulo: 'Briefing', texto: 'Você me conta o objetivo e o que não pode faltar.' },
+        { titulo: 'Roteiro', texto: 'Eu proponho o roteiro e você aprova antes de gravar.' },
+        { titulo: 'Gravação', texto: 'Eu gravo e edito do meu jeito, com o seu produto em cena.' },
+        { titulo: 'Entrega', texto: 'Você recebe o vídeo pronto para publicar.' },
+      ],
+    },
   },
   contato: {
     tipo: 'contato',

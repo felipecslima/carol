@@ -1,14 +1,14 @@
 import { Exemplo } from './Exemplo';
 import type { DadosDeVideos, PropsDoBloco } from './tipos';
 
-export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'carrossel' | 'grade'>) {
+export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'carrossel' | 'grade' | 'destaque'>) {
   const { titulo, itens = [] } = dados;
   return (
     <section className={`bl bl-videos bl-videos--${variacao}`} id="videos">
       {titulo && <h2 className="bl-titulo">{titulo}</h2>}
       <ul className="bl-lista-videos">
         {itens.map((v, n) => (
-          <li key={n} className="bl-video">
+          <li key={n} className={variacao === 'destaque' && n === 0 ? 'bl-video bl-video--destaque' : 'bl-video'}>
             {v.video && modo === 'publicado' ? (
               <video
                 className="bl-video-capa"
@@ -16,7 +16,7 @@ export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'c
                 poster={v.capa}
                 controls
                 playsInline
-                preload="none"
+                preload={variacao === 'destaque' && n === 0 ? 'metadata' : 'none'}
                 aria-label={v.titulo}
               />
             ) : (

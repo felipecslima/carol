@@ -5,7 +5,10 @@ import { Contato } from './Contato';
 import { Formatos } from './Formatos';
 import { Marcas } from './Marcas';
 import { Numeros } from './Numeros';
+import { Motivos } from './Motivos';
+import { Processo } from './Processo';
 import { Publico } from './Publico';
+import { Resumo } from './Resumo';
 import { Sobre } from './Sobre';
 import type { ModoDeRender } from './tipos';
 import { Videos } from './Videos';
@@ -13,6 +16,9 @@ import type { Bloco as BlocoDoProjeto } from '@lib/projeto';
 
 const COMPONENTES = {
   capa: Capa,
+  resumo: Resumo,
+  motivos: Motivos,
+  processo: Processo,
   sobre: Sobre,
   numeros: Numeros,
   videos: Videos,

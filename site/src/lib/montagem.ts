@@ -47,6 +47,14 @@ export function montarProjeto(base: Projeto, r: Respostas): Projeto {
       const itens = r.videos.map((v) => ({ titulo: v.titulo.trim() || 'Meu vídeo', video: v.video, capa: v.capa }));
       return { ...b, dados: { ...b.dados, itens } };
     }
+    if (b.tipo === 'resumo') {
+      const itens = [
+        nicho && { rotulo: 'Nicho', valor: nicho },
+        r.cidade.trim() && { rotulo: 'Cidade', valor: r.cidade.trim() },
+        grava && { rotulo: 'Faço', valor: grava },
+      ].filter(Boolean);
+      return itens.length ? { ...b, dados: { ...b.dados, itens } } : b;
+    }
     if (b.tipo === 'sobre' && nicho) return { ...b, dados: { ...b.dados, nichos: [nicho] } };
     return b;
   });

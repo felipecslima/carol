@@ -37,7 +37,13 @@ export function devolver(projeto: Projeto, id: string, registro: Registro): Proj
 export function adicionar(projeto: Projeto, tipo: string, id: string, registro: Registro): Projeto {
   const definicao = registro[tipo];
   if (!definicao || projeto.blocos.length >= MAXIMO_DE_BLOCOS) return projeto;
-  const novo: Bloco = { id, tipo, variacao: definicao.variacoes[0].id, oculto: false, dados: {} };
+  const novo: Bloco = {
+    id,
+    tipo,
+    variacao: definicao.variacoes[0].id,
+    oculto: false,
+    dados: structuredClone((definicao.inicial ?? {}) as Record<string, unknown>),
+  };
   const antesDoContato = projeto.blocos.findLastIndex((b) => registro[b.tipo]?.fixo && b.tipo !== 'capa');
   const blocos = [...projeto.blocos];
   blocos.splice(antesDoContato < 0 ? blocos.length : antesDoContato, 0, novo);

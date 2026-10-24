@@ -33,6 +33,8 @@ export interface Campo {
   capaEm?: string;
   /** campos de cada item de uma lista; sem isto, a lista é de textos simples (ex.: nichos) */
   itens?: readonly Campo[];
+  /** o texto de exemplo serve como está (ex.: título "Como eu trabalho"): a revisão não cobra troca */
+  serveComoEsta?: boolean;
   /** exemplo que não pode ir para o ar (ex.: número inventado): bloqueia a publicação enquanto for o placeholder */
   bloqueiaPublicacao?: boolean;
 }
@@ -51,6 +53,8 @@ export interface DefinicaoDeBloco {
   fixo?: boolean;
   /** não aparece para quem está no modo iniciante */
   ocultoNoModoIniciante?: boolean;
+  /** dados com que o bloco nasce ao ser adicionado (sem isto, nasce vazio); itens de placeholder vão marcados `exemplo` */
+  inicial?: Readonly<Record<string, unknown>>;
 }
 
 export type Registro = Readonly<Record<string, DefinicaoDeBloco>>;

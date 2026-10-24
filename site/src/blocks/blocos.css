@@ -561,3 +561,242 @@ video.bl-video-capa {
     display: none;
   }
 }
+
+/* em 1 olhada: o essencial logo depois da capa */
+.bl-lista-resumo {
+  list-style: none;
+  padding: 20px 24px;
+  display: grid;
+  gap: 16px 24px;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  background: var(--cartao);
+  border-radius: var(--raio-grande);
+}
+.bl-lista-resumo li {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+}
+.bl-lista-resumo span {
+  color: var(--texto-suave);
+  font-size: 14px;
+}
+.bl-lista-resumo b {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.2;
+}
+.bl-resumo--lista .bl-lista-resumo {
+  grid-template-columns: 1fr;
+  background: none;
+  padding: 0;
+  gap: 0;
+}
+.bl-resumo--lista .bl-lista-resumo li {
+  grid-template-columns: minmax(96px, 1fr) 2fr;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--borda);
+}
+
+/* por que eu */
+.bl-lista-motivos {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.bl-lista-motivos li {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.bl-lista-motivos li b {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.bl-lista-motivos li span {
+  color: var(--texto-suave);
+}
+.bl-motivos--lista .bl-lista-motivos li {
+  padding-left: 32px;
+  position: relative;
+}
+.bl-motivos--lista .bl-lista-motivos li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 18px;
+  height: 18px;
+  background: var(--destaque);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+.bl-motivos--cards .bl-lista-motivos {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+/* como eu trabalho: a numeração é conteúdo (ordem das etapas) */
+.bl-lista-processo {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  counter-reset: passo;
+}
+.bl-lista-processo li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.bl-lista-processo li > div {
+  display: grid;
+  gap: 2px;
+}
+.bl-lista-processo li b {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.bl-lista-processo li span:not(.bl-passo-n) {
+  color: var(--texto-suave);
+}
+.bl-passo-n {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--destaque);
+  color: var(--sobre-destaque);
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+}
+.bl-processo--linha .bl-lista-processo {
+  gap: 0;
+}
+.bl-processo--linha .bl-lista-processo li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--borda);
+}
+.bl-processo--linha .bl-lista-processo li:last-child {
+  border-bottom: 0;
+}
+.bl-exemplo {
+  grid-column: 1 / -1;
+}
+
+/* formatos com entregável */
+.bl-lista-formatos li {
+  grid-template-rows: 1fr auto;
+}
+.bl-formato-corpo {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.bl-inclui {
+  font-size: 15px;
+}
+.bl-prazo-formato {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+.bl-sob-consulta {
+  color: var(--texto-suave) !important;
+  font-weight: 700 !important;
+  font-size: 15px;
+}
+.bl-formatos--tabela .bl-lista-formatos li {
+  align-items: baseline;
+  gap: 16px;
+}
+
+/* vídeo em destaque: o primeiro grande, os outros pequenos embaixo */
+.bl-videos--destaque .bl-lista-videos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  overflow: visible;
+  gap: 12px;
+}
+.bl-videos--destaque .bl-video {
+  width: auto;
+}
+.bl-videos--destaque .bl-video--destaque {
+  grid-column: 1 / -1;
+  width: min(100%, 400px);
+  justify-self: center;
+}
+.bl-videos--destaque .bl-video--destaque .bl-video-capa {
+  aspect-ratio: 4 / 5;
+}
+.bl-videos--destaque .bl-video--destaque b {
+  font-size: 20px;
+}
+
+/* botão de WhatsApp que acompanha a rolagem no celular; some perto do Contato e no desktop */
+.bl-fixo-trilho {
+  position: sticky;
+  bottom: 0;
+  height: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.bl-fixo {
+  position: absolute;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+@media (min-width: 880px) {
+  .pagina:not(.mini-tela) .bl-fixo-trilho {
+    display: none;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  .bl-fixo-trilho {
+    animation: bl-fixo linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes bl-fixo {
+    0%,
+    9% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    15%,
+    86% {
+      opacity: 1;
+      visibility: visible;
+    }
+    94%,
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+@media print {
+  .bl-fixo-trilho {
+    display: none;
+  }
+}
+
+/* no modo Ver do editor, o botão "Voltar a editar" ocupa a base da tela: o de WhatsApp sobe */
+.ed-ver .bl-fixo {
+  bottom: 84px;
+}

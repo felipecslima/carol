@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
+import { ContatoFixo } from '@blocks/ContatoFixo';
 import { REGISTRO } from '@blocks/registro';
 import { blocosVisiveis, type Projeto } from '@lib/projeto';
 import { temaDoProjeto } from './tema';
@@ -124,6 +125,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
         {visiveis.map((b) => (
           <Bloco key={b.id} bloco={b} modo="publicado" />
         ))}
+        <ContatoFixo blocos={visiveis} />
         <button type="button" className="ed-sair-ver" onClick={() => setVer(false)}>
           Voltar a editar
         </button>

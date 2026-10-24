@@ -51,12 +51,15 @@
   transform-origin: top left;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas: 'capa capa' 'numeros publico' 'videos videos' 'sobre formatos' 'marcas marcas' 'contato contato';
+  grid-template-areas: 'capa capa' 'resumo resumo' 'numeros publico' 'videos videos' 'sobre formatos' 'marcas marcas' 'contato contato';
   align-content: start;
   --respiro: 20px;
 }
 .mk-conteudo > .bl-capa {
   grid-area: capa;
+}
+.mk-conteudo > .bl-resumo {
+  grid-area: resumo;
 }
 .mk-conteudo > .bl-numeros {
   grid-area: numeros;

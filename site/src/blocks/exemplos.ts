@@ -27,15 +27,15 @@ export const PROJETO_DE_EXEMPLO: Projeto = {
       },
     },
     {
-      id: 'numeros',
-      tipo: 'numeros',
-      variacao: 'cards',
+      id: 'resumo',
+      tipo: 'resumo',
+      variacao: 'faixa',
       oculto: false,
       dados: {
         itens: [
-          { valor: '00 mil', rotulo: 'seguidores', exemplo },
-          { valor: '0,0 mi', rotulo: 'views em 30 dias', exemplo },
-          { valor: '00 mil', rotulo: 'média por vídeo', exemplo },
+          { rotulo: 'Nicho', valor: 'seu nicho', exemplo },
+          { rotulo: 'Cidade', valor: 'sua cidade', exemplo },
+          { rotulo: 'Faço', valor: 'o que você grava', exemplo },
         ],
       },
     },
@@ -51,6 +51,33 @@ export const PROJETO_DE_EXEMPLO: Projeto = {
           { titulo: 'Outro vídeo seu', visualizacoes: '000 mil', marca: 'marca parceira', exemplo },
           { titulo: 'Mais um vídeo', visualizacoes: '000 mil', exemplo },
           { titulo: 'Seu melhor vídeo', visualizacoes: '000 mil', exemplo },
+        ],
+      },
+    },
+    {
+      id: 'numeros',
+      tipo: 'numeros',
+      variacao: 'cards',
+      oculto: false,
+      dados: {
+        itens: [
+          { valor: '00 mil', rotulo: 'seguidores', exemplo },
+          { valor: '0,0 mi', rotulo: 'views em 30 dias', exemplo },
+          { valor: '00 mil', rotulo: 'média por vídeo', exemplo },
+        ],
+      },
+    },
+    {
+      id: 'motivos',
+      tipo: 'motivos',
+      variacao: 'lista',
+      oculto: false,
+      dados: {
+        titulo: 'Por que trabalhar comigo',
+        itens: [
+          { titulo: 'Um motivo seu', texto: 'Ex.: o que você faz de melhor ou de diferente.', exemplo },
+          { titulo: 'Outro motivo seu', texto: 'Ex.: como você cuida da entrega.', exemplo },
+          { titulo: 'Mais um motivo', texto: 'Ex.: o que a marca ganha com o seu público.', exemplo },
         ],
       },
     },
@@ -91,6 +118,21 @@ export const PROJETO_DE_EXEMPLO: Projeto = {
           { titulo: 'Reels e stories', descricao: 'No meu perfil, no meu jeito', exemplo },
           { titulo: 'Vídeos UGC', descricao: 'Para os seus anúncios', exemplo },
           { titulo: 'Visita e cobertura', descricao: 'Eu vou até você', exemplo },
+        ],
+      },
+    },
+    {
+      id: 'processo',
+      tipo: 'processo',
+      variacao: 'passos',
+      oculto: false,
+      dados: {
+        titulo: 'Como eu trabalho',
+        itens: [
+          { titulo: 'Briefing', texto: 'Você me conta o objetivo e o que não pode faltar.' },
+          { titulo: 'Roteiro', texto: 'Eu proponho o roteiro e você aprova antes de gravar.' },
+          { titulo: 'Gravação', texto: 'Eu gravo e edito do meu jeito, com o seu produto em cena.' },
+          { titulo: 'Entrega', texto: 'Você recebe o vídeo pronto para publicar.' },
         ],
       },
     },

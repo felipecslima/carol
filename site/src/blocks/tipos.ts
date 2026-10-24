@@ -32,8 +32,27 @@ export interface ItemDeMarca extends Marcavel {
 export interface ItemDeFormato extends Marcavel {
   titulo: string;
   descricao?: string;
-  /** só aparece se a creator preencher; nunca vem de exemplo */
+  /** o que está incluído (quantos vídeos, entrega, uso) */
+  inclui?: string;
+  /** prazo de entrega, só se a creator preencher */
+  prazo?: string;
+  /** só aparece se a creator preencher; nunca vem de exemplo. Sem ele, a página diz "Valor sob consulta" */
   preco?: string;
+}
+
+export interface ItemDeResumo extends Marcavel {
+  rotulo: string;
+  valor: string;
+}
+export interface ItemDeMotivo extends Marcavel {
+  titulo: string;
+  texto?: string;
+}
+export interface ItemDePasso extends Marcavel {
+  titulo: string;
+  texto?: string;
+  /** prazo opcional da etapa, dela */
+  prazo?: string;
 }
 
 export interface DadosDaCapa {
@@ -73,6 +92,17 @@ export interface DadosDePublico {
 export interface DadosDeFormatos {
   titulo?: string;
   itens?: ItemDeFormato[];
+}
+export interface DadosDeResumo {
+  itens?: ItemDeResumo[];
+}
+export interface DadosDeMotivos {
+  titulo?: string;
+  itens?: ItemDeMotivo[];
+}
+export interface DadosDeProcesso {
+  titulo?: string;
+  itens?: ItemDePasso[];
 }
 export interface DadosDeContato {
   titulo?: string;

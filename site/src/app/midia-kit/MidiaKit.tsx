@@ -16,6 +16,8 @@ const LARGURA = 794;
 const ALTURA = 1123;
 /** largura do layout antes de reduzir (as seções foram pensadas para 1000 px, em duas colunas) */
 const LAYOUT = 1000;
+/** a folha é um resumo de 1 página: o argumento e as etapas ficam só no link */
+const NAO_VAI_PARA_O_KIT = new Set(['motivos', 'processo']);
 
 export default function MidiaKit() {
   const projeto = useMemo(() => carregarRascunho() ?? PROJETO_DE_EXEMPLO, []);
@@ -69,9 +71,11 @@ export default function MidiaKit() {
               marginLeft: (LARGURA - LAYOUT * escala) / 2,
             }}
           >
-            {blocosVisiveis(projeto, REGISTRO).map((b) => (
-              <Bloco key={b.id} bloco={b} modo="publicado" />
-            ))}
+            {blocosVisiveis(projeto, REGISTRO)
+              .filter((b) => !NAO_VAI_PARA_O_KIT.has(b.tipo))
+              .map((b) => (
+                <Bloco key={b.id} bloco={b} modo="publicado" />
+              ))}
           </div>
           {marcaDagua && (
             <div className="mk-marca" aria-hidden="true">
