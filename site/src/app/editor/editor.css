@@ -801,3 +801,9 @@
     sans-serif;
   color: #5e4842;
 }
+
+/* a gaveta não bloqueia o resto do editor: o Vaul deixa pointer-events:none no body enquanto ela está aberta,
+   e isso travava as abas de baixo */
+body[style*='pointer-events'] {
+  pointer-events: auto !important;
+}

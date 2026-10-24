@@ -20,7 +20,15 @@ export function Gaveta({
   return (
     <Drawer.Root open={aberta} onOpenChange={(a) => !a && aoFechar()} modal={false} repositionInputs>
       <Drawer.Portal>
-        <Drawer.Content className="ed-gaveta" aria-describedby={undefined}>
+        <Drawer.Content
+          className="ed-gaveta"
+          aria-describedby={undefined}
+          // as abas de baixo cuidam de abrir, trocar e fechar sozinhas: o toque nelas não conta como "fora da gaveta"
+          // (senão a gaveta fecha no toque e o clique da aba a reabre)
+          onInteractOutside={(ev) => {
+            if ((ev.target as Element | null)?.closest?.('.ed-abas')) ev.preventDefault();
+          }}
+        >
           <div className="ed-gaveta-topo">
             <div>
               <Drawer.Title className="ed-gaveta-titulo">{titulo}</Drawer.Title>
