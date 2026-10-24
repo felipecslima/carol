@@ -132,7 +132,7 @@ export const BLOCOS = {
         tipo: 'lista',
         itens: [
           { id: 'titulo', rotulo: 'Nome do formato', tipo: 'titulo', maximo: 40, obrigatorio: true },
-          { id: 'descricao', rotulo: 'Descrição', tipo: 'texto', maximo: 100 },
+          { id: 'descricao', rotulo: 'Descrição', tipo: 'texto', maximo: 140 },
           { id: 'preco', rotulo: 'Preço (só se você quiser mostrar)', tipo: 'etiqueta', maximo: 30 },
         ],
       },
