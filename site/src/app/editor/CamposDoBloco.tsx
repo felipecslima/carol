@@ -44,6 +44,19 @@ function CampoDeTexto({
   );
 }
 
+function CampoDeProporcao({ campo, valor, aoMudar }: { campo: Campo; valor: number; aoMudar: (v: number) => void }) {
+  const id = useId();
+  return (
+    <div className="ed-campo">
+      <label htmlFor={id}>
+        {campo.rotulo}: <b>{valor === 0 ? 'nenhuma' : `${valor}%`}</b>
+      </label>
+      <input id={id} type="range" min={0} max={100} value={valor} onChange={(e) => aoMudar(Number(e.target.value))} />
+      {campo.dica && <span className="ed-dica">{campo.dica}</span>}
+    </div>
+  );
+}
+
 function ListaDeItens({ campo, itens, aoMudar }: { campo: Campo; itens: Dados[]; aoMudar: (itens: Dados[]) => void }) {
   const campos = campo.itens ?? [];
   const mudarItem = (i: number, id: string, valor: unknown) => mudarItemVarios(i, { [id]: valor });
@@ -193,6 +206,15 @@ export function CamposDoBloco({
                 campo={campo}
                 itens={(valor as string[] | undefined) ?? []}
                 aoMudar={(itens) => aoMudarDados({ [campo.id]: itens })}
+              />
+            );
+          if (campo.tipo === 'proporcao')
+            return (
+              <CampoDeProporcao
+                key={campo.id}
+                campo={campo}
+                valor={typeof valor === 'number' ? valor : (campo.padrao ?? 0)}
+                aoMudar={(v) => aoMudarDados({ [campo.id]: v })}
               />
             );
           if (campo.tipo === 'imagem' || campo.tipo === 'video')

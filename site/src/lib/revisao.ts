@@ -85,6 +85,12 @@ export function revisar(projeto: Projeto, referencia: Projeto, registro: Registr
     });
   if (capa && vazio(capa.dados.arroba))
     alertas.push({ gravidade: 'amarelo', bloco: capa.id, mensagem: 'Capa: falta o seu @ e a cidade.' });
+  if (capa?.variacao === 'fundo' && typeof capa.dados.veu === 'number' && capa.dados.veu < 25)
+    alertas.push({
+      gravidade: 'amarelo',
+      bloco: capa.id,
+      mensagem: 'Capa: com pouca película escura o texto pode ficar difícil de ler sobre a imagem.',
+    });
   const videos = blocosVisiveis(projeto, registro).find((b) => b.tipo === 'videos');
   if (!videos || ((videos.dados.itens as unknown[] | undefined) ?? []).length === 0)
     alertas.push({

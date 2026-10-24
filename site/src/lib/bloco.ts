@@ -33,6 +33,8 @@ export interface Campo {
   capaEm?: string;
   /** campos de cada item de uma lista; sem isto, a lista é de textos simples (ex.: nichos) */
   itens?: readonly Campo[];
+  /** valor de um controle deslizante (`proporcao`) quando a creator ainda não mexeu */
+  padrao?: number;
   /** o texto de exemplo serve como está (ex.: título "Como eu trabalho"): a revisão não cobra troca */
   serveComoEsta?: boolean;
   /** exemplo que não pode ir para o ar (ex.: número inventado): bloqueia a publicação enquanto for o placeholder */

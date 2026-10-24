@@ -6,7 +6,7 @@ import type { DadosDaCapa, PropsDoBloco } from './tipos';
 type VariacaoDaCapa = 'foto-grande' | 'foto-redonda' | 'fundo';
 
 export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, VariacaoDaCapa>) {
-  const { titulo, subtitulo, arroba, foto, botao, fundo, video_fundo, foto_foco, fundo_foco } = dados;
+  const { titulo, subtitulo, arroba, foto, botao, fundo, video_fundo, foto_foco, fundo_foco, veu } = dados;
   const posFoto = posicaoDoFoco(foto_foco);
   const posFundo = posicaoDoFoco(fundo_foco);
   const video = useRef<HTMLVideoElement>(null);
@@ -29,7 +29,12 @@ export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, Variac
   if (variacao === 'fundo') {
     const temVideo = Boolean(video_fundo) && modo === 'publicado';
     return (
-      <section className="bl bl-capa bl-capa--fundo">
+      <section
+        className="bl bl-capa bl-capa--fundo"
+        style={
+          veu === undefined ? undefined : ({ '--veu': Math.max(0, Math.min(100, veu)) / 60 } as React.CSSProperties)
+        }
+      >
         <div
           className="bl-capa-fundo"
           aria-hidden="true"

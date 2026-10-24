@@ -508,7 +508,13 @@ video.bl-video-capa {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(to top, rgba(18, 10, 8, 0.82) 0%, rgba(18, 10, 8, 0.5) 42%, rgba(18, 10, 8, 0.12) 100%);
+  /* --veu: 1 é a película padrão; a creator ajusta de 0 (nenhuma) a ~1,67 (a mais escura) */
+  background: linear-gradient(
+    to top,
+    rgba(18, 10, 8, calc(0.82 * var(--veu, 1))) 0%,
+    rgba(18, 10, 8, calc(0.5 * var(--veu, 1))) 42%,
+    rgba(18, 10, 8, calc(0.12 * var(--veu, 1))) 100%
+  );
 }
 .bl-capa--fundo .bl-capa-texto {
   justify-items: start;
