@@ -91,6 +91,20 @@ export default function Entrar() {
               <button type="submit" className="as-botao" disabled={ocupado || !email.trim()}>
                 {ocupado ? 'Enviando…' : 'Enviar código'}
               </button>
+              {import.meta.env.DEV && (
+                <button
+                  type="button"
+                  className="as-link"
+                  disabled={!EMAIL.test(email.trim())}
+                  onClick={() => {
+                    setEmail(email.trim().toLowerCase());
+                    setErro(null);
+                    setEtapa('codigo');
+                  }}
+                >
+                  Já tenho um código (só em desenvolvimento)
+                </button>
+              )}
             </form>
           </>
         ) : (
