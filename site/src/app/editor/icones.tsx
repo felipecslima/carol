@@ -39,3 +39,6 @@ export const Foguete = icone(
   <path d="M5 15c-1 1-2 4-2 6 2 0 5-1 6-2M12 15l-3-3c1-4 4-8 11-9 0 7-4 10-9 9zM9 12l-4 1 1-4 4-1M15 9a1 1 0 1 0 0 .01" />,
 );
 export const Imagem = icone(<path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M9 9a1 1 0 1 0 0 .01" />);
+export const Casa = icone(<path d="M4 11l8-7 8 7M6 10v10h12V10M10 20v-6h4v6" />);
+export const Pessoa = icone(<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-7 8-7s8 3 8 7" />);
+export const Pasta = icone(<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />);

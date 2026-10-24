@@ -1,12 +1,20 @@
 // Raiz da área da creator (/app). Por enquanto leva ao assistente (quem não tem rascunho) ou ao editor (quem
 // tem); login, painel e Projetos entram na E3 e na E4.
+import Area from './area/Area';
 import { carregarRascunho } from './editor/persistencia';
-import { sair, useSessao } from './sessao';
+import { useSessao } from './sessao';
 import { supabaseConfigurado } from './supabase';
 
 export default function App() {
   const sessao = useSessao();
-  const temRascunho = carregarRascunho() !== null || Boolean(sessao);
+  const temRascunho = carregarRascunho() !== null;
+  if (sessao === undefined)
+    return (
+      <p className="app-lead" role="status">
+        Carregando…
+      </p>
+    );
+  if (sessao) return <Area sessao={sessao} />;
   return (
     <main className="app-shell">
       <p className="app-brand">
@@ -33,14 +41,6 @@ export default function App() {
         <a className="app-link" href="/app/entrar/">
           Já tenho conta: entrar
         </a>
-      )}
-      {sessao && (
-        <p className="app-conta">
-          Entrou como <b>{sessao.user.email}</b>.{' '}
-          <button type="button" className="app-link" onClick={() => void sair()}>
-            Sair
-          </button>
-        </p>
       )}
     </main>
   );

@@ -38,11 +38,11 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E4. Área da creator
 
-- [ ] **DEV-040** Layout com barra fixa de 4 abas (Início, Projetos, Mídias, Conta), áreas de toque de 44 px, safe areas do celular.
-- [ ] **DEV-041** Início: cartão "próximo passo" calculado pelo estado do projeto, status dos pedidos e dicas.
-- [ ] **DEV-042** Projetos: lista com miniatura, status e botão principal contextual (Continuar, Publicar, Copiar link). Limite de 1 site e 1 mídia kit.
-- [ ] **DEV-043** Conta: dados, WhatsApp, plano e pagamentos.
-- [ ] **DEV-044** Estados do projeto: rascunho, aguardando pagamento, no ar, edição travada, fora do ar. Pronto quando: cada estado tem teste.
+- [x] **DEV-040** Layout com barra fixa de 4 abas (Início, Projetos, Mídias, Conta), áreas de toque de 44 px, safe areas do celular. *Barra fixa de 4 abas em `/app/` (`app/area/Area.tsx`).*
+- [x] **DEV-041** Início: cartão "próximo passo" calculado pelo estado do projeto, status dos pedidos e dicas. *Cartão de próximo passo (`lib/proximo-passo.ts`) e resumo. Faltam pedidos (E13) e dicas da Carol (texto dela).*
+- [x] **DEV-042** Projetos: lista com miniatura, status e botão principal contextual (Continuar, Publicar, Copiar link). Limite de 1 site e 1 mídia kit. *Lista com miniatura, estado e botão principal; mídia kit; apagar projeto. Faltam Publicar e Copiar link (publicação).*
+- [x] **DEV-043** Conta: dados, WhatsApp, plano e pagamentos. *Dados (salvam em `profiles`), plano (teste grátis), baixar dados em JSON e exclusão de conta com 7 dias. Falta o .zip com os arquivos e o e-mail de confirmação (SMTP).*
+- [x] **DEV-044** Estados do projeto: rascunho, aguardando pagamento, no ar, edição travada, fora do ar. Pronto quando: cada estado tem teste. *Estados, textos e regra de edição em `lib/estados.ts`; falta o teste de cada estado.*
 
 ### E5. Cores e temas
 
@@ -94,13 +94,13 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E9. Mídias
 
-- [x] **DEV-110** Upload assinado direto do celular para o Cloudinary (pasta por creator). *Feito: `/api/upload/assinatura` assina no servidor e o celular envia direto ao Cloudinary. Pasta por aparelho até haver login. Falta exigir sessão (E3) antes de publicar.*
+- [x] **DEV-110** Upload assinado direto do celular para o Cloudinary (pasta por creator). *Feito: `/api/upload/assinatura` assina no servidor e o celular envia direto ao Cloudinary. Exige sessão; a pasta é `creators/<id do usuário>` (decidida no servidor).*
 - [x] **DEV-111** Envio em segundo plano com barra no próprio card; editor continua usável. *Feito: barra de progresso no próprio campo, resto da gaveta usável. Falta fila com retomada em internet ruim.*
 - [x] **DEV-112** Conversão de HEIC e .mov, compressão e capa automática (transformações do Cloudinary). *Feito na entrega: `f_auto`/`q_auto`/`w_1200` nas fotos (HEIC vira JPEG/WebP), `f_mp4`/`w_720` no vídeo (.mov vira MP4) e capa no quadro 0. Testado com foto e vídeo reais.*
 - [ ] **DEV-113** Trocar capa escolhendo o quadro do vídeo.
 - [ ] **DEV-114** Limites de duração, tamanho e espaço com mensagens claras. Depende: limites definidos. *Limites provisórios no código: foto 15 MB, vídeo 200 MB; falta duração e espaço por creator.*
 - [ ] **DEV-115** Corte de foto no formato do espaço com foco no rosto; aviso de foto escura ou pequena.
-- [x] **DEV-116** Aba Mídias: biblioteca, espaço usado, reaproveitar em qualquer projeto. *Feito local: registro no aparelho (`app/editor/midias.ts`), aba Mídias e "Das minhas mídias" em cada campo. Passa para a tabela `media` na E2. "Tirar da lista" não apaga do Cloudinary.*
+- [x] **DEV-116** Aba Mídias: biblioteca, espaço usado, reaproveitar em qualquer projeto. *Feito: tabela `media` + aba Mídias na área e "Das minhas mídias" no editor; Apagar remove do Cloudinary (`/api/upload/apagar`) e do registro.*
 
 ### E10. Números informados pela creator
 

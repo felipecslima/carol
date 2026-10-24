@@ -10,7 +10,9 @@ import { NUVEM } from '@themes/modelos/nuvem';
 import type { Numeros } from '@lib/numeros';
 import { CampoDeArquivo } from '../editor/CampoDeArquivo';
 import { PainelNumeros } from '../editor/PainelNumeros';
+import { salvarPerfil } from '../nuvem';
 import { salvarRascunho } from '../editor/persistencia';
+import { useSessao } from '../sessao';
 import '../editor/editor.css';
 import './assistente.css';
 
@@ -33,6 +35,7 @@ function PreviaDoModelo({ paleta }: { paleta: number }) {
 }
 
 export default function Assistente() {
+  const sessao = useSessao();
   const [indice, setIndice] = useState(0);
   const [paleta, setPaleta] = useState(0);
   const [r, setR] = useState<Respostas>({
@@ -49,7 +52,9 @@ export default function Assistente() {
   const [numeros, setNumeros] = useState<Numeros | undefined>(undefined);
   const campo = useRef<HTMLInputElement>(null);
   // quem ainda não fez publi não tem números para mostrar: a etapa de números não aparece
-  const ETAPAS: Etapa[] = r.jaFezPubli ? [...ETAPAS_BASE, 'numeros'] : ETAPAS_BASE;
+  // o envio de vídeos exige conta: sem login, essa etapa fica para o editor
+  const base = sessao ? ETAPAS_BASE : ETAPAS_BASE.filter((e) => e !== 'videos');
+  const ETAPAS: Etapa[] = r.jaFezPubli ? [...base, 'numeros'] : base;
   const etapa = ETAPAS[indice]!;
 
   useEffect(() => campo.current?.focus(), [indice]);
@@ -67,19 +72,29 @@ export default function Assistente() {
     etapa === 'videos' ||
     etapa === 'numeros';
 
-  function concluir(numerosFinais: Numeros | undefined) {
+  async function concluir(numerosFinais: Numeros | undefined) {
     const projeto = montarProjeto(
       { ...PROJETO_DE_EXEMPLO, paleta },
       { ...r, videos: videos.filter((v) => v.video), numeros: numerosFinais },
     );
     salvarRascunho(projeto);
+    // com conta, o que ela respondeu também vira o perfil dela
+    if (sessao)
+      await salvarPerfil(sessao.user.id, {
+        nome: r.nome.trim(),
+        arroba: normalizarArroba(r.arroba),
+        whatsapp: '',
+        cidade: r.cidade.trim(),
+        nicho: r.nicho.trim(),
+        modoIniciante: !r.jaFezPubli,
+      });
     window.location.href = '/app/editor/';
   }
 
   function avancar() {
     if (!valido) return;
     if (!ultima) return setIndice(indice + 1);
-    concluir(numeros);
+    void concluir(numeros);
   }
 
   const mudar = (parte: Partial<Respostas>) => setR({ ...r, ...parte });
@@ -322,7 +337,7 @@ export default function Assistente() {
               inicial={numeros}
               aoSalvar={(n) => {
                 setNumeros(n);
-                concluir(n);
+                void concluir(n);
               }}
             />
           </>

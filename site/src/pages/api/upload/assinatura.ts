@@ -1,23 +1,26 @@
-// Devolve a assinatura para o celular enviar uma foto ou vídeo direto ao Cloudinary (pasta própria da creator).
-// ATENÇÃO: ainda sem login, qualquer aparelho pode pedir assinatura. Antes de publicar, exigir sessão (E3).
+// Devolve a assinatura para o celular enviar uma foto ou vídeo direto ao Cloudinary, na pasta da própria creator.
+// Exige sessão: o servidor confere o token e decide a pasta (`creators/<id do usuário>`).
 import { CLOUDINARY_URL } from 'astro:env/server';
 import type { APIRoute } from 'astro';
-import { assinar, FORMATOS, lerConta, pastaValida, type TipoDeArquivo } from '@server/cloudinary';
+import { assinar, FORMATOS, lerConta, pastaDoUsuario, type TipoDeArquivo } from '@server/cloudinary';
+import { usuarioDoPedido } from '@server/usuario';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
+  const usuario = await usuarioDoPedido(request);
+  if (!usuario) return Response.json({ erro: 'Entre na sua conta para enviar fotos e vídeos.' }, { status: 401 });
+
   const conta = lerConta(CLOUDINARY_URL);
   if (!conta) return Response.json({ erro: 'Envio de arquivos ainda não configurado.' }, { status: 503 });
 
-  const corpo = (await request.json().catch(() => null)) as { tipo?: string; pasta?: string } | null;
+  const corpo = (await request.json().catch(() => null)) as { tipo?: string } | null;
   const tipo = corpo?.tipo as TipoDeArquivo | undefined;
-  if (!tipo || !(tipo in FORMATOS) || !corpo?.pasta || !pastaValida(corpo.pasta))
-    return Response.json({ erro: 'Pedido inválido.' }, { status: 400 });
+  if (!tipo || !(tipo in FORMATOS)) return Response.json({ erro: 'Pedido inválido.' }, { status: 400 });
 
   const params = {
     allowed_formats: FORMATOS[tipo],
-    folder: `creators/${corpo.pasta}`,
+    folder: pastaDoUsuario(usuario.id),
     timestamp: Math.floor(Date.now() / 1000),
   };
   return Response.json({

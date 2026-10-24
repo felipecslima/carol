@@ -30,5 +30,25 @@ export const FORMATOS = {
 } as const;
 export type TipoDeArquivo = keyof typeof FORMATOS;
 
-/** Pasta de cada aparelho/creator: só letras minúsculas, números e hífen (evita sair da pasta `creators/`). */
-export const pastaValida = (id: string) => /^[a-z0-9-]{8,48}$/.test(id);
+/** Pasta de cada creator: o id do usuário no Supabase (só o servidor decide, nunca o corpo do pedido). */
+export const pastaDoUsuario = (idDoUsuario: string) => `creators/${idDoUsuario}`;
+
+/** O arquivo é da pasta do usuário? (impede apagar arquivo de outra creator) */
+export const arquivoDoUsuario = (publicId: string, idDoUsuario: string) =>
+  publicId.startsWith(`${pastaDoUsuario(idDoUsuario)}/`) && !publicId.includes('..');
+
+/** Apaga um arquivo do Cloudinary (destroy assinado). `true` se apagou ou já não existia. */
+export async function apagarArquivo(conta: ContaCloudinary, publicId: string, tipo: TipoDeArquivo): Promise<boolean> {
+  const params = { public_id: publicId, timestamp: Math.floor(Date.now() / 1000) };
+  const corpo = new URLSearchParams({
+    ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)])),
+    api_key: conta.chave,
+    signature: await assinar(params, conta.segredo),
+  });
+  const resposta = await fetch(`https://api.cloudinary.com/v1_1/${conta.nome}/${tipo}/destroy`, {
+    method: 'POST',
+    body: corpo,
+  });
+  const dados = (await resposta.json().catch(() => ({}))) as { result?: string };
+  return resposta.ok && (dados.result === 'ok' || dados.result === 'not found');
+}

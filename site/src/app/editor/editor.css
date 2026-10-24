@@ -1,7 +1,9 @@
 /* Chrome do editor (barras, gavetas, botões): paleta do Creators, à parte do tema do portfólio que a creator monta.
    O portfólio em si (.pagina) usa as variáveis de tema; nada daqui vaza para dentro dele. */
 .ed,
-.ed-gaveta {
+.ed-gaveta,
+.as,
+.ar {
   --ed-bg: #fbf4ec;
   --ed-card: #fff;
   --ed-texto: #24130f;

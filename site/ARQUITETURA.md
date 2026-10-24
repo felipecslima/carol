@@ -288,15 +288,17 @@ Todas fora da busca (`noindex`) e sem Amplitude (`analytics={false}` no `SeoHead
 
 | Rota | O que é | Arquivo |
 |---|---|---|
-| `/app/` | entrada: leva ao assistente ou ao editor conforme haja rascunho | `app/App.tsx` |
+| `/app/` | sem login: entrada (assistente ou editor). Com login: **área da creator** com 4 abas (`#inicio`, `#projetos`, `#midias`, `#conta`) | `app/App.tsx`, `app/area/` |
+| `/app/entrar/` | login por código de 6 números (Supabase Auth) | `app/Entrar.tsx` |
 | `/app/novo/` | assistente: modelo, 7 perguntas, vídeos e números (sem IA) | `app/assistente/`, `lib/montagem.ts` |
 | `/app/editor/` | editor mobile: seleção por toque, gaveta de edição, Seções, Adicionar, Mídias, Estilo, Publicar (revisão final e link), Ver, números | `app/editor/` |
 | `/app/midia-kit/` | mídia kit em 1 página A4 (mesmos blocos, escala automática, marca d'água de teste, PDF pela impressão) | `app/midia-kit/` |
 | `/app/blocos/` | prévia dos blocos e do modelo Nuvem (só em `npm run dev`; 404 em produção) | `pages/app/blocos.astro` |
-| `/api/upload/assinatura` | assina o envio de foto/vídeo ao Cloudinary (SSR) | `pages/api/upload/assinatura.ts` |
+| `/api/upload/assinatura` | assina o envio de foto/vídeo ao Cloudinary; exige sessão e decide a pasta `creators/<id>` (SSR) | `pages/api/upload/assinatura.ts` |
+| `/api/upload/apagar` | apaga um arquivo da própria creator no Cloudinary; exige sessão | `pages/api/upload/apagar.ts` |
 | `/api/ping` | teste do servidor (SSR) | `pages/api/ping.ts` |
 
-**Estado hoje:** tudo salva no aparelho (`localStorage`: rascunho `pc:rascunho:v1`, mídias `pc:midias:v1`, aparelho `pc:aparelho`). Não há login, banco ligado nem publicação: a E2 (banco), E3 (login) e E11 a E13 (publicar, pedidos) dependem de um projeto Supabase novo. As migrations já estão em `supabase/migrations/` (validadas em PGlite, ainda não aplicadas) e o roteiro de RLS em `supabase/tests/rls.mjs`.
+**Estado hoje:** sem login o editor salva só no aparelho (`localStorage`: rascunho `pc:rascunho:v1`); com login salva em `projects`, perfil em `profiles`, mídias em `media` (Supabase `Creators`, 9 migrations aplicadas, RLS verificada). Sem publicação: `/c/<link>`, pedidos, pagamento, Slack e WhatsApp ainda não existem. Roteiro de RLS em `supabase/tests/rls.mjs`.
 
 **Módulos de `src/lib/` (puros, sem interface):** `bloco.ts` (contrato), `projeto.ts` (schema do projeto e validação), `operacoes.ts` (mover, esconder, devolver…), `montagem.ts` (respostas → projeto), `numeros.ts` (números informados e seu preenchimento nos blocos), `progresso.ts` ("X de Y já são seus"), `revisao.ts` (alertas vermelhos e amarelos), `slug.ts` (link `/c/<link>`).
 

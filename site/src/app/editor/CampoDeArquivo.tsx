@@ -3,7 +3,8 @@
 import { useId, useState } from 'react';
 import type { Campo } from '@lib/bloco';
 import { Lixeira } from './icones';
-import { listarMidias, registrarMidia } from './midias';
+import { listarMidias, registrarMidia, type Midia } from '../nuvem';
+import { supabase } from '../supabase';
 import { enviarArquivo, problemaDoArquivo, type TipoDeArquivo } from './upload';
 
 export function CampoDeArquivo({
@@ -24,6 +25,7 @@ export function CampoDeArquivo({
   const [progresso, setProgresso] = useState<number | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [escolhendo, setEscolhendo] = useState(false);
+  const [minhas, setMinhas] = useState<Midia[] | null>(null);
 
   async function escolher(arquivo: File | undefined) {
     if (!arquivo) return;
@@ -33,7 +35,10 @@ export function CampoDeArquivo({
     setProgresso(0);
     try {
       const enviado = await enviarArquivo(arquivo, tipo, setProgresso);
-      registrarMidia({ ...enviado, tipo, nome: arquivo.name, bytes: arquivo.size });
+      const { data } = await supabase.auth.getSession();
+      if (data.session)
+        await registrarMidia(data.session.user.id, { ...enviado, tipo, nome: arquivo.name, bytes: arquivo.size });
+      setMinhas(null);
       aoMudar(tipo === 'video' ? { [campo.id]: enviado.url, capa: enviado.capa } : { [campo.id]: enviado.url });
     } catch (e) {
       setErro(e instanceof Error ? e.message : 'O envio falhou. Tente de novo.');
@@ -67,12 +72,15 @@ export function CampoDeArquivo({
               }}
             />
           </label>
-          {!enviando && listarMidias().some((m) => m.tipo === tipo) && (
+          {!enviando && (
             <button
               type="button"
               className="ed-link"
               aria-expanded={escolhendo}
-              onClick={() => setEscolhendo(!escolhendo)}
+              onClick={() => {
+                setEscolhendo(!escolhendo);
+                if (!escolhendo && minhas === null) void listarMidias().then(setMinhas);
+              }}
             >
               Das minhas mídias
             </button>
@@ -90,7 +98,11 @@ export function CampoDeArquivo({
       </div>
       {escolhendo && (
         <ul className="ed-escolher" aria-label="Minhas mídias">
-          {listarMidias()
+          {minhas === null && <li className="ed-dica">Carregando…</li>}
+          {minhas?.filter((m) => m.tipo === tipo).length === 0 && (
+            <li className="ed-dica">Você ainda não enviou {tipo === 'video' ? 'vídeos' : 'fotos'}.</li>
+          )}
+          {(minhas ?? [])
             .filter((m) => m.tipo === tipo)
             .map((m) => (
               <li key={m.id}>

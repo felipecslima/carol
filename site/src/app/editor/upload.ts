@@ -1,7 +1,11 @@
-// Envio de foto e vídeo do celular direto ao Cloudinary, com progresso. A pasta é por aparelho até haver login.
+// Envio de foto e vídeo do celular direto ao Cloudinary, com progresso. Exige login: o servidor assina o pedido e
+// decide a pasta (a da própria creator).
+import { supabase } from '../supabase';
 export type TipoDeArquivo = 'image' | 'video';
 
 export interface Enviado {
+  /** identificador no Cloudinary (para apagar depois) */
+  publicId: string;
   /** endereço para exibir (imagem otimizada ou vídeo leve) */
   url: string;
   /** capa: a própria imagem, ou o primeiro quadro do vídeo */
@@ -11,16 +15,6 @@ export interface Enviado {
 // limites de partida (DEV-114 define os definitivos)
 export const LIMITES = { image: 15 * 1024 * 1024, video: 200 * 1024 * 1024 } as const;
 const mb = (n: number) => Math.round(n / 1024 / 1024);
-
-function pastaDoAparelho(): string {
-  const CHAVE = 'pc:aparelho';
-  let id = localStorage.getItem(CHAVE);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(CHAVE, id);
-  }
-  return id;
-}
 
 export function tipoDoArquivo(arquivo: File): TipoDeArquivo | null {
   if (arquivo.type.startsWith('image/') || /\.(heic|heif)$/i.test(arquivo.name)) return 'image';
@@ -43,9 +37,10 @@ export function enderecos(nome: string, tipo: TipoDeArquivo, publicId: string): 
   const base = `https://res.cloudinary.com/${nome}`;
   if (tipo === 'image') {
     const url = `${base}/image/upload/f_auto,q_auto,w_1200/${publicId}`;
-    return { url, capa: url };
+    return { publicId, url, capa: url };
   }
   return {
+    publicId,
     url: `${base}/video/upload/f_mp4,q_auto,w_720/${publicId}.mp4`,
     capa: `${base}/video/upload/so_0,f_jpg,q_auto,w_540/${publicId}.jpg`,
   };
@@ -56,10 +51,13 @@ export async function enviarArquivo(
   tipo: TipoDeArquivo,
   aoProgredir: (fracao: number) => void,
 ): Promise<Enviado> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new Error('Entre na sua conta para enviar fotos e vídeos.');
   const resposta = await fetch('/api/upload/assinatura', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tipo, pasta: pastaDoAparelho() }),
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ tipo }),
   });
   const dados = (await resposta.json()) as {
     erro?: string;

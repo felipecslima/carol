@@ -5,7 +5,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Onde parei
 
 - **Fase:** E1 (fundação) em andamento.
-- **Tarefa atual:** tudo o que não depende de acesso externo está feito até a DEV-150 (assistente, editor, números, revisão, mídia kit). Faltam só itens que exigem as contas (Supabase, Cloudflare) ou decisões visuais.
+- **Tarefa atual:** área da creator completa (sem publicação). Resta: SMTP para o e-mail trazer o código, rotina de exclusão no Cloudinary, outros modelos (aguardam o Nuvem), publicação (`/c/slug`, pedidos, Slack, WhatsApp).
 - **Modo de trabalho:** o usuário autorizou seguir e commitar na `dev` sem parar, até precisar dele. Nada vai para a `main` nem para produção.
 - **Próximo passo (precisa do usuário):** (1) `npx wrangler login` para a DEV-006; (2) `project-ref` de um projeto Supabase novo para a E2 em diante (login, salvar na nuvem, publicar `/c/slug`, pedidos); (3) olhar o editor no celular (`/app/novo/` → `/app/editor/`), o modelo Nuvem (DEV-069) e o mídia kit e dizer o que ajustar; (4) cadastro do Cloudinary no servidor para o upload de fotos e vídeos (E9). Sem isso o que resta é DEV-089/102/141 parciais.
 - **Git:** branch `dev`; 3 commits `Setup:` e DEV-001 a DEV-005 commitadas.
@@ -15,6 +15,8 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **Bloqueios:** preços dos planos, limites do Cloudinary e CNPJ/Termos ainda a definir (não bloqueiam a E1 a E7).
 
 ## Esperando aprovação
+
+- **Área da creator (`/app/`, sem publicação):** com login, 4 abas fixas embaixo: **Início** (próximo passo e resumo), **Projetos** (miniatura, estado, continuar editando, mídia kit, apagar projeto), **Mídias** (biblioteca na nuvem, espaço usado, apagar) e **Conta** (dados no perfil, plano, baixar meus dados em JSON, excluir conta com 7 dias para voltar atrás). Testado de ponta a ponta no banco real. Vale abrir no celular (`localhost:4321/app/`). **Lacuna conhecida (LGPD):** ao excluir a conta o banco apaga tudo, mas os arquivos no Cloudinary só saem se ela os apagar antes na aba Mídias; falta uma rotina do servidor que apague a pasta `creators/<id>` na exclusão definitiva. O envio e a exclusão de arquivos agora exigem login (o servidor confere o token). Os uploads de teste de ontem em `creators/dc8d82a4…` são seus e foram mantidos.
 
 - **Login e nuvem (E3):** `/app/entrar/` entra por código de 6 números; o editor salva na conta (`projects`) e migra o rascunho do aparelho no primeiro login. **Preciso do usuário:** (1) um SMTP próprio (por exemplo, Resend com o domínio) para o e-mail trazer o código: hoje o Supabase só manda o link, não deixa editar o modelo no plano Free e limita a 2 e-mails por hora; (2) regerar a secret key e o token do Supabase (foram colados na conversa). Nos testes o código sai do servidor (`admin.generate_link`) e o envio do e-mail é simulado.
 

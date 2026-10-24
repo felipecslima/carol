@@ -287,6 +287,7 @@ export type Database = {
           atualizado_em: string
           cidade: string
           criado_em: string
+          exclusao_pedida_em: string | null
           id: string
           modo_iniciante: boolean
           nicho: string
@@ -298,6 +299,7 @@ export type Database = {
           atualizado_em?: string
           cidade?: string
           criado_em?: string
+          exclusao_pedida_em?: string | null
           id: string
           modo_iniciante?: boolean
           nicho?: string
@@ -309,6 +311,7 @@ export type Database = {
           atualizado_em?: string
           cidade?: string
           criado_em?: string
+          exclusao_pedida_em?: string | null
           id?: string
           modo_iniciante?: boolean
           nicho?: string
@@ -426,8 +429,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cancelar_exclusao_da_conta: { Args: never; Returns: undefined }
       eh_equipe: { Args: never; Returns: boolean }
       papel_da_equipe: { Args: never; Returns: string }
+      pedir_exclusao_da_conta: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
