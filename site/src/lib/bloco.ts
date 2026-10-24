@@ -59,6 +59,12 @@ export interface DefinicaoDeBloco {
 
 export type Registro = Readonly<Record<string, DefinicaoDeBloco>>;
 
+/** Onde o enquadramento de uma foto ou vídeo fica guardado ("50 30" = 50% da largura, 30% da altura). Vídeo guarda no
+ *  campo do quadro de capa (`capa`, ou `capaEm`), porque é a imagem que a creator vê e ajusta; vídeo e imagem de
+ *  fundo da capa compartilham o mesmo enquadramento. */
+export const chaveDeFoco = (campo: Pick<Campo, 'id' | 'tipo' | 'capaEm'>) =>
+  `${campo.tipo === 'video' ? (campo.capaEm ?? 'capa') : campo.id}_foco`;
+
 function schemaDoCampo(campo: Campo): z.ZodType {
   let base: z.ZodType;
   if (
@@ -84,7 +90,14 @@ function schemaDoCampo(campo: Campo): z.ZodType {
 
 function schemaDeCampos(campos: readonly Campo[], item = false) {
   const forma: Record<string, z.ZodType> = {};
-  for (const campo of campos) forma[campo.id] = schemaDoCampo(campo);
+  for (const campo of campos) {
+    forma[campo.id] = schemaDoCampo(campo);
+    if (campo.tipo === 'imagem' || campo.tipo === 'video')
+      forma[chaveDeFoco(campo)] = z
+        .string()
+        .regex(/^(\d{1,3} \d{1,3})?$/)
+        .optional();
+  }
   // item de lista pode vir marcado como exemplo (placeholder)
   if (item) forma.exemplo = z.boolean().optional();
   return z.object(forma).strict();

@@ -1,7 +1,8 @@
+import { posicaoDoFoco } from './foco';
 import type { DadosDoSobre, PropsDoBloco } from './tipos';
 
 export function Sobre({ variacao, dados }: PropsDoBloco<DadosDoSobre, 'texto-foto' | 'so-texto'>) {
-  const { titulo, texto, foto, nichos } = dados;
+  const { titulo, texto, foto, nichos, foto_foco } = dados;
   const comFoto = variacao === 'texto-foto';
   return (
     <section className={`bl bl-sobre bl-sobre--${variacao}`} id="sobre">
@@ -9,7 +10,7 @@ export function Sobre({ variacao, dados }: PropsDoBloco<DadosDoSobre, 'texto-fot
         <div
           className="bl-sobre-foto"
           role={foto ? 'img' : undefined}
-          style={foto ? { backgroundImage: `url(${foto})` } : undefined}
+          style={foto ? { backgroundImage: `url(${foto})`, backgroundPosition: posicaoDoFoco(foto_foco) } : undefined}
         />
       )}
       <div className="bl-sobre-texto">

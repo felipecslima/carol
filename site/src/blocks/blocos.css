@@ -800,3 +800,50 @@ video.bl-video-capa {
 .ed-ver .bl-fixo {
   bottom: 84px;
 }
+
+/* vídeo de portfólio: sempre mudo e em loop; o botão só pausa */
+.bl-video-moldura {
+  position: relative;
+}
+.bl-video-moldura .bl-video-capa {
+  margin-bottom: 0;
+}
+.bl-video:has(.bl-video-moldura) > .bl-video-moldura {
+  margin-bottom: 8px;
+}
+.bl-video-pausa {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(18, 10, 8, 0.55);
+  color: #fff;
+  cursor: pointer;
+}
+.bl-video-pausa::before {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  background: currentColor;
+  -webkit-mask: var(--icone-pausa) center / contain no-repeat;
+  mask: var(--icone-pausa) center / contain no-repeat;
+  --icone-pausa: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 4h3.5v16H7zM13.5 4H17v16h-3.5z'/%3E%3C/svg%3E");
+}
+.bl-video-pausa[data-pausado]::before {
+  --icone-pausa: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 4.5v15l12-7.5z'/%3E%3C/svg%3E");
+}
+.bl-video-pausa:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+/* quem pede menos movimento vê só a capa: sem vídeo tocando, o botão não tem o que pausar */
+@media (prefers-reduced-motion: reduce) {
+  .bl-video-pausa {
+    display: none;
+  }
+}

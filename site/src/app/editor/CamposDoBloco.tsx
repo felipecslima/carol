@@ -1,7 +1,7 @@
 // Formulário de um bloco, gerado dos campos do registro: texto com contador de letras, listas de itens e a
 // escolha de variação. Tocar em "Exemplo" e trocar o texto tira a marca de exemplo do item.
 import { useId } from 'react';
-import type { Campo, DefinicaoDeBloco } from '@lib/bloco';
+import { chaveDeFoco, type Campo, type DefinicaoDeBloco } from '@lib/bloco';
 import type { Bloco } from '@lib/projeto';
 import { CampoDeArquivo } from './CampoDeArquivo';
 import { Lixeira, Mais } from './icones';
@@ -75,6 +75,7 @@ function ListaDeItens({ campo, itens, aoMudar }: { campo: Campo; itens: Dados[];
                 campo={c}
                 valor={String(item[c.id] ?? '')}
                 capa={String(item.capa ?? '')}
+                foco={String(item[chaveDeFoco(c)] ?? '')}
                 aoMudar={(parte) => mudarItemVarios(i, parte)}
               />
             ) : (
@@ -201,6 +202,7 @@ export function CamposDoBloco({
                 campo={campo}
                 valor={String(valor ?? '')}
                 capa={String(bloco.dados[campo.capaEm ?? 'capa'] ?? '')}
+                foco={String(bloco.dados[chaveDeFoco(campo)] ?? '')}
                 aoMudar={(parte) => aoMudarDados(parte)}
               />
             );

@@ -19,6 +19,8 @@ export interface ItemDeVideo extends Marcavel {
   marca?: string;
   /** URL da capa (Cloudinary); sem ela o bloco desenha um fundo de cor */
   capa?: string;
+  /** enquadramento da capa e do vídeo, "x y" em % (ver `chaveDeFoco`) */
+  capa_foco?: string;
   /** URL do vídeo (Cloudinary, leve); na página publicada toca no próprio card */
   video?: string;
 }
@@ -64,11 +66,14 @@ export interface DadosDaCapa {
   /** variação "fundo": imagem (ou quadro do vídeo) e, se houver, o vídeo que toca por cima dela */
   fundo?: string;
   video_fundo?: string;
+  foto_foco?: string;
+  fundo_foco?: string;
 }
 export interface DadosDoSobre {
   titulo?: string;
   texto?: string;
   foto?: string;
+  foto_foco?: string;
   nichos?: string[];
 }
 export interface DadosDeNumeros {

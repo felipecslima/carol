@@ -1,4 +1,6 @@
 import { Exemplo } from './Exemplo';
+import { posicaoDoFoco } from './foco';
+import { VideoSemSom } from './VideoSemSom';
 import type { DadosDeVideos, PropsDoBloco } from './tipos';
 
 export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'carrossel' | 'grade' | 'destaque'>) {
@@ -10,21 +12,23 @@ export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'c
         {itens.map((v, n) => (
           <li key={n} className={variacao === 'destaque' && n === 0 ? 'bl-video bl-video--destaque' : 'bl-video'}>
             {v.video && modo === 'publicado' ? (
-              <video
-                className="bl-video-capa"
+              <VideoSemSom
                 src={v.video}
-                poster={v.capa}
-                controls
-                playsInline
-                preload={variacao === 'destaque' && n === 0 ? 'metadata' : 'none'}
-                aria-label={v.titulo}
+                capa={v.capa}
+                titulo={v.titulo}
+                posicao={posicaoDoFoco(v.capa_foco)}
+                precarregar={variacao === 'destaque' && n === 0 ? 'metadata' : 'none'}
               />
             ) : (
               <div
                 className="bl-video-capa"
                 role={v.capa ? 'img' : undefined}
                 aria-label={v.capa ? v.titulo : undefined}
-                style={v.capa ? { backgroundImage: `url(${v.capa})` } : undefined}
+                style={
+                  v.capa
+                    ? { backgroundImage: `url(${v.capa})`, backgroundPosition: posicaoDoFoco(v.capa_foco) }
+                    : undefined
+                }
               />
             )}
             <b>{v.titulo}</b>

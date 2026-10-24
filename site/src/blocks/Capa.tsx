@@ -1,11 +1,14 @@
 import { useRef, useState } from 'react';
 import { Exemplo } from './Exemplo';
+import { posicaoDoFoco } from './foco';
 import type { DadosDaCapa, PropsDoBloco } from './tipos';
 
 type VariacaoDaCapa = 'foto-grande' | 'foto-redonda' | 'fundo';
 
 export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, VariacaoDaCapa>) {
-  const { titulo, subtitulo, arroba, foto, botao, fundo, video_fundo } = dados;
+  const { titulo, subtitulo, arroba, foto, botao, fundo, video_fundo, foto_foco, fundo_foco } = dados;
+  const posFoto = posicaoDoFoco(foto_foco);
+  const posFundo = posicaoDoFoco(fundo_foco);
   const video = useRef<HTMLVideoElement>(null);
   const [tocando, setTocando] = useState(true);
 
@@ -30,7 +33,7 @@ export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, Variac
         <div
           className="bl-capa-fundo"
           aria-hidden="true"
-          style={fundo ? { backgroundImage: `url(${fundo})` } : undefined}
+          style={fundo ? { backgroundImage: `url(${fundo})`, backgroundPosition: posFundo } : undefined}
         />
         {temVideo && (
           <video
@@ -38,6 +41,7 @@ export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, Variac
             className="bl-capa-video"
             src={video_fundo}
             poster={fundo}
+            style={{ objectPosition: posFundo }}
             autoPlay
             muted
             loop
@@ -72,7 +76,7 @@ export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, Variac
       <div
         className="bl-capa-foto"
         role={foto ? 'img' : undefined}
-        style={foto ? { backgroundImage: `url(${foto})` } : undefined}
+        style={foto ? { backgroundImage: `url(${foto})`, backgroundPosition: posFoto } : undefined}
       >
         {!foto && <span className="bl-capa-vazia" aria-hidden="true" />}
       </div>
