@@ -4,6 +4,7 @@ import Area from './area/Area';
 import { carregarRascunho } from './editor/persistencia';
 import { useSessao } from './sessao';
 import { supabaseConfigurado } from './supabase';
+import './tema.css';
 
 export default function App() {
   const sessao = useSessao();

@@ -2,7 +2,7 @@
 export function Marca() {
   return (
     <span className="marca">
-      portfólio<i>creator</i>
+      Portfólio <i>Creator</i>
     </span>
   );
 }

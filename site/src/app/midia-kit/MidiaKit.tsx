@@ -9,6 +9,7 @@ import { blocosVisiveis } from '@lib/projeto';
 import { carregarRascunho } from '../editor/persistencia';
 import { temaDoProjeto } from '../editor/tema';
 import './midia-kit.css';
+import '../tema.css';
 
 /** A4 a 96 dpi */
 const LARGURA = 794;

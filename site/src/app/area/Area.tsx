@@ -12,6 +12,7 @@ import { Projetos } from './Projetos';
 import '../editor/editor.css';
 import './area.css';
 import '../refino.css';
+import '../tema.css';
 
 type Aba = 'inicio' | 'projetos' | 'midias' | 'conta';
 const ABAS: Array<[Aba, string, () => ReactElement]> = [

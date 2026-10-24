@@ -14,14 +14,6 @@
   color: var(--text);
   font-family: var(--sans);
 }
-@media (prefers-color-scheme: light) {
-  .app-root {
-    --bg: #fbf4ec;
-    --text: #24130f;
-    --muted: #4a3a34;
-    --accent: #b71f4e;
-  }
-}
 .app-shell {
   max-width: 640px;
   min-height: 100dvh;

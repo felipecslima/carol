@@ -27,7 +27,6 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
         {nome && <em>{nome}</em>}
       </h1>
       <article className="ar-passo">
-        <span className="ar-etiqueta">Próximo passo</span>
         <h2>{passo.titulo}</h2>
         <p>{passo.texto}</p>
         {incompleto && (

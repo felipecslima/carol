@@ -17,6 +17,7 @@ import { useSessao } from '../sessao';
 import '../editor/editor.css';
 import './assistente.css';
 import '../refino.css';
+import '../tema.css';
 
 const NICHOS = ['Gastronomia', 'Viagem', 'Beleza', 'Lifestyle', 'Moda', 'Casa', 'Maternidade', 'Fitness'];
 

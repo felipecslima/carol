@@ -168,7 +168,7 @@ export function PainelEstilo({
             style={{ background: projeto.corPropria ?? NUVEM.paletas[projeto.paleta]?.origem ?? '#8c77e0' }}
             aria-hidden="true"
           />
-          {projeto.corPropria ? '✓ ' : ''}Minha cor
+          Minha cor
           <input
             type="color"
             aria-label="Escolher minha cor"

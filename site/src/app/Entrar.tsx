@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { supabase } from './supabase';
 import './assistente/assistente.css';
 import './refino.css';
+import './tema.css';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const ESPERA = 30;

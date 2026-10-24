@@ -1,7 +1,7 @@
 // Editor do Portfólio Creator (mobile primeiro): a creator edita em cima do resultado final. Primeiro toque
 // seleciona o bloco, segundo abre a edição; controles embaixo, onde o polegar alcança; um nível de gaveta só.
 import { Marca } from '../Marca';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
@@ -38,6 +38,7 @@ import { useSessao } from '../sessao';
 import { supabaseConfigurado } from '../supabase';
 import './editor.css';
 import '../refino.css';
+import '../tema.css';
 
 type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | 'midias' | null;
 
@@ -100,6 +101,23 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   const refazer = () => editor.temporal.getState().redo();
 
   // modo Ver: a página como a marca vai ver, sem nenhuma interface do editor
+  // dica de primeiro uso: o gesto "toque 1 seleciona, toque 2 edita" não é óbvio; aparece uma vez e some ao selecionar
+  const [dica, setDica] = useState(() => {
+    try {
+      return localStorage.getItem('pc:dica-toque') === null;
+    } catch {
+      return false;
+    }
+  });
+  const fecharDica = useCallback(() => {
+    setDica(false);
+    try {
+      localStorage.setItem('pc:dica-toque', '1');
+    } catch {
+      /* sem armazenamento: a dica volta na próxima visita, sem problema */
+    }
+  }, []);
+
   if (ver) {
     return (
       <div className="pagina ed-ver" style={temaDoProjeto(projeto)}>
@@ -135,7 +153,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
           <span className={`ed-salvo ed-salvo--${situacao}`} role="status">
             {situacao === 'salvo'
               ? donoId
-                ? 'Salvo ✓'
+                ? 'Salvo'
                 : 'Salvo no aparelho'
               : situacao === 'salvando'
                 ? 'Salvando…'
@@ -177,10 +195,10 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
             tabIndex={0}
             aria-pressed={b.id === selecionado}
             aria-label={`${REGISTRO[b.tipo]?.nome ?? b.tipo}: ${b.id === selecionado ? 'tocar para editar' : 'tocar para selecionar'}`}
-            onClick={() => (b.id === selecionado ? setPainel('editar') : e.selecionar(b.id))}
+            onClick={() => (b.id === selecionado ? setPainel('editar') : (fecharDica(), e.selecionar(b.id)))}
             onKeyDown={(ev) =>
               (ev.key === 'Enter' || ev.key === ' ') &&
-              (ev.preventDefault(), b.id === selecionado ? setPainel('editar') : e.selecionar(b.id))
+              (ev.preventDefault(), b.id === selecionado ? setPainel('editar') : (fecharDica(), e.selecionar(b.id)))
             }
           >
             <div className="ed-bloco-conteudo" inert>
@@ -189,6 +207,15 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
           </div>
         ))}
       </main>
+
+      {dica && !aviso && !selecionado && !painel && (
+        <div className="ed-toast ed-toast--dica" role="status">
+          Toque numa seção para selecionar. Toque de novo para editar.
+          <button type="button" onClick={fecharDica}>
+            Entendi
+          </button>
+        </div>
+      )}
 
       {aviso && (
         <div className="ed-toast" role="status">
