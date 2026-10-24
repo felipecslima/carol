@@ -625,3 +625,42 @@
     height: 210px;
   }
 }
+
+/* capa de largura total: o contorno de seleção fica por dentro e sem curva (não há cantos a acompanhar) */
+.ed-bloco:has(.bl-capa--fundo) {
+  border-radius: 0;
+  outline-offset: -3px;
+}
+.ed-bloco[data-selecionado]:has(.bl-capa--fundo) {
+  outline: 0;
+}
+.ed-bloco[data-selecionado]:has(.bl-capa--fundo)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border: 3px solid var(--ed-rosa);
+  pointer-events: none;
+}
+
+/* seleção das seções: contorno reto desenhado por cima (o conteúdo, inclusive o de largura total, não o cobre) */
+.ed-bloco,
+.ed-bloco:not([data-selecionado]):hover,
+.ed-bloco[data-selecionado] {
+  border-radius: 0;
+  outline: 0;
+}
+.ed-bloco::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border: 3px solid transparent;
+}
+.ed-bloco[data-selecionado]::after {
+  border-color: var(--ed-rosa);
+}
+.ed-bloco:not([data-selecionado]):hover::after {
+  border: 2px dashed rgba(212, 42, 91, 0.55);
+}

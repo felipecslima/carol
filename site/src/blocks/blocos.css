@@ -334,8 +334,20 @@
   color: var(--texto-suave);
   font-size: 14px;
 }
+/* lista de nomes: etiquetas compactas que quebram de linha (antes cada nome era uma barra de largura total) */
 .bl-marcas--lista .bl-lista-marcas {
-  display: grid;
+  gap: 10px;
+}
+.bl-marcas--lista .bl-lista-marcas li {
+  border-radius: 999px;
+  padding: 10px 20px;
+  grid-auto-flow: column;
+  align-items: baseline;
+  gap: 8px;
+}
+.bl-marcas--lista .bl-lista-marcas li b {
+  font-size: 16px;
+  line-height: 1.2;
 }
 
 /* formatos */
@@ -380,12 +392,13 @@
 
 /* contato: faixa de destaque no fim da página */
 .bl-contato {
-  margin: var(--respiro) clamp(12px, 3cqi, 32px);
+  /* faixa de lado a lado, cantos retos: fecha a página sem ilha escura flutuando */
+  margin: var(--respiro) 0 0;
   max-width: none;
-  padding: clamp(40px, 8cqi, 72px) clamp(20px, 5cqi, 64px);
+  padding: clamp(56px, 11cqi, 104px) clamp(20px, 5cqi, 64px);
   background: var(--texto);
   color: var(--fundo);
-  border-radius: calc(var(--raio-grande) * 1.5);
+  border-radius: 0;
   text-align: center;
   display: grid;
   gap: 24px;
@@ -473,7 +486,7 @@ video.bl-video-capa {
   text-align: left;
   color: #fff;
   overflow: hidden;
-  border-radius: 0 0 var(--raio-grande) var(--raio-grande);
+  border-radius: 0; /* largura total: cantos retos, sem a cor da página aparecendo atrás da imagem */
 }
 .bl-capa-fundo,
 .bl-capa-video {
