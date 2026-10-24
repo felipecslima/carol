@@ -86,6 +86,20 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
     }
   }, [painel, selecionado]);
 
+  // seção recém-adicionada (ou devolvida): rola a página até ela e a deixa selecionada
+  const rolarParaNova = useRef(false);
+  const idsAntes = useRef(new Set(projeto.blocos.map((b) => b.id)));
+  useEffect(() => {
+    const nova = projeto.blocos.find((b) => !idsAntes.current.has(b.id));
+    idsAntes.current = new Set(projeto.blocos.map((b) => b.id));
+    if (!rolarParaNova.current || !nova) return;
+    rolarParaNova.current = false;
+    e.selecionar(nova.id);
+    requestAnimationFrame(() =>
+      document.querySelector(`[data-bloco="${nova.id}"]`)?.scrollIntoView({ block: 'start', behavior: 'smooth' }),
+    );
+  }, [projeto.blocos, e]);
+
   const { seus, total } = useMemo(() => progresso(projeto, PROJETO_DE_EXEMPLO, REGISTRO), [projeto]);
   const alertas = useMemo(() => revisar(projeto, PROJETO_DE_EXEMPLO, REGISTRO), [projeto]);
   const vermelhos = alertas.filter((x) => x.gravidade === 'vermelho').length;
@@ -360,10 +374,30 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
         )}
       </Gaveta>
       <Gaveta aberta={painel === 'secoes'} aoFechar={() => setPainel(null)} titulo="Seções">
-        <PainelSecoes projeto={projeto} e={{ ...e, esconder }} />
+        <PainelSecoes
+          projeto={projeto}
+          e={{
+            ...e,
+            esconder,
+            devolver: (id) => {
+              rolarParaNova.current = true;
+              e.devolver(id);
+            },
+          }}
+        />
       </Gaveta>
       <Gaveta aberta={painel === 'adicionar'} aoFechar={() => setPainel(null)} titulo="Adicionar seção">
-        <PainelAdicionar projeto={projeto} e={e} aoAdicionar={() => setPainel(null)} />
+        <PainelAdicionar
+          projeto={projeto}
+          e={{
+            ...e,
+            adicionar: (tipo) => {
+              rolarParaNova.current = true;
+              e.adicionar(tipo);
+            },
+          }}
+          aoAdicionar={() => setPainel(null)}
+        />
       </Gaveta>
       <Gaveta
         aberta={painel === 'estilo'}
