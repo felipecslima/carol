@@ -1,5 +1,7 @@
 // Assistente de início: escolher o modelo (cartões que deslizam, bolinhas de paleta) e responder uma pergunta
 // por tela. No fim monta o projeto (lib/montagem.ts), grava o rascunho e abre o editor. Sem IA.
+import { motion } from 'motion/react';
+import { MovimentoDoApp, SUAVE } from '../movimento';
 import { Marca } from '../Marca';
 import { useEffect, useRef, useState } from 'react';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
@@ -98,272 +100,291 @@ export default function Assistente() {
   const aoDigitar = { onKeyDown: (ev: React.KeyboardEvent) => ev.key === 'Enter' && avancar() };
 
   return (
-    <div className="as">
-      <header className="as-topo">
-        <Marca />
-        <div className="as-passos" role="img" aria-label={`Passo ${indice + 1} de ${ETAPAS.length}`}>
-          <span className="as-passo-texto">
-            {indice + 1} de {ETAPAS.length}
-          </span>
-          {ETAPAS.map((e, i) => (
-            <span key={e} data-feito={i <= indice || undefined} />
-          ))}
-        </div>
-      </header>
+    <MovimentoDoApp>
+      <div className="as">
+        <header className="as-topo">
+          <Marca />
+          <div className="as-passos" role="img" aria-label={`Passo ${indice + 1} de ${ETAPAS.length}`}>
+            <span className="as-passo-texto">
+              {indice + 1} de {ETAPAS.length}
+            </span>
+            {ETAPAS.map((e, i) => (
+              <span key={e} data-feito={i <= indice || undefined} />
+            ))}
+          </div>
+        </header>
 
-      <main className="as-corpo">
-        {etapa === 'modelo' && (
-          <>
-            <h1 className="as-titulo">
-              Escolha o jeito do <em>seu portfólio</em>
-            </h1>
-            <p className="as-texto">Você troca modelo e cor quando quiser, e o que escrever vai junto.</p>
-            <div className="as-modelos" role="group" aria-label="Modelos">
-              <div className="as-modelo">
-                <PreviaDoModelo paleta={paleta} />
-                <h2>{NUVEM.nome}</h2>
-                <div className="as-bolinhas" role="radiogroup" aria-label="Cor">
-                  {NUVEM.paletas.map((p, i) => (
-                    <button
-                      key={p.nome}
-                      type="button"
-                      role="radio"
-                      aria-checked={paleta === i}
-                      aria-label={p.nome}
-                      style={{ background: gerarPaleta(p.origem, NUVEM.esquema).claro.destaque }}
-                      onClick={() => setPaleta(i)}
-                    />
-                  ))}
+        <main className="as-corpo">
+          <motion.div
+            key={etapa}
+            initial={{ opacity: 0, x: 28 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, ease: SUAVE }}
+            style={{ display: 'grid', gap: 24 }}
+          >
+            {etapa === 'modelo' && (
+              <>
+                <h1 className="as-titulo">
+                  Escolha o jeito do <em>seu portfólio</em>
+                </h1>
+                <p className="as-texto">Você troca modelo e cor quando quiser, e o que escrever vai junto.</p>
+                <div className="as-modelos" role="group" aria-label="Modelos">
+                  <div className="as-modelo">
+                    <PreviaDoModelo paleta={paleta} />
+                    <h2>{NUVEM.nome}</h2>
+                    <div className="as-bolinhas" role="radiogroup" aria-label="Cor">
+                      {NUVEM.paletas.map((p, i) => (
+                        <button
+                          key={p.nome}
+                          type="button"
+                          role="radio"
+                          aria-checked={paleta === i}
+                          aria-label={p.nome}
+                          style={{ background: gerarPaleta(p.origem, NUVEM.esquema).claro.destaque }}
+                          onClick={() => setPaleta(i)}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </>
-        )}
+              </>
+            )}
 
-        {etapa === 'nome' && (
-          <>
-            <h1 className="as-titulo">Como você quer ser chamada?</h1>
-            <div className="as-campo">
-              <label htmlFor="nome">Seu nome</label>
-              <input
-                id="nome"
-                ref={campo}
-                value={r.nome}
-                maxLength={40}
-                autoComplete="given-name"
-                onChange={(e) => mudar({ nome: e.target.value })}
-                {...aoDigitar}
-              />
-            </div>
-          </>
-        )}
-        {etapa === 'arroba' && (
-          <>
-            <h1 className="as-titulo">Qual é o seu @?</h1>
-            <div className="as-campo">
-              <label htmlFor="arroba">Seu @ no Instagram</label>
-              <input
-                id="arroba"
-                ref={campo}
-                value={r.arroba}
-                maxLength={30}
-                autoCapitalize="none"
-                autoCorrect="off"
-                inputMode="url"
-                onChange={(e) => mudar({ arroba: e.target.value })}
-                onBlur={() => mudar({ arroba: normalizarArroba(r.arroba) })}
-                {...aoDigitar}
-              />
-              <span className="as-dica">Pode pular e preencher depois.</span>
-            </div>
-          </>
-        )}
-        {etapa === 'cidade' && (
-          <>
-            <h1 className="as-titulo">De onde você fala?</h1>
-            <div className="as-campo">
-              <label htmlFor="cidade">Sua cidade</label>
-              <input
-                id="cidade"
-                ref={campo}
-                value={r.cidade}
-                maxLength={40}
-                autoComplete="address-level2"
-                onChange={(e) => mudar({ cidade: e.target.value })}
-                {...aoDigitar}
-              />
-              <span className="as-dica">Pode pular.</span>
-            </div>
-          </>
-        )}
-        {etapa === 'nicho' && (
-          <>
-            <h1 className="as-titulo">Sobre o que você fala?</h1>
-            <div className="as-opcoes" role="group" aria-label="Nicho">
-              {NICHOS.map((n) => (
-                <button key={n} type="button" aria-pressed={r.nicho === n} onClick={() => mudar({ nicho: n })}>
-                  {n}
-                </button>
-              ))}
-            </div>
-            <div className="as-campo">
-              <label htmlFor="nicho">Ou escreva o seu</label>
-              <input
-                id="nicho"
-                ref={campo}
-                value={NICHOS.includes(r.nicho) ? '' : r.nicho}
-                maxLength={30}
-                onChange={(e) => mudar({ nicho: e.target.value })}
-                {...aoDigitar}
-              />
-            </div>
-          </>
-        )}
-        {etapa === 'publi' && (
-          <>
-            <h1 className="as-titulo">Você já fez alguma publi?</h1>
-            <p className="as-texto">
-              Se ainda não, o portfólio destaca seus vídeos e o que você entrega, e esconde as seções de números,
-              público e marcas até você ter o que mostrar.
-            </p>
-            <div className="as-opcoes" role="radiogroup" aria-label="Já fez publi">
-              {(
-                [
-                  [true, 'Já fiz'],
-                  [false, 'Ainda não'],
-                ] as const
-              ).map(([valor, texto]) => (
-                <button
-                  key={texto}
-                  type="button"
-                  role="radio"
-                  aria-checked={publiRespondida && r.jaFezPubli === valor}
-                  onClick={() => (mudar({ jaFezPubli: valor }), setPubliRespondida(true))}
-                >
-                  {texto}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-        {etapa === 'grava' && (
-          <>
-            <h1 className="as-titulo">O que você mostra nos vídeos?</h1>
-            <div className="as-campo">
-              <label htmlFor="grava">Em poucas palavras</label>
-              <input
-                id="grava"
-                ref={campo}
-                value={r.oQueGrava}
-                maxLength={40}
-                onChange={(e) => mudar({ oQueGrava: e.target.value })}
-                {...aoDigitar}
-              />
-              <span className="as-dica">
-                Vira a frase da sua capa: “Oi, eu sou {r.nome.trim() || 'você'} e mostro {r.oQueGrava.trim() || '…'} do
-                meu jeito”.
-              </span>
-            </div>
-          </>
-        )}
-        {etapa === 'frase' && (
-          <>
-            <h1 className="as-titulo">Uma frase que te define?</h1>
-            <div className="as-campo">
-              <label htmlFor="frase">Fica embaixo do seu nome</label>
-              <input
-                id="frase"
-                ref={campo}
-                value={r.frase}
-                maxLength={120}
-                onChange={(e) => mudar({ frase: e.target.value })}
-                {...aoDigitar}
-              />
-              <span className="as-dica">Opcional. Você pode escrever depois, no editor.</span>
-            </div>
-          </>
-        )}
-        {etapa === 'videos' && (
-          <>
-            <h1 className="as-titulo">Mostre seus melhores vídeos</h1>
-            <p className="as-texto">
-              Escolha até 4 vídeos da sua galeria. A marca procura prova antes de argumento. Pode pular e enviar depois.
-            </p>
-            {videos.map((v, i) => (
-              <div className="as-video" key={i}>
-                <CampoDeArquivo
-                  campo={{ id: 'video', rotulo: `Vídeo ${i + 1}`, tipo: 'video' }}
-                  valor={v.video}
-                  capa={v.capa}
-                  aoMudar={(parte) =>
-                    setVideos(
-                      videos.map((x, k) => (k === i ? { ...x, video: parte.video ?? '', capa: parte.capa ?? '' } : x)),
-                    )
-                  }
-                />
+            {etapa === 'nome' && (
+              <>
+                <h1 className="as-titulo">Como você quer ser chamada?</h1>
                 <div className="as-campo">
-                  <label htmlFor={`titulo-${i}`}>Título do vídeo</label>
+                  <label htmlFor="nome">Seu nome</label>
                   <input
-                    id={`titulo-${i}`}
-                    value={v.titulo}
-                    maxLength={60}
-                    onChange={(e) => setVideos(videos.map((x, k) => (k === i ? { ...x, titulo: e.target.value } : x)))}
+                    id="nome"
+                    ref={campo}
+                    value={r.nome}
+                    maxLength={40}
+                    autoComplete="given-name"
+                    onChange={(e) => mudar({ nome: e.target.value })}
+                    {...aoDigitar}
                   />
                 </div>
-                <button type="button" className="as-link" onClick={() => setVideos(videos.filter((_, k) => k !== i))}>
-                  Remover vídeo
-                </button>
-              </div>
-            ))}
-            {videos.length < 4 && (
-              <button
-                type="button"
-                className="as-botao as-botao--vazado as-adicionar"
-                onClick={() => setVideos([...videos, { titulo: '', video: '', capa: '' }])}
-              >
-                {videos.length === 0 ? 'Adicionar um vídeo' : 'Adicionar outro vídeo'}
-              </button>
+              </>
             )}
-          </>
-        )}
-        {etapa === 'numeros' && (
-          <>
-            <h1 className="as-titulo">Seus números do Instagram</h1>
-            <p className="as-texto">
-              Só você sabe esses números, e a página mostra o selo “Informado pela creator”. Pode pular e preencher
-              depois.
-            </p>
-            <PainelNumeros
-              inicial={numeros}
-              aoSalvar={(n) => {
-                setNumeros(n);
-                void concluir(n);
-              }}
-            />
-          </>
-        )}
-      </main>
+            {etapa === 'arroba' && (
+              <>
+                <h1 className="as-titulo">Qual é o seu @?</h1>
+                <div className="as-campo">
+                  <label htmlFor="arroba">Seu @ no Instagram</label>
+                  <input
+                    id="arroba"
+                    ref={campo}
+                    value={r.arroba}
+                    maxLength={30}
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    inputMode="url"
+                    onChange={(e) => mudar({ arroba: e.target.value })}
+                    onBlur={() => mudar({ arroba: normalizarArroba(r.arroba) })}
+                    {...aoDigitar}
+                  />
+                  <span className="as-dica">Pode pular e preencher depois.</span>
+                </div>
+              </>
+            )}
+            {etapa === 'cidade' && (
+              <>
+                <h1 className="as-titulo">De onde você fala?</h1>
+                <div className="as-campo">
+                  <label htmlFor="cidade">Sua cidade</label>
+                  <input
+                    id="cidade"
+                    ref={campo}
+                    value={r.cidade}
+                    maxLength={40}
+                    autoComplete="address-level2"
+                    onChange={(e) => mudar({ cidade: e.target.value })}
+                    {...aoDigitar}
+                  />
+                  <span className="as-dica">Pode pular.</span>
+                </div>
+              </>
+            )}
+            {etapa === 'nicho' && (
+              <>
+                <h1 className="as-titulo">Sobre o que você fala?</h1>
+                <div className="as-opcoes" role="group" aria-label="Nicho">
+                  {NICHOS.map((n) => (
+                    <button key={n} type="button" aria-pressed={r.nicho === n} onClick={() => mudar({ nicho: n })}>
+                      {n}
+                    </button>
+                  ))}
+                </div>
+                <div className="as-campo">
+                  <label htmlFor="nicho">Ou escreva o seu</label>
+                  <input
+                    id="nicho"
+                    ref={campo}
+                    value={NICHOS.includes(r.nicho) ? '' : r.nicho}
+                    maxLength={30}
+                    onChange={(e) => mudar({ nicho: e.target.value })}
+                    {...aoDigitar}
+                  />
+                </div>
+              </>
+            )}
+            {etapa === 'publi' && (
+              <>
+                <h1 className="as-titulo">Você já fez alguma publi?</h1>
+                <p className="as-texto">
+                  Se ainda não, o portfólio destaca seus vídeos e o que você entrega, e esconde as seções de números,
+                  público e marcas até você ter o que mostrar.
+                </p>
+                <div className="as-opcoes" role="radiogroup" aria-label="Já fez publi">
+                  {(
+                    [
+                      [true, 'Já fiz'],
+                      [false, 'Ainda não'],
+                    ] as const
+                  ).map(([valor, texto]) => (
+                    <button
+                      key={texto}
+                      type="button"
+                      role="radio"
+                      aria-checked={publiRespondida && r.jaFezPubli === valor}
+                      onClick={() => (mudar({ jaFezPubli: valor }), setPubliRespondida(true))}
+                    >
+                      {texto}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+            {etapa === 'grava' && (
+              <>
+                <h1 className="as-titulo">O que você mostra nos vídeos?</h1>
+                <div className="as-campo">
+                  <label htmlFor="grava">Em poucas palavras</label>
+                  <input
+                    id="grava"
+                    ref={campo}
+                    value={r.oQueGrava}
+                    maxLength={40}
+                    onChange={(e) => mudar({ oQueGrava: e.target.value })}
+                    {...aoDigitar}
+                  />
+                  <span className="as-dica">
+                    Vira a frase da sua capa: “Oi, eu sou {r.nome.trim() || 'você'} e mostro {r.oQueGrava.trim() || '…'}{' '}
+                    do meu jeito”.
+                  </span>
+                </div>
+              </>
+            )}
+            {etapa === 'frase' && (
+              <>
+                <h1 className="as-titulo">Uma frase que te define?</h1>
+                <div className="as-campo">
+                  <label htmlFor="frase">Fica embaixo do seu nome</label>
+                  <input
+                    id="frase"
+                    ref={campo}
+                    value={r.frase}
+                    maxLength={120}
+                    onChange={(e) => mudar({ frase: e.target.value })}
+                    {...aoDigitar}
+                  />
+                  <span className="as-dica">Opcional. Você pode escrever depois, no editor.</span>
+                </div>
+              </>
+            )}
+            {etapa === 'videos' && (
+              <>
+                <h1 className="as-titulo">Mostre seus melhores vídeos</h1>
+                <p className="as-texto">
+                  Escolha até 4 vídeos da sua galeria. A marca procura prova antes de argumento. Pode pular e enviar
+                  depois.
+                </p>
+                {videos.map((v, i) => (
+                  <div className="as-video" key={i}>
+                    <CampoDeArquivo
+                      campo={{ id: 'video', rotulo: `Vídeo ${i + 1}`, tipo: 'video' }}
+                      valor={v.video}
+                      capa={v.capa}
+                      aoMudar={(parte) =>
+                        setVideos(
+                          videos.map((x, k) =>
+                            k === i ? { ...x, video: parte.video ?? '', capa: parte.capa ?? '' } : x,
+                          ),
+                        )
+                      }
+                    />
+                    <div className="as-campo">
+                      <label htmlFor={`titulo-${i}`}>Título do vídeo</label>
+                      <input
+                        id={`titulo-${i}`}
+                        value={v.titulo}
+                        maxLength={60}
+                        onChange={(e) =>
+                          setVideos(videos.map((x, k) => (k === i ? { ...x, titulo: e.target.value } : x)))
+                        }
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      className="as-link"
+                      onClick={() => setVideos(videos.filter((_, k) => k !== i))}
+                    >
+                      Remover vídeo
+                    </button>
+                  </div>
+                ))}
+                {videos.length < 4 && (
+                  <button
+                    type="button"
+                    className="as-botao as-botao--vazado as-adicionar"
+                    onClick={() => setVideos([...videos, { titulo: '', video: '', capa: '' }])}
+                  >
+                    {videos.length === 0 ? 'Adicionar um vídeo' : 'Adicionar outro vídeo'}
+                  </button>
+                )}
+              </>
+            )}
+            {etapa === 'numeros' && (
+              <>
+                <h1 className="as-titulo">Seus números do Instagram</h1>
+                <p className="as-texto">
+                  Só você sabe esses números, e a página mostra o selo “Informado pela creator”. Pode pular e preencher
+                  depois.
+                </p>
+                <PainelNumeros
+                  inicial={numeros}
+                  aoSalvar={(n) => {
+                    setNumeros(n);
+                    void concluir(n);
+                  }}
+                />
+              </>
+            )}
+          </motion.div>
+        </main>
 
-      <div className="as-acoes">
-        {indice > 0 && (
-          <button type="button" className="as-botao as-botao--vazado" onClick={() => setIndice(indice - 1)}>
-            Voltar
+        <div className="as-acoes">
+          {indice > 0 && (
+            <button type="button" className="as-botao as-botao--vazado" onClick={() => setIndice(indice - 1)}>
+              Voltar
+            </button>
+          )}
+          <button type="button" className="as-botao" disabled={!valido} onClick={avancar}>
+            {etapa === 'modelo'
+              ? 'Usar este'
+              : etapa === 'numeros'
+                ? numeros
+                  ? 'Ver meu portfólio'
+                  : 'Pular e ver meu portfólio'
+                : ultima
+                  ? 'Ver meu portfólio'
+                  : etapa === 'videos' && videos.every((v) => !v.video)
+                    ? 'Pular'
+                    : 'Continuar'}
           </button>
-        )}
-        <button type="button" className="as-botao" disabled={!valido} onClick={avancar}>
-          {etapa === 'modelo'
-            ? 'Usar este'
-            : etapa === 'numeros'
-              ? numeros
-                ? 'Ver meu portfólio'
-                : 'Pular e ver meu portfólio'
-              : ultima
-                ? 'Ver meu portfólio'
-                : etapa === 'videos' && videos.every((v) => !v.video)
-                  ? 'Pular'
-                  : 'Continuar'}
-        </button>
+        </div>
       </div>
-    </div>
+    </MovimentoDoApp>
   );
 }

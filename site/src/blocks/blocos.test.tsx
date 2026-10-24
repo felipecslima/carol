@@ -29,9 +29,14 @@ describe('projeto de exemplo (modelo Nuvem)', () => {
     expect(html('publicado')).not.toContain('Exemplo ·');
   });
 
-  it('o mesmo bloco gera a mesma estrutura nos dois modos (só as etiquetas mudam)', () => {
-    const semEtiqueta = (s: string) => s.replace(/<small class="bl-exemplo">[^<]*<\/small>/g, '');
-    expect(semEtiqueta(html('editor'))).toBe(html('publicado'));
+  it('o mesmo bloco gera o mesmo texto nos dois modos (só as etiquetas mudam; a página publicada ainda tem o movimento)', () => {
+    const soTexto = (s: string) =>
+      s
+        .replace(/<small class="bl-exemplo">[^<]*<\/small>/g, '')
+        .replace(/<[^>]+>/g, '')
+        .replace(/\u00a0/g, ' ')
+        .replace(/\s+/g, ' ');
+    expect(soTexto(html('editor'))).toBe(soTexto(html('publicado')));
   });
 
   it('cada variação de cada bloco renderiza sem erro', () => {

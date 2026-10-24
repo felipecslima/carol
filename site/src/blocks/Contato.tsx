@@ -1,23 +1,33 @@
+import { BotaoVivo, Revela } from './movimento';
 import type { DadosDeContato, PropsDoBloco } from './tipos';
 
 const soDigitos = (t: string) => t.replace(/\D/g, '');
 
-export function Contato({ variacao, dados }: PropsDoBloco<DadosDeContato, 'botoes' | 'formulario'>) {
+export function Contato({ variacao, dados, modo }: PropsDoBloco<DadosDeContato, 'botoes' | 'formulario'>) {
   const { titulo, whatsapp, email, prazo } = dados;
   return (
     <section className={`bl bl-contato bl-contato--${variacao}`} id="contato">
-      {titulo && <h2 className="bl-titulo-grande">{titulo}</h2>}
+      {titulo && (
+        <Revela modo={modo} tag="h2" className="bl-titulo-grande">
+          {titulo}
+        </Revela>
+      )}
       {variacao === 'botoes' ? (
         <div className="bl-contato-botoes">
           {email && (
-            <a className="bl-botao" href={`mailto:${email}`}>
+            <BotaoVivo modo={modo} className="bl-botao" href={`mailto:${email}`}>
               Escrever e-mail
-            </a>
+            </BotaoVivo>
           )}
           {whatsapp && (
-            <a className="bl-botao bl-botao--vazado" href={`https://wa.me/${soDigitos(whatsapp)}`} rel="noopener">
+            <BotaoVivo
+              modo={modo}
+              className="bl-botao bl-botao--vazado"
+              href={`https://wa.me/${soDigitos(whatsapp)}`}
+              rel="noopener"
+            >
               Chamar no WhatsApp
-            </a>
+            </BotaoVivo>
           )}
         </div>
       ) : (

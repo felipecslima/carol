@@ -1,4 +1,6 @@
 // Início: abre sempre num cartão grande com o próximo passo (DEV-041); embaixo, o portfólio dela em miniatura.
+import { motion } from 'motion/react';
+import { entrada, SUAVE } from '../movimento';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
 import { REGISTRO } from '@blocks/registro';
 import { infoDoEstado } from '@lib/estados';
@@ -22,16 +24,20 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
   const incompleto = Boolean(projeto) && seus < total;
   return (
     <section className="ar-secao ar-secao--inicio">
-      <h1 className="ar-ola">
+      <motion.h1 className="ar-ola" {...entrada()}>
         Oi{nome ? ', ' : ''}
         {nome && <em>{nome}</em>}
-      </h1>
-      <article className="ar-passo">
+      </motion.h1>
+      <motion.article className="ar-passo" {...entrada(0.05)}>
         <h2>{passo.titulo}</h2>
         <p>{passo.texto}</p>
         {incompleto && (
           <div className="ar-barra" role="img" aria-label={`${seus} de ${total} itens já são seus`}>
-            <span style={{ width: `${(seus / total) * 100}%` }} />
+            <motion.span
+              initial={{ width: 0 }}
+              animate={{ width: `${(seus / total) * 100}%` }}
+              transition={{ duration: 0.9, ease: SUAVE, delay: 0.3 }}
+            />
           </div>
         )}
         <div className="ar-acoes">
@@ -44,9 +50,9 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
             </a>
           )}
         </div>
-      </article>
+      </motion.article>
       {projeto && resumo && (
-        <div className="ar-portfolio">
+        <motion.div className="ar-portfolio" {...entrada(0.18)}>
           <Miniatura projeto={projeto} />
           <span className="ar-portfolio-info">
             <b>Seu portfólio</b>
@@ -55,7 +61,7 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
             </span>
           </span>
           <a className="ar-portfolio-link" href="/app/editor/" aria-label="Abrir o editor do seu portfólio" />
-        </div>
+        </motion.div>
       )}
     </section>
   );

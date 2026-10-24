@@ -1,3 +1,4 @@
+import { LayoutGroup, motion } from 'motion/react';
 // Painéis das abas de baixo: Seções (ordem e bandeja), Adicionar bloco e Estilo.
 import { REGISTRO } from '@blocks/registro';
 import { MAXIMO_DE_BLOCOS, type Projeto } from '@lib/projeto';
@@ -15,58 +16,60 @@ export function PainelSecoes({ projeto, e }: { projeto: Projeto; e: EstadoDoEdit
       <p className="ed-dica">
         {projeto.blocos.length} de {MAXIMO_DE_BLOCOS} seções na página
       </p>
-      <ol className="ed-secoes">
-        {projeto.blocos.map((b, i) => {
-          const fixo = REGISTRO[b.tipo]?.fixo;
-          return (
-            <li key={b.id}>
-              <span>{nomeDe(b.tipo)}</span>
-              <div>
-                <button
-                  type="button"
-                  className="ed-icone"
-                  aria-label={`Subir ${nomeDe(b.tipo)}`}
-                  disabled={i === 0}
-                  onClick={() => e.mover(b.id, -1)}
-                >
-                  <Subir />
-                </button>
-                <button
-                  type="button"
-                  className="ed-icone"
-                  aria-label={`Descer ${nomeDe(b.tipo)}`}
-                  disabled={i === projeto.blocos.length - 1}
-                  onClick={() => e.mover(b.id, 1)}
-                >
-                  <Descer />
-                </button>
-                {fixo ? (
-                  <span className="ed-fixa">sempre na página</span>
-                ) : (
+      <LayoutGroup>
+        <motion.ol layout className="ed-secoes">
+          {projeto.blocos.map((b, i) => {
+            const fixo = REGISTRO[b.tipo]?.fixo;
+            return (
+              <motion.li layout key={b.id} transition={{ type: 'spring', stiffness: 520, damping: 38 }}>
+                <span>{nomeDe(b.tipo)}</span>
+                <div>
                   <button
                     type="button"
                     className="ed-icone"
-                    aria-label={`Esconder ${nomeDe(b.tipo)}`}
-                    onClick={() => e.esconder(b.id)}
+                    aria-label={`Subir ${nomeDe(b.tipo)}`}
+                    disabled={i === 0}
+                    onClick={() => e.mover(b.id, -1)}
                   >
-                    <Esconder />
+                    <Subir />
                   </button>
-                )}
-                {!fixo && (
                   <button
                     type="button"
                     className="ed-icone"
-                    aria-label={`Remover ${nomeDe(b.tipo)}`}
-                    onClick={() => e.remover(b.id)}
+                    aria-label={`Descer ${nomeDe(b.tipo)}`}
+                    disabled={i === projeto.blocos.length - 1}
+                    onClick={() => e.mover(b.id, 1)}
                   >
-                    <Lixeira />
+                    <Descer />
                   </button>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
+                  {fixo ? (
+                    <span className="ed-fixa">sempre na página</span>
+                  ) : (
+                    <button
+                      type="button"
+                      className="ed-icone"
+                      aria-label={`Esconder ${nomeDe(b.tipo)}`}
+                      onClick={() => e.esconder(b.id)}
+                    >
+                      <Esconder />
+                    </button>
+                  )}
+                  {!fixo && (
+                    <button
+                      type="button"
+                      className="ed-icone"
+                      aria-label={`Remover ${nomeDe(b.tipo)}`}
+                      onClick={() => e.remover(b.id)}
+                    >
+                      <Lixeira />
+                    </button>
+                  )}
+                </div>
+              </motion.li>
+            );
+          })}
+        </motion.ol>
+      </LayoutGroup>
       <h3 className="ed-subtitulo">Guardados</h3>
       {projeto.guardados.length === 0 ? (
         <p className="ed-dica">Quando você esconde uma seção, ela fica guardada aqui, com tudo o que você escreveu.</p>

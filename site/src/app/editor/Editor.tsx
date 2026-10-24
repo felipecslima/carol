@@ -5,6 +5,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
+import { animate, AnimatePresence, motion } from 'motion/react';
+import { MovimentoDoApp, SUAVE } from '../movimento';
 import { ContatoFixo } from '@blocks/ContatoFixo';
 import { REGISTRO } from '@blocks/registro';
 import { blocosVisiveis, type Projeto } from '@lib/projeto';
@@ -96,9 +98,17 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
     if (!rolarParaNova.current || !nova) return;
     rolarParaNova.current = false;
     e.selecionar(nova.id);
-    requestAnimationFrame(() =>
-      document.querySelector(`[data-bloco="${nova.id}"]`)?.scrollIntoView({ block: 'start', behavior: 'smooth' }),
-    );
+    requestAnimationFrame(() => {
+      const el = document.querySelector<HTMLElement>(`[data-bloco="${nova.id}"]`);
+      el?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      // um anel rosa se abre em volta da seção nova, para o olho achar onde ela entrou
+      if (el)
+        void animate(
+          el,
+          { boxShadow: ['0 0 0 0 rgba(255,143,176,0.75)', '0 0 0 18px rgba(255,143,176,0)'] },
+          { duration: 1.1, ease: SUAVE, delay: 0.45 },
+        );
+    });
   }, [projeto.blocos, e]);
 
   const { seus, total } = useMemo(() => progresso(projeto, PROJETO_DE_EXEMPLO, REGISTRO), [projeto]);
@@ -153,278 +163,306 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   }
 
   return (
-    <div className={`ed${painel ? ' ed--gaveta' : ''}`}>
-      <header className="ed-topo">
-        <Marca />
-        <div className="ed-topo-acoes">
-          <button
-            type="button"
-            className="ed-icone"
-            onClick={() => (e.selecionar(null), setPainel(null), setVer(true))}
-            aria-label="Ver como a marca vê"
-          >
-            <Olho />
-          </button>
-          <button type="button" className="ed-icone" onClick={desfazer} disabled={passados === 0} aria-label="Desfazer">
-            <Desfazer />
-          </button>
-          <button type="button" className="ed-icone" onClick={refazer} disabled={futuros === 0} aria-label="Refazer">
-            <Refazer />
-          </button>
-          <span className={`ed-salvo ed-salvo--${situacao}`} role="status">
-            {situacao === 'salvo'
-              ? donoId
-                ? 'Salvo'
-                : 'Salvo no aparelho'
-              : situacao === 'salvando'
-                ? 'Salvando…'
-                : situacao === 'offline'
-                  ? 'Sem conexão: salvo no aparelho'
-                  : 'Não salvou: sem espaço no aparelho'}
-          </span>
-          {!donoId && supabaseConfigurado && (
-            <a className="ed-entrar" href="/app/entrar/">
-              Entrar
-            </a>
-          )}
-        </div>
-      </header>
-
-      {seus < total && (
-        <div className="ed-progresso" role="status">
-          <span>
-            {seus} de {total} itens já são seus
-          </span>
-          <span className="ed-progresso-barra" aria-hidden="true">
-            <span style={{ width: `${total ? (seus / total) * 100 : 0}%` }} />
-          </span>
-        </div>
-      )}
-
-      <main
-        className="ed-tela pagina"
-        style={temaDoProjeto(projeto)}
-        onClick={(ev) => ev.target === ev.currentTarget && e.selecionar(null)}
-      >
-        {visiveis.map((b) => (
-          <div
-            key={b.id}
-            className="ed-bloco"
-            data-bloco={b.id}
-            data-selecionado={b.id === selecionado || undefined}
-            role="button"
-            tabIndex={0}
-            aria-pressed={b.id === selecionado}
-            aria-label={`${REGISTRO[b.tipo]?.nome ?? b.tipo}: ${b.id === selecionado ? 'tocar para editar' : 'tocar para selecionar'}`}
-            onClick={() => (b.id === selecionado ? setPainel('editar') : (fecharDica(), e.selecionar(b.id)))}
-            onKeyDown={(ev) =>
-              (ev.key === 'Enter' || ev.key === ' ') &&
-              (ev.preventDefault(), b.id === selecionado ? setPainel('editar') : (fecharDica(), e.selecionar(b.id)))
-            }
-          >
-            <div className="ed-bloco-conteudo" inert>
-              <Bloco bloco={b} modo="editor" />
-            </div>
-          </div>
-        ))}
-      </main>
-
-      {dica && !aviso && !selecionado && !painel && (
-        <div className="ed-toast ed-toast--dica" role="status">
-          Toque numa seção para selecionar. Toque de novo para editar.
-          <button type="button" onClick={fecharDica}>
-            Entendi
-          </button>
-        </div>
-      )}
-
-      {aviso && (
-        <div className="ed-toast" role="status">
-          {aviso}
-          <button type="button" onClick={() => (desfazer(), setAviso(null))}>
-            Desfazer
-          </button>
-        </div>
-      )}
-
-      {bloco && !painel && (
-        <div className="ed-flutuante" role="toolbar" aria-label={`Ações de ${definicao?.nome}`}>
-          <button type="button" onClick={() => setPainel('editar')}>
-            <Lapis /> Editar
-          </button>
-          <button
-            type="button"
-            className="ed-icone"
-            aria-label="Subir"
-            disabled={indice === 0}
-            onClick={() => e.mover(bloco.id, -1)}
-          >
-            <Subir />
-          </button>
-          <button
-            type="button"
-            className="ed-icone"
-            aria-label="Descer"
-            disabled={indice === projeto.blocos.length - 1}
-            onClick={() => e.mover(bloco.id, 1)}
-          >
-            <Descer />
-          </button>
-          {!definicao?.fixo && (
-            <button type="button" onClick={() => esconder(bloco.id)}>
-              <Esconder /> Esconder
+    <MovimentoDoApp>
+      <div className={`ed${painel ? ' ed--gaveta' : ''}`}>
+        <header className="ed-topo">
+          <Marca />
+          <div className="ed-topo-acoes">
+            <button
+              type="button"
+              className="ed-icone"
+              onClick={() => (e.selecionar(null), setPainel(null), setVer(true))}
+              aria-label="Ver como a marca vê"
+            >
+              <Olho />
             </button>
-          )}
-          {!definicao?.fixo && (
-            <button type="button" onClick={() => remover(bloco.id)}>
-              <Lixeira /> Remover
+            <button
+              type="button"
+              className="ed-icone"
+              onClick={desfazer}
+              disabled={passados === 0}
+              aria-label="Desfazer"
+            >
+              <Desfazer />
             </button>
-          )}
-        </div>
-      )}
-
-      <nav className="ed-abas" aria-label="Editor">
-        <button
-          type="button"
-          aria-pressed={painel === 'secoes'}
-          onClick={() => setPainel(painel === 'secoes' ? null : 'secoes')}
-        >
-          <Camadas /> Seções
-        </button>
-        <button
-          type="button"
-          aria-pressed={painel === 'adicionar'}
-          onClick={() => setPainel(painel === 'adicionar' ? null : 'adicionar')}
-        >
-          <Mais /> Adicionar
-        </button>
-        <button
-          type="button"
-          aria-pressed={painel === 'midias'}
-          onClick={() => setPainel(painel === 'midias' ? null : 'midias')}
-        >
-          <Imagem /> Mídias
-        </button>
-        <button
-          type="button"
-          aria-pressed={painel === 'estilo'}
-          onClick={() => setPainel(painel === 'estilo' ? null : 'estilo')}
-        >
-          <Paleta /> Estilo
-        </button>
-        <button
-          type="button"
-          aria-pressed={painel === 'revisao'}
-          onClick={() => setPainel(painel === 'revisao' ? null : 'revisao')}
-        >
-          <Foguete /> Publicar
-          {!podePublicar(alertas) && (
-            <span className="ed-pendencias" aria-label={`${vermelhos} pontos a resolver`}>
-              {vermelhos}
+            <button type="button" className="ed-icone" onClick={refazer} disabled={futuros === 0} aria-label="Refazer">
+              <Refazer />
+            </button>
+            <span className={`ed-salvo ed-salvo--${situacao}`} role="status">
+              {situacao === 'salvo'
+                ? donoId
+                  ? 'Salvo'
+                  : 'Salvo no aparelho'
+                : situacao === 'salvando'
+                  ? 'Salvando…'
+                  : situacao === 'offline'
+                    ? 'Sem conexão: salvo no aparelho'
+                    : 'Não salvou: sem espaço no aparelho'}
             </span>
-          )}
-        </button>
-      </nav>
+            {!donoId && supabaseConfigurado && (
+              <a className="ed-entrar" href="/app/entrar/">
+                Entrar
+              </a>
+            )}
+          </div>
+        </header>
 
-      <Gaveta
-        aberta={painel === 'editar' && !!bloco}
-        aoFechar={() => setPainel(null)}
-        titulo={definicao?.nome ?? ''}
-        descricao="As mudanças aparecem na página na hora."
-      >
-        {bloco && definicao && (
-          <CamposDoBloco
-            aoInformarNumeros={() => setPainel('numeros')}
-            definicao={definicao}
-            bloco={bloco}
-            aoMudarDados={(dados) => e.atualizarDados(bloco.id, dados)}
-            aoTrocarVariacao={(v) => e.trocarVariacao(bloco.id, v)}
-          />
+        {seus < total && (
+          <div className="ed-progresso" role="status">
+            <span>
+              {seus} de {total} itens já são seus
+            </span>
+            <span className="ed-progresso-barra" aria-hidden="true">
+              <span style={{ width: `${total ? (seus / total) * 100 : 0}%` }} />
+            </span>
+          </div>
         )}
-      </Gaveta>
-      <Gaveta aberta={painel === 'midias'} aoFechar={() => setPainel(null)} titulo="Minhas mídias">
-        {painel === 'midias' && <PainelMidias />}
-      </Gaveta>
-      <Gaveta
-        aberta={painel === 'revisao'}
-        aoFechar={() => setPainel(null)}
-        titulo="Revisão final"
-        descricao="Confira antes de publicar."
-      >
-        <PainelRevisao
-          link={projeto.link ?? ''}
-          arroba={
-            String(projeto.blocos.find((b) => b.tipo === 'capa')?.dados.arroba ?? '')
-              .split('·')[0]
-              ?.trim() ?? ''
-          }
-          aoMudarLink={(link) => e.substituir({ ...projeto, link })}
-          alertas={alertas}
-          aoIr={(id) => {
-            e.selecionar(id);
-            setPainel('editar');
-          }}
-        />
-      </Gaveta>
-      <Gaveta
-        aberta={painel === 'numeros'}
-        aoFechar={() => setPainel(null)}
-        titulo="Meus números"
-        descricao="Só você sabe esses números. Eles preenchem Números e Público na página."
-      >
-        {painel === 'numeros' && (
-          <PainelNumeros
-            inicial={projeto.numeros}
-            aoSalvar={(n) => {
-              e.substituir(aplicarNumeros(projeto, n));
-              setPainel(null);
-              setAviso('Números aplicados.');
+
+        <main
+          className="ed-tela pagina"
+          style={temaDoProjeto(projeto)}
+          onClick={(ev) => ev.target === ev.currentTarget && e.selecionar(null)}
+        >
+          {visiveis.map((b) => (
+            <div
+              key={b.id}
+              className="ed-bloco"
+              data-bloco={b.id}
+              data-selecionado={b.id === selecionado || undefined}
+              role="button"
+              tabIndex={0}
+              aria-pressed={b.id === selecionado}
+              aria-label={`${REGISTRO[b.tipo]?.nome ?? b.tipo}: ${b.id === selecionado ? 'tocar para editar' : 'tocar para selecionar'}`}
+              onClick={() => (b.id === selecionado ? setPainel('editar') : (fecharDica(), e.selecionar(b.id)))}
+              onKeyDown={(ev) =>
+                (ev.key === 'Enter' || ev.key === ' ') &&
+                (ev.preventDefault(), b.id === selecionado ? setPainel('editar') : (fecharDica(), e.selecionar(b.id)))
+              }
+            >
+              <div className="ed-bloco-conteudo" inert>
+                <Bloco bloco={b} modo="editor" />
+              </div>
+            </div>
+          ))}
+        </main>
+
+        {dica && !aviso && !selecionado && !painel && (
+          <div className="ed-toast ed-toast--dica" role="status">
+            Toque numa seção para selecionar. Toque de novo para editar.
+            <button type="button" onClick={fecharDica}>
+              Entendi
+            </button>
+          </div>
+        )}
+
+        <AnimatePresence>
+          {aviso && (
+            <motion.div
+              key="aviso"
+              className="ed-toast"
+              role="status"
+              style={{ x: '-50%' }}
+              initial={{ opacity: 0, y: -14, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 420, damping: 30 }}
+            >
+              {aviso}
+              <button type="button" onClick={() => (desfazer(), setAviso(null))}>
+                Desfazer
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {bloco && !painel && (
+          <motion.div
+            key={bloco.id}
+            className="ed-flutuante"
+            role="toolbar"
+            aria-label={`Ações de ${definicao?.nome}`}
+            style={{ x: '-50%' }}
+            initial={{ opacity: 0, y: 18, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 460, damping: 30 }}
+          >
+            <button type="button" onClick={() => setPainel('editar')}>
+              <Lapis /> Editar
+            </button>
+            <button
+              type="button"
+              className="ed-icone"
+              aria-label="Subir"
+              disabled={indice === 0}
+              onClick={() => e.mover(bloco.id, -1)}
+            >
+              <Subir />
+            </button>
+            <button
+              type="button"
+              className="ed-icone"
+              aria-label="Descer"
+              disabled={indice === projeto.blocos.length - 1}
+              onClick={() => e.mover(bloco.id, 1)}
+            >
+              <Descer />
+            </button>
+            {!definicao?.fixo && (
+              <button type="button" onClick={() => esconder(bloco.id)}>
+                <Esconder /> Esconder
+              </button>
+            )}
+            {!definicao?.fixo && (
+              <button type="button" onClick={() => remover(bloco.id)}>
+                <Lixeira /> Remover
+              </button>
+            )}
+          </motion.div>
+        )}
+
+        <nav className="ed-abas" aria-label="Editor">
+          <button
+            type="button"
+            aria-pressed={painel === 'secoes'}
+            onClick={() => setPainel(painel === 'secoes' ? null : 'secoes')}
+          >
+            <Camadas /> Seções
+          </button>
+          <button
+            type="button"
+            aria-pressed={painel === 'adicionar'}
+            onClick={() => setPainel(painel === 'adicionar' ? null : 'adicionar')}
+          >
+            <Mais /> Adicionar
+          </button>
+          <button
+            type="button"
+            aria-pressed={painel === 'midias'}
+            onClick={() => setPainel(painel === 'midias' ? null : 'midias')}
+          >
+            <Imagem /> Mídias
+          </button>
+          <button
+            type="button"
+            aria-pressed={painel === 'estilo'}
+            onClick={() => setPainel(painel === 'estilo' ? null : 'estilo')}
+          >
+            <Paleta /> Estilo
+          </button>
+          <button
+            type="button"
+            aria-pressed={painel === 'revisao'}
+            onClick={() => setPainel(painel === 'revisao' ? null : 'revisao')}
+          >
+            <Foguete /> Publicar
+            {!podePublicar(alertas) && (
+              <span className="ed-pendencias" aria-label={`${vermelhos} pontos a resolver`}>
+                {vermelhos}
+              </span>
+            )}
+          </button>
+        </nav>
+
+        <Gaveta
+          aberta={painel === 'editar' && !!bloco}
+          aoFechar={() => setPainel(null)}
+          titulo={definicao?.nome ?? ''}
+          descricao="As mudanças aparecem na página na hora."
+        >
+          {bloco && definicao && (
+            <CamposDoBloco
+              aoInformarNumeros={() => setPainel('numeros')}
+              definicao={definicao}
+              bloco={bloco}
+              aoMudarDados={(dados) => e.atualizarDados(bloco.id, dados)}
+              aoTrocarVariacao={(v) => e.trocarVariacao(bloco.id, v)}
+            />
+          )}
+        </Gaveta>
+        <Gaveta aberta={painel === 'midias'} aoFechar={() => setPainel(null)} titulo="Minhas mídias">
+          {painel === 'midias' && <PainelMidias />}
+        </Gaveta>
+        <Gaveta
+          aberta={painel === 'revisao'}
+          aoFechar={() => setPainel(null)}
+          titulo="Revisão final"
+          descricao="Confira antes de publicar."
+        >
+          <PainelRevisao
+            link={projeto.link ?? ''}
+            arroba={
+              String(projeto.blocos.find((b) => b.tipo === 'capa')?.dados.arroba ?? '')
+                .split('·')[0]
+                ?.trim() ?? ''
+            }
+            aoMudarLink={(link) => e.substituir({ ...projeto, link })}
+            alertas={alertas}
+            aoIr={(id) => {
+              e.selecionar(id);
+              setPainel('editar');
             }}
           />
-        )}
-      </Gaveta>
-      <Gaveta aberta={painel === 'secoes'} aoFechar={() => setPainel(null)} titulo="Seções">
-        <PainelSecoes
-          projeto={projeto}
-          e={{
-            ...e,
-            esconder,
-            remover,
-            devolver: (id) => {
-              rolarParaNova.current = true;
-              e.devolver(id);
-            },
-          }}
-        />
-      </Gaveta>
-      <Gaveta aberta={painel === 'adicionar'} aoFechar={() => setPainel(null)} titulo="Adicionar seção">
-        <PainelAdicionar
-          projeto={projeto}
-          e={{
-            ...e,
-            adicionar: (tipo) => {
-              rolarParaNova.current = true;
-              e.adicionar(tipo);
-            },
-          }}
-          aoAdicionar={() => setPainel(null)}
-        />
-      </Gaveta>
-      <Gaveta
-        aberta={painel === 'estilo'}
-        aoFechar={() => setPainel(null)}
-        titulo="Estilo"
-        descricao="Tudo se ajusta sozinho; o que você escreveu continua igual."
-      >
-        <PainelEstilo
-          projeto={projeto}
-          aoMudar={(mudanca, texto) => {
-            e.substituir({ ...projeto, ...mudanca });
-            setAviso(`${texto} aplicado.`);
-          }}
-        />
-      </Gaveta>
-    </div>
+        </Gaveta>
+        <Gaveta
+          aberta={painel === 'numeros'}
+          aoFechar={() => setPainel(null)}
+          titulo="Meus números"
+          descricao="Só você sabe esses números. Eles preenchem Números e Público na página."
+        >
+          {painel === 'numeros' && (
+            <PainelNumeros
+              inicial={projeto.numeros}
+              aoSalvar={(n) => {
+                e.substituir(aplicarNumeros(projeto, n));
+                setPainel(null);
+                setAviso('Números aplicados.');
+              }}
+            />
+          )}
+        </Gaveta>
+        <Gaveta aberta={painel === 'secoes'} aoFechar={() => setPainel(null)} titulo="Seções">
+          <PainelSecoes
+            projeto={projeto}
+            e={{
+              ...e,
+              esconder,
+              remover,
+              devolver: (id) => {
+                rolarParaNova.current = true;
+                e.devolver(id);
+              },
+            }}
+          />
+        </Gaveta>
+        <Gaveta aberta={painel === 'adicionar'} aoFechar={() => setPainel(null)} titulo="Adicionar seção">
+          <PainelAdicionar
+            projeto={projeto}
+            e={{
+              ...e,
+              adicionar: (tipo) => {
+                rolarParaNova.current = true;
+                e.adicionar(tipo);
+              },
+            }}
+            aoAdicionar={() => setPainel(null)}
+          />
+        </Gaveta>
+        <Gaveta
+          aberta={painel === 'estilo'}
+          aoFechar={() => setPainel(null)}
+          titulo="Estilo"
+          descricao="Tudo se ajusta sozinho; o que você escreveu continua igual."
+        >
+          <PainelEstilo
+            projeto={projeto}
+            aoMudar={(mudanca, texto) => {
+              e.substituir({ ...projeto, ...mudanca });
+              setAviso(`${texto} aplicado.`);
+            }}
+          />
+        </Gaveta>
+      </div>
+    </MovimentoDoApp>
   );
 }
 

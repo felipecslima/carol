@@ -1,6 +1,8 @@
 // Área da creator (DEV-040): barra fixa de 4 abas (Início, Projetos, Mídias, Conta), áreas de toque de 44 px e safe
 // areas do celular. O editor abre em tela cheia por cima, e o voltar leva de volta a Projetos.
+import { AnimatePresence, motion } from 'motion/react';
 import { Marca } from '../Marca';
+import { MovimentoDoApp, SUAVE } from '../movimento';
 import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { Casa, Imagem, Pasta, Pessoa } from '../editor/icones';
@@ -54,54 +56,71 @@ export default function Area({ sessao }: { sessao: Session }) {
   const nome = (perfil?.nome || '').split(' ')[0] ?? '';
 
   return (
-    <div className="ar">
-      <header className="ar-topo">
-        <Marca />
-      </header>
+    <MovimentoDoApp>
+      <div className="ar">
+        <header className="ar-topo">
+          <Marca />
+        </header>
 
-      {perfil?.exclusaoPedidaEm && (
-        <div className="ar-faixa" role="status">
-          Sua conta será apagada 7 dias depois de {new Date(perfil.exclusaoPedidaEm).toLocaleDateString('pt-BR')}.{' '}
-          <button type="button" className="ed-link" onClick={() => void cancelarExclusao().then(carregar)}>
-            Cancelar a exclusão
-          </button>
-        </div>
-      )}
-
-      <main className="ar-corpo">
-        {resumo === undefined || !perfil ? (
-          <p className="ed-carregando" role="status">
-            Carregando…
-          </p>
-        ) : (
-          <>
-            {aba === 'inicio' && <Inicio resumo={resumo} nome={nome} />}
-            {aba === 'projetos' && <Projetos resumo={resumo} aoMudar={() => void carregar()} />}
-            {aba === 'midias' && (
-              <section className="ar-secao">
-                <h1 className="ar-titulo">Mídias</h1>
-                <PainelMidias dica={false} />
-              </section>
-            )}
-            {aba === 'conta' && (
-              <Conta
-                usuarioId={sessao.user.id}
-                email={sessao.user.email ?? ''}
-                perfil={perfil}
-                aoMudar={() => void carregar()}
-              />
-            )}
-          </>
+        {perfil?.exclusaoPedidaEm && (
+          <div className="ar-faixa" role="status">
+            Sua conta será apagada 7 dias depois de {new Date(perfil.exclusaoPedidaEm).toLocaleDateString('pt-BR')}.{' '}
+            <button type="button" className="ed-link" onClick={() => void cancelarExclusao().then(carregar)}>
+              Cancelar a exclusão
+            </button>
+          </div>
         )}
-      </main>
 
-      <nav className="ar-abas" aria-label="Área da creator">
-        {ABAS.map(([id, rotulo, Icone]) => (
-          <button key={id} type="button" aria-current={aba === id ? 'page' : undefined} onClick={() => ir(id)}>
-            <Icone /> {rotulo}
-          </button>
-        ))}
-      </nav>
-    </div>
+        <main className="ar-corpo">
+          {resumo === undefined || !perfil ? (
+            <p className="ed-carregando" role="status">
+              Carregando…
+            </p>
+          ) : (
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={aba}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.22, ease: SUAVE }}
+              >
+                {aba === 'inicio' && <Inicio resumo={resumo} nome={nome} />}
+                {aba === 'projetos' && <Projetos resumo={resumo} aoMudar={() => void carregar()} />}
+                {aba === 'midias' && (
+                  <section className="ar-secao">
+                    <h1 className="ar-titulo">Mídias</h1>
+                    <PainelMidias dica={false} />
+                  </section>
+                )}
+                {aba === 'conta' && (
+                  <Conta
+                    usuarioId={sessao.user.id}
+                    email={sessao.user.email ?? ''}
+                    perfil={perfil}
+                    aoMudar={() => void carregar()}
+                  />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </main>
+
+        <nav className="ar-abas" aria-label="Área da creator">
+          {ABAS.map(([id, rotulo, Icone]) => (
+            <button key={id} type="button" aria-current={aba === id ? 'page' : undefined} onClick={() => ir(id)}>
+              {aba === id && (
+                <motion.span
+                  layoutId="aba-ativa"
+                  className="ar-aba-marca"
+                  transition={{ type: 'spring', stiffness: 500, damping: 36 }}
+                />
+              )}
+              <Icone /> {rotulo}
+            </button>
+          ))}
+        </nav>
+      </div>
+    </MovimentoDoApp>
   );
 }

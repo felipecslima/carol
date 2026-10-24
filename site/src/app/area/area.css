@@ -260,3 +260,17 @@
     align-items: start;
   }
 }
+
+/* marca da aba ativa: um fio no alto que desliza de uma aba para a outra */
+.ar-abas button {
+  position: relative;
+}
+.ar-aba-marca {
+  position: absolute;
+  top: 0;
+  left: 22%;
+  right: 22%;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: #ff8fb0;
+}

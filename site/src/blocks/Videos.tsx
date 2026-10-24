@@ -1,4 +1,5 @@
 import { Exemplo } from './Exemplo';
+import { Item, Lista, Revela } from './movimento';
 import { posicaoDoFoco } from './foco';
 import { VideoSemSom } from './VideoSemSom';
 import type { DadosDeVideos, PropsDoBloco } from './tipos';
@@ -7,10 +8,20 @@ export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'c
   const { titulo, itens = [] } = dados;
   return (
     <section className={`bl bl-videos bl-videos--${variacao}`} id="videos">
-      {titulo && <h2 className="bl-titulo">{titulo}</h2>}
-      <ul className="bl-lista-videos">
+      {titulo && (
+        <Revela modo={modo} tag="h2" className="bl-titulo">
+          {titulo}
+        </Revela>
+      )}
+      <Lista modo={modo} passo={0.09} className="bl-lista-videos">
         {itens.map((v, n) => (
-          <li key={n} className={variacao === 'destaque' && n === 0 ? 'bl-video bl-video--destaque' : 'bl-video'}>
+          <Item
+            modo={modo}
+            key={n}
+            efeito={variacao === 'carrossel' ? 'entrar' : 'surgir'}
+            eleva
+            className={variacao === 'destaque' && n === 0 ? 'bl-video bl-video--destaque' : 'bl-video'}
+          >
             {v.video && modo === 'publicado' ? (
               <VideoSemSom
                 src={v.video}
@@ -37,9 +48,9 @@ export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'c
               {v.marca && ` · ${v.marca}`}
             </span>
             <Exemplo ativo={v.exemplo} modo={modo} />
-          </li>
+          </Item>
         ))}
-      </ul>
+      </Lista>
     </section>
   );
 }

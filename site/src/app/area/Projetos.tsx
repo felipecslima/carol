@@ -1,5 +1,7 @@
 // Projetos: o site (e o mídia kit, que sai do mesmo conteúdo), com miniatura, estado e botão principal (DEV-042).
 // Limite de 1 site e 1 mídia kit por conta.
+import { motion } from 'motion/react';
+import { entrada } from '../movimento';
 import { useState } from 'react';
 import { infoDoEstado } from '@lib/estados';
 import { Miniatura } from './Miniatura';
@@ -35,7 +37,7 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
   return (
     <section className="ar-secao">
       <h1 className="ar-titulo">Projetos</h1>
-      <article className="ar-projeto">
+      <motion.article className="ar-projeto" {...entrada(0.05)}>
         <Miniatura projeto={resumo.projeto} />
         <div className="ar-projeto-info">
           <span className={`ar-estado ar-estado--${resumo.estado}`}>{info.rotulo}</span>
@@ -77,7 +79,7 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
             </div>
           )}
         </div>
-      </article>
+      </motion.article>
       <p className="ed-dica">
         Cada conta tem 1 site e 1 mídia kit. O mídia kit usa o mesmo conteúdo do site: mudou um, mudou o outro.
       </p>

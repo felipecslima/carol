@@ -10,6 +10,7 @@ import { Processo } from './Processo';
 import { Publico } from './Publico';
 import { Resumo } from './Resumo';
 import { Sobre } from './Sobre';
+import { Movimento } from './movimento';
 import type { ModoDeRender } from './tipos';
 import { Videos } from './Videos';
 import type { Bloco as BlocoDoProjeto } from '@lib/projeto';
@@ -32,5 +33,9 @@ export function Bloco({ bloco, modo }: { bloco: BlocoDoProjeto; modo: ModoDeRend
   const Componente = COMPONENTES[bloco.tipo as keyof typeof COMPONENTES] as
     React.ComponentType<{ variacao: string; dados: object; modo: ModoDeRender }> | undefined;
   if (!Componente) return null;
-  return <Componente variacao={bloco.variacao} dados={bloco.dados} modo={modo} />;
+  return (
+    <Movimento>
+      <Componente variacao={bloco.variacao} dados={bloco.dados} modo={modo} />
+    </Movimento>
+  );
 }

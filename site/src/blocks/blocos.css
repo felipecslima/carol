@@ -853,3 +853,28 @@ video.bl-video-capa {
     display: none;
   }
 }
+
+/* fio das etapas: liga os números e se desenha ao rolar */
+.bl-processo-corpo {
+  position: relative;
+}
+.bl-fio {
+  position: absolute;
+  left: 17px; /* centro da bolinha de 36 px (com o cartão, vai por cima) */
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background: var(--destaque-suave);
+}
+.bl-processo--passos .bl-fio {
+  left: 41px; /* 24 px de respiro do cartão + metade da bolinha */
+}
+.bl-fio-preenchido {
+  display: block;
+  height: 100%;
+  background: var(--destaque);
+  transform-origin: top;
+}
+.bl-lista-processo {
+  position: relative;
+}
