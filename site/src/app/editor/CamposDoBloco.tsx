@@ -1,6 +1,6 @@
 // Formulário de um bloco, gerado dos campos do registro: texto com contador de letras, listas de itens e a
 // escolha de variação. Tocar em "Exemplo" e trocar o texto tira a marca de exemplo do item.
-import { useId } from 'react';
+import { Fragment, useId, type ReactNode } from 'react';
 import { chaveDeFoco, type Campo, type DefinicaoDeBloco } from '@lib/bloco';
 import type { Bloco } from '@lib/projeto';
 import { CampoDeArquivo } from './CampoDeArquivo';
@@ -190,10 +190,18 @@ export function CamposDoBloco({
       )}
       {definicao.campos
         .filter((campo) => !campo.soNasVariacoes || campo.soNasVariacoes.includes(bloco.variacao))
-        .map((campo) => {
+        .filter((campo) => !campo.seTem || campo.seTem.every((id) => Boolean(bloco.dados[id])))
+        .map((campo, i, lista) => {
           const valor = bloco.dados[campo.id];
+          const cabecalho =
+            campo.grupo && campo.grupo !== lista[i - 1]?.grupo ? (
+              <h3 className="ed-grupo" key={`g-${campo.grupo}`}>
+                {campo.grupo}
+              </h3>
+            ) : null;
+          let conteudo: ReactNode;
           if (campo.tipo === 'lista')
-            return campo.itens ? (
+            conteudo = campo.itens ? (
               <ListaDeItens
                 key={campo.id}
                 campo={campo}
@@ -208,17 +216,37 @@ export function CamposDoBloco({
                 aoMudar={(itens) => aoMudarDados({ [campo.id]: itens })}
               />
             );
-          if (campo.tipo === 'proporcao')
-            return (
+          else if (campo.tipo === 'escolha')
+            conteudo = (
+              <fieldset className="ed-variacoes" key={campo.id}>
+                <legend>{campo.rotulo}</legend>
+                <div role="radiogroup">
+                  {(campo.opcoes ?? []).map((o) => (
+                    <button
+                      key={o.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={(typeof valor === 'string' ? valor : campo.padrao) === o.id}
+                      onClick={() => aoMudarDados({ [campo.id]: o.id })}
+                    >
+                      {o.nome}
+                    </button>
+                  ))}
+                </div>
+                {campo.dica && <span className="ed-dica">{campo.dica}</span>}
+              </fieldset>
+            );
+          else if (campo.tipo === 'proporcao')
+            conteudo = (
               <CampoDeProporcao
                 key={campo.id}
                 campo={campo}
-                valor={typeof valor === 'number' ? valor : (campo.padrao ?? 0)}
+                valor={typeof valor === 'number' ? valor : Number(campo.padrao ?? 0)}
                 aoMudar={(v) => aoMudarDados({ [campo.id]: v })}
               />
             );
-          if (campo.tipo === 'imagem' || campo.tipo === 'video')
-            return (
+          else if (campo.tipo === 'imagem' || campo.tipo === 'video')
+            conteudo = (
               <CampoDeArquivo
                 key={campo.id}
                 campo={campo}
@@ -228,13 +256,20 @@ export function CamposDoBloco({
                 aoMudar={(parte) => aoMudarDados(parte)}
               />
             );
+          else
+            conteudo = (
+              <CampoDeTexto
+                key={campo.id}
+                campo={campo}
+                valor={String(valor ?? '')}
+                aoMudar={(v) => aoMudarDados({ [campo.id]: v })}
+              />
+            );
           return (
-            <CampoDeTexto
-              key={campo.id}
-              campo={campo}
-              valor={String(valor ?? '')}
-              aoMudar={(v) => aoMudarDados({ [campo.id]: v })}
-            />
+            <Fragment key={campo.id}>
+              {cabecalho}
+              {conteudo}
+            </Fragment>
           );
         })}
     </div>

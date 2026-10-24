@@ -70,6 +70,8 @@ export interface DadosDaCapa {
   fundo_foco?: string;
   /** película escura sobre o fundo, 0 a 100 (60 = o padrão) */
   veu?: number;
+  /** quando há vídeo e imagem de fundo: qual aparece (padrão: o vídeo) */
+  usar?: 'video' | 'imagem';
 }
 export interface DadosDoSobre {
   titulo?: string;

@@ -47,7 +47,7 @@ export function CampoDeArquivo({
       setMinhas(null);
       aoMudar(
         tipo === 'video'
-          ? { [campo.id]: enviado.url, [chaveCapa]: enviado.capa, [chaveFoco]: '' }
+          ? { [campo.id]: enviado.url, ...(guardaCapa ? {} : { [chaveCapa]: enviado.capa, [chaveFoco]: '' }) }
           : { [campo.id]: enviado.url, [chaveFoco]: '' },
       );
     } catch (e) {
@@ -58,13 +58,16 @@ export function CampoDeArquivo({
   }
 
   const previa = tipo === 'video' ? capa : valor;
+  const guardaCapa = Boolean(campo.capaSoSeVazia && capa);
   const enviando = progresso !== null;
   return (
     <div className="ed-arquivo">
       <span className="ed-arquivo-rotulo">{campo.rotulo}</span>
       <div className="ed-arquivo-corpo">
         {previa ? (
-          <img src={previa} alt="" className="ed-arquivo-previa" />
+          <span className={`ed-arquivo-miniatura${tipo === 'video' && valor ? ' ed-arquivo-miniatura--video' : ''}`}>
+            <img src={previa} alt="" className="ed-arquivo-previa" />
+          </span>
         ) : (
           <span className="ed-arquivo-previa ed-arquivo-vazio" aria-hidden="true" />
         )}
@@ -82,44 +85,48 @@ export function CampoDeArquivo({
               }}
             />
           </label>
-          {!enviando && (
-            <button
-              type="button"
-              className="ed-link"
-              aria-expanded={escolhendo}
-              onClick={() => {
-                setEscolhendo(!escolhendo);
-                if (!escolhendo && minhas === null) void listarMidias().then(setMinhas);
-              }}
-            >
-              Das minhas mídias
-            </button>
-          )}
-          {previa && !enviando && (
-            <button
-              type="button"
-              className="ed-link"
-              aria-expanded={ajustando}
-              onClick={() => setAjustando(!ajustando)}
-            >
-              Ajustar enquadramento
-            </button>
-          )}
-          {valor && !enviando && (
-            <button
-              type="button"
-              className="ed-link"
-              onClick={() =>
-                aoMudar(
-                  tipo === 'video'
-                    ? { [campo.id]: '', [chaveCapa]: '', [chaveFoco]: '' }
-                    : { [campo.id]: '', [chaveFoco]: '' },
-                )
-              }
-            >
-              <Lixeira /> Remover
-            </button>
-          )}
+          <div className="ed-arquivo-links">
+            {!enviando && (
+              <button
+                type="button"
+                className="ed-link"
+                aria-expanded={escolhendo}
+                onClick={() => {
+                  setEscolhendo(!escolhendo);
+                  if (!escolhendo && minhas === null) void listarMidias().then(setMinhas);
+                }}
+              >
+                Minhas mídias
+              </button>
+            )}
+            {previa && !enviando && (
+              <button
+                type="button"
+                className="ed-link"
+                aria-expanded={ajustando}
+                onClick={() => setAjustando(!ajustando)}
+              >
+                Enquadramento
+              </button>
+            )}
+            {valor && !enviando && (
+              <button
+                type="button"
+                className="ed-link"
+                onClick={() =>
+                  aoMudar(
+                    tipo === 'video' && !campo.capaSoSeVazia
+                      ? { [campo.id]: '', [chaveCapa]: '', [chaveFoco]: '' }
+                      : tipo === 'video'
+                        ? { [campo.id]: '' }
+                        : { [campo.id]: '', [chaveFoco]: '' },
+                  )
+                }
+              >
+                <Lixeira /> Remover
+              </button>
+            )}
+          </div>
         </div>
       </div>
       {ajustando && previa && (
@@ -141,7 +148,7 @@ export function CampoDeArquivo({
                   onClick={() => {
                     aoMudar(
                       tipo === 'video'
-                        ? { [campo.id]: m.url, [chaveCapa]: m.capa, [chaveFoco]: '' }
+                        ? { [campo.id]: m.url, ...(guardaCapa ? {} : { [chaveCapa]: m.capa, [chaveFoco]: '' }) }
                         : { [campo.id]: m.url, [chaveFoco]: '' },
                     );
                     setEscolhendo(false);

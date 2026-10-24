@@ -6,7 +6,7 @@ import type { DadosDaCapa, PropsDoBloco } from './tipos';
 type VariacaoDaCapa = 'foto-grande' | 'foto-redonda' | 'fundo';
 
 export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, VariacaoDaCapa>) {
-  const { titulo, subtitulo, arroba, foto, botao, fundo, video_fundo, foto_foco, fundo_foco, veu } = dados;
+  const { titulo, subtitulo, arroba, foto, botao, fundo, video_fundo, foto_foco, fundo_foco, veu, usar } = dados;
   const posFoto = posicaoDoFoco(foto_foco);
   const posFundo = posicaoDoFoco(fundo_foco);
   const video = useRef<HTMLVideoElement>(null);
@@ -27,7 +27,7 @@ export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, Variac
 
   // foto ou vídeo ocupando a capa inteira; o véu escuro garante o contraste do texto em qualquer imagem
   if (variacao === 'fundo') {
-    const temVideo = Boolean(video_fundo) && modo === 'publicado';
+    const temVideo = Boolean(video_fundo) && usar !== 'imagem' && modo === 'publicado';
     return (
       <section
         className="bl bl-capa bl-capa--fundo"

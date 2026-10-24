@@ -13,6 +13,7 @@ export const TIPOS_DE_CAMPO = [
   'video',
   'lista',
   'proporcao',
+  'escolha',
 ] as const;
 export type TipoDeCampo = (typeof TIPOS_DE_CAMPO)[number];
 
@@ -34,7 +35,15 @@ export interface Campo {
   /** campos de cada item de uma lista; sem isto, a lista é de textos simples (ex.: nichos) */
   itens?: readonly Campo[];
   /** valor de um controle deslizante (`proporcao`) quando a creator ainda não mexeu */
-  padrao?: number;
+  padrao?: number | string;
+  /** campo `escolha`: as opções (quem escolhe vê todas lado a lado) */
+  opcoes?: readonly { id: string; nome: string }[];
+  /** título do grupo de campos na gaveta; campos seguidos com o mesmo grupo ficam juntos */
+  grupo?: string;
+  /** só aparece na gaveta quando todos estes campos já têm valor (ex.: escolher entre vídeo e foto só com os dois) */
+  seTem?: readonly string[];
+  /** campo de vídeo: só grava o quadro de capa se `capaEm` ainda estiver vazio (não troca a imagem que a creator já pôs) */
+  capaSoSeVazia?: boolean;
   /** o texto de exemplo serve como está (ex.: título "Como eu trabalho"): a revisão não cobra troca */
   serveComoEsta?: boolean;
   /** exemplo que não pode ir para o ar (ex.: número inventado): bloqueia a publicação enquanto for o placeholder */
@@ -79,6 +88,9 @@ function schemaDoCampo(campo: Campo): z.ZodType {
     const texto = z.string().trim();
     base = campo.maximo ? texto.max(campo.maximo, `No máximo ${campo.maximo} letras`) : texto;
     if (campo.obrigatorio) base = (base as z.ZodString).min(1, 'Campo obrigatório');
+  } else if (campo.tipo === 'escolha') {
+    const ids = (campo.opcoes ?? []).map((o) => o.id);
+    base = z.string().refine((v) => ids.includes(v), 'Opção inválida');
   } else if (campo.tipo === 'proporcao') {
     base = z.number().min(0).max(100);
   } else if (campo.tipo === 'lista') {
