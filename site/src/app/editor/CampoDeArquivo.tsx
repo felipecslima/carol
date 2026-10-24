@@ -1,6 +1,6 @@
 // Campo de foto ou vídeo: botão que abre a galeria do celular, prévia, barra de progresso no próprio campo e
 // mensagens claras. O envio roda em segundo plano; o resto da gaveta continua usável.
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { chaveDeFoco, type Campo } from '@lib/bloco';
 import { Lixeira } from './icones';
 import { listarMidias, registrarMidia, type Midia } from '../nuvem';
@@ -42,8 +42,11 @@ export function CampoDeArquivo({
     try {
       const enviado = await enviarArquivo(arquivo, tipo, setProgresso);
       const { data } = await supabase.auth.getSession();
-      if (data.session)
-        await registrarMidia(data.session.user.id, { ...enviado, tipo, nome: arquivo.name, bytes: arquivo.size });
+      const guardada = data.session
+        ? await registrarMidia(data.session.user.id, { ...enviado, tipo, nome: arquivo.name, bytes: arquivo.size })
+        : true;
+      if (!guardada)
+        setErro('O arquivo foi enviado e já está na página, mas não conseguimos guardá-lo em Minhas mídias agora.');
       setMinhas(null);
       aoMudar(
         tipo === 'video'
@@ -56,6 +59,15 @@ export function CampoDeArquivo({
       setProgresso(null);
     }
   }
+
+  const enviandoAgora = progresso !== null;
+  // fechar ou recarregar a página no meio do envio perderia o arquivo: o navegador pergunta antes
+  useEffect(() => {
+    if (!enviandoAgora) return;
+    const avisar = (ev: BeforeUnloadEvent) => ev.preventDefault();
+    window.addEventListener('beforeunload', avisar);
+    return () => window.removeEventListener('beforeunload', avisar);
+  }, [enviandoAgora]);
 
   const previa = tipo === 'video' ? capa : valor;
   const guardaCapa = Boolean(campo.capaSoSeVazia && capa);

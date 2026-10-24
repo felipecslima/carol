@@ -112,6 +112,7 @@ export async function enviarArquivo(
   original: File,
   tipo: TipoDeArquivo,
   aoProgredir: (fracao: number) => void,
+  opcoes?: OpcoesDeEnvio,
 ): Promise<Enviado> {
   const arquivo = await prepararArquivo(original, tipo);
   const { data } = await supabase.auth.getSession();
@@ -139,21 +140,96 @@ export async function enviarArquivo(
   form.append('signature', dados.assinatura);
   for (const [k, v] of Object.entries(dados.params)) form.append(k, String(v));
 
+  const url = `https://api.cloudinary.com/v1_1/${dados.nome}/${tipo}/upload`;
+  const resultado = await enviarEmPartes(url, arquivo, form, aoProgredir, opcoes);
+  if (!resultado.public_id) throw new ErroDeEnvio(traduzirRespostaDoServico(resultado.error?.message));
+  return enderecos(dados.nome, tipo, resultado.public_id);
+}
+
+interface RespostaDoServico {
+  public_id?: string;
+  error?: { message: string };
+}
+
+interface OpcoesDeEnvio {
+  /** arquivo acima disto sobe em partes (padrão 20 MB) */
+  acimaDe?: number;
+  /** tamanho de cada parte (padrão 6 MB; o serviço exige pelo menos 5 MB) */
+  tamanhoDaParte?: number;
+}
+
+/** Uma requisição com progresso. `Content-Range` e o id do envio deixam o Cloudinary juntar as partes. */
+function enviarUma(
+  url: string,
+  form: FormData,
+  cabecalhos: Record<string, string>,
+  aoProgredir: (enviado: number) => void,
+): Promise<RespostaDoServico> {
   return new Promise((resolver, rejeitar) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${dados.nome}/${tipo}/upload`);
-    xhr.upload.onprogress = (e) => e.lengthComputable && aoProgredir(e.loaded / e.total);
+    xhr.open('POST', url);
+    for (const [k, v] of Object.entries(cabecalhos)) xhr.setRequestHeader(k, v);
+    xhr.upload.onprogress = (e) => aoProgredir(e.loaded);
     xhr.onerror = () => rejeitar(new ErroDeEnvio('Sem conexão. Verifique a internet e tente de novo.'));
     xhr.ontimeout = () => rejeitar(new ErroDeEnvio('O envio demorou demais. Verifique a internet e tente de novo.'));
     xhr.onload = () => {
       try {
-        const r = JSON.parse(xhr.responseText) as { public_id?: string; error?: { message: string } };
-        if (xhr.status >= 200 && xhr.status < 300 && r.public_id) resolver(enderecos(dados.nome, tipo, r.public_id));
+        const r = JSON.parse(xhr.responseText) as RespostaDoServico;
+        if (xhr.status >= 500) rejeitar(new ErroDeConexao());
+        else if (xhr.status >= 200 && xhr.status < 300) resolver(r);
         else rejeitar(new ErroDeEnvio(traduzirRespostaDoServico(r.error?.message)));
       } catch {
-        rejeitar(new ErroDeEnvio('O envio falhou. Tente de novo.'));
+        rejeitar(new ErroDeConexao());
       }
     };
     xhr.send(form);
   });
+}
+
+/** falha passageira (rede ou servidor): vale tentar a mesma parte de novo */
+class ErroDeConexao extends ErroDeEnvio {
+  constructor() {
+    super('Sem conexão. Verifique a internet e tente de novo.');
+  }
+}
+
+/** Arquivo grande vai em partes de 6 MB, cada uma com até 3 tentativas: uma queda de sinal no celular refaz só a
+ *  parte que falhou, não o vídeo inteiro. Arquivo pequeno vai de uma vez. */
+async function enviarEmPartes(
+  url: string,
+  arquivo: File,
+  base: FormData,
+  aoProgredir: (fracao: number) => void,
+  { acimaDe = 20 * 1024 * 1024, tamanhoDaParte = 6 * 1024 * 1024 }: OpcoesDeEnvio = {},
+): Promise<RespostaDoServico> {
+  const total = arquivo.size;
+  const campos = [...base.entries()].filter(([k]) => k !== 'file');
+  const montar = (parte: Blob) => {
+    const f = new FormData();
+    for (const [k, v] of campos) f.append(k, v);
+    f.append('file', parte, arquivo.name);
+    return f;
+  };
+  if (total <= acimaDe) {
+    const f = montar(arquivo);
+    return enviarUma(url, f, {}, (n) => aoProgredir(n / total));
+  }
+  const idDoEnvio = crypto.randomUUID();
+  let resposta: RespostaDoServico = {};
+  for (let inicio = 0; inicio < total; inicio += tamanhoDaParte) {
+    const fim = Math.min(inicio + tamanhoDaParte, total);
+    const cabecalhos = { 'X-Unique-Upload-Id': idDoEnvio, 'Content-Range': `bytes ${inicio}-${fim - 1}/${total}` };
+    for (let tentativa = 1; ; tentativa++) {
+      try {
+        resposta = await enviarUma(url, montar(arquivo.slice(inicio, fim)), cabecalhos, (n) =>
+          aoProgredir((inicio + n) / total),
+        );
+        break;
+      } catch (e) {
+        if (!(e instanceof ErroDeConexao) || tentativa === 3) throw e;
+        await new Promise((r) => setTimeout(r, 1000 * tentativa));
+      }
+    }
+  }
+  return resposta;
 }

@@ -75,13 +75,18 @@ export async function listarMidias(): Promise<Midia[]> {
   }));
 }
 
-export async function registrarMidia(donoId: string, m: Omit<Midia, 'id' | 'criadoEm'>): Promise<void> {
-  await supabase
-    .from('media')
-    .upsert(
-      { dono: donoId, tipo: m.tipo, public_id: m.publicId, url: m.url, capa: m.capa, nome: m.nome, bytes: m.bytes },
-      { onConflict: 'dono,public_id', ignoreDuplicates: true },
-    );
+export async function registrarMidia(donoId: string, m: Omit<Midia, 'id' | 'criadoEm'>): Promise<boolean> {
+  // 2 tentativas: o arquivo já subiu, perder o registro é perder a mídia da biblioteca
+  for (let tentativa = 0; tentativa < 2; tentativa++) {
+    const { error } = await supabase
+      .from('media')
+      .upsert(
+        { dono: donoId, tipo: m.tipo, public_id: m.publicId, url: m.url, capa: m.capa, nome: m.nome, bytes: m.bytes },
+        { onConflict: 'dono,public_id', ignoreDuplicates: true },
+      );
+    if (!error) return true;
+  }
+  return false;
 }
 
 /** Apaga o arquivo no Cloudinary e depois o registro. `false` se o arquivo não saiu (o registro fica, para tentar de novo). */
