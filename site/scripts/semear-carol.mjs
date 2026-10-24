@@ -106,14 +106,25 @@ const projeto = {
   },
   blocos: [
     { id: 'capa', tipo: 'capa', variacao: 'foto-redonda', oculto: false, dados: { arroba: '@eu.carollimah · São Paulo', titulo: 'Uma amazonense morando em São Paulo te levando em lugares incríveis.', subtitulo: 'Amazonense morando em São Paulo, cria conteúdo sobre restaurantes, hotéis, pousadas e viagens.', foto: fotoCapa, botao: 'Quero uma parceria' } },
-    { id: 'numeros', tipo: 'numeros', variacao: 'cards', oculto: false, dados: { itens: [{ valor: '58,4 mil', rotulo: 'seguidores' }, { valor: '1,67 mi', rotulo: 'views em 30 dias' }, { valor: '242 mil', rotulo: 'média por reel' }], selo } },
-    { id: 'videos', tipo: 'videos', variacao: 'carrossel', oculto: false, dados: { titulo: 'Conteúdos que eu já criei', itens: [
+    { id: 'resumo', tipo: 'resumo', variacao: 'faixa', oculto: false, dados: { itens: [
+      { rotulo: 'Nicho', valor: 'Viagem e gastronomia' },
+      { rotulo: 'Cidade', valor: 'São Paulo' },
+      { rotulo: 'Seguidores', valor: '58,4 mil' },
+      { rotulo: 'Views em 30 dias', valor: '1,67 mi' },
+    ] } },
+    { id: 'videos', tipo: 'videos', variacao: 'destaque', oculto: false, dados: { titulo: 'Conteúdos que eu já criei', itens: [
       video('v44', 49, 'Tacacá perto da Paulista', '1,1 mi'),
       video('v27', 24, 'Noite de bumbá em SP', '1 mi'),
       video('v02', 0.9, 'Fit check', '478 mil', 'Shein'),
       video('v23', 1.9, 'Microfone sem fio', '458 mil', 'Mercado Livre'),
       video('v22', 3.4, 'Montagem do On Fire', '293 mil', 'Churrasco On Fire'),
       video('v46', 3, 'Presente de Dia dos Pais', '292 mil', 'Buddha Spa'),
+    ] } },
+    { id: 'numeros', tipo: 'numeros', variacao: 'cards', oculto: false, dados: { itens: [{ valor: '58,4 mil', rotulo: 'seguidores' }, { valor: '1,67 mi', rotulo: 'views em 30 dias' }, { valor: '242 mil', rotulo: 'média por reel' }], selo } },
+    { id: 'motivos', tipo: 'motivos', variacao: 'lista', oculto: false, dados: { titulo: 'Por que trabalhar comigo', itens: [
+      { titulo: 'Reels que passam de 1 milhão', texto: 'Entre os 165 reels do perfil, 2 passam de 1 milhão de views e 18 passam de 500 mil.' },
+      { titulo: 'Publi que também entrega', texto: 'Os 10 reels para o Mercado Livre têm média de 480 mil views.' },
+      { titulo: 'Uma audiência que cresce', texto: '+94% de views e +11,9% de seguidores nos últimos 30 dias, e uma audiência que confia nas minhas dicas.' },
     ] } },
     { id: 'sobre', tipo: 'sobre', variacao: 'texto-foto', oculto: false, dados: { titulo: 'Do Amazonas pra São Paulo, te mostrando tudo.', texto: 'Sou a Carol, amazonense morando em SP. No meu perfil eu levo quem me acompanha pra conhecer restaurantes, hotéis, pousadas e destinos como Ilhabela e Campos do Jordão, sempre com o meu jeito: espontânea, divertida e muito sincera.', foto: fotoSobre, nichos: ['Viagem', 'Gastronomia', 'Hospedagem', 'Moda', 'Lifestyle'] } },
     { id: 'publico', tipo: 'publico', variacao: 'idade', oculto: false, dados: { titulo: 'Quem acompanha meu perfil', itens: [...topFaixas.map(([f, p]) => ({ valor: pt(p), rotulo: `${f} anos`, proporcao: p })), { valor: pt(67.7), rotulo: 'mulheres', proporcao: 67.7 }], selo } },
@@ -123,6 +134,11 @@ const projeto = {
       { titulo: 'Hotéis & pousadas', descricao: 'Cobertura da hospedagem e do destino: quartos, experiências, café da manhã e o roteiro ao redor.' },
       { titulo: 'Restaurantes em SP', descricao: 'Visita, prato a prato, com o clima da casa. Conteúdo que faz o seguidor querer reservar.' },
       { titulo: 'Vídeos UGC', descricao: 'Vídeos para a marca usar nos próprios canais e anúncios, sem precisar de postagem no meu perfil.' },
+    ] } },
+    { id: 'processo', tipo: 'processo', variacao: 'passos', oculto: false, dados: { titulo: 'Como funciona a parceria', itens: [
+      { titulo: 'Primeiro contato', texto: 'Você manda a marca, o objetivo da campanha, o período, o formato desejado e, se quiser, a verba.' },
+      { titulo: 'Resposta', texto: 'Eu respondo em até 2 dias úteis.' },
+      { titulo: 'Roteiro e entrega', texto: 'Roteiro no meu tom e publicação no meu perfil, para a audiência que já confia nas minhas dicas.' },
     ] } },
     { id: 'contato', tipo: 'contato', variacao: 'botoes', oculto: false, dados: { titulo: 'Bora levar a sua marca pra um lugar incrível?', email: 'parceria.eucarollimah@gmail.com', whatsapp: '+55 12 99137-6550', prazo: 'Respondo em até 2 dias úteis.' } },
   ],
