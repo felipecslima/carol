@@ -1,5 +1,6 @@
 // Assistente de início: escolher o modelo (cartões que deslizam, bolinhas de paleta) e responder uma pergunta
 // por tela. No fim monta o projeto (lib/montagem.ts), grava o rascunho e abre o editor. Sem IA.
+import { Marca } from '../Marca';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
@@ -15,6 +16,7 @@ import { salvarRascunho } from '../editor/persistencia';
 import { useSessao } from '../sessao';
 import '../editor/editor.css';
 import './assistente.css';
+import '../refino.css';
 
 const NICHOS = ['Gastronomia', 'Viagem', 'Beleza', 'Lifestyle', 'Moda', 'Casa', 'Maternidade', 'Fitness'];
 
@@ -103,10 +105,11 @@ export default function Assistente() {
   return (
     <div className="as">
       <header className="as-topo">
-        <span className="as-marca">
-          portfólio<i>creator</i>
-        </span>
+        <Marca />
         <div className="as-passos" role="img" aria-label={`Passo ${indice + 1} de ${ETAPAS.length}`}>
+          <span className="as-passo-texto">
+            {indice + 1} de {ETAPAS.length}
+          </span>
           {ETAPAS.map((e, i) => (
             <span key={e} data-feito={i <= indice || undefined} />
           ))}
@@ -116,7 +119,9 @@ export default function Assistente() {
       <main className="as-corpo">
         {etapa === 'modelo' && (
           <>
-            <h1 className="as-titulo">Escolha o jeito do seu portfólio</h1>
+            <h1 className="as-titulo">
+              Escolha o jeito do <em>seu portfólio</em>
+            </h1>
             <p className="as-texto">Você troca modelo e cor quando quiser, e o que escrever vai junto.</p>
             <div className="as-modelos" role="group" aria-label="Modelos">
               <div className="as-modelo">

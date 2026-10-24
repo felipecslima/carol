@@ -1,8 +1,10 @@
 // Login sem senha: e-mail → código de 6 dígitos (DEV-030). Código funciona melhor que link no celular, porque o link
 // abre no app de e-mail e perde a sessão. Mensagens em português e sem culpar a creator.
+import { Marca } from './Marca';
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from './supabase';
 import './assistente/assistente.css';
+import './refino.css';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const ESPERA = 30;
@@ -56,14 +58,14 @@ export default function Entrar() {
   return (
     <div className="as">
       <header className="as-topo">
-        <span className="as-marca">
-          portfólio<i>creator</i>
-        </span>
+        <Marca />
       </header>
       <main className="as-corpo">
         {etapa === 'email' ? (
           <>
-            <h1 className="as-titulo">Entre para guardar seu portfólio</h1>
+            <h1 className="as-titulo">
+              Entre para guardar <em>seu portfólio</em>
+            </h1>
             <p className="as-texto">Sem senha: a gente manda um código de 6 números para o seu e-mail.</p>
             <form
               className="as-campo"
@@ -84,7 +86,7 @@ export default function Entrar() {
                 onChange={(e) => setEmail(e.target.value)}
               />
               {erro && (
-                <span className="as-dica" role="alert">
+                <span className="as-erro" role="alert">
                   {erro}
                 </span>
               )}
@@ -109,7 +111,9 @@ export default function Entrar() {
           </>
         ) : (
           <>
-            <h1 className="as-titulo">Digite o código</h1>
+            <h1 className="as-titulo">
+              Digite o <em>código</em>
+            </h1>
             <p className="as-texto">
               Enviamos 6 números para <b>{email}</b>. Veja também a caixa de spam.
             </p>
@@ -123,6 +127,7 @@ export default function Entrar() {
               <label htmlFor="codigo">Código de 6 números</label>
               <input
                 id="codigo"
+                aria-invalid={erro ? true : undefined}
                 ref={campo}
                 inputMode="numeric"
                 autoComplete="one-time-code"
@@ -132,7 +137,7 @@ export default function Entrar() {
                 onChange={(e) => setCodigo(e.target.value.replace(/\D/g, '').slice(0, 6))}
               />
               {erro && (
-                <span className="as-dica" role="alert">
+                <span className="as-erro" role="alert">
                   {erro}
                 </span>
               )}

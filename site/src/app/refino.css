@@ -1,0 +1,369 @@
+/* Refino visual do app (crítica de design de 24/out/2026): tipografia editorial como na página de vendas, uma marca só,
+   hierarquia de ação, estados claros e acessíveis. Seletores com dois níveis para ganhar dos CSS de cada tela. */
+.ed,
+.ed-gaveta,
+.as,
+.ar {
+  --serif: 'Instrument Serif', Georgia, serif;
+  --rosa-texto: #b71f4e;
+  --linha: #e9dcd2;
+}
+
+/* marca */
+.marca {
+  font:
+    800 19px/1 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  letter-spacing: -0.03em;
+  color: #24130f;
+  white-space: nowrap;
+}
+.marca i {
+  font-style: normal;
+  color: #b71f4e;
+}
+
+/* títulos: serifa editorial (a mesma da página de vendas); o rosa grifa uma ideia por tela, no máximo */
+.as .as-titulo,
+.ar .ar-titulo,
+.ar .ar-ola {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.as .as-titulo {
+  font-size: clamp(38px, 10.5vw, 54px);
+}
+.ar .ar-titulo {
+  font-size: clamp(36px, 9vw, 44px);
+}
+.ar .ar-ola {
+  font-size: clamp(46px, 12vw, 60px);
+}
+.as .as-titulo em,
+.ar .ar-ola em {
+  font-style: italic;
+  color: var(--rosa-texto);
+}
+.ed-gaveta .ed-gaveta-titulo {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+.ar .ar-passo h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(30px, 8vw, 38px);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+.ar .ar-bloco h2,
+.ar .ar-projeto-info h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+}
+
+/* texto de apoio e rótulos: tamanho legível, contraste de 7:1 */
+.ed .ed-dica,
+.ed-gaveta .ed-dica,
+.ed .ed-contador,
+.ed-gaveta .ed-contador,
+.as .as-dica,
+.ar .ed-dica {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #5a443e;
+}
+.ed .ed-contador,
+.ed-gaveta .ed-contador {
+  font-weight: 600;
+}
+
+/* botões: um preenchido por tela; o resto recua */
+.ar .ed-botao-claro,
+.ed-gaveta .ed-botao-claro {
+  border-width: 1.5px;
+}
+.ed .ed-primario:disabled,
+.ed-gaveta .ed-primario:disabled,
+.ar .ed-primario:disabled,
+.as .as-botao:disabled {
+  background: #eadfd6;
+  color: #5a443e;
+  opacity: 1;
+  cursor: default;
+}
+.ed-gaveta .ed-icone,
+.ed .ed-icone {
+  flex: none;
+}
+
+/* foco visível também nos campos (antes só a cor da borda mudava) */
+.as .as-campo input:focus,
+.ed-form :is(input[type='text'], textarea):focus,
+.ar .ed-campo input:focus {
+  border-color: #24130f;
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 4px rgba(36, 19, 15, 0.14);
+}
+
+/* erro de código/campo: cor, peso e posição próprios */
+.as .as-erro {
+  display: flex;
+  gap: 8px;
+  align-items: start;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #8a1c16;
+}
+.as .as-erro::before {
+  content: '!';
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #8a1c16;
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+}
+.as .as-campo input[aria-invalid='true'] {
+  border-color: #8a1c16;
+}
+
+/* controles nativos deixam de parecer crus */
+.ed-form input[type='range'] {
+  width: 100%;
+  height: 44px;
+  accent-color: #d42a5b;
+  background: transparent;
+}
+.ed-variacoes [role='radio'][aria-checked='true']::before {
+  content: '✓';
+  font-weight: 800;
+}
+.ed-chip-cor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid var(--ed-borda);
+  border-radius: 999px;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ed-chip-cor:focus-within {
+  outline: 3px solid #24130f;
+  outline-offset: 2px;
+}
+.ed-chip-cor[data-ativo='true'] {
+  border-color: #24130f;
+  background: #24130f;
+  color: #fff;
+}
+.ed-chip-cor input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.ed-chip-cor .ed-amostra {
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* gaveta mais baixa: o portfólio em edição continua visível acima dela */
+@media (max-width: 879px) {
+  .ed-gaveta {
+    max-height: 46dvh;
+  }
+  .ed--gaveta {
+    padding-bottom: 50dvh;
+  }
+}
+.ed-gaveta .ed-gaveta-topo {
+  padding: 12px 8px 6px 20px;
+}
+.ed--gaveta .ed-progresso {
+  display: none;
+}
+
+/* área: seções separadas por fio, não por cartões iguais; o perigo é o único cartão com cor */
+.ar .ar-bloco {
+  border: 0;
+  border-top: 1px solid var(--linha);
+  border-radius: 0;
+  background: transparent;
+  padding: 28px 0 8px;
+}
+.ar .ar-bloco:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.ar .ar-perigo {
+  border: 1px solid #e8b9c5;
+  border-radius: 22px;
+  background: #fff1f4;
+  padding: 20px;
+  margin-top: 8px;
+}
+.ar .ar-perigo .ed-botao-claro {
+  border-color: #b71f4e;
+  color: #b71f4e;
+}
+.ar .ar-secundarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  align-items: center;
+}
+.ar .ar-link-texto {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #24130f;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: #d9bfb2;
+}
+.ar .ar-link-texto:hover {
+  text-decoration-color: #b71f4e;
+}
+
+/* movimento: respeita quem pede menos */
+@media (prefers-reduced-motion: reduce) {
+  .ed *,
+  .ed-gaveta,
+  .ed-gaveta *,
+  .as *,
+  .ar *,
+  .mk * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.as .as-passos {
+  align-items: center;
+  gap: 8px;
+}
+.as .as-passo-texto {
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #5a443e;
+  margin-right: 6px;
+}
+.as .as-previa {
+  pointer-events: none;
+}
+
+/* Início: cartão do próximo passo + o portfólio em miniatura */
+.ar .ar-barra {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+.ar .ar-barra span {
+  display: block;
+  height: 100%;
+  background: #ff8fb0;
+  border-radius: inherit;
+}
+.ar .ar-link-claro {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(255, 255, 255, 0.45);
+}
+.ar .ar-portfolio {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--linha);
+  border-radius: 22px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+}
+.ar .ar-portfolio .ar-miniatura {
+  height: 112px;
+  border-radius: 14px;
+}
+.ar .ar-portfolio .ar-miniatura .bl {
+  transform: scale(0.3);
+  width: 333%;
+  margin-left: -116%;
+  padding-top: 6px;
+}
+.ar .ar-portfolio-info {
+  display: grid;
+  gap: 2px;
+}
+.ar .ar-portfolio-info b {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+}
+.ar .ar-portfolio-info span {
+  font-size: 14px;
+  color: #5a443e;
+}
+.ar .ar-portfolio:hover {
+  border-color: #24130f;
+}
+
+/* confirmação de apagar mídia e valor do controle deslizante */
+.ed-confirmar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+.ed .ed-link--perigo,
+.ed-gaveta .ed-link--perigo,
+.ar .ed-link--perigo {
+  color: #8a1c16;
+  text-decoration: underline;
+}
+.ed-campo label b {
+  font-weight: 800;
+  color: #b71f4e;
+}
+.ar .ar-portfolio-link {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+}
+.ar .ar-portfolio:has(.ar-portfolio-link:focus-visible) {
+  outline: 3px solid #24130f;
+  outline-offset: 2px;
+}

@@ -1,5 +1,6 @@
 // Editor do Portfólio Creator (mobile primeiro): a creator edita em cima do resultado final. Primeiro toque
 // seleciona o bloco, segundo abre a edição; controles embaixo, onde o polegar alcança; um nível de gaveta só.
+import { Marca } from '../Marca';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { Bloco } from '@blocks/Bloco';
@@ -36,6 +37,7 @@ import { carregarDaNuvem, salvarNaNuvem } from '../nuvem';
 import { useSessao } from '../sessao';
 import { supabaseConfigurado } from '../supabase';
 import './editor.css';
+import '../refino.css';
 
 type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | 'midias' | null;
 
@@ -47,7 +49,8 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   const futuros = useStore(editor.temporal, (s) => s.futureStates.length);
   const [painel, setPainel] = useState<Painel>(null);
   const [situacao, setSituacao] = useState<'salvo' | 'salvando' | 'erro' | 'offline'>('salvo');
-  const [ver, setVer] = useState(false);
+  // /app/editor/?ver=1 abre direto no modo Ver (o botão "Ver como a marca vê" da área)
+  const [ver, setVer] = useState(() => new URLSearchParams(window.location.search).get('ver') === '1');
   const [aviso, setAviso] = useState<string | null>(null);
   const primeiraVez = useRef(true);
 
@@ -88,6 +91,11 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   const definicao = bloco && REGISTRO[bloco.tipo];
   const indice = bloco ? projeto.blocos.indexOf(bloco) : -1;
   const visiveis = blocosVisiveis(projeto, REGISTRO);
+  // esconder avisa e oferece desfazer: a seção não some sem rastro
+  const esconder = (id: string) => {
+    e.esconder(id);
+    setAviso('Seção escondida. Ela fica guardada em Seções.');
+  };
   const desfazer = () => editor.temporal.getState().undo();
   const refazer = () => editor.temporal.getState().redo();
 
@@ -108,9 +116,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   return (
     <div className={`ed${painel ? ' ed--gaveta' : ''}`}>
       <header className="ed-topo">
-        <span className="ed-marca">
-          portfólio<i>creator</i>
-        </span>
+        <Marca />
         <div className="ed-topo-acoes">
           <button
             type="button"
@@ -145,14 +151,16 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
         </div>
       </header>
 
-      <div className="ed-progresso" role="status">
-        <span>
-          {seus} de {total} itens já são seus
-        </span>
-        <span className="ed-progresso-barra" aria-hidden="true">
-          <span style={{ width: `${total ? (seus / total) * 100 : 0}%` }} />
-        </span>
-      </div>
+      {seus < total && (
+        <div className="ed-progresso" role="status">
+          <span>
+            {seus} de {total} itens já são seus
+          </span>
+          <span className="ed-progresso-barra" aria-hidden="true">
+            <span style={{ width: `${total ? (seus / total) * 100 : 0}%` }} />
+          </span>
+        </div>
+      )}
 
       <main
         className="ed-tela pagina"
@@ -175,7 +183,9 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
               (ev.preventDefault(), b.id === selecionado ? setPainel('editar') : e.selecionar(b.id))
             }
           >
-            <Bloco bloco={b} modo="editor" />
+            <div className="ed-bloco-conteudo" inert>
+              <Bloco bloco={b} modo="editor" />
+            </div>
           </div>
         ))}
       </main>
@@ -213,7 +223,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
             <Descer />
           </button>
           {!definicao?.fixo && (
-            <button type="button" onClick={() => e.esconder(bloco.id)}>
+            <button type="button" onClick={() => esconder(bloco.id)}>
               <Esconder /> Esconder
             </button>
           )}
@@ -321,7 +331,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
         )}
       </Gaveta>
       <Gaveta aberta={painel === 'secoes'} aoFechar={() => setPainel(null)} titulo="Seções">
-        <PainelSecoes projeto={projeto} e={e} />
+        <PainelSecoes projeto={projeto} e={{ ...e, esconder }} />
       </Gaveta>
       <Gaveta aberta={painel === 'adicionar'} aoFechar={() => setPainel(null)} titulo="Adicionar seção">
         <PainelAdicionar projeto={projeto} e={e} aoAdicionar={() => setPainel(null)} />

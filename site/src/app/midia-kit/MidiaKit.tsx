@@ -1,7 +1,7 @@
 // Mídia kit em 1 página A4 (DEV-150): os mesmos blocos do projeto, reduzidos até caberem na folha. "Salvar como
 // PDF" usa a impressão do navegador por enquanto; o PDF de verdade (marca d'água, arquivo guardado) vem do
 // Cloudflare Browser Rendering, a partir desta mesma rota.
-import { useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
 import { REGISTRO } from '@blocks/registro';
@@ -20,6 +20,13 @@ export default function MidiaKit() {
   const projeto = useMemo(() => carregarRascunho() ?? PROJETO_DE_EXEMPLO, []);
   const conteudo = useRef<HTMLDivElement>(null);
   const [escala, setEscala] = useState(1);
+  // escala só de visualização: a folha cabe na largura da tela (no celular fica pequena; o PDF sai em tamanho real)
+  const [tela, setTela] = useState(() => Math.min(1, (window.innerWidth - 32) / LARGURA));
+  useEffect(() => {
+    const aoRedimensionar = () => setTela(Math.min(1, (window.innerWidth - 32) / LARGURA));
+    window.addEventListener('resize', aoRedimensionar);
+    return () => window.removeEventListener('resize', aoRedimensionar);
+  }, []);
   const marcaDagua = new URLSearchParams(window.location.search).get('marca') !== '0';
 
   // cabe numa folha só: o layout tem largura fixa (LAYOUT) e é reduzido até caber na largura e na altura do A4,
@@ -40,33 +47,37 @@ export default function MidiaKit() {
           Salvar como PDF
         </button>
       </div>
-      <div
-        className="mk-folha pagina"
-        style={{
-          ...temaDoProjeto(projeto),
-          ...({ '--respiro': '20px' } as CSSProperties),
-          width: LARGURA,
-          height: ALTURA,
-        }}
-      >
+      <div className="mk-vista" style={{ width: LARGURA * tela, height: ALTURA * tela }}>
         <div
-          ref={conteudo}
-          className="mk-conteudo"
+          className="mk-folha pagina"
+          inert
           style={{
-            width: LAYOUT,
-            transform: `scale(${escala})`,
-            marginLeft: (LARGURA - LAYOUT * escala) / 2,
+            ...temaDoProjeto(projeto),
+            ...({ '--respiro': '20px' } as CSSProperties),
+            width: LARGURA,
+            height: ALTURA,
+            transform: `scale(${tela})`,
           }}
         >
-          {blocosVisiveis(projeto, REGISTRO).map((b) => (
-            <Bloco key={b.id} bloco={b} modo="publicado" />
-          ))}
-        </div>
-        {marcaDagua && (
-          <div className="mk-marca" aria-hidden="true">
-            PORTFÓLIO CREATOR • TESTE
+          <div
+            ref={conteudo}
+            className="mk-conteudo"
+            style={{
+              width: LAYOUT,
+              transform: `scale(${escala})`,
+              marginLeft: (LARGURA - LAYOUT * escala) / 2,
+            }}
+          >
+            {blocosVisiveis(projeto, REGISTRO).map((b) => (
+              <Bloco key={b.id} bloco={b} modo="publicado" />
+            ))}
           </div>
-        )}
+          {marcaDagua && (
+            <div className="mk-marca" aria-hidden="true">
+              PORTFÓLIO CREATOR • TESTE
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

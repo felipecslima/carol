@@ -19,7 +19,8 @@ const env = Object.fromEntries(
 const BASE = env.PUBLIC_SUPABASE_URL;
 const CHAVE = env.SUPABASE_SERVICE_ROLE_KEY;
 const [, cKey, cSecret, CLOUD] = env.CLOUDINARY_URL.match(/^cloudinary:\/\/([^:]+):([^@]+)@(.+)$/);
-export const EMAIL_DE_TESTE = 'carol.limah.teste@example.com';
+// outra conta de teste com os mesmos dados: SEED_EMAIL=outra@example.com npm run seed:carol <foto>
+const EMAIL_DE_TESTE = process.env.SEED_EMAIL ?? 'carol.limah.teste@example.com';
 
 const h = { apikey: CHAVE, Authorization: `Bearer ${CHAVE}`, 'Content-Type': 'application/json' };
 const api = async (caminho, init = {}) => {

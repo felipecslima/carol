@@ -441,3 +441,11 @@
 .bl-selo::before {
   content: '✓ ';
 }
+
+/* vídeo tocável dentro do card: ocupa a largura do card em vez do tamanho do arquivo */
+video.bl-video-capa {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  background: var(--cartao);
+}

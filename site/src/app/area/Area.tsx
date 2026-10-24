@@ -1,5 +1,6 @@
 // Área da creator (DEV-040): barra fixa de 4 abas (Início, Projetos, Mídias, Conta), áreas de toque de 44 px e safe
 // areas do celular. O editor abre em tela cheia por cima, e o voltar leva de volta a Projetos.
+import { Marca } from '../Marca';
 import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { Casa, Imagem, Pasta, Pessoa } from '../editor/icones';
@@ -10,6 +11,7 @@ import { Inicio } from './Inicio';
 import { Projetos } from './Projetos';
 import '../editor/editor.css';
 import './area.css';
+import '../refino.css';
 
 type Aba = 'inicio' | 'projetos' | 'midias' | 'conta';
 const ABAS: Array<[Aba, string, () => ReactElement]> = [
@@ -53,9 +55,7 @@ export default function Area({ sessao }: { sessao: Session }) {
   return (
     <div className="ar">
       <header className="ar-topo">
-        <span className="as-marca">
-          portfólio<i>creator</i>
-        </span>
+        <Marca />
       </header>
 
       {perfil?.exclusaoPedidaEm && (

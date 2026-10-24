@@ -51,7 +51,7 @@
   transform-origin: top left;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas: 'capa capa' 'numeros publico' 'videos videos' 'sobre marcas' 'formatos formatos' 'contato contato';
+  grid-template-areas: 'capa capa' 'numeros publico' 'videos videos' 'sobre formatos' 'marcas marcas' 'contato contato';
   align-content: start;
   --respiro: 20px;
 }
@@ -105,11 +105,6 @@
   white-space: nowrap;
   letter-spacing: 0.04em;
 }
-@media (max-width: 860px) {
-  .mk-folha {
-    zoom: 0.45;
-  }
-}
 
 @page {
   size: A4;
@@ -133,7 +128,11 @@
     width: 210mm !important;
     height: 297mm !important;
     box-shadow: none;
-    zoom: 1;
+    transform: none !important;
+  }
+  .mk-vista {
+    width: 210mm !important;
+    height: 297mm !important;
   }
   .mk-folha,
   .mk-conteudo {
@@ -171,4 +170,54 @@
 .mk-conteudo .bl-numero {
   font-size: 28px;
   white-space: nowrap;
+}
+
+/* a folha A4 é reduzida para caber na tela (celular inclusive), sem rolagem lateral */
+.mk-vista {
+  flex: none;
+}
+.mk-folha {
+  transform-origin: top left;
+}
+.mk-barra {
+  width: min(794px, 100%);
+}
+.mk-conteudo .bl-video b {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.15;
+}
+.mk-conteudo .bl-video {
+  min-width: 0;
+}
+.mk-conteudo .bl-video span {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* marcas em linha corrida (a lista pode ter 20 nomes) */
+.mk-conteudo .bl-marcas .bl-lista-marcas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mk-conteudo .bl-marcas .bl-lista-marcas li {
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+.mk-conteudo .bl-marcas .bl-lista-marcas b {
+  font-size: 12px;
+}
+.mk-conteudo .bl-formatos .bl-lista-formatos {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.mk-conteudo .bl-formatos .bl-cartao {
+  padding: 14px 16px;
+}
+.mk-conteudo .bl-formatos .bl-lista-formatos li b {
+  font-size: 16px;
+}
+.mk-conteudo .bl-formatos .bl-lista-formatos li span {
+  font-size: 13px;
 }

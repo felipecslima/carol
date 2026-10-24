@@ -8,12 +8,14 @@ export function PainelMidias({ dica = true }: { dica?: boolean }) {
   const [midias, setMidias] = useState<Midia[] | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [apagando, setApagando] = useState<string | null>(null);
+  const [confirmando, setConfirmando] = useState<string | null>(null);
 
   useEffect(() => {
     void listarMidias().then(setMidias);
   }, []);
 
   async function tirar(m: Midia) {
+    setConfirmando(null);
     setApagando(m.id);
     setErro(null);
     const ok = await removerMidia(m);
@@ -48,9 +50,25 @@ export function PainelMidias({ dica = true }: { dica?: boolean }) {
             <span className="ed-dica">
               {m.tipo === 'video' ? 'Vídeo' : 'Foto'} · {textoDeTamanho(m.bytes)} · {dataCurta(m.criadoEm)}
             </span>
-            <button type="button" className="ed-link" disabled={apagando === m.id} onClick={() => void tirar(m)}>
-              <Lixeira /> {apagando === m.id ? 'Apagando…' : 'Apagar'}
-            </button>
+            {confirmando === m.id ? (
+              <span className="ed-confirmar">
+                <button type="button" className="ed-link ed-link--perigo" onClick={() => void tirar(m)}>
+                  Apagar de vez
+                </button>
+                <button type="button" className="ed-link" onClick={() => setConfirmando(null)}>
+                  Manter
+                </button>
+              </span>
+            ) : (
+              <button
+                type="button"
+                className="ed-link"
+                disabled={apagando === m.id}
+                onClick={() => setConfirmando(m.id)}
+              >
+                <Lixeira /> {apagando === m.id ? 'Apagando…' : 'Apagar'}
+              </button>
+            )}
           </li>
         ))}
       </ul>

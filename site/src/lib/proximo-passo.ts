@@ -1,5 +1,5 @@
 // "Próximo passo" do Início (DEV-041): um cartão só, calculado pelo estado do projeto. A pergunta que guia tudo:
-// "o meu portfólio está pronto para mandar para uma marca?". Sem publicação por enquanto: o último passo é o mídia kit.
+// "o meu portfólio está pronto para mandar para uma marca?". Sem publicação por enquanto: o último passo é ver como a marca vê.
 import type { Alerta } from './revisao';
 import { infoDoEstado } from './estados';
 
@@ -7,6 +7,8 @@ export interface PassoSeguinte {
   titulo: string;
   texto: string;
   acao: { rotulo: string; href: string };
+  /** segunda ação, mais discreta */
+  secundaria?: { rotulo: string; href: string };
 }
 
 export interface EntradaDoPasso {
@@ -63,7 +65,8 @@ export function proximoPasso(e: EntradaDoPasso): PassoSeguinte {
     };
   return {
     titulo: 'Seu portfólio está pronto',
-    texto: 'A publicação chega em breve. Enquanto isso, veja o seu mídia kit em PDF.',
-    acao: { rotulo: 'Ver mídia kit', href: '/app/midia-kit/' },
+    texto: 'É assim que a marca vai ver. A publicação chega em breve.',
+    acao: { rotulo: 'Ver como a marca vê', href: '/app/editor/?ver=1' },
+    secundaria: { rotulo: 'Mídia kit em PDF', href: '/app/midia-kit/' },
   };
 }

@@ -1,11 +1,8 @@
 // Projetos: o site (e o mídia kit, que sai do mesmo conteúdo), com miniatura, estado e botão principal (DEV-042).
 // Limite de 1 site e 1 mídia kit por conta.
 import { useState } from 'react';
-import { Bloco } from '@blocks/Bloco';
 import { infoDoEstado } from '@lib/estados';
-import { REGISTRO } from '@blocks/registro';
-import { blocosVisiveis } from '@lib/projeto';
-import { temaDoProjeto } from '../editor/tema';
+import { Miniatura } from './Miniatura';
 import { dataCurta } from '../formatar';
 import { apagarProjeto, type Resumo } from '../nuvem';
 
@@ -27,8 +24,6 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
     );
 
   const info = infoDoEstado(resumo.estado);
-  const capa = blocosVisiveis(resumo.projeto, REGISTRO).find((b) => b.tipo === 'capa');
-  const titulo = String(capa?.dados.titulo ?? 'Meu portfólio');
 
   async function apagar() {
     setApagando(true);
@@ -41,13 +36,10 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
     <section className="ar-secao">
       <h1 className="ar-titulo">Projetos</h1>
       <article className="ar-projeto">
-        <div className="ar-miniatura pagina" style={temaDoProjeto(resumo.projeto)} aria-hidden="true">
-          {capa && <Bloco bloco={capa} modo="publicado" />}
-        </div>
+        <Miniatura projeto={resumo.projeto} />
         <div className="ar-projeto-info">
           <span className={`ar-estado ar-estado--${resumo.estado}`}>{info.rotulo}</span>
           <h2>Site</h2>
-          <p className="ar-projeto-titulo">{titulo}</p>
           <p className="ed-dica">
             {info.descricao} Atualizado em {dataCurta(resumo.atualizadoEm).replace('.', '')}
           </p>
@@ -55,7 +47,12 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
             <a className="ed-primario ar-botao" href="/app/editor/">
               {info.botao.texto}
             </a>
-            <a className="ed-botao-claro" href="/app/midia-kit/">
+          </div>
+          <div className="ar-secundarios">
+            <a className="ar-link-texto" href="/app/editor/?ver=1">
+              Ver como a marca vê
+            </a>
+            <a className="ar-link-texto" href="/app/midia-kit/">
               Mídia kit em PDF
             </a>
           </div>

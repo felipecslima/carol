@@ -1,5 +1,6 @@
 // Formulário de um bloco, gerado dos campos do registro: texto com contador de letras, listas de itens e a
 // escolha de variação. Tocar em "Exemplo" e trocar o texto tira a marca de exemplo do item.
+import { useId } from 'react';
 import type { Campo, DefinicaoDeBloco } from '@lib/bloco';
 import type { Bloco } from '@lib/projeto';
 import { CampoDeArquivo } from './CampoDeArquivo';
@@ -18,7 +19,7 @@ function CampoDeTexto({
   aoMudar: (v: string) => void;
   textoLongo?: boolean;
 }) {
-  const id = `campo-${campo.id}-${campo.rotulo}`;
+  const id = useId(); // único por campo: antes, itens repetidos dividiam o mesmo id e ficavam sem nome para o leitor de tela
   const comum = {
     id,
     value: valor,
@@ -56,7 +57,9 @@ function ListaDeItens({ campo, itens, aoMudar }: { campo: Campo; itens: Dados[];
           {campos.map((c) =>
             c.tipo === 'proporcao' ? (
               <div className="ed-campo" key={c.id}>
-                <label htmlFor={`prop-${i}`}>{c.rotulo}</label>
+                <label htmlFor={`prop-${i}`}>
+                  {c.rotulo}: <b>{Number(item[c.id] ?? 0)}</b>
+                </label>
                 <input
                   id={`prop-${i}`}
                   type="range"

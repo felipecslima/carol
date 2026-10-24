@@ -162,10 +162,16 @@ export function PainelEstilo({
             </button>
           ))}
         </div>
-        <label className="ed-cor-propria">
-          Minha cor
+        <label className="ed-chip-cor" data-ativo={Boolean(projeto.corPropria)}>
+          <span
+            className="ed-amostra"
+            style={{ background: projeto.corPropria ?? NUVEM.paletas[projeto.paleta]?.origem ?? '#8c77e0' }}
+            aria-hidden="true"
+          />
+          {projeto.corPropria ? '✓ ' : ''}Minha cor
           <input
             type="color"
+            aria-label="Escolher minha cor"
             value={projeto.corPropria ?? NUVEM.paletas[projeto.paleta]?.origem ?? '#8c77e0'}
             onChange={(ev) => aoMudar({ corPropria: ev.target.value }, 'Cor própria')}
           />
