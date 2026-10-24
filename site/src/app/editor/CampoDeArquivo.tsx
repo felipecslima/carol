@@ -5,7 +5,7 @@ import { chaveDeFoco, type Campo } from '@lib/bloco';
 import { Lixeira } from './icones';
 import { listarMidias, registrarMidia, type Midia } from '../nuvem';
 import { supabase } from '../supabase';
-import { enviarArquivo, problemaDoArquivo, type TipoDeArquivo } from './upload';
+import { enviarArquivo, mensagemDeErro, problemaDoArquivo, type TipoDeArquivo } from './upload';
 
 export function CampoDeArquivo({
   campo,
@@ -51,7 +51,7 @@ export function CampoDeArquivo({
           : { [campo.id]: enviado.url, [chaveFoco]: '' },
       );
     } catch (e) {
-      setErro(e instanceof Error ? e.message : 'O envio falhou. Tente de novo.');
+      setErro(mensagemDeErro(e));
     } finally {
       setProgresso(null);
     }
