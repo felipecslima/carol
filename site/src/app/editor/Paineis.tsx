@@ -4,7 +4,7 @@ import { MAXIMO_DE_BLOCOS, type Projeto } from '@lib/projeto';
 import { gerarPaleta } from '@themes/paleta';
 import { NUVEM } from '@themes/modelos/nuvem';
 import type { Cantos, Fontes } from '@themes/tokens';
-import { Descer, Esconder, Subir } from './icones';
+import { Descer, Esconder, Lixeira, Subir } from './icones';
 import type { EstadoDoEditor } from './estado';
 
 const nomeDe = (tipo: string) => REGISTRO[tipo]?.nome ?? tipo;
@@ -52,6 +52,16 @@ export function PainelSecoes({ projeto, e }: { projeto: Projeto; e: EstadoDoEdit
                     <Esconder />
                   </button>
                 )}
+                {!fixo && (
+                  <button
+                    type="button"
+                    className="ed-icone"
+                    aria-label={`Remover ${nomeDe(b.tipo)}`}
+                    onClick={() => e.remover(b.id)}
+                  >
+                    <Lixeira />
+                  </button>
+                )}
               </div>
             </li>
           );
@@ -72,6 +82,14 @@ export function PainelSecoes({ projeto, e }: { projeto: Projeto; e: EstadoDoEdit
                 onClick={() => e.devolver(b.id)}
               >
                 Devolver
+              </button>
+              <button
+                type="button"
+                className="ed-icone"
+                aria-label={`Remover ${nomeDe(b.tipo)}`}
+                onClick={() => e.remover(b.id)}
+              >
+                <Lixeira />
               </button>
             </li>
           ))}

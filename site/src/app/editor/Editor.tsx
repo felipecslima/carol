@@ -25,6 +25,7 @@ import {
   Desfazer,
   Esconder,
   Lapis,
+  Lixeira,
   Olho,
   Mais,
   Paleta,
@@ -111,6 +112,10 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   const esconder = (id: string) => {
     e.esconder(id);
     setAviso('Seção escondida. Ela fica guardada em Seções.');
+  };
+  const remover = (id: string) => {
+    e.remover(id);
+    setAviso('Seção removida de vez.');
   };
   const desfazer = () => editor.temporal.getState().undo();
   const refazer = () => editor.temporal.getState().redo();
@@ -270,6 +275,11 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
               <Esconder /> Esconder
             </button>
           )}
+          {!definicao?.fixo && (
+            <button type="button" onClick={() => remover(bloco.id)}>
+              <Lixeira /> Remover
+            </button>
+          )}
         </div>
       )}
 
@@ -379,6 +389,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
           e={{
             ...e,
             esconder,
+            remover,
             devolver: (id) => {
               rolarParaNova.current = true;
               e.devolver(id);

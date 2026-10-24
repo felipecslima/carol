@@ -23,6 +23,17 @@ export function esconder(projeto: Projeto, id: string, registro: Registro): Proj
   return { ...projeto, blocos: projeto.blocos.filter((b) => b.id !== id), guardados: [...projeto.guardados, bloco] };
 }
 
+/** Apaga o bloco de vez (da página ou dos guardados). Capa e Contato não saem. Quem quer só tirar da vista usa `esconder`. */
+export function remover(projeto: Projeto, id: string, registro: Registro): Projeto {
+  const bloco = [...projeto.blocos, ...projeto.guardados].find((b) => b.id === id);
+  if (!bloco || registro[bloco.tipo]?.fixo) return projeto;
+  return {
+    ...projeto,
+    blocos: projeto.blocos.filter((b) => b.id !== id),
+    guardados: projeto.guardados.filter((b) => b.id !== id),
+  };
+}
+
 /** Traz um bloco guardado de volta ao fim da página, mas antes do Contato, que fica sempre por último. */
 export function devolver(projeto: Projeto, id: string, registro: Registro): Projeto {
   const bloco = projeto.guardados.find((b) => b.id === id);

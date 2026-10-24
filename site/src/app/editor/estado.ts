@@ -13,6 +13,7 @@ export interface EstadoDoEditor {
   selecionar: (id: string | null) => void;
   mover: (id: string, direcao: -1 | 1) => void;
   esconder: (id: string) => void;
+  remover: (id: string) => void;
   devolver: (id: string) => void;
   adicionar: (tipo: string) => void;
   duplicar: (id: string) => void;
@@ -36,6 +37,11 @@ export function criarEditor(inicial: Projeto, registro: Registro, gerarId: () =>
         esconder: (id) =>
           set((s) => ({
             projeto: op.esconder(s.projeto, id, registro),
+            selecionado: s.selecionado === id ? null : s.selecionado,
+          })),
+        remover: (id) =>
+          set((s) => ({
+            projeto: op.remover(s.projeto, id, registro),
             selecionado: s.selecionado === id ? null : s.selecionado,
           })),
         devolver: (id) => set((s) => ({ projeto: op.devolver(s.projeto, id, registro) })),
