@@ -27,7 +27,8 @@ export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, Variac
 
   // foto ou vídeo ocupando a capa inteira; o véu escuro garante o contraste do texto em qualquer imagem
   if (variacao === 'fundo') {
-    const temVideo = Boolean(video_fundo) && usar !== 'imagem' && modo === 'publicado';
+    // o vídeo toca também no editor (só nesta capa), para a troca entre vídeo e imagem aparecer na hora
+    const temVideo = Boolean(video_fundo) && usar !== 'imagem';
     return (
       <section
         className="bl bl-capa bl-capa--fundo"

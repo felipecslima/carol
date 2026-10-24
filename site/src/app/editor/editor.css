@@ -927,3 +927,25 @@ body[style*='pointer-events'] {
   height: 84px;
   border-radius: 10px;
 }
+
+/* escolha entre duas opções: controle segmentado de largura total */
+.ed-variacoes--segmentos [role='radiogroup'] {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--ed-borda);
+  border-radius: 14px;
+}
+.ed-variacoes--segmentos [role='radio'] {
+  justify-content: center;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ed-texto);
+}
+.ed-variacoes--segmentos [role='radio'][aria-checked='true'] {
+  background: #fbf4ec;
+  color: #24130f;
+}

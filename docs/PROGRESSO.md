@@ -16,6 +16,8 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Esperando aprovação
 
+- **Troca entre vídeo e imagem aparece na hora e controle segmentado:** "Qual aparece na capa?" virou um controle de duas metades de largura total. A causa do "não troca": no editor a capa mostrava a imagem nos dois casos, porque o vídeo não tocava. Agora o vídeo da capa **toca também no editor** (só essa capa; o resto dos vídeos continua parado na edição). Isto corrige a nota anterior sobre "vídeo não toca no editor".
+
 - **Escolher da galeria (Minhas mídias) agora responde:** a lista abre e rola até ficar visível (antes abria abaixo da área visível da gaveta), cada mídia mostra nome, tamanho, data e **Em uso** quando já é a aplicada, e escolher mostra "Vídeo aplicado." (ou "Esse já é o que está aplicado aqui."); o cartão do vídeo mostra o próprio quadro do vídeo. No editor o vídeo continua sem tocar (só aparece na página publicada e em Ver).
 
 - **Envio de vídeo mais confiável:** (1) arquivo acima de 20 MB sobe em partes de 6 MB, e cada parte tenta de novo até 3 vezes (uma queda de sinal refaz só a parte, não o vídeo todo); (2) se o arquivo subir mas não for guardado em Minhas mídias (antes o erro era engolido em silêncio), o app tenta 2 vezes e avisa; (3) fechar ou recarregar a página no meio do envio mostra a pergunta do navegador. Investigação do relato de vídeos sumidos: no Cloudinary da conta de teste só chegou **1** vídeo (66,8 MB, `.mov`, 24/out 19:49), que está em Minhas mídias e na capa; o outro envio nunca chegou ao Cloudinary (provável: página recarregada no meio do envio).

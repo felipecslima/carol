@@ -218,7 +218,7 @@ export function CamposDoBloco({
             );
           else if (campo.tipo === 'escolha')
             conteudo = (
-              <fieldset className="ed-variacoes" key={campo.id}>
+              <fieldset className="ed-variacoes ed-variacoes--segmentos" key={campo.id}>
                 <legend>{campo.rotulo}</legend>
                 <div role="radiogroup">
                   {(campo.opcoes ?? []).map((o) => (
