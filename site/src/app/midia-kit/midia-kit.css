@@ -221,3 +221,12 @@
 .mk-conteudo .bl-formatos .bl-lista-formatos li span {
   font-size: 13px;
 }
+
+/* capa com fundo na folha A4: mais baixa para caber em 1 página */
+.mk-conteudo .bl-capa--fundo {
+  min-height: 300px;
+  border-radius: 0;
+}
+.mk-conteudo .bl-capa--fundo .bl-capa-texto {
+  padding-top: 80px;
+}

@@ -21,12 +21,22 @@ export const BLOCOS = {
     variacoes: [
       { id: 'foto-grande', nome: 'Foto grande' },
       { id: 'foto-redonda', nome: 'Foto redonda centralizada' },
+      { id: 'fundo', nome: 'Foto ou vídeo de fundo' },
     ],
     campos: [
       { ...titulo, maximo: 90, obrigatorio: true },
       { id: 'arroba', rotulo: '@ e cidade', tipo: 'etiqueta', maximo: 40 },
       { id: 'subtitulo', rotulo: 'Subtítulo', tipo: 'texto', maximo: 120 },
-      { id: 'foto', rotulo: 'Foto', tipo: 'imagem' },
+      { id: 'foto', rotulo: 'Foto', tipo: 'imagem', soNasVariacoes: ['foto-grande', 'foto-redonda'] },
+      {
+        id: 'video_fundo',
+        rotulo: 'Vídeo de fundo (opcional)',
+        tipo: 'video',
+        capaEm: 'fundo',
+        soNasVariacoes: ['fundo'],
+        dica: 'Toca sem som, em loop. Prefira um vídeo curto e sem fala.',
+      },
+      { id: 'fundo', rotulo: 'Imagem de fundo', tipo: 'imagem', soNasVariacoes: ['fundo'] },
       { id: 'botao', rotulo: 'Botão', tipo: 'botao', maximo: 30 },
     ],
   },

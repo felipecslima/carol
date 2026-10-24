@@ -22,6 +22,7 @@ export function CampoDeArquivo({
 }) {
   const id = useId();
   const tipo: TipoDeArquivo = campo.tipo === 'video' ? 'video' : 'image';
+  const chaveCapa = campo.capaEm ?? 'capa'; // campo que recebe o quadro de capa do vídeo
   const [progresso, setProgresso] = useState<number | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [escolhendo, setEscolhendo] = useState(false);
@@ -39,7 +40,7 @@ export function CampoDeArquivo({
       if (data.session)
         await registrarMidia(data.session.user.id, { ...enviado, tipo, nome: arquivo.name, bytes: arquivo.size });
       setMinhas(null);
-      aoMudar(tipo === 'video' ? { [campo.id]: enviado.url, capa: enviado.capa } : { [campo.id]: enviado.url });
+      aoMudar(tipo === 'video' ? { [campo.id]: enviado.url, [chaveCapa]: enviado.capa } : { [campo.id]: enviado.url });
     } catch (e) {
       setErro(e instanceof Error ? e.message : 'O envio falhou. Tente de novo.');
     } finally {
@@ -89,7 +90,7 @@ export function CampoDeArquivo({
             <button
               type="button"
               className="ed-link"
-              onClick={() => aoMudar(tipo === 'video' ? { [campo.id]: '', capa: '' } : { [campo.id]: '' })}
+              onClick={() => aoMudar(tipo === 'video' ? { [campo.id]: '', [chaveCapa]: '' } : { [campo.id]: '' })}
             >
               <Lixeira /> Remover
             </button>
@@ -110,7 +111,7 @@ export function CampoDeArquivo({
                   type="button"
                   aria-label={`Usar ${m.nome}`}
                   onClick={() => {
-                    aoMudar(tipo === 'video' ? { [campo.id]: m.url, capa: m.capa } : { [campo.id]: m.url });
+                    aoMudar(tipo === 'video' ? { [campo.id]: m.url, [chaveCapa]: m.capa } : { [campo.id]: m.url });
                     setEscolhendo(false);
                   }}
                 >

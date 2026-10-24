@@ -27,6 +27,10 @@ export interface Campo {
   placeholder?: string;
   /** dica da Carol, mostrada na gaveta de edição */
   dica?: string;
+  /** só aparece na gaveta (e só vale) nestas variações do bloco; sem isto, vale em todas */
+  soNasVariacoes?: readonly string[];
+  /** campo de vídeo: id do campo de imagem que recebe o quadro de capa do vídeo (padrão: `capa`) */
+  capaEm?: string;
   /** campos de cada item de uma lista; sem isto, a lista é de textos simples (ex.: nichos) */
   itens?: readonly Campo[];
   /** exemplo que não pode ir para o ar (ex.: número inventado): bloqueia a publicação enquanto for o placeholder */

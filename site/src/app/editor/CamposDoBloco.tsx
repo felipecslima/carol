@@ -174,43 +174,45 @@ export function CamposDoBloco({
           </div>
         </fieldset>
       )}
-      {definicao.campos.map((campo) => {
-        const valor = bloco.dados[campo.id];
-        if (campo.tipo === 'lista')
-          return campo.itens ? (
-            <ListaDeItens
-              key={campo.id}
-              campo={campo}
-              itens={(valor as Dados[] | undefined) ?? []}
-              aoMudar={(itens) => aoMudarDados({ [campo.id]: itens })}
-            />
-          ) : (
-            <ListaDeTextos
-              key={campo.id}
-              campo={campo}
-              itens={(valor as string[] | undefined) ?? []}
-              aoMudar={(itens) => aoMudarDados({ [campo.id]: itens })}
-            />
-          );
-        if (campo.tipo === 'imagem' || campo.tipo === 'video')
+      {definicao.campos
+        .filter((campo) => !campo.soNasVariacoes || campo.soNasVariacoes.includes(bloco.variacao))
+        .map((campo) => {
+          const valor = bloco.dados[campo.id];
+          if (campo.tipo === 'lista')
+            return campo.itens ? (
+              <ListaDeItens
+                key={campo.id}
+                campo={campo}
+                itens={(valor as Dados[] | undefined) ?? []}
+                aoMudar={(itens) => aoMudarDados({ [campo.id]: itens })}
+              />
+            ) : (
+              <ListaDeTextos
+                key={campo.id}
+                campo={campo}
+                itens={(valor as string[] | undefined) ?? []}
+                aoMudar={(itens) => aoMudarDados({ [campo.id]: itens })}
+              />
+            );
+          if (campo.tipo === 'imagem' || campo.tipo === 'video')
+            return (
+              <CampoDeArquivo
+                key={campo.id}
+                campo={campo}
+                valor={String(valor ?? '')}
+                capa={String(bloco.dados[campo.capaEm ?? 'capa'] ?? '')}
+                aoMudar={(parte) => aoMudarDados(parte)}
+              />
+            );
           return (
-            <CampoDeArquivo
+            <CampoDeTexto
               key={campo.id}
               campo={campo}
               valor={String(valor ?? '')}
-              capa={String(bloco.dados.capa ?? '')}
-              aoMudar={(parte) => aoMudarDados(parte)}
+              aoMudar={(v) => aoMudarDados({ [campo.id]: v })}
             />
           );
-        return (
-          <CampoDeTexto
-            key={campo.id}
-            campo={campo}
-            valor={String(valor ?? '')}
-            aoMudar={(v) => aoMudarDados({ [campo.id]: v })}
-          />
-        );
-      })}
+        })}
     </div>
   );
 }

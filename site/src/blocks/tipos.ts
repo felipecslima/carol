@@ -42,6 +42,9 @@ export interface DadosDaCapa {
   arroba?: string;
   foto?: string;
   botao?: string;
+  /** variação "fundo": imagem (ou quadro do vídeo) e, se houver, o vídeo que toca por cima dela */
+  fundo?: string;
+  video_fundo?: string;
 }
 export interface DadosDoSobre {
   titulo?: string;
