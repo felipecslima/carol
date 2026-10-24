@@ -896,3 +896,34 @@ body[style*='pointer-events'] {
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 6.5v11l9-5.5z'/%3E%3C/svg%3E")
     center / 16px no-repeat;
 }
+
+/* biblioteca dentro do campo: cada mídia com nome, tamanho e se já está em uso */
+.ed-escolher button {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+  align-content: start;
+  padding: 6px;
+}
+.ed-escolher-nome {
+  font-size: 13px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ed-escolher-info {
+  font-size: 12px;
+  color: var(--ed-suave);
+}
+.ed-escolher button[aria-current] {
+  border-color: #ff8fb0;
+}
+.ed-escolher button {
+  width: 112px;
+  height: auto;
+}
+.ed-escolher button img {
+  height: 84px;
+  border-radius: 10px;
+}

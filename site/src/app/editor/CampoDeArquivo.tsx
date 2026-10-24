@@ -1,11 +1,12 @@
 // Campo de foto ou vídeo: botão que abre a galeria do celular, prévia, barra de progresso no próprio campo e
 // mensagens claras. O envio roda em segundo plano; o resto da gaveta continua usável.
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { chaveDeFoco, type Campo } from '@lib/bloco';
 import { Lixeira } from './icones';
 import { listarMidias, registrarMidia, type Midia } from '../nuvem';
 import { supabase } from '../supabase';
-import { enviarArquivo, mensagemDeErro, problemaDoArquivo, type TipoDeArquivo } from './upload';
+import { capaDeVideo, enviarArquivo, mensagemDeErro, problemaDoArquivo, type TipoDeArquivo } from './upload';
+import { dataCurta, textoDeTamanho } from '../formatar';
 
 export function CampoDeArquivo({
   campo,
@@ -31,6 +32,12 @@ export function CampoDeArquivo({
   const [escolhendo, setEscolhendo] = useState(false);
   const [minhas, setMinhas] = useState<Midia[] | null>(null);
   const [ajustando, setAjustando] = useState(false);
+  const [aviso, setAviso] = useState<string | null>(null);
+  const lista = useRef<HTMLUListElement>(null);
+  // a lista abre abaixo do campo, muitas vezes fora da parte visível da gaveta: leva até ela
+  useEffect(() => {
+    if (escolhendo) lista.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [escolhendo, minhas]);
   const chaveFoco = chaveDeFoco(campo);
 
   async function escolher(arquivo: File | undefined) {
@@ -38,6 +45,7 @@ export function CampoDeArquivo({
     const problema = problemaDoArquivo(arquivo, tipo);
     if (problema) return setErro(problema);
     setErro(null);
+    setAviso(null);
     setProgresso(0);
     try {
       const enviado = await enviarArquivo(arquivo, tipo, setProgresso);
@@ -48,6 +56,7 @@ export function CampoDeArquivo({
       if (!guardada)
         setErro('O arquivo foi enviado e já está na página, mas não conseguimos guardá-lo em Minhas mídias agora.');
       setMinhas(null);
+      if (guardada) setAviso(tipo === 'video' ? 'Vídeo enviado e aplicado.' : 'Foto enviada e aplicada.');
       aoMudar(
         tipo === 'video'
           ? { [campo.id]: enviado.url, ...(guardaCapa ? {} : { [chaveCapa]: enviado.capa, [chaveFoco]: '' }) }
@@ -69,7 +78,8 @@ export function CampoDeArquivo({
     return () => window.removeEventListener('beforeunload', avisar);
   }, [enviandoAgora]);
 
-  const previa = tipo === 'video' ? capa : valor;
+  // o vídeo mostra o próprio quadro (e não a imagem de fundo que acompanha o campo)
+  const previa = tipo === 'video' ? (valor && capaDeVideo(valor)) || capa : valor;
   const guardaCapa = Boolean(campo.capaSoSeVazia && capa);
   const enviando = progresso !== null;
   return (
@@ -145,32 +155,47 @@ export function CampoDeArquivo({
         <Enquadramento imagem={previa} foco={foco} aoMudar={(novo) => aoMudar({ [chaveFoco]: novo })} />
       )}
       {escolhendo && (
-        <ul className="ed-escolher" aria-label="Minhas mídias">
+        <ul className="ed-escolher" aria-label="Minhas mídias" ref={lista}>
           {minhas === null && <li className="ed-dica">Carregando…</li>}
           {minhas?.filter((m) => m.tipo === tipo).length === 0 && (
             <li className="ed-dica">Você ainda não enviou {tipo === 'video' ? 'vídeos' : 'fotos'}.</li>
           )}
           {(minhas ?? [])
             .filter((m) => m.tipo === tipo)
-            .map((m) => (
-              <li key={m.id}>
-                <button
-                  type="button"
-                  aria-label={`Usar ${m.nome}`}
-                  onClick={() => {
-                    aoMudar(
-                      tipo === 'video'
-                        ? { [campo.id]: m.url, ...(guardaCapa ? {} : { [chaveCapa]: m.capa, [chaveFoco]: '' }) }
-                        : { [campo.id]: m.url, [chaveFoco]: '' },
-                    );
-                    setEscolhendo(false);
-                  }}
-                >
-                  <img src={m.capa} alt="" loading="lazy" />
-                </button>
-              </li>
-            ))}
+            .map((m) => {
+              const emUso = m.url === valor;
+              return (
+                <li key={m.id}>
+                  <button
+                    type="button"
+                    aria-label={`Usar ${m.nome}${emUso ? ' (já está em uso)' : ''}`}
+                    aria-current={emUso || undefined}
+                    onClick={() => {
+                      setEscolhendo(false);
+                      if (emUso) return setAviso('Esse já é o que está aplicado aqui.');
+                      aoMudar(
+                        tipo === 'video'
+                          ? { [campo.id]: m.url, ...(guardaCapa ? {} : { [chaveCapa]: m.capa, [chaveFoco]: '' }) }
+                          : { [campo.id]: m.url, [chaveFoco]: '' },
+                      );
+                      setAviso(tipo === 'video' ? 'Vídeo aplicado.' : 'Foto aplicada.');
+                    }}
+                  >
+                    <img src={m.capa} alt="" loading="lazy" />
+                    <span className="ed-escolher-nome">{emUso ? 'Em uso' : m.nome}</span>
+                    <span className="ed-escolher-info">
+                      {textoDeTamanho(m.bytes)} · {dataCurta(m.criadoEm)}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
         </ul>
+      )}
+      {aviso && !enviando && !erro && (
+        <p className="ed-dica" role="status">
+          {aviso}
+        </p>
       )}
       {enviando && (
         <div
