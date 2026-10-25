@@ -2,7 +2,7 @@
 // regras de linha só deixam a equipe ver tudo); alterar passa por /api/admin/acao, que confere o papel no servidor.
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import { useSessao } from '../sessao';
+import { sair, useSessao } from '../sessao';
 import { supabase } from '../supabase';
 import { Marca } from '../Marca';
 import '../editor/editor.css';
@@ -211,6 +211,13 @@ function Painel({ sessao }: { sessao: Session }) {
         <span className="ad-quem">
           {papelDe(sessao)} · {sessao.user.email}
         </span>
+        <button
+          type="button"
+          className="ed-botao-claro"
+          onClick={() => void sair().then(() => (window.location.href = '/app/entrar/'))}
+        >
+          Sair
+        </button>
       </header>
       <main className="ad-corpo">
         {aviso && (

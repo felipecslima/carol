@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { Casa, Imagem, Pasta, Pessoa } from '../editor/icones';
 import { PainelMidias } from '../editor/PainelMidias';
+import { sair } from '../sessao';
 import { carregarPerfil, carregarResumo, cancelarExclusao, type Perfil, type Resumo } from '../nuvem';
 import { Conta } from './Conta';
 import { Inicio } from './Inicio';
@@ -60,6 +61,13 @@ export default function Area({ sessao }: { sessao: Session }) {
       <div className="ar">
         <header className="ar-topo">
           <Marca />
+          <button
+            type="button"
+            className="ar-sair"
+            onClick={() => void sair().then(() => (window.location.href = '/app/'))}
+          >
+            Sair
+          </button>
         </header>
 
         {perfil?.exclusaoPedidaEm && (
