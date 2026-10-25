@@ -10,9 +10,10 @@ const DM_CAROL = 'https://ig.me/m/eu.carollimah';
 
 export const PC = {
   instagram: 'https://www.instagram.com/eu.carollimah',
-  // Enquanto o cadastro e o pagamento não existem, todo botão de ação abre a DM da Carol (e a página diz isso).
-  // Quando existirem, troque aqui (ex.: '/portfolio-creator/criar-conta/') e tire os avisos de "direct" da view.
-  cta: DM_CAROL,
+  // Todo botão de ação leva ao assistente que monta o portfólio (teste grátis, sem conta até publicar).
+  cta: '/app/novo/',
+  /** direct da Carol: dúvidas, desistência e as 5 ferramentas em breve */
+  dm: DM_CAROL,
   // wa.me/55DDDNÚMERO; vazio esconde os links de WhatsApp
   whatsapp: '',
   // PENDENTE antes de vender: página de Termos e Privacidade (o rascunho do handoff ainda não tem razão social,
