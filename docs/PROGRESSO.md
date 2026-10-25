@@ -4,15 +4,15 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Onde parei
 
-- **Fase:** E1 (fundação) em andamento.
-- **Tarefa atual:** área da creator completa (sem publicação). Resta: SMTP para o e-mail trazer o código, rotina de exclusão no Cloudinary, outros modelos (aguardam o Nuvem), publicação (`/c/slug`, pedidos, Slack, WhatsApp).
-- **Modo de trabalho:** o usuário autorizou seguir e commitar na `dev` sem parar, até precisar dele. Nada vai para a `main` nem para produção.
-- **Próximo passo (precisa do usuário):** (1) `npx wrangler login` para a DEV-006; (2) `project-ref` de um projeto Supabase novo para a E2 em diante (login, salvar na nuvem, publicar `/c/slug`, pedidos); (3) olhar o editor no celular (`/app/novo/` → `/app/editor/`), o modelo Nuvem (DEV-069) e o mídia kit e dizer o que ajustar; (4) cadastro do Cloudinary no servidor para o upload de fotos e vídeos (E9). Sem isso o que resta é DEV-089/102/141 parciais.
-- **Git:** branch `dev`; 3 commits `Setup:` e DEV-001 a DEV-005 commitadas.
-- **OCR:** código removido por ora (pedido do usuário); continua no commit `6ecf8fc`. A spec `docs/04-ocr-prints.md` fica.
-- **Atenção (upload):** `/api/upload/assinatura` ainda não exige login; qualquer aparelho pode pedir assinatura. Exigir sessão (E3) antes de publicar. `CLOUDINARY_URL` já foi gravado como segredo do Worker `carol` no Cloudflare (24/out/2026, `wrangler secret put`); o site no ar seguiu normal (home 200, www 301).
-- **Privacidade:** o `SeoHead` ganhou a opção `analytics` (padrão ligado, o site da Carol não mudou); as páginas de `/app` passam `analytics={false}`, então a Amplitude com Session Replay não roda onde a creator digita dados dela. Se um dia houver analytics no app, só com consentimento.
-- **Bloqueios:** preços dos planos, limites do Cloudinary e CNPJ/Termos ainda a definir (não bloqueiam a E1 a E7).
+- **Fase:** E1 a E4 prontas **sem publicação**: assistente, editor, números, revisão, link, mídia kit A4, upload, login e nuvem, área da creator, LGPD (baixar e excluir conta). Depois: crítica de design, tema escuro do app, **template com 11 blocos**, enquadramento de mídia, vídeos mudos, capa com fundo (película, vídeo ou imagem) e movimento com motion.dev. Detalhes de cada item em "Esperando aprovação" abaixo.
+- **Modo de trabalho:** tudo na branch `dev`, tudo em localhost; nada foi para a `main` nem para produção (o usuário disse "sem publicação"). Commit por tarefa, sem atribuição de IA. Testes unitários adiados de propósito: o que falta está em `docs/TESTES-PENDENTES.md`.
+- **Conta de teste:** `carol.limah.teste@example.com` (projeto Supabase `Creators`), com dados reais do site. Código de acesso: `npm run acesso:teste` (em `site/`), entrar em `http://localhost:4321/app/entrar/`. Para reaplicar os dados: `npm run seed:carol <foto>`.
+- **Proposta em andamento:** `docs/PROPOSTA-TEMPLATE-2026-10-24.md`. **Onda 1 feita.** Faltam: modelo **Editorial** (voz do site da Carol), Onda 2 (case simples, marcas com fit, bastidores, prévia "o que a marca vê em 10 s") e Onda 3, mais as correções do mídia kit (texto de ~9 px, buraco ao lado dos vídeos, contato colado na borda). O PRD fala em 8 blocos; hoje são 11 (decisão do usuário, falta atualizar o PRD).
+- **Próximos passos (precisam do usuário):** (1) **SMTP próprio** (ex.: Resend com o domínio) para o e-mail do login trazer o código: hoje o Supabase só manda link, não deixa editar o modelo no plano grátis e limita a 2 e-mails por hora (em dev há o atalho "Já tenho um código"); (2) **regerar a secret key e o token de acesso** do Supabase, que foram colados no chat; (3) reiniciar o Claude Code para o MCP novo valer; (4) decidir o próximo passo do template (Editorial ou Onda 2); (5) quando quiser publicar: preços dos planos, CNPJ e Termos, domínio.
+- **Falta construir:** publicação `/c/slug` (HTML renderizado no servidor, com `<noscript>` para o movimento e hidratação do autoplay), pedidos, Slack, WhatsApp, aviso de abertura, rotina que apaga os arquivos do Cloudinary na exclusão de conta, demais modelos (DEV-070 a 073), DEV-089 (trocar modelo e formato), DEV-092 (eventos).
+- **Regras vivas:** nunca mexer no site da Carol sem pedido; nunca mencionar a avó; nunca inventar número, depoimento, case ou preço; mensagens de erro sempre em português e validação no front antes de enviar; vídeos sempre mudos.
+- **Ambiente:** `site/.env` (chaves Supabase e Cloudinary, não versionado), token do CLI do Supabase em `SUPABASE_CAROL` (`~/.zshrc`), `wrangler login` feito, `CLOUDINARY_URL` gravado como segredo do Worker `carol`. `/api/upload/assinatura` já exige login. Amplitude desligada nas páginas do app.
+- **OCR:** código removido por ora; a spec `docs/04-ocr-prints.md` fica (código no commit `6ecf8fc`).
 
 ## Esperando aprovação
 

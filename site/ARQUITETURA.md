@@ -309,7 +309,22 @@ Roda, em ordem: `astro check` (TypeScript estrito, inclusive `.astro`), ESLint, 
 - **Sem `eslint-plugin-jsx-a11y`:** ainda não suporta o ESLint 10; acessibilidade fica nas revisões de design e no Playwright.
 
 ### Envio de fotos e vídeos (Cloudinary)
-`POST /api/upload/assinatura` (`src/pages/api/upload/assinatura.ts`, SSR) assina `folder`, `timestamp` e `allowed_formats` com o segredo (`src/server/cloudinary.ts`); o celular envia o arquivo direto a `api.cloudinary.com` (`src/app/editor/upload.ts`, com progresso) na pasta `creators/<aparelho>`. A página usa só endereços de entrega transformados: foto `f_auto,q_auto,w_1200`, vídeo `f_mp4,q_auto,w_720` e capa `so_0` (quadro 0). Pendente: exigir sessão, limites definitivos, quadro de capa escolhido, corte com foco no rosto.
+`POST /api/upload/assinatura` (SSR, exige sessão) assina `folder`, `timestamp` e `allowed_formats` com o segredo (`src/server/cloudinary.ts`); o navegador envia direto a `api.cloudinary.com` (`src/app/editor/upload.ts`) na pasta `creators/<id do usuário>`. Tudo o que dá para saber antes é conferido no aparelho:
+- **Foto:** acima de 4 MB (ou fora de JPG/PNG/WebP) é reduzida no aparelho (lado maior 2400 px, JPG, ou WebP se tiver transparência) antes de subir; limite do plano 10 MB.
+- **Vídeo:** limite 100 MB (plano grátis); acima de 20 MB sobe em partes de 6 MB (`Content-Range`), cada parte com até 3 tentativas.
+- **Erros:** `ErroDeEnvio` carrega texto já em português; resposta do Cloudinary é traduzida (`traduzirRespostaDoServico`); qualquer outro erro vira "O envio falhou. Tente de novo em instantes." Regra do projeto: nunca mostrar texto cru de serviço.
+- **Registro:** depois do envio, `registrarMidia` grava em `media` (2 tentativas); se falhar, o arquivo já está na página e o app avisa. `beforeunload` protege o envio em andamento.
+- **Entrega:** foto `f_auto,q_auto,w_1200`, vídeo `f_mp4,q_auto,w_720`, quadro de capa `so_0` (`capaDeVideo` deriva o quadro do endereço do vídeo).
+- **Pendente:** apagar os arquivos do Cloudinary quando a conta é excluída (LGPD) e limites definitivos (DEV-114).
+
+### Blocos e editor (resumo do que existe)
+- **11 blocos** (`src/blocks/registro.ts`): capa, resumo ("Em 1 olhada"), sobre, motivos ("Por que eu"), números, vídeos, marcas, público, formatos, processo ("Como eu trabalho"), contato. Capa e Contato são fixos; números, público e marcas somem no modo iniciante. Blocos novos podem nascer com `inicial` (placeholders marcados `exemplo`).
+- **Contrato do campo** (`src/lib/bloco.ts`): além de tipo e limite de letras, `grupo` (título na gaveta), `soNasVariacoes`, `seTem` (só aparece com outros campos preenchidos), `escolha` + `opcoes` + `padrao`, `proporcao`, `capaEm` e `capaSoSeVazia` (vídeo não troca a imagem), `serveComoEsta` (a revisão não cobra troca). `chaveDeFoco` define onde fica o enquadramento (`<campo>_foco`, "x y" em %).
+- **Capa com fundo:** foto e/ou vídeo, `usar` escolhe qual aparece (padrão vídeo), `veu` 0 a 100 (padrão 60) é a película escura, enquadramento por toque na gaveta.
+- **Vídeos:** `VideoSemSom` (sempre mudo, em loop, sem controles, toca só na tela, botão de pausa, só a capa com reduced-motion).
+- **Editor:** gaveta com grupos, abas do rodapé sempre clicáveis (o Vaul deixava `pointer-events:none` no body; há override em `editor.css`), adicionar/devolver rola até a seção e abre um anel rosa, remover de vez (Capa e Contato não saem), todo remover/esconder com Desfazer.
+- **Movimento (motion.dev):** `src/blocks/movimento.tsx` (página publicada e Ver; editor parado; reduced-motion respeitado) e `src/app/movimento.tsx` (troca de aba, avisos, reordenação, assistente). O HTML publicado sai com os elementos no estado inicial: a página `/c/slug` precisa do JavaScript e de um `<noscript>`.
+- **Contato fixo no celular:** `ContatoFixo` (botão de WhatsApp que acompanha a rolagem e some perto do Contato).
 
 ### Variáveis de ambiente e segredos
 - **Onde estão declaradas:** `env.schema` em `astro.config.mjs`. Públicas (`PUBLIC_*`, vão para o navegador): `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`. Segredos (só servidor): `SUPABASE_SERVICE_ROLE_KEY`, `CLOUDINARY_URL`, `SLACK_WEBHOOK_URL`, `WHATSAPP_TOKEN`, `AI_API_KEY`. Todas opcionais até as contas existirem.
