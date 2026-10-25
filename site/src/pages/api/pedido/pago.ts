@@ -1,6 +1,7 @@
 // Botão Pago (hoje chamado à mão pela equipe; depois pelo card do Slack, DEV-161). Protegido por uma chave só nossa.
 import { ADMIN_TOKEN } from 'astro:env/server';
 import type { APIRoute } from 'astro';
+import { consulta } from '@server/banco';
 import { marcarComoPago } from '@server/publicacao';
 
 export const prerender = false;
@@ -11,5 +12,10 @@ export const POST: APIRoute = async ({ request }) => {
   const corpo = (await request.json().catch(() => null)) as { slug?: string } | null;
   if (!corpo?.slug) return Response.json({ erro: 'Informe o link do portfólio.' }, { status: 400 });
   const r = await marcarComoPago(corpo.slug.trim().toLowerCase());
+  if (r.ok)
+    await consulta('audit_log', {
+      metodo: 'POST',
+      corpo: { acao: 'pedido_pago', alvo: corpo.slug, detalhes: { via: 'chave' } },
+    });
   return Response.json(r, { status: r.ok ? 200 : 404 });
 };

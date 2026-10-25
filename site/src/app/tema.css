@@ -4,7 +4,8 @@
 .ed,
 .ed-gaveta,
 .as,
-.ar {
+.ar,
+.ad {
   --ed-bg: #24130f;
   --ed-card: #2d1a14;
   --ed-hover: #3a2721;

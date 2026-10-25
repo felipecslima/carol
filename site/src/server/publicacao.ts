@@ -150,6 +150,5 @@ export async function marcarComoPago(slug: string): Promise<{ ok: boolean; erro?
       corpo: { status: 'pago', pago_em: new Date().toISOString() },
     });
   const r = await publicarAgora(linha, projeto, linha.slug ?? slug);
-  await consulta('audit_log', { metodo: 'POST', corpo: { acao: 'pedido_pago', alvo: slug } });
   return r.ok ? { ok: true, slug: r.slug } : { ok: false, erro: r.erro };
 }
