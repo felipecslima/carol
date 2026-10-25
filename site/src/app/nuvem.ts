@@ -110,13 +110,21 @@ export interface Resumo {
   id: string;
   projeto: Projeto;
   estado: string;
+  /** link no ar ou reservado; vazio enquanto não pediu para publicar */
+  slug: string;
   atualizadoEm: string;
 }
 
 export async function carregarResumo(): Promise<Resumo | null> {
-  const { data } = await supabase.from('projects').select('id, status, atualizado_em').eq('tipo', 'site').maybeSingle();
+  const { data } = await supabase
+    .from('projects')
+    .select('id, status, slug, atualizado_em')
+    .eq('tipo', 'site')
+    .maybeSingle();
   const projeto = await carregarDaNuvem();
-  return data && projeto ? { id: data.id, projeto, estado: data.status, atualizadoEm: data.atualizado_em } : null;
+  return data && projeto
+    ? { id: data.id, projeto, estado: data.status, slug: data.slug ?? '', atualizadoEm: data.atualizado_em }
+    : null;
 }
 
 export interface Perfil {
@@ -191,4 +199,76 @@ export async function reunirDados() {
     midias: midias.data ?? [],
     pedidos: pedidos.data ?? [],
   };
+}
+
+// ---- Publicar e mandar para marcas ----
+
+export type RespostaDePublicar =
+  { ok: true; estado: 'aguardando_pagamento' | 'no_ar'; slug: string } | { ok: false; erro: string };
+
+/** Salva o rascunho e pede a publicação ao servidor. O servidor confere tudo de novo; a mensagem de erro vem em português. */
+export async function publicar(donoId: string, projeto: Projeto, slug: string): Promise<RespostaDePublicar> {
+  if (!navigator.onLine) return { ok: false, erro: 'Você está sem internet. Conecte e toque em Publicar de novo.' };
+  if (!(await salvarNaNuvem(donoId, projeto)))
+    return { ok: false, erro: 'Não conseguimos salvar o seu portfólio agora. Tente de novo em instantes.' };
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) return { ok: false, erro: 'Sua sessão acabou. Entre de novo para publicar.' };
+  try {
+    const resposta = await fetch('/api/publicar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ slug }),
+    });
+    const corpo = (await resposta.json().catch(() => null)) as {
+      erro?: string;
+      estado?: 'aguardando_pagamento' | 'no_ar';
+      slug?: string;
+    } | null;
+    if (resposta.ok && corpo?.estado && corpo.slug) return { ok: true, estado: corpo.estado, slug: corpo.slug };
+    return { ok: false, erro: corpo?.erro ?? 'Não conseguimos publicar agora. Tente de novo em instantes.' };
+  } catch {
+    return { ok: false, erro: 'Não conseguimos falar com o servidor. Confira a internet e tente de novo.' };
+  }
+}
+
+export interface LinkDeMarca {
+  id: string;
+  codigo: string;
+  marca: string;
+  criadoEm: string;
+  aberturas: string[];
+}
+
+export async function listarLinksDeMarcas(): Promise<LinkDeMarca[]> {
+  const { data } = await supabase
+    .from('brand_links')
+    .select('id, codigo, nome_marca, criado_em, brand_opens(aberto_em)')
+    .order('criado_em', { ascending: false });
+  return (data ?? []).map((l) => ({
+    id: l.id,
+    codigo: l.codigo,
+    marca: l.nome_marca,
+    criadoEm: l.criado_em,
+    aberturas: (l.brand_opens ?? []).map((o) => o.aberto_em).sort(),
+  }));
+}
+
+const LETRAS = 'abcdefghjkmnpqrstuvwxyz23456789';
+const novoCodigo = () =>
+  Array.from(crypto.getRandomValues(new Uint8Array(6)), (n) => LETRAS[n % LETRAS.length]).join('');
+
+export async function criarLinkDeMarca(donoId: string, projetoId: string, marca: string): Promise<boolean> {
+  for (let tentativa = 0; tentativa < 3; tentativa++) {
+    const { error } = await supabase
+      .from('brand_links')
+      .insert({ codigo: novoCodigo(), nome_marca: marca.trim(), projeto_id: projetoId, dono: donoId });
+    if (!error) return true;
+  }
+  return false;
+}
+
+export async function apagarLinkDeMarca(id: string): Promise<boolean> {
+  const { error } = await supabase.from('brand_links').delete().eq('id', id);
+  return !error;
 }

@@ -52,7 +52,9 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   const { projeto, selecionado } = e;
   const passados = useStore(editor.temporal, (s) => s.pastStates.length);
   const futuros = useStore(editor.temporal, (s) => s.futureStates.length);
-  const [painel, setPainel] = useState<Painel>(null);
+  const [painel, setPainel] = useState<Painel>(() =>
+    new URLSearchParams(window.location.search).get('publicar') === '1' ? 'revisao' : null,
+  );
   const [situacao, setSituacao] = useState<'salvo' | 'salvando' | 'erro' | 'offline'>('salvo');
   // /app/editor/?ver=1 abre direto no modo Ver (o botão "Ver como a marca vê" da área)
   const [ver, setVer] = useState(() => new URLSearchParams(window.location.search).get('ver') === '1');
@@ -397,6 +399,8 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
             }
             aoMudarLink={(link) => e.substituir({ ...projeto, link })}
             alertas={alertas}
+            projeto={projeto}
+            donoId={donoId}
             aoIr={(id) => {
               e.selecionar(id);
               setPainel('editar');

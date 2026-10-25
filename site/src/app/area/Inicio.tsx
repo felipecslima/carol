@@ -20,6 +20,7 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
     seus,
     total,
     temLink: Boolean(projeto?.link),
+    slug: resumo?.slug,
   });
   const incompleto = Boolean(projeto) && seus < total;
   return (

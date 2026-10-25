@@ -7,6 +7,31 @@ import { infoDoEstado } from '@lib/estados';
 import { Miniatura } from './Miniatura';
 import { dataCurta } from '../formatar';
 import { apagarProjeto, type Resumo } from '../nuvem';
+import { Marcas } from './Marcas';
+
+function LinkDoPortfolio({ slug, noAr }: { slug: string; noAr: boolean }) {
+  const [copiado, setCopiado] = useState(false);
+  const url = `${window.location.origin}/c/${slug}/`;
+  return (
+    <div className="ar-link">
+      <span className="ar-link-url">{noAr ? url : `/c/${slug} (reservado)`}</span>
+      {noAr && (
+        <>
+          <button
+            type="button"
+            className="ed-botao-claro"
+            onClick={() => void navigator.clipboard.writeText(url).then(() => setCopiado(true))}
+          >
+            {copiado ? 'Link copiado' : 'Copiar link'}
+          </button>
+          <a className="ar-link-texto" href={url} target="_blank" rel="noopener">
+            Abrir
+          </a>
+        </>
+      )}
+    </div>
+  );
+}
 
 export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: () => void }) {
   const [confirmando, setConfirmando] = useState(false);
@@ -50,6 +75,12 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
               {info.botao.texto}
             </a>
           </div>
+          {resumo.slug && (
+            <LinkDoPortfolio
+              slug={resumo.slug}
+              noAr={resumo.estado === 'no_ar' || resumo.estado === 'edicao_travada'}
+            />
+          )}
           <div className="ar-secundarios">
             <a className="ar-link-texto" href="/app/editor/?ver=1">
               Ver como a marca vê
@@ -80,6 +111,7 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
           )}
         </div>
       </motion.article>
+      {(resumo.estado === 'no_ar' || resumo.estado === 'edicao_travada') && <Marcas resumo={resumo} />}
       <p className="ed-dica">
         Cada conta tem 1 site e 1 mídia kit. O mídia kit usa o mesmo conteúdo do site: mudou um, mudou o outro.
       </p>

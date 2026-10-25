@@ -878,3 +878,22 @@ video.bl-video-capa {
 .bl-lista-processo {
   position: relative;
 }
+
+/* selo da página no ar (DEV-145): discreto, no fim, fora do botão fixo */
+.bl-selo {
+  padding: 28px 20px 96px;
+  text-align: center;
+  font-size: 0.75rem;
+  background: var(--pagina);
+}
+.bl-selo a {
+  color: var(--texto-suave);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  padding: 12px 8px;
+}
+.bl-selo a:hover,
+.bl-selo a:focus-visible {
+  color: var(--texto);
+  text-decoration: underline;
+}

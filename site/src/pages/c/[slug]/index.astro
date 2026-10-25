@@ -1,0 +1,54 @@
+---
+// Portfólio no ar: /c/<link>. Renderizado no servidor a partir da versão publicada.
+import '../../../styles/global.css';
+import '../../../blocks/blocos.css';
+import LinkNaoEncontrado from '../../../components/LinkNaoEncontrado.astro';
+import SeoHead from '../../../components/SeoHead.astro';
+import PaginaPublicada from '@app/publica/PaginaPublicada';
+import { paginaNoAr } from '@server/pagina';
+
+export const prerender = false;
+
+const slug = (Astro.params.slug ?? '').toLowerCase();
+const pagina = await paginaNoAr(slug);
+const achou = Boolean(pagina);
+if (!achou) Astro.response.status = 404;
+
+const capa = pagina?.projeto.blocos.find((b) => b.tipo === 'capa')?.dados as Record<string, string> | undefined;
+const titulo = capa?.titulo ? `${capa.titulo} · portfólio` : 'Portfólio de creator';
+const imagem = capa?.fundo || capa?.foto || '';
+if (achou) Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=60');
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title={achou ? titulo : 'Link não encontrado'}
+      description={capa?.subtitulo ?? 'Portfólio de creator'}
+      alternates={{ pt: `/c/${pagina?.slug}/` }}
+      og={imagem ? { image: imagem, alt: titulo, siteName: 'Portfólio Creator' } : undefined}
+      noindex
+      analytics={false}
+    />
+    {achou && (
+      <noscript>
+        <style>
+          [style*='opacity'] {
+            opacity: 1 !important;
+            transform: none !important;
+            clip-path: none !important;
+          }
+        </style>
+      </noscript>
+    )}
+  </head>
+  <body style="margin:0">
+    {pagina && achou ? (
+      <PaginaPublicada client:load projeto={pagina.projeto} slug={pagina.slug} />
+    ) : (
+      <LinkNaoEncontrado />
+    )}
+  </body>
+</html>

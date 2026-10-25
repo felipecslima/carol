@@ -1,6 +1,9 @@
 // Revisão final: o que impede de publicar (vermelho) e o que ela pode ignorar (amarelo). Cada alerta leva ao bloco.
+import { useState } from 'react';
+import type { Projeto } from '@lib/projeto';
 import { podePublicar, type Alerta } from '@lib/revisao';
 import { normalizarSlug, problemaDoSlug, sugerirSlugs } from '@lib/slug';
+import { publicar, type RespostaDePublicar } from '../nuvem';
 
 export function PainelRevisao({
   alertas,
@@ -8,6 +11,8 @@ export function PainelRevisao({
   link,
   arroba,
   aoMudarLink,
+  projeto,
+  donoId,
 }: {
   alertas: Alerta[];
   aoIr: (bloco: string) => void;
@@ -15,9 +20,31 @@ export function PainelRevisao({
   /** do @ da capa; base das sugestões */
   arroba: string;
   aoMudarLink: (link: string) => void;
+  projeto: Projeto;
+  /** sem conta (null) o rascunho fica só no aparelho e não dá para publicar */
+  donoId: string | null;
 }) {
+  const [enviando, setEnviando] = useState(false);
+  const [resposta, setResposta] = useState<RespostaDePublicar | null>(null);
   const ok = podePublicar(alertas);
   const problema = link ? problemaDoSlug(link) : null;
+  const pronto = ok && Boolean(link) && !problema;
+  const motivo = !donoId
+    ? 'Para publicar, entre na sua conta.'
+    : !link
+      ? 'Escolha o seu link para publicar.'
+      : problema
+        ? 'Corrija o link para publicar.'
+        : !ok
+          ? 'Resolva os pontos em vermelho para publicar.'
+          : null;
+
+  async function aoPublicar() {
+    if (!donoId || !pronto) return;
+    setEnviando(true);
+    setResposta(await publicar(donoId, projeto, link));
+    setEnviando(false);
+  }
   const sugestoes = sugerirSlugs('', arroba).filter((x) => x !== link);
   return (
     <div className="ed-form">
@@ -82,10 +109,50 @@ export function PainelRevisao({
       <a className="ed-botao-claro" href="/app/midia-kit/">
         Ver mídia kit em PDF
       </a>
-      <button type="button" className="ed-primario" disabled>
-        Publicar (em breve)
-      </button>
-      <p className="ed-dica">A publicação chega junto com a conta e o link do seu portfólio.</p>
+      {resposta?.ok ? (
+        <div className="ed-ok" role="status">
+          {resposta.estado === 'no_ar' ? (
+            <>
+              <p>Seu portfólio está no ar.</p>
+              <a href={`/c/${resposta.slug}/`} target="_blank" rel="noopener">
+                {window.location.origin}/c/{resposta.slug}/
+              </a>
+            </>
+          ) : (
+            <>
+              <p>Pedido enviado. Seu link está reservado:</p>
+              <b>/c/{resposta.slug}</b>
+              <p>
+                A equipe te chama no WhatsApp com o link de pagamento. Assim que for confirmado, o portfólio vai ao ar
+                sozinho. Enquanto isso, você pode continuar ajustando.
+              </p>
+            </>
+          )}
+        </div>
+      ) : (
+        <>
+          {resposta && !resposta.ok && (
+            <p className="ed-aviso" role="alert">
+              {resposta.erro}
+            </p>
+          )}
+          {!donoId ? (
+            <a className="ed-primario" href="/app/entrar/">
+              Entrar para publicar
+            </a>
+          ) : (
+            <button
+              type="button"
+              className="ed-primario"
+              disabled={!pronto || enviando}
+              onClick={() => void aoPublicar()}
+            >
+              {enviando ? 'Publicando…' : 'Publicar'}
+            </button>
+          )}
+          {motivo && <p className="ed-dica">{motivo}</p>}
+        </>
+      )}
     </div>
   );
 }

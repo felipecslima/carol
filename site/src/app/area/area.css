@@ -274,3 +274,61 @@
   border-radius: 0 0 2px 2px;
   background: #ff8fb0;
 }
+
+/* link do portfólio e marcas (DEV-180, 185) */
+.ar-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 4px 0 8px;
+}
+.ar-link-url {
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.ar-marcas {
+  margin-top: 28px;
+  display: grid;
+  gap: 12px;
+}
+.ar-marcas h2 {
+  font-size: 20px;
+}
+.ar-marcas-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ar-marcas-form input {
+  flex: 1 1 200px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--ed-linha, rgba(255, 255, 255, 0.18));
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.ar-marcas-form .ed-primario {
+  padding: 0 24px;
+}
+.ar-marcas-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.ar-marcas-lista li {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--ed-linha, rgba(255, 255, 255, 0.14));
+}
+.ar-marcas-lista li > div:first-child {
+  display: grid;
+  gap: 2px;
+}

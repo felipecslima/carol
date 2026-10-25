@@ -18,6 +18,8 @@ export interface EntradaDoPasso {
   seus: number;
   total: number;
   temLink: boolean;
+  /** link no ar ou reservado */
+  slug?: string;
 }
 
 export function proximoPasso(e: EntradaDoPasso): PassoSeguinte {
@@ -33,6 +35,21 @@ export function proximoPasso(e: EntradaDoPasso): PassoSeguinte {
       titulo: 'Seu portfólio está travado para edição',
       texto: 'O prazo de edição acabou. Você ainda pode ver como ficou.',
       acao: { rotulo: 'Ver portfólio', href: '/app/editor/' },
+    };
+
+  if (e.estado === 'aguardando_pagamento')
+    return {
+      titulo: 'Pedido enviado, falta o pagamento',
+      texto: `Seu link /c/${e.slug ?? ''} está reservado. A equipe te chama no WhatsApp com o link de pagamento; depois disso o portfólio vai ao ar.`,
+      acao: { rotulo: 'Continuar editando', href: '/app/editor/' },
+      secundaria: { rotulo: 'Ver como a marca vê', href: '/app/editor/?ver=1' },
+    };
+  if (e.estado === 'no_ar' && e.slug)
+    return {
+      titulo: 'Seu portfólio está no ar',
+      texto: 'Agora é mandar para as marcas. Cada marca recebe um link próprio e você é avisada quando abrir.',
+      acao: { rotulo: 'Mandar para uma marca', href: '/app/#projetos' },
+      secundaria: { rotulo: 'Abrir meu link', href: `/c/${e.slug}/` },
     };
 
   const vermelhos = e.alertas.filter((a) => a.gravidade === 'vermelho');
@@ -65,8 +82,8 @@ export function proximoPasso(e: EntradaDoPasso): PassoSeguinte {
     };
   return {
     titulo: 'Seu portfólio está pronto',
-    texto: 'É assim que a marca vai ver. A publicação chega em breve.',
-    acao: { rotulo: 'Ver como a marca vê', href: '/app/editor/?ver=1' },
-    secundaria: { rotulo: 'Mídia kit em PDF', href: '/app/midia-kit/' },
+    texto: 'É assim que a marca vai ver. Publique quando estiver pronto.',
+    acao: { rotulo: 'Publicar', href: '/app/editor/?publicar=1' },
+    secundaria: { rotulo: 'Ver como a marca vê', href: '/app/editor/?ver=1' },
   };
 }

@@ -36,6 +36,7 @@ export default defineConfig({
       PUBLIC_SUPABASE_ANON_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
       SUPABASE_SERVICE_ROLE_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       CLOUDINARY_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      ADMIN_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
       SLACK_WEBHOOK_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       WHATSAPP_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
       AI_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),

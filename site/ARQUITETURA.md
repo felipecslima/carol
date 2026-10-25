@@ -397,3 +397,10 @@ O build roda no Cloudflare a partir do repositório no GitHub (branch `main`). P
 | Cloudinary no plano Free (25 créditos/mês) | Tráfego alto esgota os créditos e os vídeos param | Acompanhar o uso no painel |
 | Session Replay em 100% das sessões | Cota da Amplitude e privacidade | Reduzir o `sampleRate` se o tráfego crescer |
 | Segredo do Cloudinary exposto em chat | Uso indevido da conta | Trocar a chave |
+
+## 11. Publicação e páginas no ar (Portfólio Creator)
+
+- `src/server/banco.ts`: acesso ao Postgres pela chave de serviço (só no servidor). `src/server/publicacao.ts`: `pedirPublicacao` (confere tudo e reserva o link ou publica) e `marcarComoPago`. `src/server/pagina.ts`: lê só `projects.publicado`.
+- Rotas: `POST /api/publicar` (sessão), `POST /api/pedido/pago` (cabeçalho `x-admin-token`, segredo `ADMIN_TOKEN`), `POST /api/c/abertura` (aviso de abertura), páginas `/c/[slug]/` e `/c/[slug]/[codigo]/` (SSR, `prerender = false`).
+- A página no ar é `src/app/publica/PaginaPublicada.tsx`, a mesma renderização de blocos do editor em modo publicado, hidratada com `client:load`.
+- Estados: `rascunho` → `aguardando_pagamento` (pedido aberto, link reservado) → `no_ar` (cópia em `publicado`, prazo de edição de 7 dias gravado) → `edicao_travada` / `fora_do_ar`.
