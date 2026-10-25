@@ -25,6 +25,8 @@ function CampoDeTexto({
     value: valor,
     maxLength: campo.maximo,
     onChange: (e: { target: { value: string } }) => aoMudar(e.target.value),
+    // texto de exemplo com [colchetes]: tocar já seleciona tudo, para escrever por cima sem apagar
+    onFocus: (e: { target: { select: () => void } }) => /\[[^\]]+\]/.test(valor) && e.target.select(),
   };
   return (
     <div className="ed-campo">

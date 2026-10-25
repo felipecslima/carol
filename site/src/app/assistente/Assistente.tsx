@@ -5,7 +5,7 @@ import { MovimentoDoApp, SUAVE } from '../movimento';
 import { Marca } from '../Marca';
 import { useEffect, useRef, useState } from 'react';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
-import { montarProjeto, normalizarArroba, type Respostas } from '@lib/montagem';
+import { montarProjeto, normalizarArroba, sugestoesDeTitulo, type Respostas } from '@lib/montagem';
 import { gerarPaleta } from '@themes/paleta';
 import { NUVEM } from '@themes/modelos/nuvem';
 import type { Numeros } from '@lib/numeros';
@@ -22,8 +22,20 @@ import '../tema.css';
 
 const NICHOS = ['Gastronomia', 'Viagem', 'Beleza', 'Lifestyle', 'Moda', 'Casa', 'Maternidade', 'Fitness'];
 
-type Etapa = 'modelo' | 'nome' | 'arroba' | 'cidade' | 'nicho' | 'publi' | 'grava' | 'frase' | 'videos' | 'numeros';
-const ETAPAS_BASE: Etapa[] = ['modelo', 'nome', 'arroba', 'cidade', 'nicho', 'publi', 'grava', 'frase', 'videos'];
+type Etapa =
+  'modelo' | 'nome' | 'arroba' | 'cidade' | 'nicho' | 'publi' | 'grava' | 'titulo' | 'frase' | 'videos' | 'numeros';
+const ETAPAS_BASE: Etapa[] = [
+  'modelo',
+  'nome',
+  'arroba',
+  'cidade',
+  'nicho',
+  'publi',
+  'grava',
+  'titulo',
+  'frase',
+  'videos',
+];
 
 function PreviaDoModelo({ paleta }: { paleta: number }) {
   return (
@@ -67,6 +79,7 @@ export default function Assistente() {
     (etapa === 'grava' && r.oQueGrava.trim().length > 0) ||
     etapa === 'arroba' ||
     etapa === 'cidade' ||
+    etapa === 'titulo' ||
     etapa === 'frase' ||
     etapa === 'videos' ||
     etapa === 'numeros';
@@ -269,10 +282,34 @@ export default function Assistente() {
                     onChange={(e) => mudar({ oQueGrava: e.target.value })}
                     {...aoDigitar}
                   />
+                  <span className="as-dica">Na próxima tela você escolhe e escreve o título da sua capa.</span>
+                </div>
+              </>
+            )}
+            {etapa === 'titulo' && (
+              <>
+                <h1 className="as-titulo">Qual título abre a sua capa?</h1>
+                <div className="as-campo">
+                  <label htmlFor="titulo">Escreva do seu jeito</label>
+                  <input
+                    id="titulo"
+                    ref={campo}
+                    value={r.titulo ?? ''}
+                    maxLength={90}
+                    placeholder={sugestoesDeTitulo(r.nome, r.oQueGrava)[0]}
+                    onChange={(e) => mudar({ titulo: e.target.value })}
+                    {...aoDigitar}
+                  />
                   <span className="as-dica">
-                    Vira a frase da sua capa: “Oi, eu sou {r.nome.trim() || 'você'} e mostro {r.oQueGrava.trim() || '…'}{' '}
-                    do meu jeito”.
+                    Se deixar em branco, usamos a primeira sugestão. Você muda quando quiser, no editor.
                   </span>
+                </div>
+                <div className="as-sugestoes ed-sugestoes" role="group" aria-label="Sugestões de título">
+                  {sugestoesDeTitulo(r.nome, r.oQueGrava).map((t) => (
+                    <button key={t} type="button" className="ed-botao-claro" onClick={() => mudar({ titulo: t })}>
+                      {t}
+                    </button>
+                  ))}
                 </div>
               </>
             )}

@@ -12,6 +12,8 @@ export interface Respostas {
   jaFezPubli: boolean;
   /** o que ela grava, em poucas palavras (entra na frase da capa) */
   oQueGrava: string;
+  /** título da capa escrito por ela; vazio = sugestão automática a partir do nome e do que grava */
+  titulo?: string;
   /** frase opcional que a define (vira o subtítulo da capa) */
   frase?: string;
   /** vídeos que ela enviou no assistente (já no Cloudinary) */
@@ -22,6 +24,20 @@ export interface Respostas {
 
 const MAXIMO_TITULO_CAPA = 90;
 
+/** Sugestões de título para a capa (a creator escolhe uma ou escreve a dela). A primeira é a automática. */
+export function sugestoesDeTitulo(nome: string, grava: string): string[] {
+  const n = nome.trim() || 'você';
+  const g = grava.trim();
+  const composto = `Oi, eu sou ${n} e mostro ${g} do meu jeito`;
+  const todas = [
+    g && composto.length <= MAXIMO_TITULO_CAPA ? composto : `Oi, eu sou ${n}`,
+    g && `Oi, eu sou ${n}. ${g.charAt(0).toUpperCase()}${g.slice(1)}, do meu jeito`,
+    `Oi, eu sou ${n}`,
+    n,
+  ].filter((t): t is string => Boolean(t) && t.length <= MAXIMO_TITULO_CAPA);
+  return [...new Set(todas)];
+}
+
 /** `joana.lima`, `@joana.lima` e ` Joana.Lima ` viram `@joana.lima`; vazio continua vazio. */
 export function normalizarArroba(texto: string): string {
   const limpo = texto.trim().replace(/^@+/, '').replace(/\s+/g, '').toLowerCase();
@@ -31,8 +47,7 @@ export function normalizarArroba(texto: string): string {
 export function montarProjeto(base: Projeto, r: Respostas): Projeto {
   const nome = r.nome.trim();
   const grava = r.oQueGrava.trim();
-  const composto = `Oi, eu sou ${nome} e mostro ${grava} do meu jeito`;
-  const titulo = grava && composto.length <= MAXIMO_TITULO_CAPA ? composto : `Oi, eu sou ${nome}`;
+  const titulo = r.titulo?.trim() || sugestoesDeTitulo(nome, grava)[0]!;
   const arroba = [normalizarArroba(r.arroba), r.cidade.trim()].filter(Boolean).join(' · ');
   const nicho = r.nicho.trim();
 
