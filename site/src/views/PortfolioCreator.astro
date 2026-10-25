@@ -76,6 +76,7 @@ const jsonLd = {
           <a href="#sobre">Sobre a Carol</a>
           <a href="#plano">Planos</a>
           <a href="#duvidas">Dúvidas</a>
+          <a href="/app/entrar/">Entrar</a>
           <a class="cta" {...cta}>Pedir meu teste</a>
         </div>
       </div>
@@ -90,6 +91,9 @@ const jsonLd = {
             <a class="btn btn-primary" {...cta}>Pedir meu teste grátis</a>
             <a class="btn btn-outline" href="#plano">Ver planos</a>
           </div>
+          <p class="hero-conta">
+            Quer ver na prática? <a href="/app/novo/">Experimente o editor, sem conta</a>. Já tem conta? <a href="/app/entrar/">Entrar</a>.
+          </p>
           <dl class="stats">
             <div class="stat"><dt>modelos de layout</dt><dd>15</dd></div>
             <div class="stat"><dt>paletas de cor</dt><dd>45</dd></div>
@@ -312,6 +316,7 @@ const jsonLd = {
       <div class="wrap">
         <a class="logo" href="#topo">Portfólio <i>Creator</i></a>
         <ul class="foot-social" aria-label="Carol Limah">
+          <li><a href="/app/entrar/">Entrar</a></li>
           <li><a href="/">Site da Carol</a></li>
           {SOCIAL.filter((l) => /instagram/i.test(l.href)).map((l) => <li><a href={l.href} target="_blank" rel="me noopener">{l.label}</a></li>)}
           {PC.termos && <li><a href={PC.termos}>Termos e privacidade</a></li>}

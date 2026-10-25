@@ -17,6 +17,7 @@ const t = UI[lang];
     </ul>
     <ul class="foot-social" aria-label={t.footSocial}>
       {SOCIAL.map((l) => <li><a href={l.href} target="_blank" rel="me noopener">{l.label}</a></li>)}
+      {lang === 'pt' && <li><a href="/portfolio-creator/">Portfólio para creators</a></li>}
     </ul>
     <span>© 2026 Carol Limah · {t.footPlace}</span>
   </div>

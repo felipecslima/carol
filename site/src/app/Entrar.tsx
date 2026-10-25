@@ -59,7 +59,9 @@ export default function Entrar() {
   return (
     <div className="as">
       <header className="as-topo">
-        <Marca />
+        <a href="/portfolio-creator/" className="marca-link" aria-label="Portfólio Creator: voltar para a página inicial">
+          <Marca />
+        </a>
       </header>
       <main className="as-corpo">
         {etapa === 'email' ? (

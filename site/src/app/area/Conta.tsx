@@ -177,6 +177,15 @@ export function Conta({
         )}
       </div>
 
+      <nav className="ar-secundarios" aria-label="Outros endereços">
+        <a className="ar-link-texto" href="/portfolio-creator/">
+          Página do Portfólio Creator
+        </a>
+        <a className="ar-link-texto" href="/">
+          Site da Carol
+        </a>
+      </nav>
+
       <button
         type="button"
         className="ed-link"
