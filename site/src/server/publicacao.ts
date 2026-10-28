@@ -21,6 +21,7 @@ interface LinhaDoProjeto {
   cantos: string;
   clima: string;
   modo_iniciante: boolean;
+  menu: boolean;
   blocos: unknown;
   guardados: unknown;
   numeros: unknown;
@@ -40,6 +41,7 @@ export const projetoDaLinha = (l: Pick<LinhaDoProjeto, keyof LinhaDoProjeto>): P
     cantos: l.cantos,
     clima: l.clima,
     modoIniciante: l.modo_iniciante,
+    menu: l.menu,
     link: l.slug ?? l.link_desejado ?? undefined,
     numeros: l.numeros ?? undefined,
     blocos: l.blocos,

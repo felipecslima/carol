@@ -4,11 +4,11 @@ import { FioDasEtapas, Item, Lista, Revela } from './movimento';
 import type { DadosDeProcesso, PropsDoBloco } from './tipos';
 
 /** "Como eu trabalho": as etapas, em ordem (por isso a numeração é conteúdo, não enfeite). */
-export function Processo({ variacao, dados, modo }: PropsDoBloco<DadosDeProcesso, 'passos' | 'linha'>) {
+export function Processo({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDeProcesso, 'passos' | 'linha'>) {
   const { titulo, itens = [] } = dados;
   const corpo = useRef<HTMLDivElement>(null);
   return (
-    <section className={`bl bl-processo bl-processo--${variacao}`} id="processo">
+    <section className={`bl bl-processo bl-processo--${variacao}`} id={ancora ?? 'processo'}>
       {titulo && (
         <Revela modo={modo} tag="h2" className="bl-titulo">
           {titulo}

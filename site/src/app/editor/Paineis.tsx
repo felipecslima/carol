@@ -316,6 +316,23 @@ export function PainelEstilo({
           ))}
         </div>
       </fieldset>
+      <fieldset className="ed-variacoes">
+        <legend>Menu no topo da página</legend>
+        <div role="radiogroup">
+          {([true, false] as const).map((v) => (
+            <button
+              key={String(v)}
+              type="button"
+              role="radio"
+              aria-checked={projeto.menu === v}
+              onClick={() => aoMudar({ menu: v }, v ? 'Menu do topo ligado' : 'Menu do topo desligado')}
+            >
+              {v ? 'Ligado' : 'Desligado'}
+            </button>
+          ))}
+        </div>
+        <span className="ed-dica">Mostra as seções na ordem da página. O nome de cada uma muda na própria seção.</span>
+      </fieldset>
     </div>
   );
 }

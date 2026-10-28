@@ -17,7 +17,8 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **Em andamento (27/out): correções da revisão de UX do editor**, uma tarefa por vez, cada uma com aprovação e commit:
   - (0) commit do trabalho pendente (feito).
   - (1) **DEV-096, sem modelos** (aprovada, commit `787a989`). Decisão do usuário: acabam os modelos para escolher; o editor e as seções montam tudo. A etapa do assistente vira "Escolha suas cores" e os docs são atualizados. `modelo` fica só como valor interno `'nuvem'`, sem migração.
-  - (1b) **DEV-097:** feita. Textos no commit `00e6357`; as imagens com o portfólio real da Carol, aprovadas ("ajusta tudo"), no commit seguinte.
+  - (1b) **DEV-097:** feita (commits `00e6357`, `6f786d0` e `f1d1ea0`).
+  - (1c) **DEV-098, menu do topo pelas seções** (pedido de 28/out, entrou antes da DEV-082): feito, esperando aprovação.
   - (2) DEV-082: não perder edição quando salvar na conta falha (achado confirmado: recarregar online apagava a edição feita sem conexão).
   - (3) DEV-232: foco e teclado no editor (anel de foco dos blocos a ~1,2:1, foco entrando na gaveta, atalhos, Delete esconde a seção).
   - (4) DEV-093: topo em 320 px, abas no desktop e dica de primeiro uso.
@@ -26,6 +27,21 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
   - Roteiros de medição em `/tmp/rev/`.
 
 ## Esperando aprovação
+
+- **Menu no topo da página (DEV-098, pedido seu):** o menu nasce das seções, na ordem delas.
+  - **Na página no ar e no modo Ver:**
+    - Faixa fixa no topo que desliza para o lado no celular e sublinha, na cor de destaque, a seção que está à vista.
+    - A Capa não entra; o Contato fica no fim, como botão (no desktop, na ponta direita).
+    - Tocar num item rola até a seção, que para logo abaixo do menu (rolagem suave, ou direta para quem pede menos movimento).
+  - **No editor:**
+    - A mesma faixa aparece parada no começo da página e acompanha na hora quando ela reordena, esconde ou renomeia uma seção. Tocar num item seleciona a seção.
+    - Cada gaveta (menos a Capa) ganhou o grupo **No menu**: "Aparece no menu do topo?" (Sim ou Não) e "Nome no menu" (até 24 letras). Em branco, usa um nome curto: Resumo, Vídeos, Números, Por que eu, Sobre, Público, Marcas, Formatos, Como trabalho ou Contato.
+    - Em **Estilo**: "Menu no topo da página", Ligado ou Desligado.
+  - **O que não muda:** o mídia kit fica sem menu, e o botão da Capa continua indo ao Contato.
+  - **Por dentro:**
+    - As âncoras são únicas (`#videos` e `#videos-2` se houver duas seções de Vídeos), e a página no ar e o modo Ver passaram a usar o mesmo conteúdo (`blocks/ConteudoDaPagina.tsx`).
+    - **Banco:** coluna nova `projects.menu`, ligada por padrão, já aplicada no Supabase `Creators` (migração `supabase/migrations/20261028000100_menu.sql`). O nome e o "mostrar" de cada seção ficam no JSON das seções.
+  - **Verificado:** 17 checagens em Playwright, todas passando. Roteiro: `/tmp/rev/menu.mjs`.
 
 - **Página de vendas sem modelos (DEV-097, aplicada em localhost):** a página `/portfolio-creator/` deixou de prometer modelos. Base: `docs/PROPOSTA-PAGINA-VENDAS-SEM-MODELOS.md`.
   - **Textos:**

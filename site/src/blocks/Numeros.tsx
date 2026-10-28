@@ -2,11 +2,11 @@ import { Exemplo } from './Exemplo';
 import { Contagem, Item, Lista, Preenche } from './movimento';
 import type { DadosDeNumeros, PropsDoBloco } from './tipos';
 
-export function Numeros({ variacao, dados, modo }: PropsDoBloco<DadosDeNumeros, 'cards' | 'barras'>) {
+export function Numeros({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDeNumeros, 'cards' | 'barras'>) {
   const itens = dados.itens ?? [];
   if (variacao === 'barras') {
     return (
-      <section className="bl bl-numeros bl-numeros--barras" id="numeros">
+      <section className="bl bl-numeros bl-numeros--barras" id={ancora ?? 'numeros'}>
         <Lista modo={modo} passo={0.12} className="bl-barras">
           {itens.map((i, n) => (
             <Item modo={modo} key={n}>
@@ -25,7 +25,7 @@ export function Numeros({ variacao, dados, modo }: PropsDoBloco<DadosDeNumeros, 
     );
   }
   return (
-    <section className="bl bl-numeros bl-numeros--cards" id="numeros">
+    <section className="bl bl-numeros bl-numeros--cards" id={ancora ?? 'numeros'}>
       <Lista modo={modo} passo={0.1} className="bl-cards-numero">
         {itens.map((i, n) => (
           <Item modo={modo} key={n} eleva className="bl-cartao">

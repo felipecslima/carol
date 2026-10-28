@@ -2,10 +2,10 @@ import { Exemplo } from './Exemplo';
 import { Contagem, Item, Lista, Preenche, Revela } from './movimento';
 import type { DadosDePublico, PropsDoBloco } from './tipos';
 
-export function Publico({ variacao, dados, modo }: PropsDoBloco<DadosDePublico, 'idade' | 'cidades'>) {
+export function Publico({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDePublico, 'idade' | 'cidades'>) {
   const { titulo, itens = [] } = dados;
   return (
-    <section className={`bl bl-publico bl-publico--${variacao}`} id="publico">
+    <section className={`bl bl-publico bl-publico--${variacao}`} id={ancora ?? 'publico'}>
       {titulo && (
         <Revela modo={modo} tag="h2" className="bl-titulo">
           {titulo}

@@ -29,13 +29,13 @@ const COMPONENTES = {
   contato: Contato,
 };
 
-export function Bloco({ bloco, modo }: { bloco: BlocoDoProjeto; modo: ModoDeRender }) {
+export function Bloco({ bloco, modo, ancora }: { bloco: BlocoDoProjeto; modo: ModoDeRender; ancora?: string }) {
   const Componente = COMPONENTES[bloco.tipo as keyof typeof COMPONENTES] as
-    React.ComponentType<{ variacao: string; dados: object; modo: ModoDeRender }> | undefined;
+    React.ComponentType<{ variacao: string; dados: object; modo: ModoDeRender; ancora?: string }> | undefined;
   if (!Componente) return null;
   return (
     <Movimento>
-      <Componente variacao={bloco.variacao} dados={bloco.dados} modo={modo} />
+      <Componente variacao={bloco.variacao} dados={bloco.dados} modo={modo} ancora={ancora} />
     </Movimento>
   );
 }

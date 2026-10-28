@@ -2,7 +2,7 @@ import { posicaoDoFoco } from './foco';
 import { Item, Lista, m, Revela } from './movimento';
 import type { DadosDoSobre, PropsDoBloco } from './tipos';
 
-export function Sobre({ variacao, dados, modo }: PropsDoBloco<DadosDoSobre, 'texto-foto' | 'so-texto'>) {
+export function Sobre({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDoSobre, 'texto-foto' | 'so-texto'>) {
   const { titulo, texto, foto, nichos, foto_foco } = dados;
   const comFoto = variacao === 'texto-foto';
   const propsDaFoto = {
@@ -11,7 +11,7 @@ export function Sobre({ variacao, dados, modo }: PropsDoBloco<DadosDoSobre, 'tex
     style: foto ? { backgroundImage: `url(${foto})`, backgroundPosition: posicaoDoFoco(foto_foco) } : undefined,
   };
   return (
-    <section className={`bl bl-sobre bl-sobre--${variacao}`} id="sobre">
+    <section className={`bl bl-sobre bl-sobre--${variacao}`} id={ancora ?? 'sobre'}>
       {comFoto &&
         (modo === 'editor' ? (
           <div {...propsDaFoto} />

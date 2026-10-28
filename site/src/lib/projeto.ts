@@ -12,6 +12,13 @@ const bloco = z.object({
   variacao: z.string().min(1),
   oculto: z.boolean().default(false),
   dados: z.record(z.string(), z.unknown()).default({}),
+  /** como a seção aparece no menu do topo (DEV-098): nome curto escolhido por ela e se entra no menu */
+  menu: z
+    .object({
+      rotulo: z.string().max(24, 'No máximo 24 letras').optional(),
+      oculto: z.boolean().optional(),
+    })
+    .optional(),
 });
 export type Bloco = z.infer<typeof bloco>;
 
@@ -28,6 +35,8 @@ export const projetoSchema = z.object({
   cantos: z.enum(['retos', 'suaves', 'redondos']),
   clima: z.enum(['claro', 'escuro']).default('claro'),
   modoIniciante: z.boolean().default(false),
+  /** menu no topo da página, montado pelas seções na ordem delas (DEV-098); ligado por padrão */
+  menu: z.boolean().default(true),
   /** link escolhido para publicar (`/c/<link>`); vira `projects.slug` quando o servidor reservar */
   link: z.string().optional(),
   /** números informados pela creator (formato do docs/04-ocr-prints.md, 3.2); alimentam Números e Público */

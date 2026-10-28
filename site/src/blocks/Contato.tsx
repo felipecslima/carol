@@ -3,10 +3,10 @@ import type { DadosDeContato, PropsDoBloco } from './tipos';
 
 const soDigitos = (t: string) => t.replace(/\D/g, '');
 
-export function Contato({ variacao, dados, modo }: PropsDoBloco<DadosDeContato, 'botoes' | 'formulario'>) {
+export function Contato({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDeContato, 'botoes' | 'formulario'>) {
   const { titulo, whatsapp, email, prazo } = dados;
   return (
-    <section className={`bl bl-contato bl-contato--${variacao}`} id="contato">
+    <section className={`bl bl-contato bl-contato--${variacao}`} id={ancora ?? 'contato'}>
       {titulo && (
         <Revela modo={modo} tag="h2" className="bl-titulo-grande">
           {titulo}

@@ -2,10 +2,10 @@ import { Exemplo } from './Exemplo';
 import { Item, Lista, Revela } from './movimento';
 import type { DadosDeFormatos, PropsDoBloco } from './tipos';
 
-export function Formatos({ variacao, dados, modo }: PropsDoBloco<DadosDeFormatos, 'cards' | 'tabela'>) {
+export function Formatos({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDeFormatos, 'cards' | 'tabela'>) {
   const { titulo, itens = [] } = dados;
   return (
-    <section className={`bl bl-formatos bl-formatos--${variacao}`} id="formatos">
+    <section className={`bl bl-formatos bl-formatos--${variacao}`} id={ancora ?? 'formatos'}>
       {titulo && (
         <Revela modo={modo} tag="h2" className="bl-titulo">
           {titulo}

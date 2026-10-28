@@ -74,6 +74,7 @@ export const BLOCOS = {
   resumo: {
     tipo: 'resumo',
     nome: 'Em 1 olhada',
+    nomeNoMenu: 'Resumo',
     variacoes: [
       { id: 'faixa', nome: 'Faixa' },
       { id: 'lista', nome: 'Lista' },
@@ -101,6 +102,7 @@ export const BLOCOS = {
   sobre: {
     tipo: 'sobre',
     nome: 'Sobre mim',
+    nomeNoMenu: 'Sobre',
     variacoes: [
       { id: 'texto-foto', nome: 'Texto e foto' },
       { id: 'so-texto', nome: 'Só texto' },
@@ -249,6 +251,7 @@ export const BLOCOS = {
   formatos: {
     tipo: 'formatos',
     nome: 'Formatos e pacotes',
+    nomeNoMenu: 'Formatos',
     variacoes: [
       { id: 'cards', nome: 'Cards' },
       { id: 'tabela', nome: 'Tabela' },
@@ -279,6 +282,7 @@ export const BLOCOS = {
   processo: {
     tipo: 'processo',
     nome: 'Como eu trabalho',
+    nomeNoMenu: 'Como trabalho',
     variacoes: [
       { id: 'passos', nome: 'Passos em cartões' },
       { id: 'linha', nome: 'Linha' },

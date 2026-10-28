@@ -97,6 +97,11 @@
 .ed-tela {
   min-height: calc(100dvh - 56px);
 }
+/* o menu da página (DEV-098) aparece no começo, parado: o topo do editor e a barra de progresso já ficam fixos lá em
+   cima; no modo Ver e na página no ar ele gruda no topo */
+.ed-tela .bl-menu {
+  position: static;
+}
 .ed-bloco {
   scroll-margin-top: 64px;
   position: relative;

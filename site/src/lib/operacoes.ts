@@ -79,6 +79,14 @@ export function atualizarDados(projeto: Projeto, id: string, dados: Record<strin
   };
 }
 
+/** Muda como o bloco aparece no menu do topo (DEV-098): nome próprio e se entra no menu. A Capa não entra no menu. */
+export function atualizarMenu(projeto: Projeto, id: string, menu: NonNullable<Bloco['menu']>): Projeto {
+  return {
+    ...projeto,
+    blocos: projeto.blocos.map((b) => (b.id === id && b.tipo !== 'capa' ? { ...b, menu: { ...b.menu, ...menu } } : b)),
+  };
+}
+
 /** Troca a variação de layout de um bloco; o conteúdo continua o mesmo. Ignora variação que o bloco não tem. */
 export function trocarVariacao(projeto: Projeto, id: string, variacao: string, registro: Registro): Projeto {
   const bloco = projeto.blocos.find((b) => b.id === id);

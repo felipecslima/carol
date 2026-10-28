@@ -13,6 +13,7 @@ export const PROJETO_DE_EXEMPLO: Projeto = {
   cantos: 'redondos',
   clima: 'claro',
   modoIniciante: false,
+  menu: true,
   guardados: [],
   blocos: [
     {

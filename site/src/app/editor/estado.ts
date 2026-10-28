@@ -19,6 +19,8 @@ export interface EstadoDoEditor {
   duplicar: (id: string) => void;
   atualizarDados: (id: string, dados: Record<string, unknown>) => void;
   trocarVariacao: (id: string, variacao: string) => void;
+  /** nome e "mostrar no menu" de uma seção no menu do topo (DEV-098) */
+  atualizarMenu: (id: string, menu: NonNullable<Projeto['blocos'][number]['menu']>) => void;
   /** troca o projeto inteiro (carregar do servidor); entra no histórico como uma mudança só */
   substituir: (projeto: Projeto) => void;
 }
@@ -50,6 +52,7 @@ export function criarEditor(inicial: Projeto, registro: Registro, gerarId: () =>
         atualizarDados: (id, dados) => set((s) => ({ projeto: op.atualizarDados(s.projeto, id, dados) })),
         trocarVariacao: (id, variacao) =>
           set((s) => ({ projeto: op.trocarVariacao(s.projeto, id, variacao, registro) })),
+        atualizarMenu: (id, menu) => set((s) => ({ projeto: op.atualizarMenu(s.projeto, id, menu) })),
         substituir: (projeto) => set({ projeto }),
       }),
       {

@@ -2,10 +2,10 @@ import { Exemplo } from './Exemplo';
 import { Item, Lista, Revela } from './movimento';
 import type { DadosDeMarcas, PropsDoBloco } from './tipos';
 
-export function Marcas({ variacao, dados, modo }: PropsDoBloco<DadosDeMarcas, 'logos' | 'lista'>) {
+export function Marcas({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDeMarcas, 'logos' | 'lista'>) {
   const { titulo, itens = [] } = dados;
   return (
-    <section className={`bl bl-marcas bl-marcas--${variacao}`} id="marcas">
+    <section className={`bl bl-marcas bl-marcas--${variacao}`} id={ancora ?? 'marcas'}>
       {titulo && (
         <Revela modo={modo} tag="h2" className="bl-titulo">
           {titulo}

@@ -6,13 +6,18 @@ import { VideoSemSom } from './VideoSemSom';
 import { VisorDeVideos } from './VisorDeVideos';
 import type { DadosDeVideos, PropsDoBloco } from './tipos';
 
-export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'carrossel' | 'grade' | 'destaque'>) {
+export function Videos({
+  variacao,
+  dados,
+  modo,
+  ancora,
+}: PropsDoBloco<DadosDeVideos, 'carrossel' | 'grade' | 'destaque'>) {
   const { titulo, itens = [] } = dados;
   // o visor só mostra os vídeos que têm arquivo; `aberto` é a posição dentro dessa lista
   const comArquivo = itens.filter((v) => v.video);
   const [aberto, setAberto] = useState<number | null>(null);
   return (
-    <section className={`bl bl-videos bl-videos--${variacao}`} id="videos">
+    <section className={`bl bl-videos bl-videos--${variacao}`} id={ancora ?? 'videos'}>
       {titulo && (
         <Revela modo={modo} tag="h2" className="bl-titulo">
           {titulo}

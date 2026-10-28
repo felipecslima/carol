@@ -2,7 +2,9 @@
 // escolha de variação. Tocar em "Exemplo" e trocar o texto tira a marca de exemplo do item.
 import { Fragment, useId, useState, type ReactNode } from 'react';
 import { chaveDeFoco, type Campo, type DefinicaoDeBloco } from '@lib/bloco';
+import { rotuloPadrao } from '@lib/menu';
 import type { Bloco } from '@lib/projeto';
+import { REGISTRO } from '@blocks/registro';
 import { CampoDeArquivo } from './CampoDeArquivo';
 import { AdicionarVarios } from './AdicionarVarios';
 import { Copiar, Descer, Lixeira, Mais, Play, Seta, Subir } from './icones';
@@ -303,13 +305,21 @@ export function CamposDoBloco({
   aoMudarDados,
   aoTrocarVariacao,
   aoInformarNumeros,
+  menuLigado,
+  aoMudarMenu,
 }: {
   definicao: DefinicaoDeBloco;
   bloco: Bloco;
   aoMudarDados: (dados: Dados) => void;
   aoTrocarVariacao: (variacao: string) => void;
   aoInformarNumeros?: () => void;
+  /** o menu do topo da página está ligado em Estilo (DEV-098) */
+  menuLigado?: boolean;
+  /** muda o nome e o "mostrar no menu" desta seção; sem isto, o grupo No menu não aparece */
+  aoMudarMenu?: (menu: NonNullable<Bloco['menu']>) => void;
 }) {
+  const padraoNoMenu = rotuloPadrao(definicao.tipo, REGISTRO);
+  const noMenu = !bloco.menu?.oculto;
   return (
     <div className="ed-form">
       {(definicao.tipo === 'numeros' || definicao.tipo === 'publico') && aoInformarNumeros && (
@@ -432,6 +442,49 @@ export function CamposDoBloco({
             </Fragment>
           );
         })}
+      {aoMudarMenu && definicao.tipo !== 'capa' && (
+        <>
+          <h3 className="ed-grupo">No menu</h3>
+          {menuLigado === false ? (
+            <p className="ed-dica">O menu do topo está desligado. Ligue em Estilo para ele aparecer na página.</p>
+          ) : (
+            <>
+              <fieldset className="ed-variacoes ed-variacoes--segmentos">
+                <legend>Aparece no menu do topo?</legend>
+                <div role="radiogroup">
+                  {[
+                    [true, 'Sim'],
+                    [false, 'Não'],
+                  ].map(([valor, nome]) => (
+                    <button
+                      key={String(valor)}
+                      type="button"
+                      role="radio"
+                      aria-checked={noMenu === valor}
+                      onClick={() => aoMudarMenu({ oculto: !valor })}
+                    >
+                      {nome}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+              {noMenu && (
+                <CampoDeTexto
+                  campo={{
+                    id: 'menu-rotulo',
+                    rotulo: 'Nome no menu',
+                    tipo: 'etiqueta',
+                    maximo: 24,
+                    dica: `Em branco, aparece "${padraoNoMenu}". Nomes curtos cabem melhor no celular.`,
+                  }}
+                  valor={bloco.menu?.rotulo ?? ''}
+                  aoMudar={(rotulo) => aoMudarMenu({ rotulo })}
+                />
+              )}
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }

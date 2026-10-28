@@ -88,6 +88,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-093** Topo do editor em telas pequenas (status e Entrar cabem em 320 px), abas centradas no desktop e dica de primeiro uso que não bloqueia o toque (diz "Clique" no computador).
 - [ ] **DEV-094** Esqueleto do editor antes do JavaScript (topo e abas no HTML), sem tela em branco no 4G lento.
 - [ ] **DEV-095** Hierarquia: Publicar em destaque, rosa reservado para a ação principal e o selecionado, Esconder e Remover num menu "Mais" na barra flutuante.
+- [x] **DEV-098** Menu no topo da página, montado pelas seções na ordem delas (pedido de 28/out). Faixa fixa que desliza no celular e marca a seção à vista; a Capa não entra e o Contato fica no fim, como botão. Cada seção pode ter nome próprio no menu e sair dele; Estilo liga e desliga o menu. Aparece no editor (tocar seleciona a seção), no modo Ver e na página no ar; o mídia kit fica sem. *Feito em 28/out, esperando aprovação. Coluna nova `projects.menu` (migração `20261028000100_menu.sql`).*
 
 ### E8. Assistente de início
 
@@ -188,11 +189,6 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-232** Acessibilidade: contraste, foco visível, leitor de tela nos controles do editor (parte do editor planejada em 27/out: anel de foco dos blocos, foco entrando na gaveta, atalhos Ctrl/Cmd+Z, Shift+Ctrl/Cmd+Z, Delete esconde a seção, Esc).
 - [ ] **DEV-233** Monitoramento de erros (Sentry) no editor, na API e no Worker.
 - [ ] **DEV-234** Proteção contra abuso: limite de envios, de chamadas de IA e de criação de links por conta.
-
-## P1 — Logo depois do lançamento
-
-### Adiado da versão 1
-
 - [ ] **DEV-031** Entrar com Google.
 - [ ] **DEV-103** Bio gerada pela IA a partir das respostas (servidor, com limite de uso por conta grátis).
 - [ ] **DEV-195** Limite de IA na conta grátis. Depende: quantidade definida.

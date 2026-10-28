@@ -333,6 +333,7 @@ export type Database = {
           guardados: Json
           id: string
           link_desejado: string | null
+          menu: boolean
           modelo: string
           modo_iniciante: boolean
           numeros: Json | null
@@ -356,6 +357,7 @@ export type Database = {
           guardados?: Json
           id?: string
           link_desejado?: string | null
+          menu?: boolean
           modelo: string
           modo_iniciante?: boolean
           numeros?: Json | null
@@ -379,6 +381,7 @@ export type Database = {
           guardados?: Json
           id?: string
           link_desejado?: string | null
+          menu?: boolean
           modelo?: string
           modo_iniciante?: boolean
           numeros?: Json | null

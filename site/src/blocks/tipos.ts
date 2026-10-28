@@ -127,4 +127,6 @@ export interface PropsDoBloco<D, V extends string = string> {
   variacao: V;
   dados: D;
   modo: ModoDeRender;
+  /** id da seção na página, para o menu do topo e links internos (DEV-098); sem ele, o tipo do bloco */
+  ancora?: string;
 }

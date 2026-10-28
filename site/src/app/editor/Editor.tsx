@@ -7,7 +7,9 @@ import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
 import { animate, AnimatePresence, motion } from 'motion/react';
 import { MovimentoDoApp, SUAVE } from '../movimento';
-import { ContatoFixo } from '@blocks/ContatoFixo';
+import { ConteudoDaPagina } from '@blocks/ConteudoDaPagina';
+import { Menu } from '@blocks/Menu';
+import { itensDoMenu } from '@lib/menu';
 import { REGISTRO } from '@blocks/registro';
 import { blocosVisiveis, type Projeto } from '@lib/projeto';
 import { temaDoProjeto } from './tema';
@@ -153,10 +155,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   if (ver) {
     return (
       <div className="pagina ed-ver" style={temaDoProjeto(projeto)}>
-        {visiveis.map((b) => (
-          <Bloco key={b.id} bloco={b} modo="publicado" />
-        ))}
-        <ContatoFixo blocos={visiveis} />
+        <ConteudoDaPagina projeto={projeto} />
         <button type="button" className="ed-sair-ver" onClick={() => setVer(false)}>
           Voltar a editar
         </button>
@@ -225,6 +224,16 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
           style={temaDoProjeto(projeto)}
           onClick={(ev) => ev.target === ev.currentTarget && e.selecionar(null)}
         >
+          {/* o menu como vai ficar na página; tocar num item seleciona a seção e leva até ela */}
+          <Menu
+            itens={itensDoMenu(projeto, REGISTRO)}
+            modo="editor"
+            aoEscolher={(id) => {
+              fecharDica();
+              e.selecionar(id);
+              document.querySelector(`[data-bloco="${id}"]`)?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            }}
+          />
           {visiveis.map((b) => (
             <div
               key={b.id}
@@ -378,6 +387,8 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
               bloco={bloco}
               aoMudarDados={(dados) => e.atualizarDados(bloco.id, dados)}
               aoTrocarVariacao={(v) => e.trocarVariacao(bloco.id, v)}
+              menuLigado={projeto.menu}
+              aoMudarMenu={(menu) => e.atualizarMenu(bloco.id, menu)}
             />
           )}
         </Gaveta>

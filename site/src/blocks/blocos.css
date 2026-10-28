@@ -1102,3 +1102,94 @@ video.bl-video-capa {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ---- menu do topo (DEV-098): as seções na ordem da página numa faixa que desliza; o Contato sempre à vista ---- */
+.bl-menu {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: var(--pagina);
+  border-bottom: 1px solid var(--borda);
+}
+.bl-menu-dentro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 1120px;
+  height: 56px;
+  margin: 0 auto;
+  padding: 0 clamp(12px, 5cqi, 56px) 0 clamp(4px, 5cqi, 46px);
+}
+.bl-menu-trilho {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 24px 0 12px;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* esmaecido nas duas bordas: o item que passa da beirada some aos poucos, em vez de cortar seco, e o da direita
+     mostra que tem mais itens para o lado; o recuo interno deixa o primeiro e o último inteiros quando parados */
+  mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 24px), transparent);
+}
+.bl-menu-trilho::-webkit-scrollbar {
+  display: none;
+}
+.bl-menu-trilho li {
+  flex: none;
+}
+.bl-menu a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--texto-suave);
+  font-family: var(--fonte-texto);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 2px;
+}
+.bl-menu a:hover,
+.bl-menu a[aria-current='location'] {
+  color: var(--texto);
+}
+.bl-menu-trilho a[aria-current='location'] {
+  text-decoration-line: underline;
+  text-decoration-color: var(--destaque);
+}
+.bl-menu a:focus-visible {
+  outline: 3px solid var(--texto);
+  outline-offset: -3px;
+  border-radius: 999px;
+}
+/* Contato: o único botão, fora da faixa que desliza, na ponta direita */
+.bl-menu-contato {
+  flex: none;
+}
+.bl-menu-contato a,
+.bl-menu-contato a:hover,
+.bl-menu-contato a[aria-current='location'] {
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--destaque);
+  color: var(--sobre-destaque);
+}
+.bl-menu-contato a:focus-visible {
+  outline-offset: 3px;
+}
+@media (min-width: 880px) {
+  .bl-menu-trilho {
+    mask-image: none;
+    padding: 0;
+  }
+}
+/* a seção para logo abaixo do menu quando a pessoa toca num item */
+.pagina .bl[id] {
+  scroll-margin-top: 64px;
+}

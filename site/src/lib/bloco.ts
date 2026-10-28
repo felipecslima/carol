@@ -75,6 +75,8 @@ export interface Variacao {
 export interface DefinicaoDeBloco {
   tipo: string;
   nome: string;
+  /** nome curto no menu do topo da página (DEV-098), quando difere do nome; a creator pode trocar por seção */
+  nomeNoMenu?: string;
   variacoes: readonly [Variacao, ...Variacao[]];
   campos: readonly Campo[];
   /** Capa e Contato: a creator não pode remover nem esconder */
