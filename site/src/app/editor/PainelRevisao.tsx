@@ -1,9 +1,12 @@
 // Revisão final: o que impede de publicar (vermelho) e o que ela pode ignorar (amarelo). Cada alerta leva ao bloco.
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { Acesso } from '@lib/acesso';
+import { PLANOS_DE_PUBLICACAO, type IdDoPlano } from '@lib/planos';
 import type { Projeto } from '@lib/projeto';
 import { podePublicar, type Alerta } from '@lib/revisao';
 import { normalizarSlug, problemaDoSlug, sugerirSlugs } from '@lib/slug';
-import { publicar, type RespostaDePublicar } from '../nuvem';
+import { EscolhaDePlano } from '../EscolhaDePlano';
+import { carregarAcesso, publicar, type RespostaDePublicar } from '../nuvem';
 
 export function PainelRevisao({
   alertas,
@@ -26,23 +29,39 @@ export function PainelRevisao({
 }) {
   const [enviando, setEnviando] = useState(false);
   const [resposta, setResposta] = useState<RespostaDePublicar | null>(null);
+  const [plano, setPlano] = useState<IdDoPlano>('pdf');
+  // regras de acesso (DEV-190): prazo de edição, pagamento, Premium. `null` = ainda sem projeto na conta
+  const [acesso, setAcesso] = useState<Acesso | null | undefined>(undefined);
+  useEffect(() => {
+    if (!donoId) return;
+    let vivo = true;
+    void carregarAcesso().then((a) => vivo && setAcesso(a));
+    return () => {
+      vivo = false;
+    };
+  }, [donoId, resposta]);
+  const travada = acesso?.momento === 'travada';
+  // escolhe o plano quem ainda não pagou; quem já pagou publica as mudanças direto
+  const escolhePlano = Boolean(donoId) && acesso !== undefined && !acesso?.pago;
   const ok = podePublicar(alertas);
   const problema = link ? problemaDoSlug(link) : null;
-  const pronto = ok && Boolean(link) && !problema;
+  const pronto = ok && Boolean(link) && !problema && !travada;
   const motivo = !donoId
     ? 'Para publicar, entre na sua conta.'
-    : !link
-      ? 'Escolha o seu link para publicar.'
-      : problema
-        ? 'Corrija o link para publicar.'
-        : !ok
-          ? 'Resolva os pontos em vermelho para publicar.'
-          : null;
+    : travada
+      ? null
+      : !link
+        ? 'Escolha o seu link para publicar.'
+        : problema
+          ? 'Corrija o link para publicar.'
+          : !ok
+            ? 'Resolva os pontos em vermelho para publicar.'
+            : null;
 
   async function aoPublicar() {
     if (!donoId || !pronto) return;
     setEnviando(true);
-    setResposta(await publicar(donoId, projeto, link));
+    setResposta(await publicar(donoId, projeto, link, plano));
     setEnviando(false);
   }
   const sugestoes = sugerirSlugs('', arroba).filter((x) => x !== link);
@@ -83,7 +102,8 @@ export function PainelRevisao({
       </div>
 
       {alertas.length === 0 ? (
-        <p className="ed-ok">Tudo certo. Seu portfólio está pronto para publicar.</p>
+        // com o prazo vencido, o aviso do prazo é a única mensagem de estado (sem "pronto para publicar")
+        !travada && <p className="ed-ok">Tudo certo. Seu portfólio está pronto para publicar.</p>
       ) : (
         <>
           <p className={ok ? 'ed-ok' : 'ed-aviso'}>
@@ -136,7 +156,27 @@ export function PainelRevisao({
               {resposta.erro}
             </p>
           )}
-          {!donoId ? (
+          {travada && <p className="ed-aviso">{acesso.motivo}</p>}
+          {escolhePlano && (
+            <EscolhaDePlano
+              legenda="Como você quer publicar"
+              nome="plano-de-publicacao"
+              planos={PLANOS_DE_PUBLICACAO}
+              valor={plano}
+              aoMudar={setPlano}
+            />
+          )}
+          {!motivo && escolhePlano && (
+            <p className="ed-dica">
+              Nada é cobrado agora. A equipe te chama no WhatsApp com o link de pagamento e o portfólio vai ao ar quando
+              o pagamento for confirmado. Depois disso, você tem 7 dias para publicar mudanças.
+            </p>
+          )}
+          {travada ? (
+            <a className="ed-primario" href="/app/#liberar-edicao">
+              Liberar a edição no Início
+            </a>
+          ) : !donoId ? (
             <a className="ed-primario" href="/app/entrar/">
               Entrar para publicar
             </a>
@@ -147,10 +187,16 @@ export function PainelRevisao({
               disabled={!pronto || enviando}
               onClick={() => void aoPublicar()}
             >
-              {enviando ? 'Publicando…' : 'Publicar'}
+              {enviando ? 'Enviando…' : escolhePlano ? 'Reservar meu link' : 'Publicar'}
             </button>
           )}
           {motivo && <p className="ed-dica">{motivo}</p>}
+          {!motivo && acesso?.editaAte && (
+            <p className="ed-dica">
+              Você pode publicar mudanças até{' '}
+              {acesso.editaAte.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })}.
+            </p>
+          )}
         </>
       )}
     </div>

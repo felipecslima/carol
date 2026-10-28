@@ -2,6 +2,7 @@
 // regras de linha só deixam a equipe ver tudo); alterar passa por /api/admin/acao, que confere o papel no servidor.
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
+import { ehPlano, formatarValor, PLANOS } from '@lib/planos';
 import { sair, useSessao } from '../sessao';
 import { supabase } from '../supabase';
 import { Marca } from '../Marca';
@@ -90,6 +91,9 @@ const data = (iso: string) =>
     .toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
     .replace('.', '');
 const DIA = 24 * 60 * 60 * 1000;
+// pedidos antigos podem ter um plano que não existe mais: aparece o id e valor zero
+const nomeDoPlano = (id: string) => (ehPlano(id) ? PLANOS[id].nome : `Plano ${id}`);
+const valorDoPlano = (id: string) => (ehPlano(id) ? PLANOS[id].valor : 0);
 
 async function carregar(): Promise<Dados | null> {
   const [perfis, projetos, pedidos, premium, registro, aberturas] = await Promise.all([
@@ -314,7 +318,11 @@ function VisaoGeral({ d }: { d: Dados }) {
       ) : (
         <p className="ed-dica">Nenhum pedido parado há mais de 2 dias.</p>
       )}
-      <p className="ed-dica">Vendas em reais aparecem quando os planos e preços forem definidos.</p>
+      <p className="ed-dica">
+        Vendas pagas:{' '}
+        {formatarValor(d.pedidos.filter((p) => p.status === 'pago').reduce((t, p) => t + valorDoPlano(p.plano), 0))}{' '}
+        (valor dos planos, sem a taxa do domínio).
+      </p>
     </section>
   );
 }
@@ -356,7 +364,7 @@ function Pedidos({
                 <b>{creator?.nome || 'Sem nome'}</b>{' '}
                 <span className={`ad-estado ad-estado--${p.status}`}>{ESTADO[p.status] ?? p.status}</span>
                 <p className="ed-dica">
-                  Plano {p.plano} · pedido em {data(p.criado_em)}
+                  {nomeDoPlano(p.plano)} · {formatarValor(valorDoPlano(p.plano))} · pedido em {data(p.criado_em)}
                   {p.pago_em ? ` · pago em ${data(p.pago_em)}` : ''} · link {projeto?.slug ? `/c/${projeto.slug}` : '—'}
                 </p>
               </div>
@@ -366,13 +374,18 @@ function Pedidos({
                     Chamar no WhatsApp
                   </a>
                 )}
-                {podeAgir && p.status === 'aguardando_pagamento' && projeto?.slug && (
+                {podeAgir && p.status === 'aguardando_pagamento' && (
                   <>
                     <button
                       type="button"
                       className="ed-primario"
                       onClick={() =>
-                        void executar({ acao: 'pago', slug: projeto.slug! }, 'Pedido pago. O portfólio já está no ar.')
+                        void executar(
+                          { acao: 'pago', pedido: p.id },
+                          ehPlano(p.plano) && PLANOS[p.plano].tipo === 'edicao'
+                            ? 'Pedido pago. A edição está liberada.'
+                            : 'Pedido pago. O portfólio já está no ar.',
+                        )
                       }
                     >
                       Marcar como pago

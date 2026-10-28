@@ -233,3 +233,16 @@
 .mk-conteudo .bl-capa--fundo .bl-capa-texto {
   padding-top: 80px;
 }
+/* PDF pago: só um selo discreto no rodapé da folha, no lugar da marca d'água (DEV-152) */
+.mk-selo {
+  position: absolute;
+  right: 24px;
+  bottom: 14px;
+  margin: 0;
+  font:
+    600 10px 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  letter-spacing: 0.02em;
+  color: rgba(36, 19, 15, 0.45);
+}

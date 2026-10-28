@@ -360,3 +360,18 @@
 .ar-sair:focus-visible {
   color: var(--ed-texto);
 }
+
+/* liberar a edição depois do prazo (DEV-193) */
+.ar-liberar {
+  display: grid;
+  gap: 16px;
+  scroll-margin-top: 24px;
+}
+.ar-liberar .pl-planos legend {
+  font-size: 20px;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.ar-liberar .ar-botao {
+  justify-self: start;
+}

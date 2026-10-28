@@ -133,12 +133,12 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 - [x] **DEV-150** Rota de impressão do mídia kit em 1 página A4. *Primeira versão em `/app/midia-kit/` (duas colunas, escala automática, PDF de 1 página pela impressão); precisa de aprovação visual.*
 - [ ] **DEV-151** Geração do PDF pelo Cloudflare Browser Rendering e armazenamento no Supabase Storage.
-- [ ] **DEV-152** Marca d'água "PORTFÓLIO CREATOR • TESTE" na conta grátis; selo no PDF pago. *Marca d'água de teste já aparece na rota; falta o selo no PDF pago.*
+- [ ] **DEV-152** Marca d'água "PORTFÓLIO CREATOR • TESTE" na conta grátis; selo no PDF pago. *28/out: a marca d'água agora depende do pagamento (antes `?marca=0` tirava); pago, sai o selo "Feito com Portfólio Creator". Na tela isso ainda dá para burlar pelo navegador: a garantia vem com o PDF gerado no servidor (DEV-151).*
 - [ ] **DEV-153** Regerar o PDF a cada publicação.
 
 ### E13. Pedidos, pagamento e Slack
 
-- [ ] **DEV-160** Publicar cria o pedido em `orders` com o plano escolhido.
+- [x] **DEV-160** Publicar cria o pedido em `orders` com o plano escolhido. *Feito em 28/out: ao publicar pela primeira vez ela escolhe PDF + link ou Site (`lib/planos.ts`, mesmos valores da página de vendas); um pedido de publicação aberto por vez, que muda de plano se ela trocar. O admin mostra nome e valor do plano, marca como pago pelo id do pedido e soma as vendas pagas.*
 - [ ] **DEV-161** App do Slack: card do pedido com botões (Pago, Tirar do ar, Abrir no admin).
 - [ ] **DEV-162** Link de pagamento colado na thread é salvo no pedido e enviado ao WhatsApp da creator.
 - [ ] **DEV-163** Botão Pago: muda o status, publica de verdade, regera o PDF, avisa a creator.
@@ -163,10 +163,10 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E16. Planos, marca d'água e Premium
 
-- [ ] **DEV-190** Regras de acesso centralizadas (uma função "pode fazer X?") por momento: sem conta, grátis, pago, edição liberada, Premium.
+- [x] **DEV-190** Regras de acesso centralizadas (uma função "pode fazer X?") por momento: sem conta, grátis, pago, edição liberada, Premium. *Feito em 28/out: `lib/acesso.ts` (`acessoDa`), usada pelo servidor (que decide) e pela tela (que explica).*
 - [x] ~~**DEV-191** Modelos liberados no teste e cadeado nos outros.~~ **Descartada (27/out/2026):** sem modelos; as seções montam o portfólio.
-- [ ] **DEV-192** Prazo de edição (até concluir + 7 dias) e trava sem tirar do ar.
-- [ ] **DEV-193** Edição liberada (assinatura ou avulsa) controlada pelo status do pedido.
+- [x] **DEV-192** Prazo de edição (até concluir + 7 dias) e trava sem tirar do ar. *Feito em 28/out: calculado na hora (sem tarefa agendada): vencido o prazo, o servidor recusa publicar mudanças, o portfólio continua no ar e a área mostra "Edição travada". O rascunho continua editável.*
+- [x] **DEV-193** Edição liberada (assinatura ou avulsa) controlada pelo status do pedido. *Feito em 28/out: "Liberar a edição" no Início abre um pedido (mensal, anual ou 30 dias, `/api/pedido/edicao`); pago no admin, libera pelo período do plano a partir do pagamento. Cobrança recorrente automática fica para quando houver gateway de pagamento.*
 - [ ] **DEV-194** Premium por molde (Site, Mídia kit, os dois) com validade.
 
 ### E17. LGPD

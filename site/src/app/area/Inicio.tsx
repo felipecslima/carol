@@ -8,6 +8,7 @@ import { proximoPasso } from '@lib/proximo-passo';
 import { progresso } from '@lib/progresso';
 import { revisar } from '@lib/revisao';
 import type { Resumo } from '../nuvem';
+import { LiberarEdicao } from './LiberarEdicao';
 import { Miniatura } from './Miniatura';
 
 export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }) {
@@ -22,7 +23,8 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
     temLink: Boolean(projeto?.link),
     slug: resumo?.slug,
   });
-  const incompleto = Boolean(projeto) && seus < total;
+  const travada = resumo?.acesso.momento === 'travada';
+  const incompleto = Boolean(projeto) && seus < total && !travada;
   return (
     <section className="ar-secao ar-secao--inicio">
       <motion.h1 className="ar-ola" {...entrada()}>
@@ -42,7 +44,7 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
           </div>
         )}
         <div className="ar-acoes">
-          <a className="ed-primario ar-botao" href={passo.acao.href}>
+          <a className={passo.discreta ? 'ar-link-claro' : 'ed-primario ar-botao'} href={passo.acao.href}>
             {passo.acao.rotulo}
           </a>
           {passo.secundaria && (
@@ -52,13 +54,20 @@ export function Inicio({ resumo, nome }: { resumo: Resumo | null; nome: string }
           )}
         </div>
       </motion.article>
+      {travada && (
+        <motion.div {...entrada(0.1)}>
+          <LiberarEdicao jaPedida={resumo.acesso.edicaoPedida} />
+        </motion.div>
+      )}
       {projeto && resumo && (
         <motion.div className="ar-portfolio" {...entrada(0.18)}>
           <Miniatura projeto={projeto} />
           <span className="ar-portfolio-info">
             <b>Seu portfólio</b>
             <span>
-              {infoDoEstado(resumo.estado).rotulo} · {seus} de {total} itens já são seus
+              {travada
+                ? 'No ar · edição travada'
+                : `${infoDoEstado(resumo.estado).rotulo} · ${seus} de ${total} itens já são seus`}
             </span>
           </span>
           <a className="ar-portfolio-link" href="/app/editor/" aria-label="Abrir o editor do seu portfólio" />

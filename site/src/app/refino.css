@@ -303,6 +303,8 @@
   text-decoration-color: rgba(255, 255, 255, 0.45);
 }
 .ar .ar-portfolio {
+  /* o link que cobre o cartão (.ar-portfolio-link, inset 0) fica preso aqui; sem isto cobria a área inteira */
+  position: relative;
   display: grid;
   grid-template-columns: 112px 1fr;
   gap: 14px;

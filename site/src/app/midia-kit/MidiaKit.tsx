@@ -1,6 +1,7 @@
 // Mídia kit em 1 página A4 (DEV-150): os mesmos blocos do projeto, reduzidos até caberem na folha. "Salvar como
 // PDF" usa a impressão do navegador por enquanto; o PDF de verdade (marca d'água, arquivo guardado) vem do
-// Cloudflare Browser Rendering, a partir desta mesma rota.
+// Cloudflare Browser Rendering, a partir desta mesma rota. Marca d'água de teste até pagar um plano; pago, sai o
+// selo discreto (DEV-152). Aqui é só a tela: a garantia de verdade vem com o PDF gerado no servidor (DEV-151).
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
@@ -8,6 +9,8 @@ import { REGISTRO } from '@blocks/registro';
 import { blocosVisiveis } from '@lib/projeto';
 import { carregarRascunho } from '../editor/persistencia';
 import { temaDoProjeto } from '../editor/tema';
+import { carregarAcesso } from '../nuvem';
+import { useSessao } from '../sessao';
 import './midia-kit.css';
 import '../tema.css';
 
@@ -30,7 +33,18 @@ export default function MidiaKit() {
     window.addEventListener('resize', aoRedimensionar);
     return () => window.removeEventListener('resize', aoRedimensionar);
   }, []);
-  const marcaDagua = new URLSearchParams(window.location.search).get('marca') !== '0';
+  // sem conta ou sem pagamento: marca d'água. Enquanto carrega, também (nunca mostra a versão paga por engano)
+  const sessao = useSessao();
+  const [pago, setPago] = useState(false);
+  useEffect(() => {
+    if (!sessao) return;
+    let vivo = true;
+    void carregarAcesso().then((a) => vivo && setPago(Boolean(a?.pago)));
+    return () => {
+      vivo = false;
+    };
+  }, [sessao]);
+  const marcaDagua = !pago;
 
   // cabe numa folha só: o layout tem largura fixa (LAYOUT) e é reduzido até caber na largura e na altura do A4,
   // centralizado. Nunca amplia.
@@ -77,10 +91,12 @@ export default function MidiaKit() {
                 <Bloco key={b.id} bloco={b} modo="publicado" />
               ))}
           </div>
-          {marcaDagua && (
+          {marcaDagua ? (
             <div className="mk-marca" aria-hidden="true">
               PORTFÓLIO CREATOR • TESTE
             </div>
+          ) : (
+            <p className="mk-selo">Feito com Portfólio Creator</p>
           )}
         </div>
       </div>

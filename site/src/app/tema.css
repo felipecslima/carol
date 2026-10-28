@@ -691,3 +691,91 @@
 .ed-bloco:not([data-selecionado]):hover::after {
   border: 2px dashed rgba(212, 42, 91, 0.55);
 }
+
+/* ---------- escolha de plano (publicar e liberar edição, DEV-160 e 193) ---------- */
+.pl-planos {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.pl-planos legend {
+  padding: 0;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ed-texto);
+}
+.pl-plano {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  column-gap: 12px;
+  row-gap: 4px;
+  min-height: 44px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--ed-borda);
+  border-radius: 14px;
+  color: var(--ed-texto);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+.pl-plano:hover {
+  border-color: rgba(251, 244, 236, 0.5);
+}
+.pl-plano:has(input:checked) {
+  border-color: var(--ed-texto);
+  background: var(--ed-card);
+}
+.pl-plano:has(input:focus-visible) {
+  outline: 2px solid var(--ed-foco);
+  outline-offset: 2px;
+}
+.pl-plano input {
+  /* anel desenhado: o rádio nativo no escuro vira um disco cinza com borda abaixo de 3:1 */
+  appearance: none;
+  margin: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ed-suave);
+  border-radius: 50%;
+  align-self: center;
+}
+.pl-plano input:checked {
+  border-color: var(--ed-rosa-escuro);
+  background: radial-gradient(circle, var(--ed-rosa-escuro) 0 4px, transparent 4.5px);
+}
+.pl-plano-nome {
+  font-weight: 700;
+  font-size: 15px;
+}
+.pl-plano-valor {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pl-plano-resumo {
+  grid-column: 2 / -1;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ed-suave);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-plano {
+    transition: none;
+  }
+}
+/* link dentro de um aviso (ex.: "Liberar a edição" no prazo vencido): sublinhado e com altura de toque */
+.ed-aviso a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

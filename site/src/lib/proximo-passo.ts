@@ -7,6 +7,8 @@ export interface PassoSeguinte {
   titulo: string;
   texto: string;
   acao: { rotulo: string; href: string };
+  /** a ação principal aparece como link (quando o botão principal da tela está em outro lugar) */
+  discreta?: boolean;
   /** segunda ação, mais discreta */
   secundaria?: { rotulo: string; href: string };
 }
@@ -32,9 +34,13 @@ export function proximoPasso(e: EntradaDoPasso): PassoSeguinte {
 
   if (!infoDoEstado(e.estado).editavel)
     return {
-      titulo: 'Seu portfólio está travado para edição',
-      texto: 'O prazo de edição acabou. Você ainda pode ver como ficou.',
-      acao: { rotulo: 'Ver portfólio', href: '/app/editor/' },
+      titulo: 'O prazo de edição acabou',
+      texto: 'Seu portfólio continua no ar como está. Para publicar mudanças, libere a edição logo abaixo.',
+      // a ação principal (pedir a liberação) fica na seção logo abaixo; aqui só o link, sem segundo botão rosa
+      acao: e.slug
+        ? { rotulo: 'Abrir meu link', href: `/c/${e.slug}/` }
+        : { rotulo: 'Ver como liberar', href: '#liberar-edicao' },
+      discreta: true,
     };
 
   if (e.estado === 'aguardando_pagamento')

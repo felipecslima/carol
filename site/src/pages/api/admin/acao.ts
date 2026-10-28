@@ -2,7 +2,7 @@
 import type { APIRoute } from 'astro';
 import { consulta } from '@server/banco';
 import { equipeDoPedido } from '@server/equipe';
-import { marcarComoPago } from '@server/publicacao';
+import { marcarComoPago, marcarPedidoPago } from '@server/publicacao';
 
 export const prerender = false;
 
@@ -32,6 +32,14 @@ export const POST: APIRoute = async ({ request }) => {
 
   switch (c?.acao) {
     case 'pago': {
+      // por pedido (publicação ou edição); por link fica para o card do Slack e chamadas antigas
+      if (c.pedido) {
+        if (!/^[0-9a-f-]{36}$/.test(c.pedido)) return erro('Pedido inválido.');
+        const r = await marcarPedidoPago(c.pedido);
+        if (!r.ok) return erro(r.erro ?? 'Não deu para marcar como pago.', 404);
+        await registrar('pedido_pago', c.pedido, { tipo: r.tipo });
+        return Response.json({ ok: true, tipo: r.tipo });
+      }
       if (!slugOk) return erro('Link inválido.');
       const r = await marcarComoPago(slugOk);
       if (!r.ok) return erro(r.erro ?? 'Não deu para marcar como pago.', 404);

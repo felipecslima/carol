@@ -1,6 +1,8 @@
 // Projeto da creator na nuvem (tabela `projects`, uma linha por tipo). Só o conteúdo: estado, link e versão publicada
 // são do servidor. Chamado quando há sessão; sem sessão o editor salva só no aparelho (persistencia.ts).
 import type { Json } from '@lib/banco.tipos';
+import { acessoDa, estadoParaMostrar, type Acesso } from '@lib/acesso';
+import type { IdDoPlano } from '@lib/planos';
 import { projetoSchema, type Projeto } from '@lib/projeto';
 import { supabase } from './supabase';
 
@@ -134,7 +136,9 @@ export async function removerMidia(m: Midia): Promise<boolean> {
 export interface Resumo {
   id: string;
   projeto: Projeto;
+  /** estado para mostrar (no ar com prazo vencido aparece como edição travada, DEV-192) */
   estado: string;
+  acesso: Acesso;
   /** link no ar ou reservado; vazio enquanto não pediu para publicar */
   slug: string;
   atualizadoEm: string;
@@ -143,14 +147,69 @@ export interface Resumo {
 export async function carregarResumo(): Promise<Resumo | null> {
   const { data } = await supabase
     .from('projects')
-    .select('id, status, slug, atualizado_em')
+    .select('id, status, slug, atualizado_em, prazo_edicao')
     .eq('tipo', 'site')
     .eq('dono', await meuId())
     .maybeSingle();
   const projeto = await carregarDaNuvem();
-  return data && projeto
-    ? { id: data.id, projeto, estado: data.status, slug: data.slug ?? '', atualizadoEm: data.atualizado_em }
-    : null;
+  if (!data || !projeto) return null;
+  const acesso = await acessoDoProjeto(data);
+  return {
+    id: data.id,
+    projeto,
+    estado: estadoParaMostrar(data.status, acesso),
+    acesso,
+    slug: data.slug ?? '',
+    atualizadoEm: data.atualizado_em,
+  };
+}
+
+/** Regras de acesso (DEV-190) com os pedidos e o Premium dela. A tela só explica; quem decide é o servidor. */
+async function acessoDoProjeto(p: { id: string; status: string; prazo_edicao: string | null }): Promise<Acesso> {
+  const eu = await meuId();
+  const [pedidos, premium] = await Promise.all([
+    supabase.from('orders').select('plano, status, pago_em').eq('projeto_id', p.id),
+    supabase.from('premium_grants').select('validade, molde').eq('creator', eu).in('molde', ['site', 'os-dois']),
+  ]);
+  const agora = new Date().toISOString();
+  return acessoDa({
+    logado: true,
+    estado: p.status,
+    prazoEdicao: p.prazo_edicao,
+    pedidos: (pedidos.data ?? []).map((x) => ({ plano: x.plano, status: x.status, pagoEm: x.pago_em })),
+    premium: (premium.data ?? []).some((g) => !g.validade || g.validade > agora),
+  });
+}
+
+/** Acesso do projeto de quem está logado; `null` se ainda não há projeto na conta (pode publicar: abre o pedido). */
+export async function carregarAcesso(): Promise<Acesso | null> {
+  const { data } = await supabase
+    .from('projects')
+    .select('id, status, prazo_edicao')
+    .eq('tipo', 'site')
+    .eq('dono', await meuId())
+    .maybeSingle();
+  return data ? acessoDoProjeto(data) : null;
+}
+
+/** Pede para liberar a edição depois do prazo (DEV-193). Devolve a mensagem de erro, ou `null` se deu certo. */
+export async function pedirEdicao(plano: IdDoPlano): Promise<string | null> {
+  if (!navigator.onLine) return 'Você está sem internet. Conecte e tente de novo.';
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) return 'Sua sessão acabou. Entre de novo.';
+  try {
+    const resposta = await fetch('/api/pedido/edicao', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ plano }),
+    });
+    if (resposta.ok) return null;
+    const corpo = (await resposta.json().catch(() => null)) as { erro?: string } | null;
+    return corpo?.erro ?? 'Não conseguimos enviar o pedido agora. Tente de novo em instantes.';
+  } catch {
+    return 'Não conseguimos falar com o servidor. Confira a internet e tente de novo.';
+  }
 }
 
 export interface Perfil {
@@ -238,7 +297,12 @@ export type RespostaDePublicar =
   { ok: true; estado: 'aguardando_pagamento' | 'no_ar'; slug: string } | { ok: false; erro: string };
 
 /** Salva o rascunho e pede a publicação ao servidor. O servidor confere tudo de novo; a mensagem de erro vem em português. */
-export async function publicar(donoId: string, projeto: Projeto, slug: string): Promise<RespostaDePublicar> {
+export async function publicar(
+  donoId: string,
+  projeto: Projeto,
+  slug: string,
+  plano: IdDoPlano,
+): Promise<RespostaDePublicar> {
   if (!navigator.onLine) return { ok: false, erro: 'Você está sem internet. Conecte e toque em Publicar de novo.' };
   if ((await salvarNaNuvem(donoId, projeto)) !== 'ok')
     return { ok: false, erro: 'Não conseguimos salvar o seu portfólio agora. Tente de novo em instantes.' };
@@ -249,7 +313,7 @@ export async function publicar(donoId: string, projeto: Projeto, slug: string): 
     const resposta = await fetch('/api/publicar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ slug }),
+      body: JSON.stringify({ slug, plano }),
     });
     const corpo = (await resposta.json().catch(() => null)) as {
       erro?: string;

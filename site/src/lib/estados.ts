@@ -35,7 +35,7 @@ export const INFO_DO_ESTADO: Record<EstadoDoProjeto, InfoDoEstado> = {
   },
   edicao_travada: {
     rotulo: 'Edição travada',
-    descricao: 'O prazo de edição acabou. Você pode ver o portfólio, mas não mudar.',
+    descricao: 'O prazo de edição acabou. O portfólio continua no ar; para publicar mudanças, libere a edição.',
     editavel: false,
     botao: { texto: 'Ver portfólio', acao: 'ver' },
   },
