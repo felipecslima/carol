@@ -167,7 +167,10 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
     <MovimentoDoApp>
       <div className={`ed${painel ? ' ed--gaveta' : ''}`}>
         <header className="ed-topo">
-          <Marca />
+          {/* a marca leva para a área (Início): o editor salva sozinho, nada se perde ao sair */}
+          <a href="/app/" className="marca-link" aria-label="Portfólio Creator: ir para o início">
+            <Marca />
+          </a>
           <div className="ed-topo-acoes">
             <button
               type="button"

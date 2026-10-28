@@ -50,6 +50,13 @@
   background: var(--ed-card);
   border-bottom: 1px solid var(--ed-borda);
 }
+/* a marca leva ao Início: alvo de toque de 44 px de altura */
+.ed-topo .marca-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+}
 .ed-marca {
   font-weight: 800;
   letter-spacing: -0.03em;

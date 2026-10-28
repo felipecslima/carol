@@ -22,6 +22,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
     - **DEV-098**, menu do topo pelas seções (`eb4bebe`);
     - **DEV-099**, espaçamento (`b7a2717`);
     - **DEV-235**, validação de WhatsApp e e-mail (commit seguinte).
+  - Marca do editor leva ao Início (`/app/`), aprovada em 28/out.
   - **Próximo:** (2) DEV-082.
   - (2) DEV-082: não perder edição quando salvar na conta falha (achado confirmado: recarregar online apagava a edição feita sem conexão).
   - (3) DEV-232: foco e teclado no editor (anel de foco dos blocos a ~1,2:1, foco entrando na gaveta, atalhos, Delete esconde a seção).
