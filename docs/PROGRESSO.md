@@ -17,7 +17,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **Em andamento (27/out): correções da revisão de UX do editor**, uma tarefa por vez, cada uma com aprovação e commit:
   - (0) commit do trabalho pendente (feito).
   - (1) **DEV-096, sem modelos** (aprovada, commit `787a989`). Decisão do usuário: acabam os modelos para escolher; o editor e as seções montam tudo. A etapa do assistente vira "Escolha suas cores" e os docs são atualizados. `modelo` fica só como valor interno `'nuvem'`, sem migração.
-  - (1b) **DEV-097:** proposta aprovada e aplicada em localhost. Esperando aprovação do resultado e a decisão sobre as imagens da vitrine.
+  - (1b) **DEV-097:** feita. Textos no commit `00e6357`; as imagens com o portfólio real da Carol, aprovadas ("ajusta tudo"), no commit seguinte.
   - (2) DEV-082: não perder edição quando salvar na conta falha (achado confirmado: recarregar online apagava a edição feita sem conexão).
   - (3) DEV-232: foco e teclado no editor (anel de foco dos blocos a ~1,2:1, foco entrando na gaveta, atalhos, Delete esconde a seção).
   - (4) DEV-093: topo em 320 px, abas no desktop e dica de primeiro uso.
@@ -37,12 +37,19 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
   - **Correções que você pediu junto:**
     - Saiu a promessa de "IA que lê os prints": ela digita os números (passo 2, plano, benefício e 2 perguntas).
     - Saiu o "até 10 vídeos": o editor não limita; o vídeo vai até 100 MB.
-  - **Vitrine:** "11 seções, *do seu jeito*", com 6 cartões (Capa, Vídeos, Números, Por que eu, Formatos e pacotes, Como eu trabalho) e os layouts de cada uma na legenda. São 3 colunas no desktop e 2 no celular.
-  - **Imagens:**
-    - As 6 da vitrine e as 2 do topo (exemplo claro e escuro) são tiradas do modo Ver do editor de verdade por `scripts/portfolio-creator-secoes.mjs` (780×892, 176 KB as 8).
-    - As 15 `modelo-*.webp` foram apagadas e o `portfolio-creator-shots.mjs` não gera mais modelos.
-    - A prévia de link (`og-portfolio-creator.jpg`) diz "Seções prontas" no lugar de "15 modelos".
-  - **Ponto fraco (crítica do impeccable):** as imagens mostram o conteúdo de exemplo vazio ("Sua foto", "[seu nome]", "00 mil") e cada cartão tem uma cor. Parecem rascunho perto do celular "Bia" do protótipo. **Decisão sua:** manter, refazer com um portfólio de exemplo preenchido (nome e textos genéricos, sem números) ou com o portfólio real da Carol (exige rodar o `seed:carol`, que grava na conta de teste).
+  - **Vitrine:** "11 seções, *do seu jeito*", com 6 cartões (Capa, Vídeos, Números, Público, Marcas, Formatos e pacotes) e os layouts de cada uma na legenda. O texto ao lado diz "As de baixo são do meu portfólio, montado aqui." São 3 colunas no desktop e 2 no celular.
+  - **Imagens (o portfólio real da Carol, numa cor só, com um cartão escuro; decisão sua):**
+    - Origem: tudo sai do modo Ver do editor de verdade, com o projeto da conta de teste. Esse projeto é preenchido pelo `seed:carol` só com dados do site dela (foto `p9.webp`, vídeos, 58,4 mil seguidores, público e marcas), na cor caramelo dela.
+    - Roteiro: `scripts/portfolio-creator-secoes.mjs`. Só lê o banco, põe o projeto no rascunho do navegador e gera:
+      - as 6 imagens da vitrine;
+      - o celular grande do topo (`portfolio-carol.webp`, com a capa);
+      - as 2 imagens pequenas (vídeos na página clara, números na escura);
+      - a prévia de link `og-portfolio-creator.jpg`, que diz "Seções prontas" e mostra o celular da Carol.
+    - A seção do modo iniciante continua com o celular "Bia" do protótipo (`portfolio-iniciante.webp`), porque ali o assunto é quem ainda não tem números.
+    - As 15 `modelo-*.webp` foram apagadas, e o `portfolio-creator-shots.mjs` agora só gera o celular do modo iniciante e as fotos da Carol.
+    - O `seed:carol` agora cria o perfil se ele faltar. A conta de teste tinha ficado sem perfil, e o seed falhava.
+    - Apaguei 1 foto que sobrou no Cloudinary da primeira tentativa.
+    - **Pendente:** 3 fotos antigas sem registro no banco (24 e 25/out, pasta `creators/71134f88…`), provável sobra de testes de exclusão de conta. Você pediu para apagar, mas o controle de permissões do Claude Code bloqueou a exclusão no Cloudinary. Dá para apagar no painel do Cloudinary ou liberar a permissão. O roteiro está em `/tmp/rev/orfa.mjs` (`node orfa.mjs apagar <id>`).
   - **Achados que já existiam antes desta mudança (não mexi):** texto escuro sobre o rosa `#e5386a` a 4,3:1 (abaixo de 4,5:1) em 3 ou 4 pontos e 3 cores fora do DESIGN.md na linha 177.
   - O site só muda em produção no merge na `main`.
 

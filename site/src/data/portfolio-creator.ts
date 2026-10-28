@@ -64,15 +64,15 @@ export const BENEFITS = [
   { title: 'Quem assiste você', text: 'Gênero, idade e cidades do seu público em gráficos fáceis de ler.' },
 ];
 
-// vitrine de seções: imagens tiradas do editor de verdade por scripts/portfolio-creator-secoes.mjs
+// vitrine de seções: o portfólio real da Carol no editor, fotografado por scripts/portfolio-creator-secoes.mjs
 // (public/media/pc/secao-<file>.webp); os layouts são os nomes das variações em src/blocks/registro.ts
 export const SECOES = [
   { name: 'Capa', layouts: 'foto grande, foto redonda ou foto e vídeo de fundo', file: 'capa' },
   { name: 'Vídeos', layouts: 'carrossel, grade ou um grande e os outros pequenos', file: 'videos' },
   { name: 'Números', layouts: 'cards ou barras comparando', file: 'numeros' },
-  { name: 'Por que eu', layouts: 'lista ou cards', file: 'motivos' },
+  { name: 'Público', layouts: 'idade ou cidades', file: 'publico' },
+  { name: 'Marcas', layouts: 'logos ou nomes em lista', file: 'marcas' },
   { name: 'Formatos e pacotes', layouts: 'cards ou tabela', file: 'formatos' },
-  { name: 'Como eu trabalho', layouts: 'passos em cartões ou linha', file: 'processo' },
 ];
 
 export const TRIAL = [

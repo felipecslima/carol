@@ -1,5 +1,5 @@
 // Gera as imagens da página /portfolio-creator/ a partir do protótipo do handoff (portfolio-creator-handoff.zip):
-// o portfólio no modo iniciante (dentro do celular), a prévia de link e as fotos da Carol. As imagens das seções e do
+// o portfólio no modo iniciante (dentro do celular) e as fotos da Carol. As imagens das seções e do
 // exemplo vêm do editor de verdade: scripts/portfolio-creator-secoes.mjs (os modelos deixaram de existir, DEV-096).
 // Uso: node scripts/portfolio-creator-shots.mjs <pasta portfolio-creator-handoff descompactada>
 // Os .dc.html do protótipo dependem do support.js do canvas de design, que não vem no pacote; aqui o
@@ -55,35 +55,7 @@ async function shot(file, { width, height, scale, name, outWidth }) {
 // celular no modo iniciante: a tela tem 390 px, como num iPhone
 await shot('PortfolioIniciante.dc.html', { width: 390, height: 800, scale: 2, name: 'portfolio-iniciante.webp', outWidth: 624 });
 
-// prévia de link (WhatsApp/Instagram) da página, 1200×630, com o título do hero e o celular do modo iniciante
-const phone = readFileSync(join(out, 'portfolio-iniciante.webp')).toString('base64');
-const og = await browser.newPage({ viewport: { width: 1200, height: 630 } });
-await og.setContent(`<!doctype html><html><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@500;600&display=block" rel="stylesheet">
-<style>
-  * { margin: 0; box-sizing: border-box; }
-  body { width: 1200px; height: 630px; overflow: hidden; background: #24130F; color: #FBF4EC; display: flex; align-items: center; padding: 0 64px 0 72px; gap: 56px; }
-  .text { flex: 1; }
-  .logo { font-family: 'Instrument Serif', serif; font-size: 30px; letter-spacing: -0.01em; }
-  i, em { color: #FF8FB0; }
-  h1 { margin: 34px 0 30px; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 76px; line-height: 0.96; letter-spacing: -0.02em; text-wrap: balance; }
-  p { font-family: 'Hanken Grotesk', sans-serif; font-weight: 500; font-size: 22px; line-height: 1.45; color: #D2BFB6; max-width: 560px; }
-  .cta { display: inline-flex; align-items: center; margin-top: 34px; padding: 15px 26px; border-radius: 999px; background: #D42A5B; color: #fff; font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 20px; }
-  .art { width: 280px; flex: none; margin-right: 24px; }
-  .phone { background: #2D1A14; padding: 8px; border-radius: 34px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45); transform: rotate(3deg); }
-  .phone img { display: block; width: 100%; border-radius: 27px; }
-</style></head><body>
-  <div class="text">
-    <div class="logo">Portfólio <i>Creator</i></div>
-    <h1>Seu primeiro portfólio de <em>creator.</em></h1>
-    <p>Mesmo com zero publi. Seções prontas, PDF e link próprio, por Carol Limah.</p>
-    <div class="cta">Testar grátis</div>
-  </div>
-  <div class="art"><div class="phone"><img src="data:image/webp;base64,${phone}" alt=""></div></div>
-</body></html>`, { waitUntil: 'networkidle' });
-await og.evaluate(() => document.fonts.ready);
-await og.screenshot({ path: fileURLToPath(new URL('../public/og-portfolio-creator.jpg', import.meta.url)), type: 'jpeg', quality: 88 });
-console.log('gravada og-portfolio-creator.jpg');
+// a prévia de link (og-portfolio-creator.jpg) sai de scripts/portfolio-creator-secoes.mjs, com o celular da Carol
 await browser.close();
 
 // fotos da Carol: retrato 4:5 da seção "Oi, eu sou a Carol" e miniatura redonda do topo

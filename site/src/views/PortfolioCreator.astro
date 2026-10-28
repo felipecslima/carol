@@ -103,9 +103,9 @@ const jsonLd = {
           <p class="hero-note">Você monta o seu portfólio na hora, sem cartão de crédito. Só paga se quiser publicar, e tem 7 dias para desistir da compra.</p>
         </div>
         <div class="collage">
-          <img class="main" src="/media/pc/portfolio-iniciante.webp" alt="Exemplo de portfólio no modo iniciante, no celular" width="624" height="1280" fetchpriority="high" />
-          <img class="small" src="/media/pc/exemplo-claro.webp" alt="Portfólio de exemplo com a capa de foto redonda, cor Lavanda" width="480" height="549" loading="lazy" />
-          <img class="vid" src="/media/pc/exemplo-escuro.webp" alt="O mesmo portfólio com a página escura" width="480" height="549" loading="lazy" />
+          <img class="main" src="/media/pc/portfolio-carol.webp" alt="Portfólio da Carol Limah feito no Portfólio Creator, no celular" width="624" height="1280" fetchpriority="high" />
+          <img class="small" src="/media/pc/exemplo-claro.webp" alt="Seção de vídeos do portfólio da Carol Limah, página clara" width="480" height="549" loading="lazy" />
+          <img class="vid" src="/media/pc/exemplo-escuro.webp" alt="Números do portfólio da Carol Limah, página escura" width="480" height="549" loading="lazy" />
           <div class="seal">Feito pela<br /><i>Carol Limah</i></div>
         </div>
       </header>
@@ -184,13 +184,13 @@ const jsonLd = {
         <div class="wrap">
           <div class="sec-head">
             <h2 class="h2">11 seções, <em>do seu jeito</em></h2>
-            <div class="sec-aside"><p>Cada seção tem 2 ou 3 layouts. Você escolhe quais entram, em que ordem, e ajusta cor, fonte e cantos.</p></div>
+            <div class="sec-aside"><p>Cada seção tem 2 ou 3 layouts. Você escolhe quais entram, em que ordem, e ajusta cor, fonte e cantos. As de baixo são do meu portfólio, montado aqui.</p></div>
           </div>
           <ul class="models">
             {SECOES.map((s, i) => (
               <li style={`--i: ${i}`}>
                 <figure>
-                  <img src={`/media/pc/secao-${s.file}.webp`} alt={`Seção ${s.name} no portfólio de exemplo`} width="480" height="549" loading="lazy" />
+                  <img src={`/media/pc/secao-${s.file}.webp`} alt={`Seção ${s.name} no portfólio da Carol Limah`} width="480" height="549" loading="lazy" />
                   <figcaption><b>{s.name}</b><span>{s.layouts}</span></figcaption>
                 </figure>
               </li>

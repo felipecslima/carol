@@ -37,6 +37,15 @@ if (!usuario) usuario = await api('/auth/v1/admin/users', { method: 'POST', body
 const uid = usuario.id;
 console.log('usuário:', EMAIL_DE_TESTE, uid.slice(0, 8) + '…');
 
+// ---------- perfil (dados do site) ----------
+// cria ou atualiza antes da foto: mídias e projeto apontam para o perfil, que pode faltar (ex.: depois de um teste
+// de exclusão de conta)
+await api('/rest/v1/profiles?on_conflict=id', {
+  method: 'POST',
+  headers: { Prefer: 'resolution=merge-duplicates,return=minimal' },
+  body: JSON.stringify({ id: uid, nome: 'Carol Limah', arroba: '@eu.carollimah', whatsapp: '+55 12 99137-6550', cidade: 'São Paulo', nicho: 'Viagem e gastronomia', modo_iniciante: false }),
+});
+
 // ---------- 2) foto (Cloudinary, pasta da creator) ----------
 let foto = (await api(`/rest/v1/media?dono=eq.${uid}&nome=eq.${encodeURIComponent(basename(FOTO))}&select=public_id`))[0];
 if (!foto) {
@@ -61,12 +70,6 @@ const img = (t) => `https://res.cloudinary.com/${CLOUD}/image/upload/${t}/${foto
 const fotoCapa = img('c_thumb,g_face,w_600,h_600,f_auto,q_auto'); // recorte no rosto para o círculo da capa
 const fotoSobre = img('c_fill,ar_4:5,g_auto,w_800,f_auto,q_auto');
 console.log('foto no Cloudinary:', foto.public_id.slice(0, 30) + '…');
-
-// ---------- 3) perfil (dados do site) ----------
-await api(`/rest/v1/profiles?id=eq.${uid}`, {
-  method: 'PATCH',
-  body: JSON.stringify({ nome: 'Carol Limah', arroba: '@eu.carollimah', whatsapp: '+55 12 99137-6550', cidade: 'São Paulo', nicho: 'Viagem e gastronomia', modo_iniciante: false }),
-});
 
 // ---------- 4) projeto ----------
 // vídeos do portfólio dela no Cloudinary (pasta carol-limah/); títulos, marcas e views de MEDIA em content.ts
