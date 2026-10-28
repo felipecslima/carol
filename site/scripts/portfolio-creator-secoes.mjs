@@ -23,11 +23,10 @@ const SECOES = [
   { arquivo: 'secao-marcas', bloco: 'marcas', clima: 'claro' },
   { arquivo: 'secao-formatos', bloco: 'formatos', clima: 'claro' },
 ];
-const TOPO = [
-  // as duas imagens pequenas ao lado do celular (que já mostra a capa): outras partes da página, clara e escura
-  { arquivo: 'exemplo-claro', bloco: 'videos', clima: 'claro' },
-  { arquivo: 'exemplo-escuro', bloco: 'numeros', clima: 'escuro' },
-];
+// as duas imagens pequenas ao lado do celular do topo (que já mostra a capa), cada uma na proporção exata do seu
+// espaço na página (global.css: .collage .small é 3:4 e .collage .vid é 9:16), para nada sair cortado
+const TOPO_NUMEROS = { arquivo: 'topo-numeros', bloco: 'numeros', saida: { width: 600, height: 800 } };
+const TOPO_REEL = { arquivo: 'topo-reel', saida: { width: 450, height: 800 } };
 
 // proporção do cartão da página: 480 × 549; a imagem sai com 780 px de largura (o dobro dos 390 px da tela), para
 // ficar nítida no cartão de 375 px do desktop em tela retina
@@ -107,7 +106,7 @@ async function salvar(png, arquivo) {
   console.log(`${arquivo}.webp`);
 }
 
-for (const s of [...SECOES, ...TOPO]) {
+for (const s of SECOES) {
   const { ctx, page } = await abrirVer(s.clima);
   const secao = page.locator(`.ed-ver section.bl-${s.bloco}`);
   await page.evaluate((b) => document.querySelector(`.ed-ver section.bl-${b}`)?.scrollIntoView({ block: 'start' }), s.bloco);
@@ -121,14 +120,46 @@ for (const s of [...SECOES, ...TOPO]) {
   await ctx.close();
 }
 
-// celular grande do topo: a página dela inteira de cima, como num iPhone (390 × 800, imagem de 624 × 1280)
+// topo, cartão 3:4: os números na página clara, a largura toda da tela e a altura que fecha 3:4
 {
   const { ctx, page } = await abrirVer('claro');
-  await page.setViewportSize({ width: LARGURA, height: 800 });
+  const secao = page.locator(`.ed-ver section.bl-${TOPO_NUMEROS.bloco}`);
+  await page.evaluate((b) => document.querySelector(`.ed-ver section.bl-${b}`)?.scrollIntoView({ block: 'start' }), TOPO_NUMEROS.bloco);
+  await page.waitForTimeout(900);
+  const caixa = await secao.boundingBox();
+  const png = await page.screenshot({ clip: { x: 0, y: caixa.y, width: LARGURA, height: Math.round((LARGURA * 4) / 3) } });
+  await sharp(png).resize(TOPO_NUMEROS.saida).webp({ quality: 80 }).toFile(join(out, `${TOPO_NUMEROS.arquivo}.webp`));
+  console.log(`${TOPO_NUMEROS.arquivo}.webp`);
+  await ctx.close();
+}
+
+// topo, cartão 9:16: um reel dela, a capa do primeiro vídeo da seção Vídeos (o elemento já é 9:16)
+{
+  const { ctx, page } = await abrirVer('claro');
+  const capa = page.locator('.ed-ver section.bl-videos .bl-video-capa').first();
+  // a etiqueta "Com som" é controle do player; no cartão da página ela sairia cortada no canto
+  await page.addStyleTag({ content: '.bl-video-som { display: none !important; }' });
+  await capa.scrollIntoViewIfNeeded();
   await page.waitForTimeout(900);
   await imagensProntas(page);
-  const png = await page.screenshot({ clip: { x: 0, y: 0, width: LARGURA, height: 800 } });
-  await sharp(png).resize({ width: 624 }).webp({ quality: 82 }).toFile(join(out, 'portfolio-carol.webp'));
+  const png = await capa.screenshot();
+  await sharp(png).resize({ ...TOPO_REEL.saida, fit: 'cover' }).webp({ quality: 80 }).toFile(join(out, `${TOPO_REEL.arquivo}.webp`));
+  console.log(`${TOPO_REEL.arquivo}.webp`);
+  await ctx.close();
+}
+
+// celular grande do topo: a capa dela, na proporção do espaço na página (.pc .collage .main: 285 × 523 no desktop,
+// 0,545; com 390 px de largura dá 716 px de altura). Só a capa aparece: as seções seguintes e o botão fixo de contato
+// saem da foto, e o fundo da página completa a altura, para nenhuma faixa ficar cortada no meio. Imagem de 624 × 1146.
+{
+  const altura = Math.round(LARGURA / 0.545);
+  const { ctx, page } = await abrirVer('claro');
+  await page.addStyleTag({ content: '.ed-ver section.bl:not(.bl-capa), .bl-fixo-trilho { display: none !important; }' });
+  await page.setViewportSize({ width: LARGURA, height: altura });
+  await page.waitForTimeout(900);
+  await imagensProntas(page);
+  const png = await page.screenshot({ clip: { x: 0, y: 0, width: LARGURA, height: altura } });
+  await sharp(png).resize({ width: 624, height: 1146, fit: 'cover', position: 'top' }).webp({ quality: 82 }).toFile(join(out, 'portfolio-carol.webp'));
   console.log('portfolio-carol.webp');
   await ctx.close();
 }

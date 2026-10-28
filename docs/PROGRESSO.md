@@ -42,8 +42,9 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
     - Origem: tudo sai do modo Ver do editor de verdade, com o projeto da conta de teste. Esse projeto é preenchido pelo `seed:carol` só com dados do site dela (foto `p9.webp`, vídeos, 58,4 mil seguidores, público e marcas), na cor caramelo dela.
     - Roteiro: `scripts/portfolio-creator-secoes.mjs`. Só lê o banco, põe o projeto no rascunho do navegador e gera:
       - as 6 imagens da vitrine;
-      - o celular grande do topo (`portfolio-carol.webp`, com a capa);
-      - as 2 imagens pequenas (vídeos na página clara, números na escura);
+      - o celular grande do topo (`portfolio-carol.webp`): só a capa, terminando no fundo da página;
+      - as 2 imagens pequenas: `topo-numeros.webp` (os três números, página clara) e `topo-reel.webp` (um reel dela, sem a etiqueta "Com som");
+      - todas as imagens do topo saem já na proporção exata do espaço em que aparecem (celular 0,545, cartão 3:4, reel 9:16). Antes, a página cortava o que sobrava, e o enquadramento ficava ruim (você reclamou em 28/out);
       - a prévia de link `og-portfolio-creator.jpg`, que diz "Seções prontas" e mostra o celular da Carol.
     - A seção do modo iniciante continua com o celular "Bia" do protótipo (`portfolio-iniciante.webp`), porque ali o assunto é quem ainda não tem números.
     - As 15 `modelo-*.webp` foram apagadas, e o `portfolio-creator-shots.mjs` agora só gera o celular do modo iniciante e as fotos da Carol.
