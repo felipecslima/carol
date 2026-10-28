@@ -22,6 +22,7 @@ import { PainelMidias } from './PainelMidias';
 import { PainelRevisao } from './PainelRevisao';
 import { Esqueleto } from './Esqueleto';
 import { Gaveta } from './Gaveta';
+import { MenuMais } from './MenuMais';
 import { PainelNumeros } from './PainelNumeros';
 import {
   Foguete,
@@ -69,6 +70,14 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   // /app/editor/?ver=1 abre direto no modo Ver (o botão "Ver como a marca vê" da área)
   const [ver, setVer] = useState(() => new URLSearchParams(window.location.search).get('ver') === '1');
   const [aviso, setAviso] = useState<string | null>(null);
+  // remover apaga de verdade: o Desfazer fica 10 s (os outros avisos, 6 s); o tempo para enquanto o mouse ou o foco
+  // estão no aviso, para quem chega até ele pelo teclado ou leitor de tela (DEV-095)
+  const duracaoDoAviso = useRef(6000);
+  const [avisoPausado, setAvisoPausado] = useState(false);
+  const avisar = useCallback((texto: string, ms = 6000) => {
+    duracaoDoAviso.current = ms;
+    setAviso(texto);
+  }, []);
   const primeiraVez = useRef(true);
 
   // DEV-082: grava no aparelho e, com conta, na conta. As gravações na conta saem uma de cada vez (fila), para uma
@@ -133,10 +142,10 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   }, [situacao]);
 
   useEffect(() => {
-    if (!aviso) return;
-    const t = setTimeout(() => setAviso(null), 6000);
+    if (!aviso || avisoPausado) return;
+    const t = setTimeout(() => setAviso(null), duracaoDoAviso.current);
     return () => clearTimeout(t);
-  }, [aviso]);
+  }, [aviso, avisoPausado]);
 
   // com a gaveta aberta, leva o bloco em edição para o alto da área visível, acima da gaveta
   useEffect(() => {
@@ -191,11 +200,11 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   // esconder avisa e oferece desfazer: a seção não some sem rastro
   const esconder = (id: string) => {
     e.esconder(id);
-    setAviso('Seção escondida. Ela fica guardada em Seções.');
+    avisar('Seção escondida. Ela fica guardada em Seções.');
   };
   const remover = (id: string) => {
     e.remover(id);
-    setAviso('Seção removida de vez.');
+    avisar('Seção removida.', 10000);
   };
   const desfazer = () => editor.temporal.getState().undo();
   const refazer = () => editor.temporal.getState().redo();
@@ -393,6 +402,10 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
               key="aviso"
               className="ed-toast"
               role="status"
+              onPointerEnter={() => setAvisoPausado(true)}
+              onPointerLeave={() => setAvisoPausado(false)}
+              onFocus={() => setAvisoPausado(true)}
+              onBlur={() => setAvisoPausado(false)}
               style={{ x: '-50%' }}
               initial={{ opacity: 0, y: -14, scale: 0.94 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -411,7 +424,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
           <motion.div
             key={bloco.id}
             className="ed-flutuante"
-            role="toolbar"
+            role="group"
             aria-label={`Ações de ${definicao?.nome}`}
             style={{ x: '-50%' }}
             initial={{ opacity: 0, y: 18, scale: 0.94 }}
@@ -439,20 +452,27 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
             >
               <Descer />
             </button>
+            {/* esconder e remover são raros e um deles apaga: ficam no "Mais", fora do alcance do toque sem querer */}
             {!definicao?.fixo && (
-              <button
-                type="button"
-                onClick={() => esconder(bloco.id)}
-                title="Esconder (Delete)"
-                aria-keyshortcuts="Delete"
-              >
-                <Esconder /> Esconder
-              </button>
-            )}
-            {!definicao?.fixo && (
-              <button type="button" onClick={() => remover(bloco.id)}>
-                <Lixeira /> Remover
-              </button>
+              <MenuMais
+                rotulo={`Mais ações de ${definicao?.nome}`}
+                itens={[
+                  {
+                    rotulo: 'Esconder',
+                    icone: <Esconder />,
+                    aoEscolher: () => esconder(bloco.id),
+                    detalhe: 'Some da página e fica guardada em Seções',
+                    atalho: 'Delete',
+                  },
+                  {
+                    rotulo: 'Remover',
+                    icone: <Lixeira />,
+                    aoEscolher: () => remover(bloco.id),
+                    detalhe: 'Apaga a seção e o que você escreveu nela',
+                    perigo: true,
+                  },
+                ]}
+              />
             )}
           </motion.div>
         )}
@@ -488,6 +508,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
           </button>
           <button
             type="button"
+            className={podePublicar(alertas) ? 'ed-aba-publicar ed-aba-publicar--pronto' : 'ed-aba-publicar'}
             aria-pressed={painel === 'revisao'}
             onClick={() => setPainel(painel === 'revisao' ? null : 'revisao')}
             // o número de pendências é lido junto com o nome do botão (no span ele era lido sozinho, solto)
@@ -562,7 +583,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
               aoSalvar={(n) => {
                 e.substituir(aplicarNumeros(projeto, n));
                 setPainel(null);
-                setAviso('Números aplicados.');
+                avisar('Números aplicados.');
               }}
             />
           )}
@@ -604,7 +625,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
             projeto={projeto}
             aoMudar={(mudanca, texto) => {
               e.substituir({ ...projeto, ...mudanca });
-              setAviso(`${texto} aplicado.`);
+              avisar(`${texto} aplicado.`);
             }}
           />
         </Gaveta>

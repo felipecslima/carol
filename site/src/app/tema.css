@@ -879,3 +879,117 @@
 .ed-toast--dica button {
   pointer-events: auto;
 }
+
+/* ---------- hierarquia (DEV-095): o rosa fica para Publicar e para a seção selecionada ---------- */
+/* Publicar é o fim do caminho: botão contido, em rosa, dentro da barra; o número de pendências vai junto */
+.ed-abas .ed-aba-publicar {
+  margin: 6px 6px 6px 2px;
+  min-height: 48px;
+  border-radius: 14px;
+}
+/* com pendências: só o contorno (não chama para publicar antes da hora); pronto para publicar: rosa cheio */
+.ed-abas .ed-aba-publicar:not(.ed-aba-publicar--pronto) {
+  box-shadow: inset 0 0 0 1.5px var(--ed-rosa-escuro);
+  color: var(--ed-rosa-escuro);
+}
+.ed-abas .ed-aba-publicar--pronto {
+  background: var(--ed-rosa);
+  color: #fff;
+}
+.ed-abas .ed-aba-publicar--pronto:hover,
+.ed-abas .ed-aba-publicar--pronto[aria-pressed='true'] {
+  background: var(--ed-rosa-hover);
+  color: #fff;
+}
+.ed-abas .ed-aba-publicar:not(.ed-aba-publicar--pronto)[aria-pressed='true'] {
+  background: rgba(255, 143, 176, 0.14);
+  color: var(--ed-rosa-escuro);
+}
+.ed-aba-publicar .ed-pendencias {
+  top: -6px;
+  left: auto;
+  right: -4px;
+  border: 2px solid #24130f;
+}
+/* aba aberta: creme com um fio em cima (antes rosa, o mesmo do Publicar e da seleção) */
+.ed-abas button[aria-pressed='true']:not(.ed-aba-publicar) {
+  color: #fbf4ec;
+  font-weight: 800;
+  box-shadow: inset 0 3px 0 #fbf4ec;
+}
+/* Entrar e a barra de progresso em tons neutros */
+.ed-entrar {
+  color: var(--ed-texto);
+}
+.ed-progresso-barra span {
+  background: var(--ed-suave);
+}
+
+/* menu "Mais" da barra flutuante */
+.ed-mais {
+  position: relative;
+}
+.ed-mais-menu {
+  position: absolute;
+  right: -6px;
+  bottom: calc(100% + 12px);
+  display: grid;
+  width: min(280px, calc(100vw - 24px));
+  padding: 6px;
+  border-radius: 16px;
+  background: #fbf4ec;
+  color: #24130f;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+}
+.ed-flutuante .ed-mais-botao {
+  padding: 0 14px 0 10px;
+}
+.ed-flutuante .ed-mais-item {
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: left;
+}
+.ed-mais-item svg {
+  flex: none;
+  margin-top: 1px;
+}
+.ed-mais-texto {
+  display: grid;
+  gap: 2px;
+}
+.ed-mais-rotulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ed-mais-detalhe {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #5a443e;
+}
+.ed-mais-atalho {
+  display: none;
+  font:
+    600 12px 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  color: #7a625b;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ed-mais-atalho {
+    display: inline;
+  }
+}
+.ed-flutuante .ed-mais-item--perigo {
+  color: #8a1c16;
+}
+.ed-mais-item:focus-visible {
+  outline: 3px solid #24130f;
+  outline-offset: -3px;
+}
