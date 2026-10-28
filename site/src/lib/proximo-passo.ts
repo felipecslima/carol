@@ -26,7 +26,7 @@ export function proximoPasso(e: EntradaDoPasso): PassoSeguinte {
   if (!e.temProjeto)
     return {
       titulo: 'Monte seu portfólio',
-      texto: 'Responda algumas perguntas, escolha o modelo e ajuste tudo no celular.',
+      texto: 'Responda algumas perguntas e monte seu portfólio com as seções, no celular.',
       acao: { rotulo: 'Começar', href: '/app/novo/' },
     };
 

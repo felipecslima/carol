@@ -28,7 +28,7 @@ export default function App() {
       <p className="app-lead">
         {temRascunho
           ? 'Continue de onde parou: tudo o que você escreveu está salvo neste aparelho.'
-          : 'Responda algumas perguntas, escolha o modelo e ajuste tudo no celular, em cima do resultado final.'}
+          : 'Responda algumas perguntas e monte seu portfólio com as seções, no celular, em cima do resultado final.'}
       </p>
       <a className="app-cta" href={temRascunho ? '/app/editor/' : '/app/novo/'}>
         {temRascunho ? 'Continuar editando' : 'Começar'}

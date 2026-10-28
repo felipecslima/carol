@@ -2,19 +2,21 @@
 
 Atualizado em 23/out/2026. Substitui o plano antigo em que a creator mandava o material e a equipe montava o portfólio.
 
+**Decisão de 27/out/2026: sem modelos.** Não há modelos para escolher nem trocar. A creator começa no editor com as seções de exemplo e monta o próprio portfólio adicionando, escondendo, removendo e reordenando seções (as seções montam qualquer template). O visual se ajusta na aba Estilo: cor (3 paletas prontas ou cor própria), fonte, cantos, claro ou escuro. "Nuvem" é só o nome do estilo padrão (`site/src/themes/modelos/nuvem.ts`). Onde este documento falava de modelos, o texto foi ajustado.
+
 ## Versão 1: o que fica de fora
 
 Leitura de prints (OCR e IA), IA no assistente, entrar com Google e gateway de pagamento ficam para depois. Na versão 1 a creator digita os números com um guia, o assistente não usa IA e o login é só por código no e-mail. Onde este documento descreve essas partes, vale como plano futuro.
 
 ## A decisão
 
-A creator monta o próprio site e portfólio num construtor no estilo Canva/Elementor, com **blocos prontos, paletas prontas e conteúdo de exemplo (placeholder) em tudo**, que ela troca pelo dela. Ela tem liberdade para montar, mas o visual fica sempre nas mãos do modelo, com as nossas travas de segurança.
+A creator monta o próprio site e portfólio num construtor no estilo Canva/Elementor, com **blocos prontos, paletas prontas e conteúdo de exemplo (placeholder) em tudo**, que ela troca pelo dela. Ela tem liberdade para montar, mas o visual fica sempre nas mãos do estilo, com as nossas travas de segurança.
 
 - Tudo fica no repositório do site da Carol (Astro + Cloudflare).
 - O pagamento continua manual: a Carol manda o link.
 - O Claude Code deixa de ser obrigatório em cada pedido. O refino de texto vira um botão "Melhorar com IA" no editor.
 
-Regra de ouro: **ela escolhe o "o quê", o modelo garante o "como".** Liberdade em escolhas, nunca em valores (sem pixel, sem código de cor, sem CSS).
+Regra de ouro: **ela escolhe o "o quê", as seções e o estilo garantem o "como".** Liberdade em escolhas, nunca em valores (sem pixel, sem código de cor, sem CSS).
 
 ## O que ela pode criar
 
@@ -22,17 +24,17 @@ Regra de ouro: **ela escolhe o "o quê", o modelo garante o "como".** Liberdade 
 2. **Mídia kit**
 3. **Os dois juntos**
 
-Os três saem da **mesma base de conteúdo**. Ela pode trocar o que quiser (modelo, paleta, fontes, formato, dados, ordem dos blocos) **sem perder nada do que ela mesma fez**:
+Os três saem da **mesma base de conteúdo**. Ela pode trocar o que quiser (paleta, fontes, cantos, claro ou escuro, formato, dados, ordem dos blocos) **sem perder nada do que ela mesma fez**:
 
-- Trocar de modelo ou paleta só muda a pele; o conteúdo vai junto.
+- Trocar paleta ou estilo só muda a pele; o conteúdo vai junto.
 - Trocar de formato (site, mídia kit ou os dois) não apaga blocos: o que não cabe no formato novo fica em **Guardados** e volta com um toque.
 - Editar um dado (seguidores, bio, um vídeo) atualiza todas as saídas de uma vez: o site e o mídia kit, inclusive o PDF.
-- O que ela escreveu nunca é substituído por placeholder ao trocar de modelo. Placeholder só aparece onde ainda não tem conteúdo dela.
+- O que ela escreveu nunca é substituído por placeholder ao trocar o estilo ou o formato. Placeholder só aparece onde ainda não tem conteúdo dela.
 
 ## Princípios de usabilidade
 
 1. **A creator nunca sai do próprio portfólio.** Edita em cima do resultado final.
-2. **Nunca tela em branco.** O modelo já vem preenchido com exemplo e dicas da Carol.
+2. **Nunca tela em branco.** As seções já vêm preenchidas com exemplo e dicas da Carol.
 3. **Tudo a um toque, nada escondido.** Sem pressionar e segurar, sem deslizar escondido.
 4. **Nada se perde.** Desfazer em tudo e a bandeja de seções guardadas.
 5. **Controles embaixo**, onde o polegar alcança.
@@ -64,13 +66,13 @@ Os três saem da **mesma base de conteúdo**. Ela pode trocar o que quiser (mode
 | Contato | botões · formulário de briefing |
 | Texto livre | para quando nenhum bloco encaixar |
 
-As variações são de **layout**; os modelos mudam só a **pele** (fontes, cores, cantos, ornamentos). Um bloco bem feito funciona nos 15 modelos, e trocar de modelo não perde conteúdo.
+As variações são de **layout**; a aba Estilo muda só a **pele** (cores, fontes, cantos, claro ou escuro). Um bloco bem feito funciona em qualquer combinação de estilo, e trocar o estilo não perde conteúdo.
 
 **Um conteúdo, três saídas:** os blocos guardam dados, então o mesmo conteúdo gera o site, o mídia kit em PDF de 1 página e, depois, o link na bio.
 
 ## Paletas
 
-- Cada modelo vem com **3 paletas prontas**.
+- O estilo padrão vem com **3 paletas prontas**, e ela pode usar uma cor própria.
 - **Regra própria para gerar a paleta a partir da cor principal** que a creator escolher: segue a regra de cor dinâmica do Material Design 3 (detalhes abaixo). Precisa gerar os papéis de cor (`--fundo`, `--superficie`, `--texto`, `--destaque`, `--apoio`) com contraste garantido em todo par de texto e fundo, com as contas em HCT, o espaço de cor do Material.
 - Os blocos nunca usam cor direta, só os papéis.
 
@@ -104,11 +106,11 @@ A creator escolhe **uma cor** (ou tira da própria foto) e o sistema gera a pale
 | `--texto-suave` | onSurfaceVariant | variante 30 | variante 80 |
 | `--borda` | outlineVariant | variante 80 | variante 30 |
 
-**4. Fidelidade à cor dela.** O esquema padrão do Material (Tonal Spot) desbota a cor escolhida. Para creator, a cor é identidade, então usamos o esquema **Fidelity** (ou **Content**), que mantém a intensidade da cor original. Cada modelo pode escolher o esquema que combina com ele: Pop Color com **Vibrant**, Executivo com **Neutral**, Neon sempre no escuro.
+**4. Fidelidade à cor dela.** O esquema padrão do Material (Tonal Spot) desbota a cor escolhida. Para creator, a cor é identidade, então usamos o esquema **Fidelity** (ou **Content**), que mantém a intensidade da cor original. Outros esquemas (**Vibrant**, **Neutral**) ficam como opção futura do Estilo, se fizer sentido. (Antes cada modelo teria o seu esquema; descartado em 27/out/2026 junto com os modelos.)
 
 **5. Tirar a cor da foto.** A mesma biblioteca extrai a cor dominante de uma imagem (quantização + pontuação). Botão "Usar a cor da minha foto" na aba Estilo.
 
-**6. As 3 paletas prontas de cada modelo** passam a ser 3 cores de origem com a mesma regra. Tudo vira um sistema só: paleta pronta e cor dela geram os mesmos papéis.
+**6. As 3 paletas prontas** passam a ser 3 cores de origem com a mesma regra. Tudo vira um sistema só: paleta pronta e cor dela geram os mesmos papéis.
 
 **7. Contraste extra.** A biblioteca tem níveis de contraste (padrão, médio, alto); usamos o padrão e subimos só se a conferência de acessibilidade pedir.
 
@@ -140,12 +142,12 @@ Nunca aparece para ela: campo de margem, tamanho de fonte em número, código he
 
 ## A jornada no celular
 
-1. **Escolher o modelo (30 s):** cards em tela cheia deslizando de lado, bolinhas das paletas, "Usar este".
+1. **Escolher as cores (30 s):** "Escolha suas cores", as 3 paletas com nome e amostra acima da prévia da página, botão "Usar estas cores".
 2. **O assistente (2 min, ver "Diferenciais"):** nome, @, nicho e "Já fez alguma publi?". "Ainda não" liga o modo iniciante. O portfólio aparece com o nome dela na capa.
 3. **O editor:** no próprio portfólio rolando; tocar numa seção mostra a barrinha Editar · ↑ · ↓ · Esconder; "+" entre seções; barra fixa Seções · Estilo · Ver · Publicar; "Salvo ✓" e progresso no topo.
 4. **Editar texto ou foto:** gaveta de baixo com o campo focado, mudança ao vivo, contador de letras, dica da Carol, "Melhorar com IA".
 5. **Painel Seções:** visíveis com setas ↑↓, guardadas com "Devolver", "+ Adicionar seção" com miniaturas.
-6. **Estilo:** miniaturas dos modelos já com o conteúdo dela, paletas, troca instantânea com "Desfazer".
+6. **Estilo:** paletas e cor própria, fonte, cantos, claro ou escuro, troca instantânea com "Desfazer".
 7. **Vídeos e fotos:** da galeria, envio em segundo plano com barra no próprio card, avisos claros.
 8. **Números:** ela digita, com um guia de onde achar cada número no Insights. (Depois: "Tirar dos meus prints".)
 9. **Ver:** some a interface, aparece como a marca vai ver.
@@ -173,7 +175,7 @@ Detalhes: salva sozinho e funciona com internet ruim (fila de envio); áreas de 
 
 ## Fluxo de publicação
 
-1. A creator escolhe o modelo e edita (prévia com marca d'água).
+1. A creator monta o portfólio no editor (prévia com marca d'água).
 2. Toca em **Publicar** → card no Slack: "Joana quer publicar, plano X".
 3. A Carol cola o link de pagamento na thread → o bot manda para o WhatsApp da creator.
 4. A Carol marca **Pago** → o portfólio vai para o ar de verdade, PDF liberado, aviso no WhatsApp.
@@ -231,7 +233,8 @@ O Cloudflare serve tudo o que é página (site, editor, admin e os portfólios p
 - **Link publicado:** `/c/<slug>` agora, `portfoliocreator.com.br/<slug>` quando o domínio existir.
 
 ```ts
-{ modelo: 'nuvem', paleta: 2, fontes: 'par-1', cantos: 'suaves',
+{ modelo: 'nuvem', // valor interno fixo, não é escolha da creator (sem modelos desde 27/out/2026)
+  paleta: 2, fontes: 'par-1', cantos: 'suaves',
   blocos: [
     { id: 'b1', tipo: 'capa', variacao: 'foto-grande', oculto: false, dados: {...} },
     { id: 'b2', tipo: 'videos', variacao: 'carrossel', oculto: false, dados: {...} },
@@ -262,7 +265,7 @@ A creator tem uma conta (Supabase Auth) e uma área só dela.
 Fica em **Conta → Excluir minha conta**, fácil de achar e sem truque para segurar a creator (direito garantido pela LGPD).
 
 1. **Antes de excluir, opções mais leves:** tirar um projeto do ar, excluir só um projeto ou só algumas mídias. Aparecem como alternativa, nunca como obstáculo.
-2. **Baixar meus dados:** botão para baixar um .zip só com os dados e informações dela: textos que ela escreveu, fotos e vídeos que ela enviou, dados da conta e histórico de pedidos. Nunca os produtos: site, modelos, blocos e PDF do mídia kit não entram no .zip.
+2. **Baixar meus dados:** botão para baixar um .zip só com os dados e informações dela: textos que ela escreveu, fotos e vídeos que ela enviou, dados da conta e histórico de pedidos. Nunca os produtos: site, estilos, blocos e PDF do mídia kit não entram no .zip.
 3. **O que será apagado, em lista clara:** site e mídia kit saem do ar, o link `/nome` fica livre, fotos e vídeos, perfil, login.
 4. **O que fica guardado:** só o que a lei obriga (registro dos pagamentos), pelo prazo legal, sem fotos, vídeos nem conteúdo.
 5. **Confirmação:** um código de 6 dígitos no e-mail, igual ao login, para ninguém apagar a conta de outra pessoa.
@@ -276,7 +279,7 @@ No Supabase, uma função do servidor apaga a pasta da creator no Cloudinary e n
 | Tabela | Guarda |
 | --- | --- |
 | `profiles` | nome, @, WhatsApp, cidade, nicho, modo iniciante |
-| `projects` | tipo (site, mídia kit, os dois), modelo, paleta, blocos (JSON), slug, status |
+| `projects` | tipo (site, mídia kit, os dois), modelo (valor interno fixo `'nuvem'`; a coluna é `not null` e o `projetoSchema` exige o campo; removê-la fica para uma migração futura), paleta, blocos (JSON), slug, status |
 | `media` | arquivos da creator: tipo, tamanho, duração, capa |
 | `orders` | plano, status do pagamento, link enviado pela Carol, data |
 
@@ -308,7 +311,6 @@ Os nomes e preços dos planos serão definidos depois; a tabela usa os momentos 
 | Ação | Sem conta | Conta grátis (teste) | Pagou | Pagou + edição liberada |
 |---|---|---|---|---|
 | Montar no editor | sim, rascunho no aparelho | sim | sim | sim |
-| Modelos | os liberados no teste | os liberados no teste | todos | todos |
 | Paletas, cor própria e cor da foto | sim | sim | sim | sim |
 | Subir fotos e vídeos | não, pede a conta | sim, dentro do limite | sim | sim |
 | IA nos textos e nos prints (depois da versão 1) | não | limitada (quantidade a definir) | sim | sim |
@@ -317,7 +319,7 @@ Os nomes e preços dos planos serão definidos depois; a tabela usa os momentos 
 | Baixar o PDF do mídia kit | não | sim, com marca d'água | sim | sim |
 | Levar o site para outro lugar (baixar os arquivos) | não | não | pagando o mesmo valor do mídia kit | pagando o mesmo valor do mídia kit |
 | Editar depois de publicar | não se aplica | não se aplica | até concluir + 7 dias | sempre |
-| Trocar modelo e paleta | sim | sim | durante a edição | sempre |
+| Trocar paleta e estilo | sim | sim | durante a edição | sempre |
 | Domínio próprio `.com.br` | não | não | com o plano Site | com o plano Site |
 | Tirar do ar e pôr de volta | não se aplica | não se aplica | sim | sim |
 | Baixar meus dados e excluir conta | não se aplica | sim | sim | sim |
@@ -337,8 +339,8 @@ Os nomes e preços dos planos serão definidos depois; a tabela usa os momentos 
 
 - Mexer em código, CSS, margens, tamanhos em número ou posição livre.
 - Publicar com placeholder (exemplo) que não trocou, principalmente números.
-- Tirar a marca d'água ou usar modelo travado sem pagar.
-- Baixar os modelos e os blocos soltos. Levar o site para outro lugar só pagando o valor do mídia kit.
+- Tirar a marca d'água sem pagar.
+- Baixar o estilo e os blocos soltos. Levar o site para outro lugar só pagando o valor do mídia kit.
 - Usar um link `/nome` reservado ou de outra creator.
 - Ver ou mexer em dados de outra creator, ou em pedidos e pagamentos (só vê os dela).
 - Publicar conteúdo proibido pelos Termos (a equipe pode tirar do ar pelo Admin).
@@ -367,7 +369,7 @@ O Slack fica para **avisos e ações rápidas** (novo pedido, marcar Pago). O Ad
 | Pedidos | lista com filtros por status, link de pagamento, marcar Pago, histórico do pedido |
 | Creators | busca, perfil, projetos, plano, contato no WhatsApp; ver o portfólio como ela vê (só leitura); liberar ou tirar Premium por molde, com validade e motivo |
 | Portfólios no ar | lista, abrir, tirar do ar em caso de denúncia ou problema |
-| Modelos, blocos e paletas | ligar e desligar modelos, editar placeholders e dicas da Carol |
+| Blocos e paletas | editar placeholders e dicas da Carol |
 | Planos e cupons | preços, cupom de lançamento, validade |
 | Exclusões (LGPD) | contas desativadas nos 7 dias, exclusões concluídas, pedidos de dados |
 | Uso do editor | onde as creators param, blocos mais usados, tempo até publicar |
@@ -378,7 +380,7 @@ O Slack fica para **avisos e ações rápidas** (novo pedido, marcar Pago). O Ad
 
 **Stack do Admin:** Refine (conector oficial do Supabase) + shadcn/ui + TanStack Table + React Hook Form + Zod + Recharts. No lançamento, o Supabase Studio serve de admin provisório.
 
-**Ordem do admin:** Supabase Studio no lançamento → Pedidos e Creators no Refine → Painel, Modelos e Exclusões → o resto conforme a operação pedir.
+**Ordem do admin:** Supabase Studio no lançamento → Pedidos e Creators no Refine → Painel, Blocos e Exclusões → o resto conforme a operação pedir.
 
 ## Elementor: o que pegamos e o que fica de fora
 
@@ -388,9 +390,9 @@ O Slack fica para **avisos e ações rápidas** (novo pedido, marcar Pago). O Ad
 
 ## Escopo do lançamento
 
-- 8 blocos, 2 variações cada.
-- 5 modelos: Nuvem, Clean, Pop Color, Casual e Glow Rosé. Os outros 10 entram depois.
-- Ordem: blocos no modelo Nuvem com o editor funcionando → teste no celular → vestir os outros modelos.
+- 11 seções com variações (o PRD falava em 8 blocos com 2 variações cada).
+- Um estilo padrão (Nuvem) com 3 paletas prontas e cor própria; fonte, cantos e claro/escuro na aba Estilo. Sem modelos (os 5 do lançamento e os outros 10 foram descartados em 27/out/2026).
+- Ordem: seções no estilo padrão com o editor funcionando → teste no celular.
 
 ## Diferenciais e crescimento
 
@@ -402,7 +404,7 @@ O Slack fica para **avisos e ações rápidas** (novo pedido, marcar Pago). O Ad
 
 ### Assistente que monta o portfólio
 
-O modelo resolve estrutura e visual; o assistente resolve o conteúdo.
+As seções resolvem a estrutura, o Estilo resolve o visual e o assistente resolve o conteúdo.
 
 1. Nome, @, cidade e nicho.
 2. "Já fez alguma publi?" ("ainda não" liga o modo iniciante).

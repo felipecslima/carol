@@ -375,9 +375,9 @@
   padding-top: 24px;
 }
 
-/* previa do assistente: moldura de altura fixa (o recorte mostra o topo da capa e dos números) */
+/* previa do assistente: moldura que mostra o topo da capa; encolhe em telas baixas para o botão não tapar a página */
 .as .as-previa {
-  height: 380px;
+  height: clamp(200px, 100dvh - 440px, 380px);
   overflow: hidden;
   border-radius: 20px;
 }

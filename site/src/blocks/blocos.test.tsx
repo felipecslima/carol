@@ -14,7 +14,7 @@ const html = (modo: 'editor' | 'publicado', projeto = PROJETO_DE_EXEMPLO) =>
     </>,
   );
 
-describe('projeto de exemplo (modelo Nuvem)', () => {
+describe('projeto de exemplo (estilo padrão Nuvem)', () => {
   it('é um projeto válido para o registro', () => {
     expect(validarProjeto(PROJETO_DE_EXEMPLO, REGISTRO)).toEqual([]);
   });

@@ -341,13 +341,6 @@
   border: 2px solid rgba(251, 244, 236, 0.75);
   box-shadow: none;
 }
-.as .as-bolinhas button {
-  border: 3px solid var(--ed-bg);
-  box-shadow: 0 0 0 2px rgba(251, 244, 236, 0.3);
-}
-.as .as-bolinhas button[aria-checked='true'] {
-  box-shadow: 0 0 0 3px #fbf4ec;
-}
 .as .as-passos span {
   background: var(--ed-borda);
 }

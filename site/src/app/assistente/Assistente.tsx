@@ -1,5 +1,5 @@
-// Assistente de início: escolher o modelo (cartões que deslizam, bolinhas de paleta) e responder uma pergunta
-// por tela. No fim monta o projeto (lib/montagem.ts), grava o rascunho e abre o editor. Sem IA.
+// Assistente de início: escolher as cores (prévia da página e as paletas prontas) e responder uma pergunta por tela.
+// Não há modelo para escolher: a creator monta o portfólio com as seções no editor. No fim monta o projeto (lib/montagem.ts), grava o rascunho e abre o editor. Sem IA.
 import { motion } from 'motion/react';
 import { MovimentoDoApp, SUAVE } from '../movimento';
 import { Marca } from '../Marca';
@@ -23,9 +23,9 @@ import '../tema.css';
 const NICHOS = ['Gastronomia', 'Viagem', 'Beleza', 'Lifestyle', 'Moda', 'Casa', 'Maternidade', 'Fitness'];
 
 type Etapa =
-  'modelo' | 'nome' | 'arroba' | 'cidade' | 'nicho' | 'publi' | 'grava' | 'titulo' | 'frase' | 'videos' | 'numeros';
+  'cores' | 'nome' | 'arroba' | 'cidade' | 'nicho' | 'publi' | 'grava' | 'titulo' | 'frase' | 'videos' | 'numeros';
 const ETAPAS_BASE: Etapa[] = [
-  'modelo',
+  'cores',
   'nome',
   'arroba',
   'cidade',
@@ -37,7 +37,7 @@ const ETAPAS_BASE: Etapa[] = [
   'videos',
 ];
 
-function PreviaDoModelo({ paleta }: { paleta: number }) {
+function PreviaDasCores({ paleta }: { paleta: number }) {
   return (
     <div className="as-previa">
       <Miniatura projeto={{ ...PROJETO_DE_EXEMPLO, paleta }} blocos={['capa', 'numeros']} />
@@ -72,7 +72,7 @@ export default function Assistente() {
 
   const ultima = indice === ETAPAS.length - 1;
   const valido =
-    etapa === 'modelo' ||
+    etapa === 'cores' ||
     (etapa === 'nome' && r.nome.trim().length > 0) ||
     (etapa === 'nicho' && r.nicho.trim().length > 0) ||
     (etapa === 'publi' && publiRespondida) ||
@@ -135,31 +135,42 @@ export default function Assistente() {
             transition={{ duration: 0.4, ease: SUAVE }}
             style={{ display: 'grid', gap: 24 }}
           >
-            {etapa === 'modelo' && (
+            {etapa === 'cores' && (
               <>
                 <h1 className="as-titulo">
-                  Escolha o jeito do <em>seu portfólio</em>
+                  Escolha as cores do <em>seu portfólio</em>
                 </h1>
-                <p className="as-texto">Você troca modelo e cor quando quiser, e o que escrever vai junto.</p>
-                <div className="as-modelos" role="group" aria-label="Modelos">
-                  <div className="as-modelo">
-                    <PreviaDoModelo paleta={paleta} />
-                    <h2>{NUVEM.nome}</h2>
-                    <div className="as-bolinhas" role="radiogroup" aria-label="Cor">
-                      {NUVEM.paletas.map((p, i) => (
-                        <button
-                          key={p.nome}
-                          type="button"
-                          role="radio"
-                          aria-checked={paleta === i}
-                          aria-label={p.nome}
-                          style={{ background: gerarPaleta(p.origem, NUVEM.esquema).claro.destaque }}
-                          onClick={() => setPaleta(i)}
-                        />
-                      ))}
-                    </div>
-                  </div>
+                <p className="as-texto">Dá para trocar quando quiser. Depois é só montar as seções do seu jeito.</p>
+                {/* grupo de rádio: uma parada de Tab só, e as setas trocam a cor (padrão do ARIA) */}
+                <div className="as-opcoes as-cores" role="radiogroup" aria-label="Cores">
+                  {NUVEM.paletas.map((p, i) => (
+                    <button
+                      key={p.nome}
+                      type="button"
+                      role="radio"
+                      aria-checked={paleta === i}
+                      tabIndex={paleta === i ? 0 : -1}
+                      onClick={() => setPaleta(i)}
+                      onKeyDown={(ev) => {
+                        const passo = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
+                        if (!passo) return;
+                        ev.preventDefault();
+                        const total = NUVEM.paletas.length;
+                        const proxima = (i + passo + total) % total;
+                        setPaleta(proxima);
+                        (ev.currentTarget.parentElement?.children[proxima] as HTMLElement | undefined)?.focus();
+                      }}
+                    >
+                      <span
+                        className="ed-amostra"
+                        style={{ background: gerarPaleta(p.origem, NUVEM.esquema).claro.destaque }}
+                        aria-hidden="true"
+                      />
+                      {p.nome}
+                    </button>
+                  ))}
                 </div>
+                <PreviaDasCores paleta={paleta} />
               </>
             )}
 
@@ -408,8 +419,8 @@ export default function Assistente() {
             </button>
           )}
           <button type="button" className="as-botao" disabled={!valido} onClick={avancar}>
-            {etapa === 'modelo'
-              ? 'Usar este'
+            {etapa === 'cores'
+              ? 'Usar estas cores'
               : etapa === 'numeros'
                 ? numeros
                   ? 'Ver meu portfólio'

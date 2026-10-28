@@ -151,25 +151,26 @@
   border: 2px solid var(--as-borda);
 }
 
-/* escolha do modelo: cartões que deslizam de lado, um por vez */
-.as-modelos {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 4px 20px 8px;
-  margin-inline: -20px;
-}
-.as-modelo {
-  flex: none;
-  width: min(100%, 360px);
-  scroll-snap-align: center;
+/* escolha das cores: prévia da página e as paletas prontas, cada uma com a amostra e o nome */
+.as-cores {
   display: grid;
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  width: min(100%, 360px);
+  gap: 8px;
 }
+.as-cores button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+/* a prévia fica na largura de um celular (mais larga, a miniatura cresce e só mostra a foto) e some em degradê
+   embaixo, em vez de parecer cortada */
 .as-previa {
-  height: 380px;
+  width: min(100%, 360px);
   overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 78%, transparent);
   border-radius: 28px;
   border: 1px solid var(--as-borda);
   pointer-events: none;
@@ -177,24 +178,6 @@
 .as-previa .bl {
   transform: scale(0.82);
   transform-origin: top center;
-}
-.as-modelo h2 {
-  font-size: 22px;
-  font-weight: 800;
-}
-.as-bolinhas {
-  display: flex;
-  gap: 10px;
-}
-.as-bolinhas button {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  box-shadow: 0 0 0 2px var(--as-borda);
-}
-.as-bolinhas button[aria-checked='true'] {
-  box-shadow: 0 0 0 3px #24130f;
 }
 
 .as-video {

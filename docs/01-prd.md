@@ -13,6 +13,8 @@ Decidido em 23/out/2026 para lançar mais rápido. Tudo abaixo continua planejad
 
 Quando este bloco conflitar com o resto do documento, ele vale.
 
+**Decisão de 27/out/2026: sem modelos.** A ideia de vários modelos visuais (Nuvem, Clean, Pop Color, Casual, Glow Rosé e depois 15 no total) foi abandonada. Não existe mais escolha de modelo, troca de modelo nem modelo travado por plano. A criação acontece só no editor: a creator começa com as seções de exemplo e monta o próprio portfólio adicionando, escondendo, removendo e reordenando seções (as seções montam qualquer template). O visual se ajusta na aba Estilo: cor (3 paletas prontas ou cor própria), fonte, cantos, claro ou escuro. A primeira etapa do assistente é "Escolha suas cores". "Nuvem" fica só como nome do estilo padrão.
+
 ## 1. Problema
 
 A creator iniciante de UGC e influência trava quando a marca pede portfólio ou mídia kit: não sabe o que colocar, leva dias para montar no Canva, o resultado fica com cara de amador, e se ainda não fez nenhuma publi acha que não tem o que mostrar. As ferramentas que existem são grátis mas entregam um modelo em branco (Canva) ou dependem de números e conta profissional conectada (Beacons, Meu Airfluencers), deixando de fora justamente quem está começando. Sem portfólio, ela não consegue se apresentar às marcas e não fecha a primeira publi.
@@ -50,7 +52,7 @@ As metas abaixo são **hipóteses iniciais**; revisar depois das 5 primeiras cre
 1. Como creator sem nenhuma publi, quero um portfólio que valorize meus vídeos de exemplo, para ter algo para mandar às marcas mesmo começando do zero.
 2. Como creator, quero responder algumas perguntas e mandar meus vídeos e prints, para já começar com o portfólio quase pronto.
 3. Como creator, quero trocar textos, fotos, vídeos e a ordem dos blocos pelo celular, para deixar o portfólio do meu jeito sem saber design.
-4. Como creator, quero trocar de modelo e de cores sem perder nada, para experimentar sem medo.
+4. Como creator, quero trocar as cores e mexer nas seções sem perder nada, para experimentar sem medo.
 5. Como creator, quero que meus números saiam dos prints sem digitar, e conferir antes de publicar, para não errar.
 6. Como creator, quero publicar num link com meu nome e baixar o PDF do mídia kit, para mandar do jeito que a marca pedir.
 7. Como creator, quero mandar o portfólio para uma marca e saber quando ela abriu, para saber a hora de fazer o follow-up.
@@ -95,8 +97,8 @@ As metas abaixo são **hipóteses iniciais**; revisar depois das 5 primeiras cre
 
 - [ ] Edição em cima do resultado; tocar no bloco mostra Editar, ↑, ↓, Esconder; edição em gaveta de baixo com mudança ao vivo.
 - [ ] Adicionar, esconder, devolver e reordenar blocos; Capa e Contato obrigatórios.
-- [ ] 8 blocos com 2 variações cada, em 5 modelos (Nuvem, Clean, Pop Color, Casual, Glow Rosé) e 3 paletas prontas por modelo.
-- [ ] Trocar modelo, paleta ou formato não apaga conteúdo; o que não cabe vai para Guardados.
+- [ ] 11 seções com variações, num estilo padrão (Nuvem) com 3 paletas prontas e cor própria; fonte, cantos e claro/escuro na aba Estilo. Sem modelos para escolher (decisão de 27/out/2026).
+- [ ] Trocar paleta, estilo ou formato não apaga conteúdo; o que não cabe vai para Guardados.
 - [ ] Salva sozinho, "Salvo ✓" visível, desfazer sempre à mão, funciona com internet ruim.
 - [ ] Nenhum controle de margem, tamanho em número, posição livre ou CSS.
 - [ ] Contraste de texto garantido em qualquer paleta (regra Material 3).
@@ -125,8 +127,8 @@ As metas abaixo são **hipóteses iniciais**; revisar depois das 5 primeiras cre
 
 **P0.7 Regras de plano**
 
-- [ ] Conta grátis: modelos do teste, prévia e PDF com marca d'água, sem publicar.
-- [ ] Pago: todos os modelos do lançamento, sem marca d'água, publicação, PDF; edição até concluir + 7 dias.
+- [ ] Conta grátis: prévia e PDF com marca d'água, sem publicar.
+- [ ] Pago: sem marca d'água, publicação, PDF; edição até concluir + 7 dias.
 - [ ] Edição liberada (assinatura ou avulsa): edita sempre.
 - [ ] Fim do prazo trava a edição, mas nada sai do ar e nada se perde.
 
@@ -161,7 +163,7 @@ As metas abaixo são **hipóteses iniciais**; revisar depois das 5 primeiras cre
 - IA no assistente (bio escrita a partir das respostas).
 - Entrar com Google.
 - Admin no Refine + shadcn: Painel, Pedidos, Creators, Mensagens, Exclusões, Registro de ações.
-- Cor própria e "usar a cor da minha foto" (a regra Material 3 já estará pronta).
+- "Usar a cor da minha foto" (a cor própria já está na aba Estilo; a regra Material 3 já estará pronta).
 - Revisão da Carol (pago): 3 ajustes em áudio de WhatsApp.
 - Plano Site com domínio próprio `.com.br`.
 - Levar o site para outro lugar, pagando o valor do mídia kit.
@@ -171,7 +173,7 @@ As metas abaixo são **hipóteses iniciais**; revisar depois das 5 primeiras cre
 
 ### P2 — futuro (desenhar sem bloquear)
 
-- Os outros 10 modelos (total de 15) e mais variações de blocos.
+- Mais variações de seções. (Os "outros 10 modelos" foram descartados em 27/out/2026: sem modelos.)
 - Conectar o Instagram pela API (números automáticos; selo "números conferidos").
 - Código por WhatsApp no login.
 - Remover o selo como benefício de plano.
@@ -203,7 +205,7 @@ Todas medidas pelos eventos do editor, pela tabela de pedidos e pelos registros 
 | Remover o selo é benefício de plano? | Carol e você | Não |
 | Nome do selo de números ("lido dos prints enviados")? | Carol | Não |
 | Usar o Puck como base do editor? (teste de 1 a 2 dias) | Engenharia | Sim, antes do editor |
-| Esquema de cor Material por modelo e mapa de papéis | Design | Sim, antes dos modelos |
+| Esquema de cor Material do estilo padrão e mapa de papéis | Design | Sim, antes do editor |
 | Número e modelos de mensagem do WhatsApp aprovados pela Meta | Engenharia | Sim, antes do lançamento |
 | Rótulos reais do Insights (iPhone/Android, PT/EN) | Engenharia | Não (leitura de prints fica para depois) |
 
@@ -212,9 +214,9 @@ Todas medidas pelos eventos do editor, pela tabela de pedidos e pelos registros 
 - **Atenção ao cupom:** o cupom de lançamento vence em 30/11. Com todo o P0 acima, o lançamento dificilmente cabe até lá. Decidir entre mover a data do cupom ou cortar P0.
 - **Dependências que demoram e devem começar já:** CNPJ e Termos; número e modelos de mensagem do WhatsApp na Meta.
 - **Ordem sugerida:**
-  1. Base: Supabase, login, estrutura de dados, papéis de cor, 1 modelo (Nuvem) com os 8 blocos.
+  1. Base: Supabase, login, estrutura de dados, papéis de cor, estilo padrão (Nuvem) com as seções.
   2. Editor e assistente no celular, testados com creators reais.
   3. Mídias, números informados e publicação com PDF.
   4. Pedido, Slack, WhatsApp, aviso de abertura e regras de plano.
-  5. Os outros 4 modelos do lançamento, LGPD e operação mínima.
+  5. LGPD e operação mínima. (Os "outros 4 modelos" saíram em 27/out/2026: sem modelos.)
   6. Lançamento com as 5 primeiras creators; depois P1.

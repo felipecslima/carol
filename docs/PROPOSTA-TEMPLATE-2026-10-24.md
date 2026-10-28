@@ -1,5 +1,7 @@
 # Proposta para o template (24/out/2026)
 
+**Nota de 27/out/2026: sem modelos.** Desde 27/out não existem modelos para escolher; as seções montam o portfólio e o visual se ajusta na aba Estilo. O item 14 ("Editorial") deixa de ser um segundo modelo e vira candidato a opção de Estilo (par de fontes com serifa e fundo espresso ou creme) ou a variações de seção, a decidir depois. A pergunta aberta 2 foi superada por essa decisão. O resto da proposta (as seções e as ondas) segue valendo.
+
 Entrada: pedido do usuário de uma crítica voltada ao template e à finalidade dele (a creator conseguir publicidade), com propostas de melhoria e peças novas. Não existe skill de PM instalada; a organização de produto abaixo foi feita à mão, a partir do PRD (`01-prd.md`). A crítica seguiu o método do impeccable: avaliador A (design, olhando como a marca) e avaliador B (detector e medições), isolados. Nada foi construído nesta rodada.
 
 ## 1. Organização de produto
@@ -56,7 +58,7 @@ Critério: quanto ajuda a marca a responder × esforço × risco de inventar dad
 13. **Antes e depois**, depoimento com permissão (já previsto no PRD como "Fechei uma publi!").
 
 ### Identidade (a pergunta mais séria da crítica)
-14. **Segundo modelo "Editorial"** na voz do site da Carol (serifa, itálico no trecho-chave, números sem caixa, fundo espresso ou creme) como a opção chique. O Nuvem fica como o jeito leve. Hoje os modelos Clean/Pop/Casual/Glow Rosé (DEV-070 a 073) só trocariam cor; proponho que cada um tenha voz própria e que o Editorial entre antes deles. **Precisa de decisão sua.**
+14. *(Superado em 27/out/2026: sem modelos; o Editorial vira candidato a opção de Estilo ou a variações de seção, a decidir depois.)* **Segundo modelo "Editorial"** na voz do site da Carol (serifa, itálico no trecho-chave, números sem caixa, fundo espresso ou creme) como a opção chique. O Nuvem fica como o jeito leve. Hoje os modelos Clean/Pop/Casual/Glow Rosé (DEV-070 a 073) só trocariam cor; proponho que cada um tenha voz própria e que o Editorial entre antes deles. **Precisa de decisão sua.**
 
 ### Simplificar ou remover
 - "Exemplo · toque para trocar" repetido em cada cartão: uma faixa única no topo basta.
@@ -74,7 +76,7 @@ Há também uma métrica nova a registrar: clique em contato na página publicad
 
 ## 5. Perguntas abertas
 1. A iniciante precisa dos mesmos 8 blocos de quem tem 50 publis, ou de uma página curta e honesta sobre o que ela entregaria?
-2. "Tão bom quanto o site da Carol" = voz própria por modelo? (item 14)
+2. ~~"Tão bom quanto o site da Carol" = voz própria por modelo? (item 14)~~ Superada em 27/out/2026: sem modelos. Fica a pergunta de quanto da voz do site da Carol entra como opção de Estilo.
 3. Quantas telas a marca tolera até o contato? (hoje 3,5)
 
 Artefatos da crítica: capturas em `/tmp/crit/` e `/tmp/blocos-*.png` (temporárias).

@@ -19,7 +19,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 - [x] **DEV-010** Projeto Supabase e migrations versionadas no repositório. *Projeto `Creators` (`djuzcmnvwkethwlilhik`); 7 migrations aplicadas pelo CLI e registradas no histórico.*
 - [x] **DEV-011** Tabela `profiles` (nome, @, WhatsApp, cidade, nicho, modo iniciante, papel). Depende: DEV-010. *Migration escrita em `supabase/migrations/` e validada num Postgres local (PGlite); aplicada no projeto `Creators` em 24/out/2026.*
-- [x] **DEV-012** Tabela `projects` (tipo site/mídia kit/os dois, modelo, paleta, blocos JSON, slug, status, prazo de edição). Depende: DEV-010. *Migration escrita em `supabase/migrations/` e validada num Postgres local (PGlite); aplicada no projeto `Creators` em 24/out/2026.*
+- [x] **DEV-012** Tabela `projects` (tipo site/mídia kit/os dois, modelo (hoje valor interno fixo `'nuvem'`, ver DEV-096), paleta, blocos JSON, slug, status, prazo de edição). Depende: DEV-010. *Migration escrita em `supabase/migrations/` e validada num Postgres local (PGlite); aplicada no projeto `Creators` em 24/out/2026.*
 - [x] **DEV-013** Tabela `media` (id Cloudinary, tipo, tamanho, duração, capa, dono). *Migration escrita em `supabase/migrations/` e validada num Postgres local (PGlite); aplicada no projeto `Creators` em 24/out/2026.*
 - [x] **DEV-014** Tabela `orders` (projeto, plano, status, link de pagamento, thread do Slack, datas). *Migration escrita em `supabase/migrations/` e validada num Postgres local (PGlite); aplicada no projeto `Creators` em 24/out/2026.*
 - [x] **DEV-015** Tabela `premium_grants` (creator, molde, motivo, validade, quem liberou). *Migration escrita em `supabase/migrations/` e validada num Postgres local (PGlite); aplicada no projeto `Creators` em 24/out/2026.*
@@ -49,9 +49,9 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [x] **DEV-050** Módulo de paleta com `@material/material-color-utilities`: de uma cor de origem e um esquema (Fidelity, Vibrant, Neutral...) gerar os papéis claro e escuro.
 - [x] **DEV-051** Mapa de papéis para variáveis CSS (`--destaque`, `--fundo`, `--texto`...). Pronto quando: trocar a cor recalcula a página sem recarregar.
 - [x] **DEV-052** Teste automático de contraste: todos os pares texto/fundo de todas as paletas passam 4,5:1.
-- [x] **DEV-053** Tokens de modelo (fontes, cantos, respiro, ornamentos) separados das cores.
+- [x] **DEV-053** Tokens de estilo (fontes, cantos, respiro, ornamentos) separados das cores.
 
-### E6. Blocos e modelos
+### E6. Blocos e estilo
 
 - [x] **DEV-060** Contrato de bloco: tipo, variações, campos (com limite de letras), placeholders, regras (obrigatório, máximo). Pronto quando: um registro central lista os blocos.
 - [x] **DEV-061** Bloco Capa (2 variações).
@@ -62,32 +62,36 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [x] **DEV-066** Bloco Público (2 variações), escondido no modo iniciante.
 - [x] **DEV-067** Bloco Formatos (2 variações).
 - [x] **DEV-068** Bloco Contato (2 variações), obrigatório, com WhatsApp e e-mail validados.
-- [ ] **DEV-069** Modelo Nuvem completo (tokens + 3 paletas). *Feito em código (`themes/modelos/nuvem.ts`, `blocks/blocos.css`); falta a aprovação visual do usuário.*
-- [ ] **DEV-070** Modelo Clean. Depende: Nuvem aprovado.
-- [ ] **DEV-071** Modelo Pop Color.
-- [ ] **DEV-072** Modelo Casual.
-- [ ] **DEV-073** Modelo Glow Rosé.
+- [ ] **DEV-069** Estilo padrão "Nuvem" completo (tokens + 3 paletas). *Feito em código (`themes/modelos/nuvem.ts`, `blocks/blocos.css`); falta a aprovação visual do usuário.*
+- [x] ~~**DEV-070** Modelo Clean. Depende: Nuvem aprovado.~~ **Descartada (27/out/2026):** sem modelos; as seções montam o portfólio.
+- [x] ~~**DEV-071** Modelo Pop Color.~~ **Descartada (27/out/2026):** sem modelos; as seções montam o portfólio.
+- [x] ~~**DEV-072** Modelo Casual.~~ **Descartada (27/out/2026):** sem modelos; as seções montam o portfólio.
+- [x] ~~**DEV-073** Modelo Glow Rosé.~~ **Descartada (27/out/2026):** sem modelos; as seções montam o portfólio.
 - [ ] **DEV-074** Mesmos blocos renderizando no editor (interativo) e no servidor (HTML puro). Pronto quando: teste compara as duas saídas.
 
 ### E7. Editor
 
 - [ ] **DEV-080** Teste do Puck (1 a 2 dias) com decisão registrada.
 - [x] **DEV-081** Estado do editor (Zustand) com o JSON do projeto e histórico de desfazer/refazer (zundo).
-- [ ] **DEV-082** Salvar sozinho com debounce, indicador "Salvo ✓" e fila offline que reenvia ao voltar a internet. *Feito: salva no aparelho e, com conta, na tabela `projects` (600 ms de espera). Falta a fila com reenvio em internet ruim.*
+- [ ] **DEV-082** Salvar sozinho com debounce, indicador "Salvo ✓" e fila offline que reenvia ao voltar a internet. *Feito: salva no aparelho e, com conta, na tabela `projects` (600 ms de espera). Falta a fila com reenvio em internet ruim. Achado na revisão de 27/out: se salvar na conta falha e a página é recarregada online, a versão da conta sobrescreve o aparelho e a edição some. Correção planejada: marcador de pendente, aparelho vence ao abrir, nova tentativa ao voltar a conexão.*
 - [x] **DEV-083** Seleção: primeiro toque no bloco, segundo no elemento; barra flutuante Editar, ↑, ↓, Esconder. *Feito: primeiro toque seleciona, segundo abre a edição, barra com Editar/↑/↓/Esconder. Falta: seleção por elemento dentro do bloco.*
 - [x] **DEV-084** Gaveta de edição (Vaul) com campo focado, contador de letras, dica do bloco, teclado sem cobrir o campo. *Feito (Vaul, contador de letras, rola o bloco para cima da gaveta). Falta: testar com teclado real no celular.*
 - [x] **DEV-085** Painel Seções: visíveis com ↑↓, Guardados com Devolver, Capa e Contato sem opção de remover.
-- [x] **DEV-086** Adicionar bloco: biblioteca com miniaturas no estilo do modelo atual; máximo de 15 blocos. *Feito com lista de nomes e variações; faltam as miniaturas no estilo do modelo.*
+- [x] **DEV-086** Adicionar bloco: biblioteca com miniaturas no estilo do projeto; máximo de 15 blocos. *Feito com lista de nomes e variações; faltam as miniaturas no estilo do projeto.*
 - [x] **DEV-087** Trocar variação de um bloco.
-- [x] **DEV-088** Aba Estilo: modelo, paleta, fontes, cantos; troca instantânea com aviso "Desfazer". *Feito: cor (3 paletas e cor própria), cantos, fonte, clima, aviso com Desfazer. Falta: escolher modelo (só existe o Nuvem).*
-- [ ] **DEV-089** Trocar modelo ou formato (site, mídia kit, os dois) sem perder conteúdo; o que não cabe vai para Guardados.
+- [x] **DEV-088** Aba Estilo: paleta, fontes, cantos; troca instantânea com aviso "Desfazer". *Feito: cor (3 paletas e cor própria), cantos, fonte, clima, aviso com Desfazer.*
+- [ ] **DEV-089** Trocar formato (site, mídia kit, os dois) sem perder conteúdo; o que não cabe vai para Guardados.
 - [x] **DEV-090** Placeholders com etiqueta "Exemplo · toque para trocar"; progresso "X de Y itens já são seus". *Contador feito (`lib/progresso.ts`).*
 - [x] **DEV-091** Modo Ver (sem interface) e modo iniciante.
-- [ ] **DEV-092** Eventos do editor (bloco adicionado, guardado, placeholder trocado, modelo trocado, publicou).
+- [ ] **DEV-092** Eventos do editor (bloco adicionado, guardado, placeholder trocado, publicou).
+- [x] **DEV-096** Sem modelos: o editor e as seções montam o portfólio. A etapa do assistente vira "Escolha suas cores"; textos do app sem "modelo"; documentos atualizados. `modelo` fica como valor interno `'nuvem'` (sem migração). *Feito em 27/out, esperando aprovação.*
+- [ ] **DEV-093** Topo do editor em telas pequenas (status e Entrar cabem em 320 px), abas centradas no desktop e dica de primeiro uso que não bloqueia o toque (diz "Clique" no computador).
+- [ ] **DEV-094** Esqueleto do editor antes do JavaScript (topo e abas no HTML), sem tela em branco no 4G lento.
+- [ ] **DEV-095** Hierarquia: Publicar em destaque, rosa reservado para a ação principal e o selecionado, Esconder e Remover num menu "Mais" na barra flutuante.
 
 ### E8. Assistente de início
 
-- [x] **DEV-100** Escolha do modelo: cards em tela cheia, deslizando, com bolinhas de paleta. *Feito com um modelo (Nuvem) e 3 paletas; os demais entram com DEV-070 a 073.*
+- [x] **DEV-100** Etapa de cores: escolher uma das 3 paletas com prévia. *Feito em 27/out (antes era a escolha do modelo; sem modelos desde então, ver DEV-096).*
 - [x] **DEV-101** Perguntas do assistente (nome, @, cidade, nicho, já fez publi, o que grava, frase).
 - [x] **DEV-102** Pedido de vídeos dentro do assistente (usa E9) e dos números (usa DEV-130). *Feito: etapa de vídeos (até 4, com envio) e de números (só para quem já fez publi); ambas podem ser puladas.*
 - [x] **DEV-104** Montagem do projeto: respostas, vídeos e números entram nos blocos; placeholder só onde faltou. Sem IA. *`lib/montagem.ts`.*
@@ -119,7 +123,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E12. PDF do mídia kit
 
-- [x] **DEV-150** Rota de impressão do mídia kit em 1 página A4 por modelo. *Primeira versão em `/app/midia-kit/` (duas colunas, escala automática, PDF de 1 página pela impressão); precisa de aprovação visual e de um layout por modelo quando houver mais modelos.*
+- [x] **DEV-150** Rota de impressão do mídia kit em 1 página A4. *Primeira versão em `/app/midia-kit/` (duas colunas, escala automática, PDF de 1 página pela impressão); precisa de aprovação visual.*
 - [ ] **DEV-151** Geração do PDF pelo Cloudflare Browser Rendering e armazenamento no Supabase Storage.
 - [ ] **DEV-152** Marca d'água "PORTFÓLIO CREATOR • TESTE" na conta grátis; selo no PDF pago. *Marca d'água de teste já aparece na rota; falta o selo no PDF pago.*
 - [ ] **DEV-153** Regerar o PDF a cada publicação.
@@ -152,7 +156,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 ### E16. Planos, marca d'água e Premium
 
 - [ ] **DEV-190** Regras de acesso centralizadas (uma função "pode fazer X?") por momento: sem conta, grátis, pago, edição liberada, Premium.
-- [ ] **DEV-191** Modelos liberados no teste e cadeado nos outros.
+- [x] ~~**DEV-191** Modelos liberados no teste e cadeado nos outros.~~ **Descartada (27/out/2026):** sem modelos; as seções montam o portfólio.
 - [ ] **DEV-192** Prazo de edição (até concluir + 7 dias) e trava sem tirar do ar.
 - [ ] **DEV-193** Edição liberada (assinatura ou avulsa) controlada pelo status do pedido.
 - [ ] **DEV-194** Premium por molde (Site, Mídia kit, os dois) com validade.
@@ -160,7 +164,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 ### E17. LGPD
 
 - [ ] **DEV-200** Páginas de Termos e Privacidade ligadas no cadastro e na compra.
-- [ ] **DEV-201** Baixar meus dados: .zip só com textos, mídias enviadas, dados da conta e pedidos (nunca modelos, blocos ou PDF).
+- [ ] **DEV-201** Baixar meus dados: .zip só com textos, mídias enviadas, dados da conta e pedidos (nunca estilos, blocos ou PDF).
 - [ ] **DEV-202** Excluir conta: confirmação por código, desativação por 7 dias com recuperação.
 - [ ] **DEV-203** Exclusão definitiva agendada: apaga Cloudinary, Storage, banco e Auth, nessa ordem; mantém só registro de pagamentos.
 - [ ] **DEV-204** E-mail de confirmação e card no Slack ao excluir.
@@ -175,12 +179,13 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 - [ ] **DEV-220** Formulário de lista de espera salvando em `waitlist`, com aviso no Slack.
 - [ ] **DEV-221** Textos do cupom conforme a decisão e botões apontando para `/app` quando o produto abrir.
+- [ ] **DEV-097** Texto da página de vendas sem modelos: proposta em `docs/PROPOSTA-PAGINA-VENDAS-SEM-MODELOS.md`, aplicar só com aprovação.
 
 ### E20. Qualidade
 
 - [ ] **DEV-230** Testes de ponta a ponta (Playwright, tamanho de celular): começar sem conta, montar, publicar, marca abrir.
 - [ ] **DEV-231** Testes de RLS e de regras de acesso.
-- [ ] **DEV-232** Acessibilidade: contraste, foco visível, leitor de tela nos controles do editor.
+- [ ] **DEV-232** Acessibilidade: contraste, foco visível, leitor de tela nos controles do editor (parte do editor planejada em 27/out: anel de foco dos blocos, foco entrando na gaveta, atalhos Ctrl/Cmd+Z, Shift+Ctrl/Cmd+Z, Delete esconde a seção, Esc).
 - [ ] **DEV-233** Monitoramento de erros (Sentry) no editor, na API e no Worker.
 - [ ] **DEV-234** Proteção contra abuso: limite de envios, de chamadas de IA e de criação de links por conta.
 
@@ -212,7 +217,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-301** Admin: Painel (vendas, creators novas, publicados, pedidos parados).
 - [ ] **DEV-302** Admin: Pedidos e Creators (com ver como ela vê e Premium).
 - [ ] **DEV-303** Admin: Portfólios no ar, Mensagens, Mídias e espaço.
-- [ ] **DEV-304** Admin: Modelos, blocos e paletas (ligar e desligar, editar placeholders e dicas).
+- [ ] **DEV-304** Admin: blocos e paletas (editar placeholders e dicas).
 - [ ] **DEV-305** Admin: Planos e cupons, Exclusões, Uso do editor, Registro de ações, Configurações.
 - [ ] **DEV-310** Cor própria e "usar a cor da minha foto" (extração de cor da biblioteca Material).
 - [ ] **DEV-311** Revisão da Carol: pedido pago, fila no Admin, entrega por WhatsApp.
@@ -224,7 +229,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ## P2 — Futuro
 
-- [ ] **DEV-400** Os outros 10 modelos (Executivo, Editorial, Neon, Terra, Tropical, Assinatura, Cinema, Retrô, Placar, Galeria).
+- [x] ~~**DEV-400** Os outros 10 modelos (Executivo, Editorial, Neon, Terra, Tropical, Assinatura, Cinema, Retrô, Placar, Galeria).~~ **Descartada (27/out/2026):** sem modelos; as seções montam o portfólio.
 - [ ] **DEV-401** Blocos novos: Depoimento de marca, Galeria de fotos, Texto livre; terceira variação dos blocos.
 - [ ] **DEV-402** Conectar o Instagram pela API (login, token criptografado, renovação, atualização diária, selo "números conferidos").
 - [ ] **DEV-403** Login com código pelo WhatsApp.

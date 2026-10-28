@@ -43,7 +43,7 @@ Use estas skills em toda tarefa que mexe em interface. Elas existem para o resul
 
 | Skill | Quando usar | O que entregar |
 |---|---|---|
-| **frontend-design** | Antes de desenhar qualquer tela, bloco ou modelo | Direção visual e tokens alinhados ao `02-construtor.md` e ao modelo da vez |
+| **frontend-design** | Antes de desenhar qualquer tela, bloco ou estilo | Direção visual e tokens alinhados ao `02-construtor.md` e ao estilo padrão |
 | **design-taste-frontend** | Junto com a frontend-design, antes de codar a interface | Revisão das escolhas (tipografia, ritmo, hierarquia) para evitar o visual padrão de IA |
 | **impeccable** | Depois de construir a tela, antes de mostrar para aprovação | Rodar a crítica/auditoria, corrigir o que ela apontar e salvar o relatório em `.impeccable/critique/`. Respeite as exceções já registradas em `site/.impeccable/config.json` e registre novas exceções com motivo |
 | **playwright** | Depois da impeccable, sempre | Abrir a tela em 390 px (e 1280 px), tema claro e escuro, percorrer o fluxo da tarefa, tirar prints e rodar os testes de `@playwright/test` |
@@ -128,7 +128,7 @@ site/
     app/              ilha React da creator: área (Início, Projetos, Mídias, Conta), editor, assistente
     admin/            ilha React do admin (P1)
     blocks/           componentes dos blocos (usados no editor E na página publicada)
-    themes/           modelos (tokens de fonte, cantos, respiro) e paletas
+    themes/           estilo padrão Nuvem em themes/modelos/ (tokens de fonte, cantos, respiro) e paletas
     ocr/              leitura de prints (depois da versão 1; ver 04-ocr-prints.md)
     server/           código que só roda no Worker: Supabase com service role, Slack, WhatsApp, IA, PDF
     lib/              tipos, schema do projeto (Zod), regras de acesso ("pode fazer X?")
@@ -144,7 +144,8 @@ docs/
 
 ```ts
 { tipo: 'site' | 'midia-kit' | 'os-dois',
-  modelo: 'nuvem', paleta: 2, fontes: 'par-1', cantos: 'suaves',
+  modelo: 'nuvem', // valor interno fixo; sem modelos desde 27/out/2026
+  paleta: 2, fontes: 'par-1', cantos: 'suaves',
   modoIniciante: false,
   blocos: [
     { id: 'b1', tipo: 'capa', variacao: 'foto-grande', oculto: false, dados: { ... } },
@@ -152,7 +153,9 @@ docs/
   guardados: [ ... ] }
 ```
 
-Os blocos guardam **dados**, não visual. Trocar modelo, paleta ou formato muda só a pele; o conteúdo vai junto e o que não cabe vai para `guardados`.
+Os blocos guardam **dados**, não visual. Trocar paleta, estilo ou formato muda só a pele; o conteúdo vai junto e o que não cabe vai para `guardados`.
+
+**Sem modelos (decisão de 27/out/2026):** não existe escolha nem troca de modelo. A creator monta o portfólio com as seções (adicionar, esconder, remover, reordenar) e ajusta o visual na aba Estilo (3 paletas ou cor própria, fonte, cantos, claro ou escuro). O campo `modelo` continua no JSON e na coluna `projects.modelo` como valor interno fixo `'nuvem'`, porque o `projetoSchema` exige o campo e a coluna é `not null`. Não ofereça escolha de modelo nem crie modelos novos. Remover a coluna é dívida técnica para uma migração futura.
 
 ## 7. Regras que nunca quebram
 
@@ -165,7 +168,7 @@ Os blocos guardam **dados**, não visual. Trocar modelo, paleta ou formato muda 
 **Liberdade com travas**
 5. A creator escolhe entre opções prontas; nunca aparece para ela campo de margem, tamanho em número, código de cor, posição livre ou CSS.
 6. Os blocos só usam os **papéis de cor** (`--destaque`, `--fundo`, `--texto`...), nunca cor fixa. Todo par texto/fundo passa 4,5:1.
-7. Nada se perde: trocar modelo, paleta ou formato nunca apaga conteúdo; toda ação destrutiva tem desfazer; fim do prazo de edição trava a edição, mas não tira nada do ar.
+7. Nada se perde: trocar paleta, estilo ou formato nunca apaga conteúdo; toda ação destrutiva tem desfazer; fim do prazo de edição trava a edição, mas não tira nada do ar.
 8. Capa e Contato são obrigatórios; máximo de uns 15 blocos.
 
 **Celular primeiro**
@@ -177,7 +180,7 @@ Os blocos guardam **dados**, não visual. Trocar modelo, paleta ou formato muda 
 12. Chave de service role do Supabase, tokens do Slack, WhatsApp, Cloudinary e IA **só no servidor**. Nada de segredo no navegador ou no Git.
 13. Webhooks (Slack, WhatsApp) sempre com verificação de assinatura.
 14. O aviso de abertura não guarda dado pessoal de quem abriu.
-15. "Baixar meus dados" entrega só os dados da creator, nunca modelos, blocos ou PDF.
+15. "Baixar meus dados" entrega só os dados da creator, nunca estilos, blocos ou PDF.
 16. Toda ação da equipe que muda dado de creator vai para `audit_log`.
 
 **Escopo**
@@ -190,7 +193,7 @@ Os blocos guardam **dados**, não visual. Trocar modelo, paleta ou formato muda 
 - Botão diz exatamente o que acontece ("Publicar", depois "Publicado").
 - Erro explica o que houve e como resolver, sem pedir desculpas ("Esse vídeo tem 1min20. Use até 60s.").
 - Placeholders e dicas no tom da Carol; os textos finais de exemplo vêm da Carol: use rascunhos marcados como `TODO(Carol)` quando não existirem.
-- Visual dos modelos: referência nos protótipos `portfolio-creator-handoff.zip > prototipo/Modelo*.dc.html`, mas **adaptados para celular** (os protótipos têm 1200 px fixos e conteúdo de exemplo escrito no HTML).
+- Visual do estilo padrão e das seções: os protótipos `portfolio-creator-handoff.zip > prototipo/Modelo*.dc.html` servem de referência visual, não são modelos para construir. Sempre **adaptados para celular** (os protótipos têm 1200 px fixos e conteúdo de exemplo escrito no HTML).
 
 ## 9. Definição de pronto (vale para toda tarefa)
 
@@ -211,13 +214,13 @@ Os blocos guardam **dados**, não visual. Trocar modelo, paleta ou formato muda 
 Siga o backlog. Em resumo:
 
 1. **Base:** E1 (infra), E2 (banco e RLS), E3 (login), E4 (área da creator).
-2. **Visual:** E5 (cores), E6 (blocos no modelo Nuvem primeiro).
+2. **Visual:** E5 (cores), E6 (blocos no estilo padrão Nuvem).
 3. **Editor:** E7, depois E8 (assistente). Teste com creators reais antes de seguir.
 4. **Conteúdo:** E9 (mídias), E10 (números informados), E11 e E12 (publicação e PDF).
 5. **Operação:** E13 (pedidos e Slack), E14 (WhatsApp), E15 (aviso de abertura), E16 (planos e Premium).
-6. **Fechamento:** E17 (LGPD), E18 (operação mínima), E19 (lista de espera), os outros 4 modelos, E20 (qualidade).
+6. **Fechamento:** E17 (LGPD), E18 (operação mínima), E19 (lista de espera), E20 (qualidade).
 
-Os modelos Clean, Pop Color, Casual e Glow Rosé só começam depois que o Nuvem for aprovado no celular.
+Os modelos Clean, Pop Color, Casual e Glow Rosé foram descartados em 27/out/2026: sem modelos, as seções montam o portfólio.
 
 ## 11. Como pedir uma tarefa (modelo para quem guia)
 
