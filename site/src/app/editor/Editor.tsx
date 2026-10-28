@@ -33,6 +33,7 @@ import {
   Olho,
   Mais,
   Paleta,
+  Pessoa,
   Refazer,
   Subir,
   Descer,
@@ -51,6 +52,8 @@ type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisa
 // rótulo dos atalhos nas dicas dos botões: ⌘ no Mac e no iPad, Ctrl nos outros
 const MAC = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 const ATALHO = MAC ? '⌘' : 'Ctrl+';
+// mouse ou trackpad: a dica fala em clicar, não em tocar
+const CLIQUE = typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches;
 
 function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string | null }) {
   const editor = useMemo(() => criarEditor(inicial, REGISTRO), [inicial]);
@@ -166,6 +169,20 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   const { seus, total } = useMemo(() => progresso(projeto, PROJETO_DE_EXEMPLO, REGISTRO), [projeto]);
   const alertas = useMemo(() => revisar(projeto, PROJETO_DE_EXEMPLO, REGISTRO), [projeto]);
   const vermelhos = alertas.filter((x) => x.gravidade === 'vermelho').length;
+  const textoDoStatus =
+    situacao === 'salvo'
+      ? donoId
+        ? 'Salvo'
+        : 'Salvo no aparelho'
+      : situacao === 'salvando'
+        ? 'Salvando…'
+        : situacao === 'sem-conexao'
+          ? 'Sem conexão: salvo no aparelho'
+          : situacao === 'falhou'
+            ? 'Não salvou na conta: tentando de novo'
+            : 'Não salvou: sem espaço no aparelho';
+  const curtoDoStatus =
+    situacao === 'sem-conexao' ? 'Sem rede' : situacao === 'falhou' || situacao === 'erro' ? 'Não salvou' : '';
   const bloco = projeto.blocos.find((b) => b.id === selecionado);
   const definicao = bloco && REGISTRO[bloco.tipo];
   const indice = bloco ? projeto.blocos.indexOf(bloco) : -1;
@@ -251,6 +268,10 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
           {/* a marca leva para a área (Início): o editor salva sozinho, nada se perde ao sair */}
           <a href="/app/" className="marca-link" aria-label="Portfólio Creator: ir para o início">
             <Marca />
+            {/* abaixo de 360 px só o monograma, para todas as ações caberem no topo (DEV-093) */}
+            <span className="marca marca-curta" aria-hidden="true">
+              P<i>C</i>
+            </span>
           </a>
           <div className="ed-topo-acoes">
             <button
@@ -284,25 +305,24 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
             >
               <Refazer />
             </button>
+            {/* em tela estreita (< 480 px) o texto completo fica para o leitor de tela e a dica do mouse; aparece o ícone
+                ou, nos problemas, um texto curto (DEV-093) */}
             <span
               className={`ed-salvo ed-salvo--${situacao === 'sem-conexao' ? 'offline' : situacao === 'falhou' ? 'erro' : situacao}`}
               role="status"
+              title={textoDoStatus}
             >
-              {situacao === 'salvo'
-                ? donoId
-                  ? 'Salvo'
-                  : 'Salvo no aparelho'
-                : situacao === 'salvando'
-                  ? 'Salvando…'
-                  : situacao === 'sem-conexao'
-                    ? 'Sem conexão: salvo no aparelho'
-                    : situacao === 'falhou'
-                      ? 'Não salvou na conta: tentando de novo'
-                      : 'Não salvou: sem espaço no aparelho'}
+              <span className="ed-salvo-texto">{textoDoStatus}</span>
+              {curtoDoStatus && (
+                <span className="ed-salvo-curto" aria-hidden="true">
+                  {curtoDoStatus}
+                </span>
+              )}
             </span>
             {!donoId && supabaseConfigurado && (
-              <a className="ed-entrar" href="/app/entrar/">
-                Entrar
+              <a className="ed-entrar" href="/app/entrar/" aria-label="Entrar na sua conta">
+                <Pessoa />
+                <span className="ed-entrar-texto">Entrar</span>
               </a>
             )}
           </div>
@@ -359,7 +379,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
 
         {dica && !aviso && !selecionado && !painel && (
           <div className="ed-toast ed-toast--dica" role="status">
-            Toque numa seção para selecionar. Toque de novo para editar.
+            {CLIQUE ? 'Clique' : 'Toque'} numa seção para selecionar. {CLIQUE ? 'Clique' : 'Toque'} de novo para editar.
             <button type="button" onClick={fecharDica}>
               Entendi
             </button>

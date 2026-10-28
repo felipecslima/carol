@@ -797,3 +797,85 @@
 .ed-toast button {
   min-height: 44px;
 }
+
+/* ---------- topo do editor em telas estreitas, abas no desktop e dica (DEV-093) ---------- */
+.ed-salvo {
+  white-space: nowrap;
+}
+.ed-salvo-curto,
+.marca-curta {
+  display: none;
+}
+.ed-entrar svg {
+  display: none;
+}
+@media (max-width: 479px) {
+  /* texto completo só para o leitor de tela (e na dica do mouse); fica o ícone ou o texto curto do problema */
+  .ed-salvo-texto,
+  .ed-entrar-texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .ed-salvo-curto {
+    display: inline;
+  }
+  .ed-salvo {
+    margin-left: 2px;
+    min-width: 20px;
+  }
+  .ed-salvo--salvando::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: ed-pulsar 1s ease-in-out infinite alternate;
+  }
+  .ed-entrar {
+    width: 44px;
+    justify-content: center;
+    padding: 0;
+  }
+  .ed-entrar svg {
+    display: block;
+  }
+  .ed-topo .marca {
+    font-size: 22px;
+  }
+}
+@media (max-width: 359px) {
+  .ed-topo .marca:not(.marca-curta) {
+    display: none;
+  }
+  .ed-topo .marca-curta {
+    display: inline;
+  }
+}
+@keyframes ed-pulsar {
+  to {
+    opacity: 0.3;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ed-salvo--salvando::before {
+    animation: none;
+  }
+}
+/* no desktop as 5 abas não esticam até 256 px cada: ficam juntas no centro da barra */
+@media (min-width: 900px) {
+  .ed-abas {
+    grid-template-columns: repeat(5, minmax(0, 120px));
+    justify-content: center;
+  }
+}
+/* a dica de primeiro uso não bloqueia o toque na página: só o botão "Entendi" recebe o toque */
+.ed-toast--dica {
+  pointer-events: none;
+}
+.ed-toast--dica button {
+  pointer-events: auto;
+}

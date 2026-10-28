@@ -85,7 +85,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [x] **DEV-091** Modo Ver (sem interface) e modo iniciante.
 - [ ] **DEV-092** Eventos do editor (bloco adicionado, guardado, placeholder trocado, publicou).
 - [x] **DEV-096** Sem modelos: o editor e as seções montam o portfólio. A etapa do assistente vira "Escolha suas cores"; textos do app sem "modelo"; documentos atualizados. `modelo` fica como valor interno `'nuvem'` (sem migração). *Feito em 27/out, aprovado.*
-- [ ] **DEV-093** Topo do editor em telas pequenas (status e Entrar cabem em 320 px), abas centradas no desktop e dica de primeiro uso que não bloqueia o toque (diz "Clique" no computador).
+- [x] **DEV-093** Topo do editor em telas pequenas (status e Entrar cabem em 320 px), abas centradas no desktop e dica de primeiro uso que não bloqueia o toque (diz "Clique" no computador). *Feito em 28/out: abaixo de 480 px o status vira ícone (texto curto nos problemas: "Sem rede", "Não salvou"; o completo fica para o leitor de tela e na dica), "Entrar" vira ícone, a marca diminui e abaixo de 360 px vira o monograma PC; abas de 120 px no centro no desktop; dica diz "Clique" com mouse e não bloqueia a página.*
 - [ ] **DEV-094** Esqueleto do editor antes do JavaScript (topo e abas no HTML), sem tela em branco no 4G lento.
 - [ ] **DEV-095** Hierarquia: Publicar em destaque, rosa reservado para a ação principal e o selecionado, Esconder e Remover num menu "Mais" na barra flutuante.
 - [x] **DEV-099** Espaçamento (pedido de 28/out):
