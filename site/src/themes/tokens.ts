@@ -11,7 +11,9 @@ export type Cantos = keyof typeof CANTOS;
 /** Espaço vertical entre seções e dentro dos blocos. */
 export const RESPIRO = {
   compacto: { '--respiro': 'clamp(32px, 6cqi, 56px)' },
-  normal: { '--respiro': 'clamp(48px, 8cqi, 96px)' },
+  // 28/out: era clamp(48px, 8cqi, 96px). O que deixava o espaço gigante era o editor dobrar o respiro (corrigido em
+  // editor.css); aqui só um pouco menos no desktop. Com 72 px de máximo ficou apertado.
+  normal: { '--respiro': 'clamp(56px, 8cqi, 88px)' },
   amplo: { '--respiro': 'clamp(72px, 12cqi, 144px)' },
 } as const;
 export type Respiro = keyof typeof RESPIRO;

@@ -31,7 +31,7 @@ export function Menu({
         }
         setAtivo(itens.find((i) => visiveis.has(i.ancora))?.ancora ?? null);
       },
-      { rootMargin: '-72px 0px -55% 0px' },
+      { rootMargin: '-76px 0px -55% 0px' },
     );
     for (const el of alvos) observador.observe(el);
     return () => observador.disconnect();

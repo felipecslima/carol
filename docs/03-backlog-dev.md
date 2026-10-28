@@ -88,6 +88,13 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-093** Topo do editor em telas pequenas (status e Entrar cabem em 320 px), abas centradas no desktop e dica de primeiro uso que não bloqueia o toque (diz "Clique" no computador).
 - [ ] **DEV-094** Esqueleto do editor antes do JavaScript (topo e abas no HTML), sem tela em branco no 4G lento.
 - [ ] **DEV-095** Hierarquia: Publicar em destaque, rosa reservado para a ação principal e o selecionado, Esconder e Remover num menu "Mais" na barra flutuante.
+- [x] **DEV-099** Espaçamento (pedido de 28/out):
+  - Entre as seções, no editor o espaço dobrava (o respiro da "última seção" valia para todas): de 192 a 224 px no desktop, agora de 104 a 122 px. O respiro normal foi para `clamp(56px, 8cqi, 88px)`, também na página no ar.
+  - Dentro das seções, mais ar entre título, texto, etiquetas e cartões.
+  - O menu do topo ficou mais folgado.
+  - O WhatsApp flutuante some quando o Contato está no menu.
+  - Nos painéis, o título de cada grupo de opções encostava nos botões: agora fica a 10 px e alinhado com os campos de texto.
+  - *Feito em 28/out, esperando aprovação.*
 - [x] **DEV-098** Menu no topo da página, montado pelas seções na ordem delas (pedido de 28/out). Faixa fixa que desliza no celular e marca a seção à vista; a Capa não entra e o Contato fica no fim, como botão. Cada seção pode ter nome próprio no menu e sair dele; Estilo liga e desliga o menu. Aparece no editor (tocar seleciona a seção), no modo Ver e na página no ar; o mídia kit fica sem. *Feito em 28/out, esperando aprovação. Coluna nova `projects.menu` (migração `20261028000100_menu.sql`).*
 
 ### E8. Assistente de início

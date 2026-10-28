@@ -28,6 +28,25 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Esperando aprovação
 
+- **Espaçamento (DEV-099, pedido seu):**
+  - **Entre as seções:** no editor, cada seção fica sozinha no seu invólucro, e o respiro de baixo, que era só para a última seção da página, valia para todas. Isso dobrava o espaço.
+    - Agora só a última seção guarda o respiro de baixo (`editor.css`).
+    - O respiro "normal" foi de `clamp(48px, 8cqi, 96px)` para `clamp(56px, 8cqi, 88px)` (`themes/tokens.ts`): um pouco mais no celular e um pouco menos no desktop. Vale também para a página no ar e o modo Ver. Um primeiro corte, até 72 px, ficou apertado (você reclamou).
+    - Medido entre o fim de uma seção e o começo da seguinte, com o portfólio da Carol: editor em 1280 px de 192–224 para 104–122 px; modo Ver em 390 px de 64–82 para 72–90 px.
+  - **Dentro das seções:**
+    - título até o conteúdo de 20 para 28 px;
+    - no Sobre, texto até as etiquetas de 12 para 20 px (o título fica a 24 px do texto);
+    - entre etiquetas de 8 para 10 px;
+    - entre cartões de Números, Formatos, Por que eu e Como eu trabalho de 12 para 16 px;
+    - rótulo até a barra de 6 para 10 px;
+    - selo "Informado pela creator" de 14 para 24 px.
+  - **Menu do topo:**
+    - faixa de 56 para 60 px;
+    - itens 12 px mais afastados e o Contato 16 px afastado da faixa;
+    - o Contato aparenta 38 px de altura, mas a área de toque continua com 44 px.
+  - **Botões flutuantes:** com o Contato no menu, o "Chamar no WhatsApp" flutuante não aparece (eram dois chamados fixos ao mesmo tempo, e no modo Ver ficavam empilhados com "Voltar a editar"). Ele volta se o menu for desligado ou se o Contato sair do menu. O WhatsApp continua na seção Contato.
+  - **Nos painéis:** o título de cada grupo de opções (Cor, Cantos, Fonte, Clima, Menu, Layout, "Aparece no menu do topo?") encostava nos botões. O `legend` do fieldset não recebe o espaçamento da grade. Agora tem 10 px embaixo, e o recuo e a margem padrão do navegador saíram, então os títulos ficam alinhados com os campos de texto (x = 20 px).
+
 - **Menu no topo da página (DEV-098, pedido seu):** o menu nasce das seções, na ordem delas.
   - **Na página no ar e no modo Ver:**
     - Faixa fixa no topo que desliza para o lado no celular e sublinha, na cor de destaque, a seção que está à vista.

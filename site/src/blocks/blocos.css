@@ -63,7 +63,7 @@
   font-size: clamp(26px, 4.4cqi, 36px);
   line-height: 1.1;
   letter-spacing: -0.02em;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
   text-wrap: balance;
 }
 .bl-texto {
@@ -203,13 +203,17 @@
 }
 .bl-sobre-texto {
   display: grid;
-  gap: 12px;
+  gap: 20px;
   align-content: start;
+}
+/* aqui o título está dentro da grade: o gap já separa, a margem dele somaria */
+.bl-sobre-texto .bl-titulo {
+  margin-bottom: 4px;
 }
 .bl-etiquetas {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   list-style: none;
   padding: 0;
 }
@@ -232,7 +236,7 @@
   list-style: none;
   padding: 0;
   display: grid;
-  gap: 12px;
+  gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 .bl-cards-numero .bl-cartao {
@@ -264,7 +268,7 @@
   height: 16px;
   border-radius: 999px;
   background: var(--destaque-suave);
-  margin-top: 6px;
+  margin-top: 10px;
   overflow: hidden;
 }
 .bl-barra span {
@@ -355,7 +359,7 @@
   list-style: none;
   padding: 0;
   display: grid;
-  gap: 12px;
+  gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
 .bl-lista-formatos li {
@@ -446,7 +450,7 @@
 
 /* selo "informado pela creator" dos números e do público */
 .bl-selo {
-  margin-top: 14px;
+  margin-top: 24px;
   font-size: 13px;
   font-weight: 700;
   color: var(--texto-suave);
@@ -647,7 +651,7 @@ video.bl-video-capa {
 }
 .bl-motivos--cards .bl-lista-motivos {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 
 /* como eu trabalho: a numeração é conteúdo (ordem das etapas) */
@@ -655,7 +659,7 @@ video.bl-video-capa {
   list-style: none;
   padding: 0;
   display: grid;
-  gap: 12px;
+  gap: 16px;
   counter-reset: passo;
 }
 .bl-lista-processo li {
@@ -1114,9 +1118,9 @@ video.bl-video-capa {
 .bl-menu-dentro {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
   max-width: 1120px;
-  height: 56px;
+  height: 60px;
   margin: 0 auto;
   padding: 0 clamp(12px, 5cqi, 56px) 0 clamp(4px, 5cqi, 46px);
 }
@@ -1125,7 +1129,7 @@ video.bl-video-capa {
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 12px;
   margin: 0;
   padding: 0 24px 0 12px;
   list-style: none;
@@ -1175,10 +1179,18 @@ video.bl-video-capa {
 .bl-menu-contato a,
 .bl-menu-contato a:hover,
 .bl-menu-contato a[aria-current='location'] {
+  position: relative;
+  min-height: 38px;
   padding: 0 18px;
   border-radius: 999px;
   background: var(--destaque);
   color: var(--sobre-destaque);
+}
+/* o botão parece com 38 px, mais leve na faixa, mas o toque pega 44 px */
+.bl-menu-contato a::before {
+  content: '';
+  position: absolute;
+  inset: -3px 0;
 }
 .bl-menu-contato a:focus-visible {
   outline-offset: 3px;
@@ -1191,5 +1203,5 @@ video.bl-video-capa {
 }
 /* a seção para logo abaixo do menu quando a pessoa toca num item */
 .pagina .bl[id] {
-  scroll-margin-top: 64px;
+  scroll-margin-top: 68px;
 }

@@ -102,6 +102,11 @@
 .ed-tela .bl-menu {
   position: static;
 }
+/* cada seção fica sozinha no seu invólucro, então o respiro "da última seção da página" (.bl:last-child) valia para
+   todas e dobrava o espaço entre elas; aqui só a última seção de verdade guarda o respiro de baixo, como na página */
+.ed-bloco:not(:last-child) .bl {
+  padding-bottom: 0;
+}
 .ed-bloco {
   scroll-margin-top: 64px;
   position: relative;
@@ -275,12 +280,22 @@
 }
 .ed-campo {
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 .ed-campo label,
 .ed-form legend {
   font-weight: 700;
   font-size: 14px;
+}
+/* o título de um grupo de opções (legend) não entra no gap da grade do fieldset: sem esta margem ele encosta nos
+   botões; o padding zera o recuo padrão do navegador, que desalinhava "Cantos" e "Fonte" dos outros títulos */
+.ed-form legend {
+  padding: 0;
+  margin-bottom: 10px;
+}
+/* o fieldset traz 2 px de margem lateral do navegador: tirava os grupos de opções do alinhamento dos campos de texto */
+.ed-form fieldset {
+  margin: 0;
 }
 .ed-form :is(input[type='text'], textarea) {
   font: inherit;
