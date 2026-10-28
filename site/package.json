@@ -18,7 +18,8 @@
     "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
     "seed:carol": "node scripts/semear-carol.mjs",
     "acesso:teste": "node scripts/acesso-teste.mjs",
-    "equipe:teste": "node scripts/equipe-teste.mjs"
+    "equipe:teste": "node scripts/equipe-teste.mjs",
+    "pdf:kit": "node scripts/pdf-kit.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.1",

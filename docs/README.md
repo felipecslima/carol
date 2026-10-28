@@ -10,6 +10,7 @@ Só o que é preciso para construir o produto.
 | [02-construtor.md](02-construtor.md) | Como funciona: editor, blocos, paletas (Material 3), travas, área da creator, admin, arquitetura |
 | [03-backlog-dev.md](03-backlog-dev.md) | Todas as tarefas de código (`DEV-###`), na ordem |
 | [04-ocr-prints.md](04-ocr-prints.md) | Leitura dos prints do Instagram sem IA (com IA de reserva) |
+| [05-pdf-midia-kit.md](05-pdf-midia-kit.md) | PDF do mídia kit: como é gerado no servidor e como mudar o layout da folha |
 
 Arquivos que a IA cria conforme trabalha: `decisoes.md` (decisões tomadas durante a construção) e `ideias.md` (ideias fora do escopo).
 
