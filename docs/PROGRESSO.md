@@ -35,7 +35,13 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
   8. Resto da revisão do editor: DEV-232 (foco e teclado), DEV-093, DEV-094, DEV-095.
   9. DEV-233 (erros), DEV-234 (abuso), DEV-230 e 231 (testes).
   10. Marcar no backlog o que já funciona em localhost (DEV-142, 143, 145, 180 a 185, 210, 211).
-- **Depende de você antes de publicar:** e-mail próprio do login (Resend + DNS do domínio), regerar a secret key e o token do Supabase, domínio do produto, preços finais, CNPJ e o texto dos Termos e da Privacidade (DEV-200 e 204 dependem deles). Slack e WhatsApp oficial podem vir depois: no começo, a operação roda pelo /admin/.
+- **Depende de você antes de publicar (atualizado em 28/out, fim da sequência de código):**
+  1. **Aplicar 3 migrações** no SQL Editor do Supabase, nesta ordem (o agente foi bloqueado pelas permissões): `20261028000200_protecao.sql` (fecha a brecha da assistente gravar direto, confirmada pelo teste de RLS), `20261028000300_exclusao_definitiva.sql` (desliga o pg_cron antigo e mantém os pedidos), `20261028000400_limites.sql` (limites de links e mídias). Depois, rodar `supabase/tests/rls.sql`: tudo deve passar.
+  2. **Segredos do Worker** (`wrangler secret put`): `SUPABASE_SERVICE_ROLE_KEY` (regerada), `CLOUDINARY_URL`, `ADMIN_TOKEN`. Regerar também o token de acesso do Supabase.
+  3. **PDF no servidor (DEV-151 e 153):** plano pago do Workers e binding do Browser Rendering.
+  4. **Sentry (DEV-233):** criar a conta e mandar a DSN, se quiser além dos logs do Cloudflare.
+  5. **Confirmar valores:** preços (`src/lib/planos.ts`, iguais aos da página de vendas), limites (`src/lib/limites.ts`: 300 arquivos, 3 GB, 50 links por dia) e o texto do cupom (DEV-221).
+  6. E-mail próprio do login (Resend + DNS), domínio do produto, CNPJ, Termos e Privacidade (DEV-200 e 204), apagar as 3 fotos órfãs no Cloudinary (`creators/71134f88…`, roteiro `/tmp/rev/orfa.mjs`). Slack e WhatsApp oficial podem vir depois.
   - Roteiros de medição em `/tmp/rev/`.
 
 ## Esperando aprovação
