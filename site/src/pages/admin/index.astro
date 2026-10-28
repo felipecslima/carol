@@ -3,6 +3,7 @@
 // e nas rotas /api/admin; esta página sozinha não dá acesso a nada.
 import '../../styles/global.css';
 import '../../app/app.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
 import SeoHead from '../../components/SeoHead.astro';
 import Admin from '@app/admin/Admin';
 ---
@@ -19,6 +20,7 @@ import Admin from '@app/admin/Admin';
       analytics={false}
       themeColor="#24130F"
     />
+    <MonitorDeErros />
   </head>
   <body class="app-root">
     <Admin client:only="react" />

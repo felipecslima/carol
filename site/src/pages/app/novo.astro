@@ -2,6 +2,7 @@
 // Assistente de início do Portfólio Creator: ilha React só no navegador.
 import '../../styles/global.css';
 import '../../blocks/blocos.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
 import SeoHead from '../../components/SeoHead.astro';
 import Assistente from '@app/assistente/Assistente';
 ---
@@ -18,6 +19,7 @@ import Assistente from '@app/assistente/Assistente';
       analytics={false}
       themeColor="#FBF4EC"
     />
+    <MonitorDeErros />
   </head>
   <body style="margin:0">
     <Assistente client:only="react" />

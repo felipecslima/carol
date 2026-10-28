@@ -3,6 +3,7 @@
 // quando a conta tem um plano pago (MidiaKit.tsx).
 import '../../styles/global.css';
 import '../../blocks/blocos.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
 import SeoHead from '../../components/SeoHead.astro';
 import MidiaKit from '@app/midia-kit/MidiaKit';
 ---
@@ -19,6 +20,7 @@ import MidiaKit from '@app/midia-kit/MidiaKit';
       analytics={false}
       themeColor="#ffffff"
     />
+    <MonitorDeErros />
   </head>
   <body style="margin:0">
     <MidiaKit client:only="react" />

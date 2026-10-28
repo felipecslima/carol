@@ -3,6 +3,7 @@
 // exemplo nas 3 paletas e nos modos claro e escuro, renderizado no servidor, sem JavaScript no navegador.
 import '../../styles/global.css';
 import '../../blocks/blocos.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
 import SeoHead from '../../components/SeoHead.astro';
 import { Bloco } from '@blocks/Bloco';
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
@@ -30,6 +31,7 @@ const tema = gerarPaleta(NUVEM.paletas[paleta]!.origem, NUVEM.esquema);
       noindex
       analytics={false}
     />
+    <MonitorDeErros />
   </head>
   <body class="pagina" style={estiloInline(tema, NUVEM.estilo, modo)}>
     {PROJETO_DE_EXEMPLO.blocos.map((bloco) => (

@@ -3,6 +3,7 @@
 import '../../styles/global.css';
 import '../../app/app.css';
 import '../../blocks/blocos.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
 import SeoHead from '../../components/SeoHead.astro';
 import App from '@app/App';
 ---
@@ -19,6 +20,7 @@ import App from '@app/App';
       analytics={false}
       themeColor="#24130F"
     />
+    <MonitorDeErros />
   </head>
   <body class="app-root">
     <App client:only="react" />

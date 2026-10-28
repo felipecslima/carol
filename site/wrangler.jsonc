@@ -6,6 +6,8 @@
   "main": "./src/server/worker.ts",
   // exclusão definitiva das contas com prazo vencido (DEV-203), todo dia às 03:17 UTC
   "triggers": { "crons": ["17 3 * * *"] },
+  // logs do Worker no painel do Cloudflare: erros do navegador (/api/erro) e do servidor (middleware), DEV-233
+  "observability": { "enabled": true },
   "assets": {
     "binding": "ASSETS",
     // o redirecionamento precisa ver toda requisição, inclusive as de arquivos

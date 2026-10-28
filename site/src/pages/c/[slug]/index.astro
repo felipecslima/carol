@@ -3,6 +3,7 @@
 import '../../../styles/global.css';
 import '../../../blocks/blocos.css';
 import LinkNaoEncontrado from '../../../components/LinkNaoEncontrado.astro';
+import MonitorDeErros from '../../../components/MonitorDeErros.astro';
 import SeoHead from '../../../components/SeoHead.astro';
 import PaginaPublicada from '@app/publica/PaginaPublicada';
 import { temaDoProjeto } from '@app/editor/tema';
@@ -53,6 +54,7 @@ if (achou) Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-max
         </style>
       </noscript>
     )}
+    <MonitorDeErros />
   </head>
   <body style="margin:0">
     {pagina && achou ? (

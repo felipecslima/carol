@@ -1,6 +1,7 @@
 ---
 // Entrada separada da equipe: mesmo login por código, sem criar conta nova, e só deixa passar quem tem papel de equipe.
 import '../../styles/global.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
 import SeoHead from '../../components/SeoHead.astro';
 import Entrar from '@app/Entrar';
 ---
@@ -17,6 +18,7 @@ import Entrar from '@app/Entrar';
       analytics={false}
       themeColor="#FBF4EC"
     />
+    <MonitorDeErros />
   </head>
   <body style="margin:0">
     <Entrar equipe client:only="react" />
