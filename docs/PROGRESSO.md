@@ -18,7 +18,11 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
   - (0) commit do trabalho pendente (feito).
   - (1) **DEV-096, sem modelos** (aprovada, commit `787a989`). Decisão do usuário: acabam os modelos para escolher; o editor e as seções montam tudo. A etapa do assistente vira "Escolha suas cores" e os docs são atualizados. `modelo` fica só como valor interno `'nuvem'`, sem migração.
   - (1b) **DEV-097:** feita (commits `00e6357`, `6f786d0` e `f1d1ea0`).
-  - (1c) **DEV-098, menu do topo pelas seções** (pedido de 28/out, entrou antes da DEV-082): feito, esperando aprovação.
+  - (1c) Pedidos de 28/out, que entraram antes da DEV-082, todos aprovados:
+    - **DEV-098**, menu do topo pelas seções (`eb4bebe`);
+    - **DEV-099**, espaçamento (`b7a2717`);
+    - **DEV-235**, validação de WhatsApp e e-mail (commit seguinte).
+  - **Próximo:** (2) DEV-082.
   - (2) DEV-082: não perder edição quando salvar na conta falha (achado confirmado: recarregar online apagava a edição feita sem conexão).
   - (3) DEV-232: foco e teclado no editor (anel de foco dos blocos a ~1,2:1, foco entrando na gaveta, atalhos, Delete esconde a seção).
   - (4) DEV-093: topo em 320 px, abas no desktop e dica de primeiro uso.
@@ -27,67 +31,6 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
   - Roteiros de medição em `/tmp/rev/`.
 
 ## Esperando aprovação
-
-- **Espaçamento (DEV-099, pedido seu):**
-  - **Entre as seções:** no editor, cada seção fica sozinha no seu invólucro, e o respiro de baixo, que era só para a última seção da página, valia para todas. Isso dobrava o espaço.
-    - Agora só a última seção guarda o respiro de baixo (`editor.css`).
-    - O respiro "normal" foi de `clamp(48px, 8cqi, 96px)` para `clamp(56px, 8cqi, 88px)` (`themes/tokens.ts`): um pouco mais no celular e um pouco menos no desktop. Vale também para a página no ar e o modo Ver. Um primeiro corte, até 72 px, ficou apertado (você reclamou).
-    - Medido entre o fim de uma seção e o começo da seguinte, com o portfólio da Carol: editor em 1280 px de 192–224 para 104–122 px; modo Ver em 390 px de 64–82 para 72–90 px.
-  - **Dentro das seções:**
-    - título até o conteúdo de 20 para 28 px;
-    - no Sobre, texto até as etiquetas de 12 para 20 px (o título fica a 24 px do texto);
-    - entre etiquetas de 8 para 10 px;
-    - entre cartões de Números, Formatos, Por que eu e Como eu trabalho de 12 para 16 px;
-    - rótulo até a barra de 6 para 10 px;
-    - selo "Informado pela creator" de 14 para 24 px.
-  - **Menu do topo:**
-    - faixa de 56 para 60 px;
-    - itens 12 px mais afastados e o Contato 16 px afastado da faixa;
-    - o Contato aparenta 38 px de altura, mas a área de toque continua com 44 px.
-  - **Botões flutuantes:** com o Contato no menu, o "Chamar no WhatsApp" flutuante não aparece (eram dois chamados fixos ao mesmo tempo, e no modo Ver ficavam empilhados com "Voltar a editar"). Ele volta se o menu for desligado ou se o Contato sair do menu. O WhatsApp continua na seção Contato.
-  - **Nos painéis:** o título de cada grupo de opções (Cor, Cantos, Fonte, Clima, Menu, Layout, "Aparece no menu do topo?") encostava nos botões. O `legend` do fieldset não recebe o espaçamento da grade. Agora tem 10 px embaixo, e o recuo e a margem padrão do navegador saíram, então os títulos ficam alinhados com os campos de texto (x = 20 px).
-
-- **Menu no topo da página (DEV-098, pedido seu):** o menu nasce das seções, na ordem delas.
-  - **Na página no ar e no modo Ver:**
-    - Faixa fixa no topo que desliza para o lado no celular e sublinha, na cor de destaque, a seção que está à vista.
-    - A Capa não entra; o Contato fica no fim, como botão (no desktop, na ponta direita).
-    - Tocar num item rola até a seção, que para logo abaixo do menu (rolagem suave, ou direta para quem pede menos movimento).
-  - **No editor:**
-    - A mesma faixa aparece parada no começo da página e acompanha na hora quando ela reordena, esconde ou renomeia uma seção. Tocar num item seleciona a seção.
-    - Cada gaveta (menos a Capa) ganhou o grupo **No menu**: "Aparece no menu do topo?" (Sim ou Não) e "Nome no menu" (até 24 letras). Em branco, usa um nome curto: Resumo, Vídeos, Números, Por que eu, Sobre, Público, Marcas, Formatos, Como trabalho ou Contato.
-    - Em **Estilo**: "Menu no topo da página", Ligado ou Desligado.
-  - **O que não muda:** o mídia kit fica sem menu, e o botão da Capa continua indo ao Contato.
-  - **Por dentro:**
-    - As âncoras são únicas (`#videos` e `#videos-2` se houver duas seções de Vídeos), e a página no ar e o modo Ver passaram a usar o mesmo conteúdo (`blocks/ConteudoDaPagina.tsx`).
-    - **Banco:** coluna nova `projects.menu`, ligada por padrão, já aplicada no Supabase `Creators` (migração `supabase/migrations/20261028000100_menu.sql`). O nome e o "mostrar" de cada seção ficam no JSON das seções.
-  - **Verificado:** 17 checagens em Playwright, todas passando. Roteiro: `/tmp/rev/menu.mjs`.
-
-- **Página de vendas sem modelos (DEV-097, aplicada em localhost):** a página `/portfolio-creator/` deixou de prometer modelos. Base: `docs/PROPOSTA-PAGINA-VENDAS-SEM-MODELOS.md`.
-  - **Textos:**
-    - Passos de "Como funciona".
-    - Topo: "você escolhe as seções", e os números viraram "11 seções prontas" e "3 cores prontas, ou a sua"; antes eram "15 modelos" e "45 paletas".
-    - Itens dos planos e a descrição para o Google.
-    - Menu "Seções" (âncora `#secoes`).
-    - Teste grátis: decisão sua de **montar tudo e só visualizar, com marca d'água**; PDF e publicar ficam no plano.
-  - **Correções que você pediu junto:**
-    - Saiu a promessa de "IA que lê os prints": ela digita os números (passo 2, plano, benefício e 2 perguntas).
-    - Saiu o "até 10 vídeos": o editor não limita; o vídeo vai até 100 MB.
-  - **Vitrine:** "11 seções, *do seu jeito*", com 6 cartões (Capa, Vídeos, Números, Público, Marcas, Formatos e pacotes) e os layouts de cada uma na legenda. O texto ao lado diz "As de baixo são do meu portfólio, montado aqui." São 3 colunas no desktop e 2 no celular.
-  - **Imagens (o portfólio real da Carol, numa cor só, com um cartão escuro; decisão sua):**
-    - Origem: tudo sai do modo Ver do editor de verdade, com o projeto da conta de teste. Esse projeto é preenchido pelo `seed:carol` só com dados do site dela (foto `p9.webp`, vídeos, 58,4 mil seguidores, público e marcas), na cor caramelo dela.
-    - Roteiro: `scripts/portfolio-creator-secoes.mjs`. Só lê o banco, põe o projeto no rascunho do navegador e gera:
-      - as 6 imagens da vitrine;
-      - o celular grande do topo (`portfolio-carol.webp`): só a capa, terminando no fundo da página;
-      - as 2 imagens pequenas: `topo-numeros.webp` (os três números, página clara) e `topo-reel.webp` (um reel dela, sem a etiqueta "Com som");
-      - todas as imagens do topo saem já na proporção exata do espaço em que aparecem (celular 0,545, cartão 3:4, reel 9:16). Antes, a página cortava o que sobrava, e o enquadramento ficava ruim (você reclamou em 28/out);
-      - a prévia de link `og-portfolio-creator.jpg`, que diz "Seções prontas" e mostra o celular da Carol.
-    - A seção do modo iniciante continua com o celular "Bia" do protótipo (`portfolio-iniciante.webp`), porque ali o assunto é quem ainda não tem números.
-    - As 15 `modelo-*.webp` foram apagadas, e o `portfolio-creator-shots.mjs` agora só gera o celular do modo iniciante e as fotos da Carol.
-    - O `seed:carol` agora cria o perfil se ele faltar. A conta de teste tinha ficado sem perfil, e o seed falhava.
-    - Apaguei 1 foto que sobrou no Cloudinary da primeira tentativa.
-    - **Pendente:** 3 fotos antigas sem registro no banco (24 e 25/out, pasta `creators/71134f88…`), provável sobra de testes de exclusão de conta. Você pediu para apagar, mas o controle de permissões do Claude Code bloqueou a exclusão no Cloudinary. Dá para apagar no painel do Cloudinary ou liberar a permissão. O roteiro está em `/tmp/rev/orfa.mjs` (`node orfa.mjs apagar <id>`).
-  - **Achados que já existiam antes desta mudança (não mexi):** texto escuro sobre o rosa `#e5386a` a 4,3:1 (abaixo de 4,5:1) em 3 ou 4 pontos e 3 cores fora do DESIGN.md na linha 177.
-  - O site só muda em produção no merge na `main`.
 
 - **Título da capa livre (pedido seu):** a frase "Oi, eu sou X e mostro Y do meu jeito" deixou de ser imposta. O assistente ganhou a etapa **"Qual título abre a sua capa?"**: campo livre, com 4 sugestões em botões (a frase antiga é só a primeira); em branco usa a primeira sugestão. No editor, tocar num texto de exemplo com [colchetes] já seleciona tudo para escrever por cima. A dica da etapa "O que você mostra" não diz mais que vira a frase da capa.
 
@@ -144,6 +87,18 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **DEV-069 (visual do modelo Nuvem):** os 8 blocos (2 variações cada) e o modelo Nuvem com 3 paletas (lavanda, pêssego, menta) renderizam em `/app/blocos/?paleta=0&modo=claro` (só no `npm run dev`). Referência: `prototipo/ModeloNuvem` do handoff. **O usuário precisa olhar e aprovar** antes dos modelos Clean, Pop Color, Casual e Glow Rosé (DEV-070 a 073). Pontos a avaliar: paleta Pêssego sai com botão marrom (a regra Fidelity escurece o tom 40); capa e vídeos sem foto mostram "Sua foto"/"Seu vídeo"; as variações escolhidas são as duas primeiras de cada bloco no `docs/02-construtor.md`.
 
 ## Diário
+
+### 28/out/2026
+- **DEV-097:** página de vendas sem modelos. Textos, imagens do portfólio real da Carol feitas no editor e enquadramento do topo (`00e6357`, `6f786d0`, `f1d1ea0`).
+- **DEV-098:** menu no topo da página, pelas seções (`eb4bebe`). Coluna nova `projects.menu` aplicada no Supabase.
+- **DEV-099:** espaçamento (`b7a2717`).
+  - O editor dobrava o respiro entre as seções.
+  - O respiro foi para `clamp(56px, 8cqi, 88px)`, depois de um primeiro corte que ficou apertado.
+  - Mais ar dentro das seções e no menu.
+  - O WhatsApp flutuante some com o Contato no menu.
+  - Os títulos dos painéis ficaram afastados dos botões.
+- **DEV-235:** validação de WhatsApp e e-mail com uma regra só (`lib/formatos.ts`). Corrige o link do WhatsApp sem o 55.
+- **Pendente com você:** 3 fotos antigas sem registro no Cloudinary (pasta da conta de teste). O controle de permissões bloqueou a exclusão.
 
 ### 27/out/2026
 - DEV-096: sem modelos (assistente com etapa de cores, textos do app e documentos).

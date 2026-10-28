@@ -1,7 +1,11 @@
 import { BotaoVivo, Revela } from './movimento';
 import type { DadosDeContato, PropsDoBloco } from './tipos';
 
-const soDigitos = (t: string) => t.replace(/\D/g, '');
+import { whatsappParaLink } from '@lib/formatos';
+
+// link do WhatsApp sempre com o código do país (quem escreveu sem o 55 abria a conversa errada); número inválido cai
+// nos dígitos como estão, e a revisão não deixa publicar assim
+const numeroDoLink = (t: string) => whatsappParaLink(t) || t.replace(/\D/g, '');
 
 export function Contato({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDeContato, 'botoes' | 'formulario'>) {
   const { titulo, whatsapp, email, prazo } = dados;
@@ -23,7 +27,7 @@ export function Contato({ variacao, dados, modo, ancora }: PropsDoBloco<DadosDeC
             <BotaoVivo
               modo={modo}
               className="bl-botao bl-botao--vazado"
-              href={`https://wa.me/${soDigitos(whatsapp)}`}
+              href={`https://wa.me/${numeroDoLink(whatsapp)}`}
               rel="noopener"
             >
               Chamar no WhatsApp

@@ -2,6 +2,7 @@
 // escolha de variação. Tocar em "Exemplo" e trocar o texto tira a marca de exemplo do item.
 import { Fragment, useId, useState, type ReactNode } from 'react';
 import { chaveDeFoco, type Campo, type DefinicaoDeBloco } from '@lib/bloco';
+import { analisar } from '@lib/formatos';
 import { rotuloPadrao } from '@lib/menu';
 import type { Bloco } from '@lib/projeto';
 import { REGISTRO } from '@blocks/registro';
@@ -25,6 +26,12 @@ function CampoDeTexto({
   textoLongo?: boolean;
 }) {
   const id = useId(); // único por campo: antes, itens repetidos dividiam o mesmo id e ficavam sem nome para o leitor de tela
+  const idDaSituacao = `${id}-situacao`;
+  // campo com formato (WhatsApp, e-mail): o erro só aparece depois que ela sai do campo (ou se já veio errado), para
+  // não brigar com quem ainda está digitando; daí em diante acompanha cada letra
+  const [conferir, setConferir] = useState(valor.trim() !== '');
+  const analise = campo.formato ? analisar(campo.formato, valor) : null;
+  const mostrarErro = Boolean(analise && !analise.ok && conferir);
   const comum = {
     id,
     value: valor,
@@ -39,12 +46,47 @@ function CampoDeTexto({
       {textoLongo || campo.tipo === 'texto' ? (
         <textarea rows={3} {...comum} />
       ) : (
-        <input type="text" {...comum} inputMode={campo.tipo === 'numero' ? 'text' : undefined} />
+        <input
+          type="text"
+          {...comum}
+          inputMode={campo.formato === 'whatsapp' ? 'tel' : campo.formato === 'email' ? 'email' : undefined}
+          autoComplete={campo.formato === 'whatsapp' ? 'tel' : campo.formato === 'email' ? 'email' : undefined}
+          autoCapitalize={campo.formato ? 'off' : undefined}
+          spellCheck={campo.formato ? false : undefined}
+          aria-invalid={mostrarErro || undefined}
+          aria-describedby={analise ? idDaSituacao : undefined}
+          onBlur={() => {
+            setConferir(valor.trim() !== '');
+            // ao sair do campo, grava no formato arrumado: "+55 (12) 99137-6550", e-mail em minúsculas
+            if (analise?.ok && analise.arrumado !== valor) aoMudar(analise.arrumado);
+          }}
+        />
       )}
-      {campo.maximo && (
-        <span className="ed-contador" aria-live="polite">
-          {valor.length} de {campo.maximo} letras
+      {analise ? (
+        <span id={idDaSituacao} className="ed-situacao" aria-live="polite">
+          {analise.ok ? (
+            <span className="ed-situacao-ok">
+              {campo.formato === 'whatsapp'
+                ? `Certo. O botão abre o WhatsApp de ${analise.arrumado}.`
+                : 'Certo. O botão abre um e-mail para este endereço.'}
+            </span>
+          ) : mostrarErro ? (
+            <span className="ed-erro">
+              {analise.mensagem}
+              {analise.sugestao && (
+                <button type="button" className="ed-situacao-usar" onClick={() => aoMudar(analise.sugestao!)}>
+                  Usar {analise.sugestao}
+                </button>
+              )}
+            </span>
+          ) : null}
         </span>
+      ) : (
+        campo.maximo && (
+          <span className="ed-contador" aria-live="polite">
+            {valor.length} de {campo.maximo} letras
+          </span>
+        )
       )}
       {campo.dica && <span className="ed-dica">{campo.dica}</span>}
     </div>

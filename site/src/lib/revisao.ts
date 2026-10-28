@@ -1,6 +1,7 @@
 // Revisão final antes de publicar (DEV-140). Vermelho bloqueia: exemplo que sobrou, número de exemplo, contato
 // faltando ou inválido. Amarelo a creator pode ignorar: foto, vídeo e @ vazios. Só olha as seções visíveis.
 import type { Registro } from './bloco';
+import { analisarEmail, analisarWhatsapp } from './formatos';
 import { blocosVisiveis, type Bloco, type Projeto } from './projeto';
 import { problemaDoSlug } from './slug';
 
@@ -15,9 +16,6 @@ export interface Alerta {
 
 const ESCALARES = new Set(['titulo', 'texto', 'botao', 'etiqueta', 'numero']);
 const vazio = (v: unknown) => v === undefined || v === null || v === '';
-
-export const emailValido = (t: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t.trim());
-export const whatsappValido = (t: string) => t.replace(/\D/g, '').length >= 10;
 
 export function revisar(projeto: Projeto, referencia: Projeto, registro: Registro): Alerta[] {
   const alertas: Alerta[] = [];
@@ -65,14 +63,17 @@ export function revisar(projeto: Projeto, referencia: Projeto, registro: Registr
   if (!contato) {
     alertas.push({ gravidade: 'vermelho', mensagem: 'A página precisa de uma seção de Contato.' });
   } else {
-    const { email, whatsapp } = contato.dados as { email?: string; whatsapp?: string };
-    if (!email || !emailValido(email))
-      alertas.push({ gravidade: 'vermelho', bloco: contato.id, mensagem: 'Contato: o e-mail está vazio ou inválido.' });
-    if (!whatsapp || !whatsappValido(whatsapp))
+    const { email = '', whatsapp = '' } = contato.dados as { email?: string; whatsapp?: string };
+    // o mesmo motivo que o campo mostra na gaveta (o que falta e como resolver)
+    const doEmail = analisarEmail(email);
+    if (!doEmail.ok)
+      alertas.push({ gravidade: 'vermelho', bloco: contato.id, mensagem: `E-mail do Contato: ${doEmail.mensagem}` });
+    const doWhatsapp = analisarWhatsapp(whatsapp);
+    if (!doWhatsapp.ok)
       alertas.push({
         gravidade: 'vermelho',
         bloco: contato.id,
-        mensagem: 'Contato: o WhatsApp está vazio ou inválido (com DDD).',
+        mensagem: `WhatsApp do Contato: ${doWhatsapp.mensagem}`,
       });
   }
 

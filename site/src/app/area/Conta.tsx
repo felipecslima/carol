@@ -1,7 +1,7 @@
 // Conta: dados, plano e pagamentos, e os direitos da creator (baixar dados, excluir conta). LGPD: fácil de achar e
 // sem truque para segurar a creator.
 import { useState } from 'react';
-import { whatsappValido } from '@lib/revisao';
+import { analisarWhatsapp } from '@lib/formatos';
 import { cancelarExclusao, pedirExclusao, reunirDados, salvarPerfil, type Perfil } from '../nuvem';
 import { sair } from '../sessao';
 
@@ -12,6 +12,8 @@ function Campo({
   aoMudar,
   tipo = 'text',
   dica,
+  erro,
+  aoSair,
 }: {
   id: string;
   rotulo: string;
@@ -19,12 +21,33 @@ function Campo({
   aoMudar: (v: string) => void;
   tipo?: string;
   dica?: string;
+  /** o que está errado no que ela escreveu (aparece no lugar da dica) */
+  erro?: string;
+  aoSair?: () => void;
 }) {
   return (
     <div className="ed-campo">
       <label htmlFor={id}>{rotulo}</label>
-      <input id={id} type={tipo} value={valor} onChange={(e) => aoMudar(e.target.value)} />
-      {dica && <span className="ed-dica">{dica}</span>}
+      <input
+        id={id}
+        type={tipo}
+        value={valor}
+        onChange={(e) => aoMudar(e.target.value)}
+        onBlur={aoSair}
+        aria-invalid={erro ? true : undefined}
+        aria-describedby={erro || dica ? `${id}-dica` : undefined}
+      />
+      {erro ? (
+        <span id={`${id}-dica`} className="ed-erro" aria-live="polite">
+          {erro}
+        </span>
+      ) : (
+        dica && (
+          <span id={`${id}-dica`} className="ed-dica">
+            {dica}
+          </span>
+        )
+      )}
     </div>
   );
 }
@@ -46,7 +69,9 @@ export function Conta({
   const [excluindo, setExcluindo] = useState(false);
   const [baixando, setBaixando] = useState(false);
 
-  const whatsappRuim = p.whatsapp.trim() !== '' && !whatsappValido(p.whatsapp);
+  // mesma regra do Contato no editor: diz o que falta e grava no formato +55 (DDD) número
+  const analiseDoWhatsapp = analisarWhatsapp(p.whatsapp);
+  const whatsappRuim = p.whatsapp.trim() !== '' && !analiseDoWhatsapp.ok;
 
   async function salvar() {
     if (whatsappRuim) return;
@@ -103,7 +128,9 @@ export function Conta({
           valor={p.whatsapp}
           aoMudar={(v) => setP({ ...p, whatsapp: v })}
           tipo="tel"
-          dica={whatsappRuim ? 'Use o número com DDD.' : 'Com DDD. Usado só para avisos sobre o seu portfólio.'}
+          dica="Com DDD. Usado só para avisos sobre o seu portfólio."
+          erro={whatsappRuim ? analiseDoWhatsapp.mensagem : undefined}
+          aoSair={() => analiseDoWhatsapp.ok && setP({ ...p, whatsapp: analiseDoWhatsapp.arrumado })}
         />
         <Campo id="c-cidade" rotulo="Cidade" valor={p.cidade} aoMudar={(v) => setP({ ...p, cidade: v })} />
         <Campo id="c-nicho" rotulo="Sobre o que você fala" valor={p.nicho} aoMudar={(v) => setP({ ...p, nicho: v })} />

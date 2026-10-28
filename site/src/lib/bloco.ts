@@ -1,6 +1,7 @@
 // Contrato de bloco: o que um bloco declara para o editor e para a validação (docs/02-construtor.md, "Blocos
 // prontos" e "Três níveis de liberdade"). Os blocos guardam DADOS, não visual: o modelo cuida da pele.
 import { z } from 'zod';
+import type { Formato } from './formatos';
 
 export const TIPOS_DE_CAMPO = [
   'titulo',
@@ -23,6 +24,8 @@ export interface Campo {
   tipo: TipoDeCampo;
   /** limite de letras (texto livre); o editor mostra o contador e a fonte nunca diminui */
   maximo?: number;
+  /** formato conferido enquanto ela digita (WhatsApp, e-mail): no lugar do contador, diz se está certo e o que falta */
+  formato?: Formato;
   obrigatorio?: boolean;
   /** texto de exemplo ("Exemplo · toque para trocar"); some quando a creator escreve o dela */
   placeholder?: string;

@@ -3,11 +3,11 @@
 import { Marca } from './Marca';
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from './supabase';
+import { analisarEmail } from '@lib/formatos';
 import './assistente/assistente.css';
 import './refino.css';
 import './tema.css';
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const ESPERA = 30;
 
 const PAPEIS_EQUIPE = ['admin', 'operacao', 'assistente'];
@@ -30,8 +30,10 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
   }, [espera]);
 
   async function enviarCodigo() {
-    const limpo = email.trim().toLowerCase();
-    if (!EMAIL.test(limpo)) return setErro('Esse e-mail parece incompleto. Confira e tente de novo.');
+    // mesma regra do editor: diz o que falta (o @, o .com) e aponta erro comum no fim, como gmail.con
+    const analise = analisarEmail(email);
+    if (!analise.ok) return setErro(analise.mensagem ?? 'Confira o e-mail e tente de novo.');
+    const limpo = analise.arrumado;
     setErro(null);
     setOcupado(true);
     const { error } = await supabase.auth.signInWithOtp({ email: limpo, options: { shouldCreateUser: !equipe } });
@@ -104,6 +106,7 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
                 : 'Sem senha: a gente manda um código de 6 números para o seu e-mail.'}
             </p>
             <form
+              noValidate
               className="as-campo"
               onSubmit={(e) => {
                 e.preventDefault();
@@ -133,7 +136,7 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
                 <button
                   type="button"
                   className="as-link"
-                  disabled={!EMAIL.test(email.trim())}
+                  disabled={!analisarEmail(email).ok}
                   onClick={() => {
                     setEmail(email.trim().toLowerCase());
                     setErro(null);
@@ -154,6 +157,7 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
               Enviamos 6 números para <b>{email}</b>. Veja também a caixa de spam.
             </p>
             <form
+              noValidate
               className="as-campo"
               onSubmit={(e) => {
                 e.preventDefault();

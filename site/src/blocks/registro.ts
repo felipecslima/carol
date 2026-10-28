@@ -321,8 +321,8 @@ export const BLOCOS = {
     ],
     campos: [
       titulo,
-      { id: 'whatsapp', rotulo: 'WhatsApp', tipo: 'botao', obrigatorio: true, maximo: 20 },
-      { id: 'email', rotulo: 'E-mail', tipo: 'botao', obrigatorio: true, maximo: 120 },
+      { id: 'whatsapp', rotulo: 'WhatsApp', tipo: 'botao', obrigatorio: true, maximo: 20, formato: 'whatsapp' },
+      { id: 'email', rotulo: 'E-mail', tipo: 'botao', obrigatorio: true, maximo: 120, formato: 'email' },
       { id: 'prazo', rotulo: 'Prazo de resposta', tipo: 'etiqueta', maximo: 60 },
     ],
   },

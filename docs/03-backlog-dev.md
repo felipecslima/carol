@@ -84,7 +84,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [x] **DEV-090** Placeholders com etiqueta "Exemplo · toque para trocar"; progresso "X de Y itens já são seus". *Contador feito (`lib/progresso.ts`).*
 - [x] **DEV-091** Modo Ver (sem interface) e modo iniciante.
 - [ ] **DEV-092** Eventos do editor (bloco adicionado, guardado, placeholder trocado, publicou).
-- [x] **DEV-096** Sem modelos: o editor e as seções montam o portfólio. A etapa do assistente vira "Escolha suas cores"; textos do app sem "modelo"; documentos atualizados. `modelo` fica como valor interno `'nuvem'` (sem migração). *Feito em 27/out, esperando aprovação.*
+- [x] **DEV-096** Sem modelos: o editor e as seções montam o portfólio. A etapa do assistente vira "Escolha suas cores"; textos do app sem "modelo"; documentos atualizados. `modelo` fica como valor interno `'nuvem'` (sem migração). *Feito em 27/out, aprovado.*
 - [ ] **DEV-093** Topo do editor em telas pequenas (status e Entrar cabem em 320 px), abas centradas no desktop e dica de primeiro uso que não bloqueia o toque (diz "Clique" no computador).
 - [ ] **DEV-094** Esqueleto do editor antes do JavaScript (topo e abas no HTML), sem tela em branco no 4G lento.
 - [ ] **DEV-095** Hierarquia: Publicar em destaque, rosa reservado para a ação principal e o selecionado, Esconder e Remover num menu "Mais" na barra flutuante.
@@ -94,8 +94,8 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
   - O menu do topo ficou mais folgado.
   - O WhatsApp flutuante some quando o Contato está no menu.
   - Nos painéis, o título de cada grupo de opções encostava nos botões: agora fica a 10 px e alinhado com os campos de texto.
-  - *Feito em 28/out, esperando aprovação.*
-- [x] **DEV-098** Menu no topo da página, montado pelas seções na ordem delas (pedido de 28/out). Faixa fixa que desliza no celular e marca a seção à vista; a Capa não entra e o Contato fica no fim, como botão. Cada seção pode ter nome próprio no menu e sair dele; Estilo liga e desliga o menu. Aparece no editor (tocar seleciona a seção), no modo Ver e na página no ar; o mídia kit fica sem. *Feito em 28/out, esperando aprovação. Coluna nova `projects.menu` (migração `20261028000100_menu.sql`).*
+  - *Feito em 28/out, aprovado.*
+- [x] **DEV-098** Menu no topo da página, montado pelas seções na ordem delas (pedido de 28/out). Faixa fixa que desliza no celular e marca a seção à vista; a Capa não entra e o Contato fica no fim, como botão. Cada seção pode ter nome próprio no menu e sair dele; Estilo liga e desliga o menu. Aparece no editor (tocar seleciona a seção), no modo Ver e na página no ar; o mídia kit fica sem. *Feito em 28/out, aprovado. Coluna nova `projects.menu` (migração `20261028000100_menu.sql`).*
 
 ### E8. Assistente de início
 
@@ -196,6 +196,12 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-232** Acessibilidade: contraste, foco visível, leitor de tela nos controles do editor (parte do editor planejada em 27/out: anel de foco dos blocos, foco entrando na gaveta, atalhos Ctrl/Cmd+Z, Shift+Ctrl/Cmd+Z, Delete esconde a seção, Esc).
 - [ ] **DEV-233** Monitoramento de erros (Sentry) no editor, na API e no Worker.
 - [ ] **DEV-234** Proteção contra abuso: limite de envios, de chamadas de IA e de criação de links por conta.
+- [x] **DEV-235** Validação de WhatsApp e e-mail enquanto a creator digita (pedido de 28/out). Uma regra só (`lib/formatos.ts`) no Contato do editor, na Conta, no login e na revisão: diz o que está errado em português e grava arrumado. Corrige o link do WhatsApp sem o 55, que abria a conversa errada. *Feito em 28/out, aprovado.*
+
+## P1 — Logo depois do lançamento
+
+### Adiado da versão 1
+
 - [ ] **DEV-031** Entrar com Google.
 - [ ] **DEV-103** Bio gerada pela IA a partir das respostas (servidor, com limite de uso por conta grátis).
 - [ ] **DEV-195** Limite de IA na conta grátis. Depende: quantidade definida.

@@ -263,8 +263,41 @@
 .ed-erro {
   color: var(--ed-erro);
 }
-.as .as-campo input[aria-invalid='true'] {
+.as .as-campo input[aria-invalid='true'],
+.ed-form input[aria-invalid='true'] {
   border-color: var(--ed-erro);
+}
+/* campo com formato (WhatsApp, e-mail): a situação aparece no lugar do contador de letras */
+.ed-situacao {
+  font-size: 13px;
+  line-height: 1.45;
+}
+.ed-situacao:empty {
+  display: none;
+}
+.ed-situacao-ok {
+  color: var(--ed-ok);
+  font-weight: 600;
+}
+.ed-situacao .ed-erro {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+.ed-situacao-usar {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--ed-borda);
+  border-radius: 999px;
+  background: var(--ed-campo);
+  color: var(--ed-texto);
+  font: inherit;
+  font-weight: 700;
+}
+.ed-situacao-usar:focus-visible {
+  outline: 3px solid var(--ed-foco);
+  outline-offset: 2px;
 }
 .ed-link-campo span {
   color: var(--ed-suave);
