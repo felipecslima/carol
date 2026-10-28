@@ -4,6 +4,7 @@ import '../../styles/global.css';
 import '../../blocks/blocos.css';
 import SeoHead from '../../components/SeoHead.astro';
 import Editor from '@app/editor/Editor';
+import { Esqueleto } from '@app/editor/Esqueleto';
 ---
 
 <!doctype html>
@@ -19,7 +20,10 @@ import Editor from '@app/editor/Editor';
       themeColor="#FBF4EC"
     />
   </head>
-  <body style="margin:0">
-    <Editor client:only="react" />
+  <body style="margin:0;background:#24130f">
+    <!-- o esqueleto vem no HTML e some quando o editor monta (DEV-094) -->
+    <Editor client:only="react">
+      <Esqueleto slot="fallback" />
+    </Editor>
   </body>
 </html>

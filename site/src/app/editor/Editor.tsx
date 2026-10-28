@@ -20,6 +20,7 @@ import { aplicarNumeros } from '@lib/numeros';
 import { podePublicar, revisar } from '@lib/revisao';
 import { PainelMidias } from './PainelMidias';
 import { PainelRevisao } from './PainelRevisao';
+import { Esqueleto } from './Esqueleto';
 import { Gaveta } from './Gaveta';
 import { PainelNumeros } from './PainelNumeros';
 import {
@@ -641,11 +642,6 @@ export default function Editor() {
     };
   }, [sessao, donoId]);
 
-  if (!inicial)
-    return (
-      <p className="ed-carregando" role="status">
-        Carregando seu portfólio…
-      </p>
-    );
+  if (!inicial) return <Esqueleto />;
   return <EditorInterno key={donoId ?? 'aparelho'} inicial={inicial} donoId={donoId} />;
 }
