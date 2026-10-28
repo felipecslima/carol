@@ -38,7 +38,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **Depende de você antes de publicar (atualizado em 28/out, fim da sequência de código):**
   1. ~~Aplicar 3 migrações~~ **Feito em 28/out pelo agente, com o seu pedido:** `protecao`, `exclusao_definitiva` e `limites` aplicadas; `supabase/tests/rls.sql` rodado: todos os 6 grupos passam (inclusive a assistente, que não grava mais direto); salvar na conta continua funcionando (conferido com a conta de teste). Avisos restantes do Supabase: as funções de pedir e cancelar exclusão (de propósito) e a proteção de senha vazada (o login é por código).
   2. **Segredos do Worker** (`wrangler secret put`): `SUPABASE_SERVICE_ROLE_KEY` (regerada), `CLOUDINARY_URL`, `ADMIN_TOKEN`. Regerar também o token de acesso do Supabase.
-  3. **PDF no servidor (DEV-151 e 153):** plano pago do Workers e binding do Browser Rendering.
+  3. ~~PDF no servidor~~ **Feito em 28/out (DEV-151 a 153), grátis pelo Browser Run da Cloudflare:** não precisa de plano pago para começar (10 min de navegador por dia, ~30 a 60 PDFs). Se o volume crescer, aí sim o plano pago do Workers (US$ 0,09 por hora a mais). Em produção, o binding `BROWSER` já está no `wrangler.jsonc`.
   4. **Sentry (DEV-233):** criar a conta e mandar a DSN, se quiser além dos logs do Cloudflare.
   5. **Confirmar valores:** preços (`src/lib/planos.ts`, iguais aos da página de vendas), limites (`src/lib/limites.ts`: 300 arquivos, 3 GB, 50 links por dia) e o texto do cupom (DEV-221).
   6. E-mail próprio do login (Resend + DNS), domínio do produto, CNPJ, Termos e Privacidade (DEV-200 e 204), apagar as 3 fotos órfãs no Cloudinary (`creators/71134f88…`, roteiro `/tmp/rev/orfa.mjs`). Slack e WhatsApp oficial podem vir depois.

@@ -375,3 +375,16 @@
 .ar-liberar .ar-botao {
   justify-self: start;
 }
+
+/* "Baixar mídia kit em PDF" é botão (chama o servidor), mas fica com a cara dos links ao lado (DEV-151) */
+button.ar-link-texto {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+button.ar-link-texto:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}

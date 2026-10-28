@@ -51,36 +51,17 @@
   transform-origin: top left;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas: 'capa capa' 'resumo resumo' 'numeros publico' 'videos videos' 'sobre formatos' 'marcas marcas' 'contato contato';
+  /* as seções seguem a ordem da creator: as largas ocupam a linha toda e as estreitas (números, público, sobre,
+     formatos) fazem pares; seção repetida ou de tipo novo entra na fila em vez de cair em cima de outra */
+  grid-auto-flow: row dense;
   align-content: start;
   --respiro: 20px;
 }
-.mk-conteudo > .bl-capa {
-  grid-area: capa;
+.mk-conteudo > .bl {
+  grid-column: 1 / -1;
 }
-.mk-conteudo > .bl-resumo {
-  grid-area: resumo;
-}
-.mk-conteudo > .bl-numeros {
-  grid-area: numeros;
-}
-.mk-conteudo > .bl-publico {
-  grid-area: publico;
-}
-.mk-conteudo > .bl-videos {
-  grid-area: videos;
-}
-.mk-conteudo > .bl-sobre {
-  grid-area: sobre;
-}
-.mk-conteudo > .bl-marcas {
-  grid-area: marcas;
-}
-.mk-conteudo > .bl-formatos {
-  grid-area: formatos;
-}
-.mk-conteudo > .bl-contato {
-  grid-area: contato;
+.mk-conteudo > :is(.bl-numeros, .bl-publico, .bl-sobre, .bl-formatos) {
+  grid-column: span 1;
 }
 .mk-conteudo > .bl {
   width: 100%;
@@ -245,4 +226,11 @@
     sans-serif;
   letter-spacing: 0.02em;
   color: rgba(36, 19, 15, 0.45);
+}
+
+/* PDF guardado (DEV-151): sem <video>. O quadro do vídeo entrava no PDF como imagem sem compressão (1,1 MB num kit de
+   1,5 MB) e os vídeos atrasavam a geração; no lugar fica a miniatura em JPEG que já está embaixo dele (escondido sem sair do lugar: é o vídeo que dá a
+   proporção da moldura) */
+.mk--pdf video {
+  visibility: hidden;
 }

@@ -132,9 +132,9 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 ### E12. PDF do mídia kit
 
 - [x] **DEV-150** Rota de impressão do mídia kit em 1 página A4. *Primeira versão em `/app/midia-kit/` (duas colunas, escala automática, PDF de 1 página pela impressão); precisa de aprovação visual.*
-- [ ] **DEV-151** Geração do PDF pelo Cloudflare Browser Rendering e armazenamento no Supabase Storage.
-- [ ] **DEV-152** Marca d'água "PORTFÓLIO CREATOR • TESTE" na conta grátis; selo no PDF pago. *28/out: a marca d'água agora depende do pagamento (antes `?marca=0` tirava); pago, sai o selo "Feito com Portfólio Creator". Na tela isso ainda dá para burlar pelo navegador: a garantia vem com o PDF gerado no servidor (DEV-151).*
-- [ ] **DEV-153** Regerar o PDF a cada publicação.
+- [x] **DEV-151** Geração do PDF pelo Cloudflare Browser Rendering e armazenamento no Supabase Storage. *Feito em 28/out, grátis e na nossa estrutura: o navegador da Cloudflare (Browser Run, binding `BROWSER`) abre `/c/<link>/midia-kit` (versão publicada, sinal `window.renderState`), imprime A4 e guarda no Supabase Storage (bucket privado `midia-kits`, migração `midia_kits`); a creator baixa por link de 1 hora (`/api/pdf/kit`, botão em Projetos) e a equipe gera pelo admin (ação `gerar_pdf`). Como no document-renderer, o navegador não fala direto com o site: abre um endereço interno respondido pelo Worker. Medido no build de produção: 10 a 20 s de navegador por PDF, 1 página, 322 KB (antes 8,4 MB: imagens em JPEG e sem o quadro do vídeo). Plano grátis: 10 min/dia (~30 a 60 PDFs) e limite de navegadores por minuto; passou, a creator vê a explicação e salva pelo navegador.*
+- [x] **DEV-152** Marca d'água "PORTFÓLIO CREATOR • TESTE" na conta grátis; selo no PDF pago. *28/out: a marca d'água agora depende do pagamento (antes `?marca=0` tirava); pago, sai o selo "Feito com Portfólio Creator". Na tela isso ainda dá para burlar pelo navegador: a garantia vem com o PDF gerado no servidor (DEV-151).* *Selo no PDF pago feito (o PDF guardado sai da versão publicada, sem marca d'água).*
+- [x] **DEV-153** Regerar o PDF a cada publicação. *Feito em 28/out: ao ir ao ar (publicar com pagamento, Marcar como pago no admin e a rota do botão Pago) o PDF é gerado de novo em segundo plano (`waitUntil`), sem atrasar a resposta.*
 
 ### E13. Pedidos, pagamento e Slack
 

@@ -115,10 +115,11 @@
   color: var(--texto-suave);
 }
 
-/* espaços de foto e vídeo ainda vazios (placeholder): tom da paleta e legenda, para ficar claro o que vai ali */
+/* espaços de foto e vídeo ainda vazios (placeholder): tom da paleta e legenda, para ficar claro o que vai ali. O
+   próprio <video> fica de fora: ele é transparente por cima da miniatura até ter quadro (DEV-146) */
 .bl-capa-foto:not([role]),
 .bl-sobre-foto:not([role]),
-.bl-video-capa:not([role]) {
+.bl-video-capa:not([role], video) {
   background-color: color-mix(in oklab, var(--destaque) 22%, var(--cartao));
   display: grid;
   place-items: center;
@@ -129,7 +130,7 @@
 .bl-sobre-foto:not([role])::after {
   content: 'Sua foto';
 }
-.bl-video-capa:not([role])::after {
+.bl-video-capa:not([role], video)::after {
   content: 'Seu vídeo';
 }
 .bl-capa-vazia {

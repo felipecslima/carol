@@ -291,6 +291,28 @@ export async function reunirDados() {
   };
 }
 
+// ---- PDF do mídia kit (DEV-151) ----
+
+/** Link para baixar o PDF do mídia kit da versão publicada (o servidor gera se ainda não existe). */
+export async function pedirPdfDoKit(): Promise<{ link: string } | { erro: string }> {
+  if (!navigator.onLine) return { erro: 'Você está sem internet. Conecte e tente de novo.' };
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) return { erro: 'Sua sessão acabou. Entre de novo.' };
+  try {
+    const resposta = await fetch('/api/pdf/kit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: '{}',
+    });
+    const corpo = (await resposta.json().catch(() => null)) as { link?: string; erro?: string } | null;
+    if (resposta.ok && corpo?.link) return { link: corpo.link };
+    return { erro: corpo?.erro ?? 'Não conseguimos preparar o PDF agora. Tente de novo em instantes.' };
+  } catch {
+    return { erro: 'Não conseguimos falar com o servidor. Confira a internet e tente de novo.' };
+  }
+}
+
 // ---- Publicar e mandar para marcas ----
 
 export type RespostaDePublicar =

@@ -2,17 +2,19 @@
 import { ADMIN_TOKEN } from 'astro:env/server';
 import type { APIRoute } from 'astro';
 import { consulta } from '@server/banco';
+import { contextoDe, origemDoSite, regerarKitDepois } from '@server/pdf';
 import { marcarComoPago } from '@server/publicacao';
 import { mesmaChave } from '@server/usuario';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   if (!ADMIN_TOKEN || !(await mesmaChave(request.headers.get('x-admin-token') ?? '', ADMIN_TOKEN)))
     return Response.json({ erro: 'Sem permissão.' }, { status: 403 });
   const corpo = (await request.json().catch(() => null)) as { slug?: string } | null;
   if (!corpo?.slug) return Response.json({ erro: 'Informe o link do portfólio.' }, { status: 400 });
   const r = await marcarComoPago(corpo.slug.trim().toLowerCase());
+  if (r.ok && r.slug && r.projetoId) regerarKitDepois(contextoDe(locals), origemDoSite(request), r.slug, r.projetoId);
   if (r.ok)
     await consulta('audit_log', {
       metodo: 'POST',

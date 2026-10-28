@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { infoDoEstado } from '@lib/estados';
 import { Miniatura } from './Miniatura';
 import { dataCurta } from '../formatar';
-import { apagarProjeto, type Resumo } from '../nuvem';
+import { apagarProjeto, pedirPdfDoKit, type Resumo } from '../nuvem';
 import { Marcas } from './Marcas';
 
 function LinkDoPortfolio({ slug, noAr }: { slug: string; noAr: boolean }) {
@@ -36,6 +36,8 @@ function LinkDoPortfolio({ slug, noAr }: { slug: string; noAr: boolean }) {
 export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: () => void }) {
   const [confirmando, setConfirmando] = useState(false);
   const [apagando, setApagando] = useState(false);
+  const [preparando, setPreparando] = useState(false);
+  const [erroDoPdf, setErroDoPdf] = useState<string | null>(null);
 
   if (!resumo)
     return (
@@ -51,6 +53,15 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
     );
 
   const info = infoDoEstado(resumo.estado);
+  const noAr = resumo.estado === 'no_ar' || resumo.estado === 'edicao_travada';
+  async function baixarPdf() {
+    setPreparando(true);
+    setErroDoPdf(null);
+    const r = await pedirPdfDoKit();
+    setPreparando(false);
+    if ('link' in r) window.location.href = r.link;
+    else setErroDoPdf(r.erro);
+  }
 
   async function apagar() {
     setApagando(true);
@@ -75,20 +86,28 @@ export function Projetos({ resumo, aoMudar }: { resumo: Resumo | null; aoMudar: 
               {info.botao.texto}
             </a>
           </div>
-          {resumo.slug && (
-            <LinkDoPortfolio
-              slug={resumo.slug}
-              noAr={resumo.estado === 'no_ar' || resumo.estado === 'edicao_travada'}
-            />
-          )}
+          {resumo.slug && <LinkDoPortfolio slug={resumo.slug} noAr={noAr} />}
           <div className="ar-secundarios">
             <a className="ar-link-texto" href="/app/editor/?ver=1">
               Ver como a marca vê
             </a>
-            <a className="ar-link-texto" href="/app/midia-kit/">
-              Mídia kit em PDF
-            </a>
+            {/* no ar: o PDF guardado, gerado no servidor da versão publicada (DEV-151); antes disso, a prévia com marca
+                d'água pelo próprio navegador */}
+            {noAr ? (
+              <button type="button" className="ar-link-texto" disabled={preparando} onClick={() => void baixarPdf()}>
+                {preparando ? 'Preparando o PDF…' : 'Baixar mídia kit em PDF'}
+              </button>
+            ) : (
+              <a className="ar-link-texto" href="/app/midia-kit/">
+                Mídia kit em PDF
+              </a>
+            )}
           </div>
+          {erroDoPdf && (
+            <p className="ed-aviso" role="alert">
+              {erroDoPdf} <a href="/app/midia-kit/">Abrir o mídia kit para salvar pelo navegador</a>
+            </p>
+          )}
           {!confirmando ? (
             <button type="button" className="ed-link" onClick={() => setConfirmando(true)}>
               Apagar este projeto

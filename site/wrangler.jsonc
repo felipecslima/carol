@@ -8,6 +8,9 @@
   "triggers": { "crons": ["17 3 * * *"] },
   // logs do Worker no painel do Cloudflare: erros do navegador (/api/erro) e do servidor (middleware), DEV-233
   "observability": { "enabled": true },
+  // navegador da Cloudflare (Browser Run) para gerar o PDF do mídia kit, DEV-151. "remote": em desenvolvimento usa o
+  // da conta (não existe navegador local)
+  "browser": { "binding": "BROWSER", "remote": true },
   "assets": {
     "binding": "ASSETS",
     // o redirecionamento precisa ver toda requisição, inclusive as de arquivos

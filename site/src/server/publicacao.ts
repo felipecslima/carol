@@ -53,7 +53,8 @@ export const projetoDaLinha = (l: Pick<LinhaDoProjeto, keyof LinhaDoProjeto>): P
 };
 
 export type ResultadoDaPublicacao =
-  { ok: true; estado: 'aguardando_pagamento' | 'no_ar'; slug: string } | { ok: false; status: number; erro: string };
+  | { ok: true; estado: 'aguardando_pagamento' | 'no_ar'; slug: string; /** quando foi ao ar */ projetoId?: string }
+  | { ok: false; status: number; erro: string };
 
 const falha = (status: number, erro: string): ResultadoDaPublicacao => ({ ok: false, status, erro });
 
@@ -148,11 +149,13 @@ async function publicarAgora(linha: LinhaDoProjeto, projeto: Projeto, slug: stri
     metodo: 'POST',
     corpo: { dono: linha.dono, nome: 'publicado', propriedades: { slug } },
   });
-  return { ok: true, estado: 'no_ar', slug };
+  return { ok: true, estado: 'no_ar', slug, projetoId: linha.id };
 }
 
 /** Botão Pago (DEV-163): marca o pedido, coloca o portfólio no ar e devolve o link. `null` se o link não existe. */
-export async function marcarComoPago(slug: string): Promise<{ ok: boolean; erro?: string; slug?: string }> {
+export async function marcarComoPago(
+  slug: string,
+): Promise<{ ok: boolean; erro?: string; slug?: string; projetoId?: string }> {
   const { dados } = await consulta<LinhaDoProjeto>(
     `projects?slug=ilike.${encodeURIComponent(slug)}&tipo=eq.site&select=*`,
   );
@@ -169,11 +172,13 @@ export async function marcarComoPago(slug: string): Promise<{ ok: boolean; erro?
       corpo: { status: 'pago', pago_em: new Date().toISOString() },
     });
   const r = await publicarAgora(linha, projeto, linha.slug ?? slug);
-  return r.ok ? { ok: true, slug: r.slug } : { ok: false, erro: r.erro };
+  return r.ok ? { ok: true, slug: r.slug, projetoId: r.projetoId } : { ok: false, erro: r.erro };
 }
 
 /** Admin marca um pedido como pago (DEV-163, 193): publicação põe no ar; edição só libera a edição pelo período do plano. */
-export async function marcarPedidoPago(pedidoId: string): Promise<{ ok: boolean; erro?: string; tipo?: string }> {
+export async function marcarPedidoPago(
+  pedidoId: string,
+): Promise<{ ok: boolean; erro?: string; tipo?: string; slug?: string; projetoId?: string }> {
   const { dados } = await consulta<{ id: string; plano: string; status: string; projeto_id: string }>(
     `orders?id=eq.${pedidoId}&select=id,plano,status,projeto_id`,
   );
@@ -193,7 +198,7 @@ export async function marcarPedidoPago(pedidoId: string): Promise<{ ok: boolean;
   const slug = projeto.dados[0]?.slug;
   if (!slug) return { ok: false, erro: 'O portfólio desse pedido ainda não tem link.' };
   const r = await marcarComoPago(slug);
-  return r.ok ? { ok: true, tipo } : { ok: false, erro: r.erro };
+  return r.ok ? { ok: true, tipo, slug: r.slug, projetoId: r.projetoId } : { ok: false, erro: r.erro };
 }
 
 export type ResultadoDoPedidoDeEdicao = { ok: true; jaPedido: boolean } | { ok: false; status: number; erro: string };

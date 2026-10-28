@@ -42,3 +42,41 @@ export async function apagarUsuarioDoAuth(id: string): Promise<boolean> {
   });
   return resposta.ok || resposta.status === 404;
 }
+
+/** Grava (ou substitui) um arquivo no Supabase Storage com a chave de serviço (DEV-151). */
+export async function guardarArquivo(
+  balde: string,
+  caminho: string,
+  corpo: ArrayBuffer,
+  tipo: string,
+): Promise<boolean> {
+  if (!bancoConfigurado()) return false;
+  const resposta = await fetch(`${PUBLIC_SUPABASE_URL}/storage/v1/object/${balde}/${caminho}`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY!,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      'Content-Type': tipo,
+      'x-upsert': 'true',
+    },
+    body: corpo,
+  });
+  return resposta.ok;
+}
+
+/** Link temporário para baixar um arquivo privado do Storage; `null` se o arquivo não existe. */
+export async function linkAssinado(balde: string, caminho: string, segundos: number): Promise<string | null> {
+  if (!bancoConfigurado()) return null;
+  const resposta = await fetch(`${PUBLIC_SUPABASE_URL}/storage/v1/object/sign/${balde}/${caminho}`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY!,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ expiresIn: segundos }),
+  });
+  if (!resposta.ok) return null;
+  const { signedURL } = (await resposta.json()) as { signedURL?: string };
+  return signedURL ? `${PUBLIC_SUPABASE_URL}/storage/v1${signedURL}` : null;
+}

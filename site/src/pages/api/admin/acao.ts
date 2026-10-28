@@ -2,6 +2,8 @@
 import type { APIRoute } from 'astro';
 import { consulta } from '@server/banco';
 import { equipeDoPedido } from '@server/equipe';
+import { paginaNoAr } from '@server/pagina';
+import { contextoDe, gerarPdfDoKit, linkDoKit, origemDoSite, regerarKitDepois } from '@server/pdf';
 import { marcarComoPago, marcarPedidoPago } from '@server/publicacao';
 
 export const prerender = false;
@@ -18,7 +20,7 @@ type Corpo = {
 const MOLDES = ['site', 'midia-kit', 'os-dois'];
 const SLUG = /^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   const quem = await equipeDoPedido(request);
   if (!quem) return Response.json({ erro: 'Entre com uma conta da equipe.' }, { status: 401 });
   if (quem.papel === 'assistente')
@@ -37,14 +39,32 @@ export const POST: APIRoute = async ({ request }) => {
         if (!/^[0-9a-f-]{36}$/.test(c.pedido)) return erro('Pedido inválido.');
         const r = await marcarPedidoPago(c.pedido);
         if (!r.ok) return erro(r.erro ?? 'Não deu para marcar como pago.', 404);
+        if (r.slug && r.projetoId) regerarKitDepois(contextoDe(locals), origemDoSite(request), r.slug, r.projetoId);
         await registrar('pedido_pago', c.pedido, { tipo: r.tipo });
         return Response.json({ ok: true, tipo: r.tipo });
       }
       if (!slugOk) return erro('Link inválido.');
       const r = await marcarComoPago(slugOk);
       if (!r.ok) return erro(r.erro ?? 'Não deu para marcar como pago.', 404);
+      if (r.slug && r.projetoId) regerarKitDepois(contextoDe(locals), origemDoSite(request), r.slug, r.projetoId);
       await registrar('pedido_pago', slugOk);
       return Response.json({ ok: true });
+    }
+    case 'gerar_pdf': {
+      // suporte (DEV-151): gera de novo o PDF do mídia kit de um portfólio no ar e devolve o link de 1 hora
+      if (!slugOk) return erro('Link inválido.');
+      const pagina = await paginaNoAr(slugOk);
+      if (!pagina) return erro('Nenhum portfólio no ar com esse link.', 404);
+      const r = await gerarPdfDoKit(origemDoSite(request), pagina.slug, pagina.projetoId);
+      if (!r.ok) return erro(`Não deu para gerar o PDF: ${r.mensagem}`, r.motivo === 'limite' ? 429 : 502);
+      await registrar('pdf_gerado', slugOk, { bytes: r.bytes, ms: r.ms });
+      return Response.json({
+        ok: true,
+        bytes: r.bytes,
+        ms: r.ms,
+        etapas: r.etapas,
+        link: await linkDoKit(pagina.projetoId),
+      });
     }
     case 'cancelar_pedido': {
       if (!c.pedido || !/^[0-9a-f-]{36}$/.test(c.pedido)) return erro('Pedido inválido.');
