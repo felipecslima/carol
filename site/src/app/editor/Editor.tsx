@@ -48,6 +48,10 @@ import '../tema.css';
 
 type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | 'midias' | null;
 
+// rótulo dos atalhos nas dicas dos botões: ⌘ no Mac e no iPad, Ctrl nos outros
+const MAC = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+const ATALHO = MAC ? '⌘' : 'Ctrl+';
+
 function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string | null }) {
   const editor = useMemo(() => criarEditor(inicial, REGISTRO), [inicial]);
   const e = useStore(editor);
@@ -196,6 +200,39 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
     }
   }, []);
 
+  // atalhos de teclado (DEV-232). Com o foco num campo, o desfazer é o do próprio texto e Delete apaga letra: nada aqui
+  // age. Delete e Backspace escondem a seção selecionada (não removem: o aviso oferece desfazer).
+  useEffect(() => {
+    const aoTeclar = (ev: KeyboardEvent) => {
+      const alvo = ev.target as HTMLElement | null;
+      const emCampo = Boolean(alvo?.closest('input, textarea, select, [contenteditable="true"]'));
+      const comando = ev.metaKey || ev.ctrlKey;
+      if (ev.key === 'Escape') {
+        if (ver) return setVer(false);
+        // o Esc que fecha uma gaveta não tira também a seleção
+        if (alvo?.closest('.ed-gaveta')) return;
+        if (!painel && selecionado) return e.selecionar(null);
+        return;
+      }
+      if (emCampo || ver) return;
+      const tecla = ev.key.toLowerCase();
+      if (comando && tecla === 'z') {
+        ev.preventDefault();
+        return ev.shiftKey ? refazer() : desfazer();
+      }
+      if (comando && tecla === 'y') {
+        ev.preventDefault();
+        return refazer();
+      }
+      if ((ev.key === 'Delete' || ev.key === 'Backspace') && selecionado && !painel && !definicao?.fixo) {
+        ev.preventDefault();
+        esconder(selecionado);
+      }
+    };
+    window.addEventListener('keydown', aoTeclar);
+    return () => window.removeEventListener('keydown', aoTeclar);
+  });
+
   if (ver) {
     return (
       <div className="pagina ed-ver" style={temaDoProjeto(projeto)}>
@@ -221,6 +258,7 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
               className="ed-icone"
               onClick={() => (e.selecionar(null), setPainel(null), setVer(true))}
               aria-label="Ver como a marca vê"
+              title="Ver como a marca vê (Esc volta)"
             >
               <Olho />
             </button>
@@ -230,10 +268,20 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
               onClick={desfazer}
               disabled={passados === 0}
               aria-label="Desfazer"
+              title={`Desfazer (${ATALHO}Z)`}
+              aria-keyshortcuts={MAC ? 'Meta+Z' : 'Control+Z'}
             >
               <Desfazer />
             </button>
-            <button type="button" className="ed-icone" onClick={refazer} disabled={futuros === 0} aria-label="Refazer">
+            <button
+              type="button"
+              className="ed-icone"
+              onClick={refazer}
+              disabled={futuros === 0}
+              aria-label="Refazer"
+              title={`Refazer (${MAC ? '⇧⌘Z' : 'Ctrl+Y'})`}
+              aria-keyshortcuts={MAC ? 'Shift+Meta+Z' : 'Control+Y'}
+            >
               <Refazer />
             </button>
             <span
@@ -371,7 +419,12 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
               <Descer />
             </button>
             {!definicao?.fixo && (
-              <button type="button" onClick={() => esconder(bloco.id)}>
+              <button
+                type="button"
+                onClick={() => esconder(bloco.id)}
+                title="Esconder (Delete)"
+                aria-keyshortcuts="Delete"
+              >
                 <Esconder /> Esconder
               </button>
             )}
@@ -416,10 +469,16 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
             type="button"
             aria-pressed={painel === 'revisao'}
             onClick={() => setPainel(painel === 'revisao' ? null : 'revisao')}
+            // o número de pendências é lido junto com o nome do botão (no span ele era lido sozinho, solto)
+            aria-label={
+              podePublicar(alertas)
+                ? undefined
+                : `Publicar, ${vermelhos} ${vermelhos === 1 ? 'ponto' : 'pontos'} a resolver`
+            }
           >
             <Foguete /> Publicar
             {!podePublicar(alertas) && (
-              <span className="ed-pendencias" aria-label={`${vermelhos} pontos a resolver`}>
+              <span className="ed-pendencias" aria-hidden="true">
                 {vermelhos}
               </span>
             )}

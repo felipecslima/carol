@@ -779,3 +779,21 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* foco de teclado nas seções do editor (DEV-232): o anel creme de antes sumia no fundo claro (1,2:1); agora rosa com
+   um filete branco por dentro, que passa de 3:1 em qualquer paleta, clara ou escura */
+.ed .ed-bloco:focus-visible {
+  outline: 0;
+}
+.ed .ed-bloco:focus-visible::after {
+  border: 3px solid var(--ed-rosa);
+  box-shadow: inset 0 0 0 3px #fff;
+}
+/* título da gaveta recebe o foco ao abrir (para o leitor de tela), sem anel: não é um controle */
+.ed-gaveta-titulo:focus {
+  outline: 0;
+}
+/* alvos de toque de 44 px: "Entendi" da dica e o seletor de cor própria */
+.ed-toast button {
+  min-height: 44px;
+}
