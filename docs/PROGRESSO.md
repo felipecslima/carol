@@ -36,7 +36,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
   9. DEV-233 (erros), DEV-234 (abuso), DEV-230 e 231 (testes).
   10. Marcar no backlog o que já funciona em localhost (DEV-142, 143, 145, 180 a 185, 210, 211).
 - **Depende de você antes de publicar (atualizado em 28/out, fim da sequência de código):**
-  1. **Aplicar 3 migrações** no SQL Editor do Supabase, nesta ordem (o agente foi bloqueado pelas permissões): `20261028000200_protecao.sql` (fecha a brecha da assistente gravar direto, confirmada pelo teste de RLS), `20261028000300_exclusao_definitiva.sql` (desliga o pg_cron antigo e mantém os pedidos), `20261028000400_limites.sql` (limites de links e mídias). Depois, rodar `supabase/tests/rls.sql`: tudo deve passar.
+  1. ~~Aplicar 3 migrações~~ **Feito em 28/out pelo agente, com o seu pedido:** `protecao`, `exclusao_definitiva` e `limites` aplicadas; `supabase/tests/rls.sql` rodado: todos os 6 grupos passam (inclusive a assistente, que não grava mais direto); salvar na conta continua funcionando (conferido com a conta de teste). Avisos restantes do Supabase: as funções de pedir e cancelar exclusão (de propósito) e a proteção de senha vazada (o login é por código).
   2. **Segredos do Worker** (`wrangler secret put`): `SUPABASE_SERVICE_ROLE_KEY` (regerada), `CLOUDINARY_URL`, `ADMIN_TOKEN`. Regerar também o token de acesso do Supabase.
   3. **PDF no servidor (DEV-151 e 153):** plano pago do Workers e binding do Browser Rendering.
   4. **Sentry (DEV-233):** criar a conta e mandar a DSN, se quiser além dos logs do Cloudflare.

@@ -120,10 +120,15 @@ reset role;
 set local role anon;
 set local request.jwt.claims = '{"role":"anon"}';
 
-do $$ begin
-  if (select count(*) from public.projects) <> 0 then raise exception 'FALHOU: sem conta enxerga projetos'; end if;
-  if (select count(*) from public.profiles) <> 0 then raise exception 'FALHOU: sem conta enxerga perfis'; end if;
-  if (select count(*) from public.orders) <> 0 then raise exception 'FALHOU: sem conta enxerga pedidos'; end if;
+-- sem conta: zero linhas ou nem permissão de ler a tabela (as duas respostas protegem)
+do $$ declare t text; n int; begin
+  foreach t in array array['projects', 'profiles', 'orders', 'media', 'brand_links'] loop
+    begin
+      execute format('select count(*) from public.%I', t) into n;
+      if n <> 0 then raise exception 'FALHOU: sem conta enxerga %', t; end if;
+    exception when insufficient_privilege then null;
+    end;
+  end loop;
   insert into _passos (teste) values ('sem conta não enxerga nada');
 end $$;
 
