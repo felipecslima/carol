@@ -28,7 +28,36 @@ export function salvarRascunho(projeto: Projeto): boolean {
 export function apagarRascunho() {
   try {
     localStorage.removeItem(CHAVE);
+    localStorage.removeItem(PENDENTE);
   } catch {
     /* sem armazenamento: nada a apagar */
+  }
+}
+
+// DEV-082: o rascunho do aparelho tem mudança que ainda não chegou à conta (sem conexão, servidor fora). Enquanto
+// houver pendência, ao abrir o editor o aparelho vale mais que a conta; sem isso, a versão da conta apagava a edição.
+const PENDENTE = 'pc:rascunho:pendente';
+
+export function marcarPendente() {
+  try {
+    localStorage.setItem(PENDENTE, '1');
+  } catch {
+    /* sem armazenamento: o rascunho também não foi gravado; o editor já avisa */
+  }
+}
+
+export function temPendente(): boolean {
+  try {
+    return localStorage.getItem(PENDENTE) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function limparPendente() {
+  try {
+    localStorage.removeItem(PENDENTE);
+  } catch {
+    /* sem armazenamento: nada a limpar */
   }
 }

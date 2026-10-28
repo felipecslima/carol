@@ -37,8 +37,12 @@ export async function carregarDaNuvem(): Promise<Projeto | null> {
   return lido.success ? lido.data : null;
 }
 
-/** Grava (cria ou atualiza) o projeto do usuário logado. `true` se deu certo. */
-export async function salvarNaNuvem(donoId: string, projeto: Projeto): Promise<boolean> {
+/** Como terminou a gravação na conta: deu certo, faltou internet ou o servidor recusou ou falhou. */
+export type ResultadoDeSalvar = 'ok' | 'sem-conexao' | 'falhou';
+
+/** Grava (cria ou atualiza) o projeto do usuário logado e diz por que falhou, quando falha (DEV-082). */
+export async function salvarNaNuvem(donoId: string, projeto: Projeto): Promise<ResultadoDeSalvar> {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) return 'sem-conexao';
   const { error } = await supabase.from('projects').upsert(
     {
       dono: donoId,
@@ -58,7 +62,10 @@ export async function salvarNaNuvem(donoId: string, projeto: Projeto): Promise<b
     },
     { onConflict: 'dono,tipo' },
   );
-  return !error;
+  if (!error) return 'ok';
+  // queda de rede no meio da gravação: o supabase-js devolve o erro do fetch ("Failed to fetch", "Load failed")
+  const deRede = /fetch|network|load failed|rede/i.test(`${error.message ?? ''} ${error.details ?? ''}`);
+  return deRede || (typeof navigator !== 'undefined' && !navigator.onLine) ? 'sem-conexao' : 'falhou';
 }
 
 // ---- Mídias (tabela `media`; os arquivos ficam no Cloudinary, na pasta da creator) ----
@@ -233,7 +240,7 @@ export type RespostaDePublicar =
 /** Salva o rascunho e pede a publicação ao servidor. O servidor confere tudo de novo; a mensagem de erro vem em português. */
 export async function publicar(donoId: string, projeto: Projeto, slug: string): Promise<RespostaDePublicar> {
   if (!navigator.onLine) return { ok: false, erro: 'Você está sem internet. Conecte e toque em Publicar de novo.' };
-  if (!(await salvarNaNuvem(donoId, projeto)))
+  if ((await salvarNaNuvem(donoId, projeto)) !== 'ok')
     return { ok: false, erro: 'Não conseguimos salvar o seu portfólio agora. Tente de novo em instantes.' };
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;

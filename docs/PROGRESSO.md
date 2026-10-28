@@ -23,7 +23,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
     - **DEV-099**, espaçamento (`b7a2717`);
     - **DEV-235**, validação de WhatsApp e e-mail (commit seguinte).
   - Marca do editor leva ao Início (`/app/`), aprovada em 28/out.
-  - **Próximo:** (2) DEV-082.
+  - (2) **DEV-082** aprovada (28/out). **Próximo:** DEV-034.
 - **Sequência até o lançamento (combinada em 28/out; uma tarefa por vez, cada uma com aprovação e commit):**
   1. DEV-082: não perder edição quando salvar na conta falha (plano em "Correções da revisão": marcador de pendente, aparelho vence ao abrir, nova tentativa ao voltar a conexão, aviso ao sair).
   2. DEV-034: proteger /app e /admin por sessão e papel.
@@ -39,6 +39,16 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
   - Roteiros de medição em `/tmp/rev/`.
 
 ## Esperando aprovação
+
+- **DEV-082, não perder edição quando salvar na conta falha:**
+  - Toda mudança é guardada primeiro no aparelho e marcada como "pendente" (`pc:rascunho:pendente`) até a conta confirmar.
+  - Ao abrir o editor com pendência, **vale o aparelho**: ele carrega a versão do aparelho e a envia para a conta, em vez de deixar a conta sobrescrever.
+  - `salvarNaNuvem` agora diz o motivo da falha (`ok`, `sem-conexao`, `falhou`). O editor mostra "Sem conexão: salvo no aparelho" ou "Não salvou na conta: tentando de novo".
+  - Tenta de novo sozinho quando a internet volta e a cada 30 s enquanto falhar. As gravações vão em fila, sem uma passar a outra.
+  - Fechar a página com algo não salvo faz o navegador perguntar.
+  - Corrigido junto: `publicar()` agora para quando salvar falha (antes seguia em frente). Na primeira entrada, o rascunho que não subiu fica pendente.
+  - **Limite:** com edições pendentes em dois aparelhos, vence o que abrir primeiro.
+  - Roteiro: `/tmp/rev/dev082.mjs`, 8/8.
 
 - **Título da capa livre (pedido seu):** a frase "Oi, eu sou X e mostro Y do meu jeito" deixou de ser imposta. O assistente ganhou a etapa **"Qual título abre a sua capa?"**: campo livre, com 4 sugestões em botões (a frase antiga é só a primeira); em branco usa a primeira sugestão. No editor, tocar num texto de exemplo com [colchetes] já seleciona tudo para escrever por cima. A dica da etapa "O que você mostra" não diz mais que vira a frase da capa.
 

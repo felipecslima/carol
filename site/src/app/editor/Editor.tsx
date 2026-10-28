@@ -38,7 +38,7 @@ import {
   Descer,
 } from './icones';
 import { PainelAdicionar, PainelEstilo, PainelSecoes } from './Paineis';
-import { carregarRascunho, salvarRascunho } from './persistencia';
+import { carregarRascunho, limparPendente, marcarPendente, salvarRascunho, temPendente } from './persistencia';
 import { carregarDaNuvem, salvarNaNuvem } from '../nuvem';
 import { useSessao } from '../sessao';
 import { supabaseConfigurado } from '../supabase';
@@ -57,28 +57,72 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   const [painel, setPainel] = useState<Painel>(() =>
     new URLSearchParams(window.location.search).get('publicar') === '1' ? 'revisao' : null,
   );
-  const [situacao, setSituacao] = useState<'salvo' | 'salvando' | 'erro' | 'offline'>('salvo');
+  const [situacao, setSituacao] = useState<'salvo' | 'salvando' | 'erro' | 'sem-conexao' | 'falhou'>('salvo');
   // /app/editor/?ver=1 abre direto no modo Ver (o botão "Ver como a marca vê" da área)
   const [ver, setVer] = useState(() => new URLSearchParams(window.location.search).get('ver') === '1');
   const [aviso, setAviso] = useState<string | null>(null);
   const primeiraVez = useRef(true);
 
-  // salvar sozinho: espera a creator parar de mexer (600 ms) e grava no aparelho
+  // DEV-082: grava no aparelho e, com conta, na conta. As gravações na conta saem uma de cada vez (fila), para uma
+  // resposta atrasada não sobrescrever uma versão mais nova; enquanto a conta não confirmar, o aparelho fica marcado
+  // como "pendente" e vale mais que a conta ao abrir o editor (antes, recarregar online apagava a edição feita sem
+  // conexão)
+  const fila = useRef<Promise<void>>(Promise.resolve());
+  const ultimoProjeto = useRef(projeto);
+  useEffect(() => {
+    ultimoProjeto.current = projeto;
+  }, [projeto]);
+  const gravar = useCallback(
+    (p: Projeto) => {
+      fila.current = fila.current.then(async () => {
+        const noAparelho = salvarRascunho(p);
+        if (!donoId) return setSituacao(noAparelho ? 'salvo' : 'erro');
+        marcarPendente();
+        const resultado = await salvarNaNuvem(donoId, p);
+        // só a gravação da versão mais recente decide o que aparece e se a pendência acabou
+        if (p !== ultimoProjeto.current) return;
+        if (resultado === 'ok') limparPendente();
+        setSituacao(resultado === 'ok' ? 'salvo' : resultado);
+      });
+      return fila.current;
+    },
+    [donoId],
+  );
+
+  // salvar sozinho: espera a creator parar de mexer (600 ms)
   useEffect(() => {
     if (primeiraVez.current) {
       primeiraVez.current = false;
       return;
     }
     setSituacao('salvando');
-    const espera = setTimeout(() => {
-      void (async () => {
-        const noAparelho = salvarRascunho(projeto);
-        const naNuvem = donoId ? await salvarNaNuvem(donoId, projeto) : true;
-        setSituacao(!naNuvem ? 'offline' : !noAparelho && !donoId ? 'erro' : 'salvo');
-      })();
-    }, 600);
+    const espera = setTimeout(() => void gravar(projeto), 600);
     return () => clearTimeout(espera);
-  }, [projeto, donoId]);
+  }, [projeto, gravar]);
+
+  // não salvou na conta: tenta de novo quando a internet volta e, enquanto não der, a cada 30 s
+  useEffect(() => {
+    if (situacao !== 'sem-conexao' && situacao !== 'falhou') return;
+    const deNovo = () => void gravar(ultimoProjeto.current);
+    window.addEventListener('online', deNovo);
+    const intervalo = window.setInterval(deNovo, 30_000);
+    return () => {
+      window.removeEventListener('online', deNovo);
+      window.clearInterval(intervalo);
+    };
+  }, [situacao, gravar]);
+
+  // fechar ou sair da página com mudança ainda não gravada: o navegador pergunta antes
+  useEffect(() => {
+    const naoGravado = situacao === 'salvando' || situacao === 'sem-conexao' || situacao === 'falhou';
+    if (!naoGravado) return;
+    const avisar = (ev: BeforeUnloadEvent) => {
+      ev.preventDefault();
+      ev.returnValue = '';
+    };
+    window.addEventListener('beforeunload', avisar);
+    return () => window.removeEventListener('beforeunload', avisar);
+  }, [situacao]);
 
   useEffect(() => {
     if (!aviso) return;
@@ -192,16 +236,21 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
             <button type="button" className="ed-icone" onClick={refazer} disabled={futuros === 0} aria-label="Refazer">
               <Refazer />
             </button>
-            <span className={`ed-salvo ed-salvo--${situacao}`} role="status">
+            <span
+              className={`ed-salvo ed-salvo--${situacao === 'sem-conexao' ? 'offline' : situacao === 'falhou' ? 'erro' : situacao}`}
+              role="status"
+            >
               {situacao === 'salvo'
                 ? donoId
                   ? 'Salvo'
                   : 'Salvo no aparelho'
                 : situacao === 'salvando'
                   ? 'Salvando…'
-                  : situacao === 'offline'
+                  : situacao === 'sem-conexao'
                     ? 'Sem conexão: salvo no aparelho'
-                    : 'Não salvou: sem espaço no aparelho'}
+                    : situacao === 'falhou'
+                      ? 'Não salvou na conta: tentando de novo'
+                      : 'Não salvou: sem espaço no aparelho'}
             </span>
             {!donoId && supabaseConfigurado && (
               <a className="ed-entrar" href="/app/entrar/">
@@ -496,9 +545,15 @@ export default function Editor() {
     void (async () => {
       const local = carregarRascunho();
       if (!sessao) return vivo && setInicial(local ?? PROJETO_DE_EXEMPLO);
+      // DEV-082: mudança feita aqui que a conta ainda não recebeu vale mais que a versão da conta; tenta enviar já
+      if (local && temPendente()) {
+        if ((await salvarNaNuvem(sessao.user.id, local)) === 'ok') limparPendente();
+        if (vivo) setInicial(local);
+        return;
+      }
       const nuvem = await carregarDaNuvem();
       // primeira entrada: o rascunho feito antes do login vai junto para a conta (DEV-033)
-      if (!nuvem && local) await salvarNaNuvem(sessao.user.id, local);
+      if (!nuvem && local && (await salvarNaNuvem(sessao.user.id, local)) !== 'ok') marcarPendente();
       if (nuvem) salvarRascunho(nuvem);
       if (vivo) setInicial(nuvem ?? local ?? PROJETO_DE_EXEMPLO);
     })();
