@@ -123,10 +123,10 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 - [x] **DEV-140** Revisão final: alertas vermelhos (placeholder, número de exemplo, sem contato) e amarelos. *`lib/revisao.ts` e aba Publicar; o botão Publicar fica desabilitado até a E11 a E13.*
 - [ ] **DEV-141** Escolha do link `/nome`: regras de formato, checagem em tempo real, sugestões, nomes reservados. *Feito: formato, nomes reservados, sugestões a partir do @ e validação ao digitar (`lib/slug.ts`, aba Publicar). Falta checar se o link está livre (precisa do banco, E2).*
-- [ ] **DEV-142** Rota pública `/c/[slug]` renderizada no servidor a partir do JSON publicado, quase sem JavaScript.
-- [ ] **DEV-143** Versão publicada separada do rascunho (editar não muda o que está no ar até publicar de novo).
+- [x] **DEV-142** Rota pública `/c/[slug]` renderizada no servidor a partir do JSON publicado, quase sem JavaScript. *Funciona em localhost (conferido em 28/out): `/c/<link>` renderizado no servidor a partir da versão publicada; JS só depois do load (DEV-146).*
+- [x] **DEV-143** Versão publicada separada do rascunho (editar não muda o que está no ar até publicar de novo). *Funciona: `projects.publicado` é uma cópia tirada ao publicar; editar não muda o que está no ar.*
 - [x] **DEV-144** Prévia do link (imagem e título) gerada para WhatsApp e Instagram. *Feito em 28/out: a página publicada não tinha nenhuma tag og (o `SeoHead` tirava a prévia de toda página `noindex`); agora `previaSemBusca` liga só nas rotas `/c/` (o HTML do site da Carol não muda). Imagem da capa recortada pelo Cloudinary em 1200x630 JPG (`g_auto`), vídeo vira o primeiro quadro, sem foto vale a imagem do produto (`lib/previa.ts`). Medido: JPEG 1200x630, 55 KB.*
-- [ ] **DEV-145** Selo "Feito com Portfólio Creator" no site.
+- [x] **DEV-145** Selo "Feito com Portfólio Creator" no site. *Funciona: rodapé "Feito com Portfólio Creator" na página publicada.*
 - [x] **DEV-146** Cache e desempenho: página publicada abre rápido no 4G (meta: LCP abaixo de 2,5 s). *Feito em 28/out. Medido no build de produção com brotli (como o Cloudflare), 4G lento (1,6 Mbps, 150 ms) e CPU 4x: LCP de 5,1 s para 2,2 a 2,3 s (uma rodada com TTFB alto deu 2,65 s), FCP 0,4 a 0,7 s, CLS 0,04 a 0,06, 371 KB. O que mudou: imagem da capa pedida com prioridade alta no <head>; entrada da capa em CSS (o título ficava invisível até o JS, uns 6 s no 4G); tema calculado no servidor (a biblioteca de cores saiu do navegador); miniaturas dos vídeos como <img loading=lazy> em vez de poster; vídeo de fundo só baixa depois de montar; rotas `/c/` sem as fontes da Carol; hidratação depois do evento load (`client:carregada`, `src/diretivas/`). Cache: `s-maxage=60` na página, `private, no-store` nos links de marca (já existia).*
 
 ### E12. PDF do mídia kit
@@ -154,12 +154,12 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E15. Aviso de abertura
 
-- [ ] **DEV-180** "Mandar para uma marca": cria `brand_link` com código curto e monta a mensagem pronta com o link.
-- [ ] **DEV-181** Rota `/c/[slug]/[codigo]` serve o portfólio e registra a abertura.
-- [ ] **DEV-182** Filtro de prévias automáticas (robôs do WhatsApp, Instagram, e-mail): só conta com carregamento em navegador real.
-- [ ] **DEV-183** Não contar a própria creator (sessão ou aparelho reconhecido).
-- [ ] **DEV-184** Aviso no app e no WhatsApp na primeira abertura; contagem nas seguintes.
-- [ ] **DEV-185** Lista "Marcas" na área da creator (para quem mandou, quando, se abriu, quantas vezes).
+- [x] **DEV-180** "Mandar para uma marca": cria `brand_link` com código curto e monta a mensagem pronta com o link. *Funciona: Marcas cria o link com código curto, copia e abre o WhatsApp com a mensagem pronta.*
+- [x] **DEV-181** Rota `/c/[slug]/[codigo]` serve o portfólio e registra a abertura. *Funciona: `/c/<link>/<código>` serve o portfólio e registra a abertura.*
+- [x] **DEV-182** Filtro de prévias automáticas (robôs do WhatsApp, Instagram, e-mail): só conta com carregamento em navegador real. *Funciona: só conta depois de 2,5 s com a página à vista, em navegador (robôs de prévia não rodam o JS).*
+- [x] **DEV-183** Não contar a própria creator (sessão ou aparelho reconhecido). *Funciona: com a sessão da creator no aparelho, a abertura não conta.*
+- [ ] **DEV-184** Aviso no app e no WhatsApp na primeira abertura; contagem nas seguintes. *Em parte: a contagem aparece na lista Marcas; falta o aviso ativo no app e o do WhatsApp (precisa da API oficial).*
+- [x] **DEV-185** Lista "Marcas" na área da creator (para quem mandou, quando, se abriu, quantas vezes). *Funciona: a lista Marcas mostra para quem mandou, quando, se abriu e quantas vezes.*
 
 ### E16. Planos, marca d'água e Premium
 
@@ -179,8 +179,8 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E18. Operação mínima
 
-- [ ] **DEV-210** Função de servidor para liberar e tirar Premium (chamada pelo Studio ou por um botão simples), com `audit_log`.
-- [ ] **DEV-211** Tirar portfólio do ar pela equipe.
+- [x] **DEV-210** Função de servidor para liberar e tirar Premium (chamada pelo Studio ou por um botão simples), com `audit_log`. *Funciona: Liberar e tirar Premium no admin, por `/api/admin/acao`, com registro.*
+- [x] **DEV-211** Tirar portfólio do ar pela equipe. *Funciona: Tirar do ar e recolocar no admin, com registro.*
 - [ ] **DEV-212** Consultas salvas no Studio: pedidos parados, creators novas, portfólios publicados na semana.
 
 ### E19. Página de vendas e lista de espera
