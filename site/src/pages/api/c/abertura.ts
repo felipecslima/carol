@@ -2,6 +2,7 @@
 // manda depois de 2,5 s à vista, então a prévia de robôs do WhatsApp e do Instagram não chega aqui) e nunca conta a
 // própria creator.
 import type { APIRoute } from 'astro';
+import { MINUTOS_ENTRE_ABERTURAS } from '@lib/limites';
 import { consulta } from '@server/banco';
 import { linkDaMarca, paginaNoAr } from '@server/pagina';
 import { usuarioDoPedido } from '@server/usuario';
@@ -17,6 +18,13 @@ export const POST: APIRoute = async ({ request }) => {
 
   const quem = await usuarioDoPedido(request);
   if (quem?.id === pagina.dono) return Response.json({ ok: true, contou: false });
+
+  // recarregar a página ou abrir de novo logo depois não infla a contagem (DEV-234)
+  const desde = new Date(Date.now() - MINUTOS_ENTRE_ABERTURAS * 60 * 1000).toISOString();
+  const recente = await consulta(
+    `brand_opens?link_id=eq.${marca.id}&aberto_em=gt.${encodeURIComponent(desde)}&select=id&limit=1`,
+  );
+  if (recente.dados.length > 0) return Response.json({ ok: true, contou: false });
 
   const r = await consulta('brand_opens', { metodo: 'POST', corpo: { link_id: marca.id } });
   return Response.json({ ok: r.ok, contou: r.ok });

@@ -2,6 +2,8 @@
 // Exige sessão: o servidor confere o token e decide a pasta (`creators/<id do usuário>`).
 import { CLOUDINARY_URL } from 'astro:env/server';
 import type { APIRoute } from 'astro';
+import { problemaDeEspaco } from '@lib/limites';
+import { consulta } from '@server/banco';
 import { assinar, FORMATOS, lerConta, pastaDoUsuario, type TipoDeArquivo } from '@server/cloudinary';
 import { usuarioDoPedido } from '@server/usuario';
 
@@ -17,6 +19,17 @@ export const POST: APIRoute = async ({ request }) => {
   const corpo = (await request.json().catch(() => null)) as { tipo?: string } | null;
   const tipo = corpo?.tipo as TipoDeArquivo | undefined;
   if (!tipo || !(tipo in FORMATOS)) return Response.json({ erro: 'Pedido inválido.' }, { status: 400 });
+
+  // biblioteca cheia: não assina mais envios (DEV-234); se o banco não responder, deixa enviar (o trigger do banco
+  // também barra o registro)
+  const midias = await consulta<{ bytes: number }>(`media?dono=eq.${usuario.id}&select=bytes`);
+  if (midias.ok) {
+    const problema = problemaDeEspaco(
+      midias.dados.length,
+      midias.dados.reduce((t, m) => t + (m.bytes ?? 0), 0),
+    );
+    if (problema) return Response.json({ erro: problema }, { status: 429 });
+  }
 
   const params = {
     allowed_formats: FORMATOS[tipo],

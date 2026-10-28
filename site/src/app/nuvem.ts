@@ -354,14 +354,17 @@ const LETRAS = 'abcdefghjkmnpqrstuvwxyz23456789';
 const novoCodigo = () =>
   Array.from(crypto.getRandomValues(new Uint8Array(6)), (n) => LETRAS[n % LETRAS.length]).join('');
 
-export async function criarLinkDeMarca(donoId: string, projetoId: string, marca: string): Promise<boolean> {
+/** Cria o link de uma marca. Devolve a mensagem de erro em português, ou `null` se deu certo. */
+export async function criarLinkDeMarca(donoId: string, projetoId: string, marca: string): Promise<string | null> {
   for (let tentativa = 0; tentativa < 3; tentativa++) {
     const { error } = await supabase
       .from('brand_links')
       .insert({ codigo: novoCodigo(), nome_marca: marca.trim(), projeto_id: projetoId, dono: donoId });
-    if (!error) return true;
+    if (!error) return null;
+    // limite do dia (DEV-234): não adianta tentar de novo agora
+    if (/muitos links/i.test(error.message)) return 'Você criou muitos links hoje. Tente de novo amanhã.';
   }
-  return false;
+  return 'Não conseguimos criar o link agora. Tente de novo em instantes.';
 }
 
 export async function apagarLinkDeMarca(id: string): Promise<boolean> {

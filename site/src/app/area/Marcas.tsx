@@ -23,8 +23,9 @@ export function Marcas({ resumo }: { resumo: Resumo }) {
     if (!nome.trim()) return setErro('Escreva o nome da marca.');
     const { data } = await supabase.auth.getSession();
     const dono = data.session?.user.id;
-    if (!dono || !(await criarLinkDeMarca(dono, resumo.id, nome)))
-      return setErro('Não conseguimos criar o link agora. Tente de novo em instantes.');
+    if (!dono) return setErro('Sua sessão acabou. Entre de novo para criar o link.');
+    const falha = await criarLinkDeMarca(dono, resumo.id, nome);
+    if (falha) return setErro(falha);
     setErro(null);
     setNome('');
     void carregar();
