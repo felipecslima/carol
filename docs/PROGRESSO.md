@@ -23,7 +23,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
     - **DEV-099**, espaçamento (`b7a2717`);
     - **DEV-235**, validação de WhatsApp e e-mail (commit seguinte).
   - Marca do editor leva ao Início (`/app/`), aprovada em 28/out.
-  - (2) **DEV-082** aprovada (28/out). **Próximo:** DEV-034.
+  - (2) **DEV-082** aprovada (28/out). (3) **DEV-034** feita (28/out). **Falta aplicar no banco** a migração `supabase/migrations/20261028000200_protecao.sql`: o sistema de permissões bloqueou a aplicação pelo agente (rodar no SQL Editor do Supabase ou liberar `apply_migration`). **Próximo:** DEV-160, 190, 192 e 193.
 - **Sequência até o lançamento (combinada em 28/out; uma tarefa por vez, cada uma com aprovação e commit):**
   1. DEV-082: não perder edição quando salvar na conta falha (plano em "Correções da revisão": marcador de pendente, aparelho vence ao abrir, nova tentativa ao voltar a conexão, aviso ao sair).
   2. DEV-034: proteger /app e /admin por sessão e papel.

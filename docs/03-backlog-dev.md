@@ -34,7 +34,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [x] **DEV-030** Login por e-mail com código de 6 dígitos (Supabase OTP), tela pensada para celular. *Feito: `/app/entrar/` (e-mail → código de 6 números), testado ponta a ponta. Falta o e-mail trazer o código: precisa de SMTP próprio (o modelo padrão só tem link e o plano Free não deixa editá-lo).*
 - [x] **DEV-032** Sessão longa e renovação automática. *Sessão no aparelho com renovação automática (`app/supabase.ts`).*
 - [x] **DEV-033** Começar sem conta: rascunho salvo no aparelho e migrado para a conta ao entrar. Pronto quando: o rascunho aparece igual depois do login. *Feito: sem conta o rascunho fica no aparelho e, no primeiro login, vai para a conta (`Editor.tsx`).*
-- [ ] **DEV-034** Proteção das rotas `/app` e `/admin` por sessão e papel.
+- [x] **DEV-034** Proteção das rotas `/app` e `/admin` por sessão e papel. *Feito em 28/out. As páginas de `/app` e `/admin` são cascas estáticas sem dados (a sessão fica no navegador); a proteção está nos dados: regras de linha no banco e rotas de API que conferem a sessão e o papel no servidor. Migração `20261028000200_protecao.sql`: a equipe não grava mais direto no banco (só por `/api/admin/acao`, com papel conferido e registro), a trava de estado/link/publicado vale também para a equipe, `search_path` fixo nas funções e funções de trigger fora da API. Chave do `/api/pedido/pago` comparada em tempo constante. Rascunho no aparelho marcado com a conta: num aparelho compartilhado não abre nem sobe para outra conta, e sai do aparelho ao sair da conta (menos se ainda não chegou à conta).*
 
 ### E4. Área da creator
 

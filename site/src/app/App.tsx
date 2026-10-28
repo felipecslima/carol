@@ -8,7 +8,7 @@ import './tema.css';
 
 export default function App() {
   const sessao = useSessao();
-  const temRascunho = carregarRascunho() !== null;
+  const temRascunho = carregarRascunho(sessao?.user.id ?? null) !== null;
   if (sessao === undefined)
     return (
       <p className="app-lead" role="status">

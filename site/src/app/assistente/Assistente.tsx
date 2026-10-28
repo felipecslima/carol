@@ -89,7 +89,7 @@ export default function Assistente() {
       { ...PROJETO_DE_EXEMPLO, paleta },
       { ...r, videos: videos.filter((v) => v.video), numeros: numerosFinais },
     );
-    salvarRascunho(projeto);
+    salvarRascunho(projeto, sessao?.user.id ?? null);
     // com conta, o que ela respondeu também vira o perfil dela
     if (sessao)
       await salvarPerfil(sessao.user.id, {

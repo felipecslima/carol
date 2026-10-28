@@ -7,6 +7,16 @@ export interface UsuarioLogado {
   email: string | undefined;
 }
 
+/** Compara chaves sem vazar pelo tempo de resposta quantos caracteres batem (compara os resumos SHA-256, byte a byte). */
+export async function mesmaChave(recebida: string, esperada: string): Promise<boolean> {
+  const resumo = async (texto: string) =>
+    new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto)));
+  const [a, b] = await Promise.all([resumo(recebida), resumo(esperada)]);
+  let diferenca = 0;
+  for (let i = 0; i < a.length; i++) diferenca |= a[i] ^ b[i];
+  return diferenca === 0;
+}
+
 export async function usuarioDoPedido(request: Request): Promise<UsuarioLogado | null> {
   const token = request.headers.get('Authorization')?.replace(/^Bearer\s+/i, '');
   if (!token || !PUBLIC_SUPABASE_URL || !PUBLIC_SUPABASE_ANON_KEY) return null;

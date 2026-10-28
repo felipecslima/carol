@@ -75,9 +75,9 @@ function EditorInterno({ inicial, donoId }: { inicial: Projeto; donoId: string |
   const gravar = useCallback(
     (p: Projeto) => {
       fila.current = fila.current.then(async () => {
-        const noAparelho = salvarRascunho(p);
+        const noAparelho = salvarRascunho(p, donoId);
         if (!donoId) return setSituacao(noAparelho ? 'salvo' : 'erro');
-        marcarPendente();
+        marcarPendente(donoId);
         const resultado = await salvarNaNuvem(donoId, p);
         // só a gravação da versão mais recente decide o que aparece e se a pendência acabou
         if (p !== ultimoProjeto.current) return;
@@ -543,18 +543,18 @@ export default function Editor() {
     if (sessao === undefined) return;
     let vivo = true;
     void (async () => {
-      const local = carregarRascunho();
+      const local = carregarRascunho(sessao?.user.id ?? null);
       if (!sessao) return vivo && setInicial(local ?? PROJETO_DE_EXEMPLO);
       // DEV-082: mudança feita aqui que a conta ainda não recebeu vale mais que a versão da conta; tenta enviar já
-      if (local && temPendente()) {
+      if (local && temPendente(sessao.user.id)) {
         if ((await salvarNaNuvem(sessao.user.id, local)) === 'ok') limparPendente();
         if (vivo) setInicial(local);
         return;
       }
       const nuvem = await carregarDaNuvem();
       // primeira entrada: o rascunho feito antes do login vai junto para a conta (DEV-033)
-      if (!nuvem && local && (await salvarNaNuvem(sessao.user.id, local)) !== 'ok') marcarPendente();
-      if (nuvem) salvarRascunho(nuvem);
+      if (!nuvem && local && (await salvarNaNuvem(sessao.user.id, local)) !== 'ok') marcarPendente(sessao.user.id);
+      if (nuvem) salvarRascunho(nuvem, sessao.user.id);
       if (vivo) setInicial(nuvem ?? local ?? PROJETO_DE_EXEMPLO);
     })();
     return () => {
