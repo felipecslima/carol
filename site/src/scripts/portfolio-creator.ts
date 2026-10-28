@@ -1,4 +1,4 @@
-// Scripts do /portfolio-creator/: menu, pausa da faixa, revelação dos modelos e CTA fixo no mobile.
+// Scripts do /portfolio-creator/: menu, pausa da faixa, revelação da vitrine de seções e CTA fixo no mobile.
 // Mesmo comportamento do site da Carol (scripts/main.ts), só o que esta página usa.
 import { initMenu } from './menu';
 import { t } from '../i18n/client';
@@ -20,14 +20,14 @@ if (marquee && toggle && !reduceMotion) {
   });
 }
 
-// ---- Modelos: aparecem em sequência, uma vez, quando a grade entra na tela ----
+// ---- Vitrine de seções: aparecem em sequência, uma vez, quando a grade entra na tela ----
 const grid = document.querySelector<HTMLElement>('.models');
 if (grid && !reduceMotion && 'IntersectionObserver' in window && grid.getBoundingClientRect().top > window.innerHeight) {
   grid.classList.add('reveal-ready');
   new IntersectionObserver(([e], io) => {
     if (e.isIntersecting) { grid.classList.add('in'); io.disconnect(); }
   }, { threshold: 0.12 }).observe(grid);
-  // rede de segurança: se algo impedir a observação, os modelos aparecem
+  // rede de segurança: se algo impedir a observação, as seções aparecem
   setTimeout(() => grid.classList.add('in'), 6000);
 }
 

@@ -16,8 +16,8 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **OCR:** código removido por ora; a spec `docs/04-ocr-prints.md` fica (código no commit `6ecf8fc`).
 - **Em andamento (27/out): correções da revisão de UX do editor**, uma tarefa por vez, cada uma com aprovação e commit:
   - (0) commit do trabalho pendente (feito).
-  - (1) **DEV-096, sem modelos** (feito, esperando aprovação). Decisão do usuário: acabam os modelos para escolher; o editor e as seções montam tudo. A etapa do assistente vira "Escolha suas cores" e os docs são atualizados. `modelo` fica só como valor interno `'nuvem'`, sem migração.
-  - (1b) DEV-097: proposta do texto da página de vendas sem modelos (só muda com aprovação).
+  - (1) **DEV-096, sem modelos** (aprovada, commit `787a989`). Decisão do usuário: acabam os modelos para escolher; o editor e as seções montam tudo. A etapa do assistente vira "Escolha suas cores" e os docs são atualizados. `modelo` fica só como valor interno `'nuvem'`, sem migração.
+  - (1b) **DEV-097:** proposta aprovada e aplicada em localhost. Esperando aprovação do resultado e a decisão sobre as imagens da vitrine.
   - (2) DEV-082: não perder edição quando salvar na conta falha (achado confirmado: recarregar online apagava a edição feita sem conexão).
   - (3) DEV-232: foco e teclado no editor (anel de foco dos blocos a ~1,2:1, foco entrando na gaveta, atalhos, Delete esconde a seção).
   - (4) DEV-093: topo em 320 px, abas no desktop e dica de primeiro uso.
@@ -27,7 +27,24 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Esperando aprovação
 
-- **Sem modelos (DEV-096, pedido seu):** acabou a escolha de modelo. A primeira etapa do assistente virou **"Escolha suas cores"**: as 3 paletas com nome e amostra, acima da prévia da página (as opções e o botão cabem sem rolar de 320 a 1280 px), botão "Usar estas cores". Os textos do app que diziam "escolha o modelo" agora dizem "monte seu portfólio com as seções". `modelo` continua só como valor interno `'nuvem'` no projeto e no banco (sem migração; remover a coluna fica para depois). Documentos atualizados: PRD, construtor, backlog (DEV-070 a 073, 191 e 400 descartadas), guia e proposta do template. **A página de vendas ainda promete 15 modelos:** a proposta de texto novo vem na DEV-097.
+- **Página de vendas sem modelos (DEV-097, aplicada em localhost):** a página `/portfolio-creator/` deixou de prometer modelos. Base: `docs/PROPOSTA-PAGINA-VENDAS-SEM-MODELOS.md`.
+  - **Textos:**
+    - Passos de "Como funciona".
+    - Topo: "você escolhe as seções", e os números viraram "11 seções prontas" e "3 cores prontas, ou a sua"; antes eram "15 modelos" e "45 paletas".
+    - Itens dos planos e a descrição para o Google.
+    - Menu "Seções" (âncora `#secoes`).
+    - Teste grátis: decisão sua de **montar tudo e só visualizar, com marca d'água**; PDF e publicar ficam no plano.
+  - **Correções que você pediu junto:**
+    - Saiu a promessa de "IA que lê os prints": ela digita os números (passo 2, plano, benefício e 2 perguntas).
+    - Saiu o "até 10 vídeos": o editor não limita; o vídeo vai até 100 MB.
+  - **Vitrine:** "11 seções, *do seu jeito*", com 6 cartões (Capa, Vídeos, Números, Por que eu, Formatos e pacotes, Como eu trabalho) e os layouts de cada uma na legenda. São 3 colunas no desktop e 2 no celular.
+  - **Imagens:**
+    - As 6 da vitrine e as 2 do topo (exemplo claro e escuro) são tiradas do modo Ver do editor de verdade por `scripts/portfolio-creator-secoes.mjs` (780×892, 176 KB as 8).
+    - As 15 `modelo-*.webp` foram apagadas e o `portfolio-creator-shots.mjs` não gera mais modelos.
+    - A prévia de link (`og-portfolio-creator.jpg`) diz "Seções prontas" no lugar de "15 modelos".
+  - **Ponto fraco (crítica do impeccable):** as imagens mostram o conteúdo de exemplo vazio ("Sua foto", "[seu nome]", "00 mil") e cada cartão tem uma cor. Parecem rascunho perto do celular "Bia" do protótipo. **Decisão sua:** manter, refazer com um portfólio de exemplo preenchido (nome e textos genéricos, sem números) ou com o portfólio real da Carol (exige rodar o `seed:carol`, que grava na conta de teste).
+  - **Achados que já existiam antes desta mudança (não mexi):** texto escuro sobre o rosa `#e5386a` a 4,3:1 (abaixo de 4,5:1) em 3 ou 4 pontos e 3 cores fora do DESIGN.md na linha 177.
+  - O site só muda em produção no merge na `main`.
 
 - **Título da capa livre (pedido seu):** a frase "Oi, eu sou X e mostro Y do meu jeito" deixou de ser imposta. O assistente ganhou a etapa **"Qual título abre a sua capa?"**: campo livre, com 4 sugestões em botões (a frase antiga é só a primeira); em branco usa a primeira sugestão. No editor, tocar num texto de exemplo com [colchetes] já seleciona tudo para escrever por cima. A dica da etapa "O que você mostra" não diz mais que vira a frase da capa.
 

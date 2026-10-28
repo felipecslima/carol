@@ -2,19 +2,20 @@
 // Página de vendas do Portfólio Creator (/portfolio-creator/), só em português.
 // Mesma estrutura, classes e tipografia do site da Carol (styles/global.css, Home.astro); as cores do produto
 // entram por tokens em styles/portfolio-creator.css. Textos e preços em data/portfolio-creator.ts, imagens
-// geradas por scripts/portfolio-creator-shots.mjs.
-// Ordem do argumento: promessa, dor, para quem é, como funciona, o que a marca vê, modelos, quem fez, preço,
+// geradas por scripts/portfolio-creator-shots.mjs (fotos da Carol e o celular) e scripts/portfolio-creator-secoes.mjs
+// (seções e exemplo, tiradas do editor de verdade).
+// Ordem do argumento: promessa, dor, para quem é, como funciona, o que a marca vê, seções, quem fez, preço,
 // teste e primeiras creators, dúvidas, ferramentas que vêm aí, fechamento.
 import '../styles/global.css';
 import '../styles/portfolio-creator.css';
 import SeoHead from '../components/SeoHead.astro';
 import { SOCIAL } from '../data/content';
 import {
-  BENEFITS, BEGINNER, CAROL, FAQ, FOUNDERS, FREE, MODELS, PAINS, PC, PC_PATH, PLANS, STEPS, TRIAL,
+  BENEFITS, BEGINNER, CAROL, FAQ, FOUNDERS, FREE, PAINS, PC, PC_PATH, PLANS, SECOES, STEPS, TRIAL,
 } from '../data/portfolio-creator';
 
 const title = 'Portfólio Creator: mesmo sem nenhuma publi';
-const description = 'Monte portfólio e mídia kit de UGC e influência em 15 modelos, com PDF e link próprio. Criado pela Carol Limah. Teste grátis.';
+const description = 'Monte portfólio e mídia kit de UGC e influência com seções prontas, com PDF e link próprio. Criado pela Carol Limah. Teste grátis.';
 const abs = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
 
 // links externos (DM, WhatsApp) abrem em outra aba
@@ -72,7 +73,7 @@ const jsonLd = {
         </button>
         <div class="nav-links" id="nav-links">
           <a href="#como">Como funciona</a>
-          <a href="#modelos">Modelos</a>
+          <a href="#secoes">Seções</a>
           <a href="#sobre">Sobre a Carol</a>
           <a href="#plano">Planos</a>
           <a href="#duvidas">Dúvidas</a>
@@ -86,7 +87,7 @@ const jsonLd = {
       <header id="topo" class="wrap hero">
         <div class="hero-text">
           <h1 class="h1">Seu primeiro portfólio de <em>creator.</em></h1>
-          <p class="hero-lead">Mesmo sem nenhuma publi, você escolhe um modelo, sobe os vídeos que gravou em casa e monta um portfólio para mandar às marcas. Quando seus números crescerem, é só atualizar.</p>
+          <p class="hero-lead">Mesmo sem nenhuma publi, você escolhe as seções, sobe os vídeos que gravou em casa e monta um portfólio para mandar às marcas. Quando seus números crescerem, é só atualizar.</p>
           <div class="btns">
             <a class="btn btn-primary" {...cta}>Testar agora</a>
             <a class="btn btn-outline" href="#plano">Ver planos</a>
@@ -95,16 +96,16 @@ const jsonLd = {
             Já começou um portfólio? <a href="/app/entrar/">Entrar</a>.
           </p>
           <dl class="stats">
-            <div class="stat"><dt>modelos de layout</dt><dd>15</dd></div>
-            <div class="stat"><dt>paletas de cor</dt><dd>45</dd></div>
+            <div class="stat"><dt>seções prontas</dt><dd>11</dd></div>
+            <div class="stat"><dt>cores prontas, ou a sua</dt><dd>3</dd></div>
             <div class="stat"><dt>a partir de</dt><dd>R$ 49,90</dd></div>
           </dl>
           <p class="hero-note">Você monta o seu portfólio na hora, sem cartão de crédito. Só paga se quiser publicar, e tem 7 dias para desistir da compra.</p>
         </div>
         <div class="collage">
           <img class="main" src="/media/pc/portfolio-iniciante.webp" alt="Exemplo de portfólio no modo iniciante, no celular" width="624" height="1280" fetchpriority="high" />
-          <img class="small" src="/media/pc/modelo-nuvem.webp" alt="Modelo Nuvem, com layout centralizado e suave" width="480" height="549" loading="lazy" />
-          <img class="vid" src="/media/pc/modelo-assinatura.webp" alt="Modelo Assinatura, escuro e elegante" width="480" height="549" loading="lazy" />
+          <img class="small" src="/media/pc/exemplo-claro.webp" alt="Portfólio de exemplo com a capa de foto redonda, cor Lavanda" width="480" height="549" loading="lazy" />
+          <img class="vid" src="/media/pc/exemplo-escuro.webp" alt="O mesmo portfólio com a página escura" width="480" height="549" loading="lazy" />
           <div class="seal">Feito pela<br /><i>Carol Limah</i></div>
         </div>
       </header>
@@ -179,18 +180,18 @@ const jsonLd = {
         </div>
       </section>
 
-      <section id="modelos" class="cream">
+      <section id="secoes" class="cream">
         <div class="wrap">
           <div class="sec-head">
-            <h2 class="h2">15 modelos, <em>45 combinações</em></h2>
-            <div class="sec-aside"><p>Cada modelo tem layout próprio e 3 paletas de cor.</p></div>
+            <h2 class="h2">11 seções, <em>do seu jeito</em></h2>
+            <div class="sec-aside"><p>Cada seção tem 2 ou 3 layouts. Você escolhe quais entram, em que ordem, e ajusta cor, fonte e cantos.</p></div>
           </div>
           <ul class="models">
-            {MODELS.map((m, i) => (
+            {SECOES.map((s, i) => (
               <li style={`--i: ${i}`}>
                 <figure>
-                  <img src={`/media/pc/modelo-${m.file}.webp`} alt={`Modelo ${m.name}: começo do portfólio de exemplo`} width="480" height="549" loading="lazy" />
-                  <figcaption><b>{m.name}</b><span>{m.vibe}</span></figcaption>
+                  <img src={`/media/pc/secao-${s.file}.webp`} alt={`Seção ${s.name} no portfólio de exemplo`} width="480" height="549" loading="lazy" />
+                  <figcaption><b>{s.name}</b><span>{s.layouts}</span></figcaption>
                 </figure>
               </li>
             ))}
@@ -249,7 +250,7 @@ const jsonLd = {
       <section id="teste" class="wrap trial-grid">
         <div class="trial-text">
           <h2 class="h2">Monte o seu <em>antes de pagar.</em></h2>
-          <p>No teste grátis você escolhe um modelo, sobe seus vídeos e prints e vê o seu portfólio de verdade, até o PDF, com marca d'água. Gostou? Escolha um plano e libere tudo.</p>
+          <p>No teste grátis você monta suas seções, sobe seus vídeos, digita seus números e vê o seu portfólio de verdade, com marca d'água. Gostou? Escolha um plano para baixar o PDF e publicar.</p>
           <ul class="checks">{TRIAL.map((t) => <li>{t}</li>)}</ul>
           <a class="btn btn-primary" {...cta}>Testar agora</a>
         </div>

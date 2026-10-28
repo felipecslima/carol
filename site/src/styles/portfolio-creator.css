@@ -70,13 +70,13 @@
 .steps h3 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.05; }
 .steps p { font-size: 17px; line-height: 1.55; color: var(--ink-2); }
 
-/* ---- modelos ---- */
-.models { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 24px 14px; }
+/* ---- vitrine de seções (a classe .models ficou do tempo dos modelos; o script de revelação usa o mesmo nome) ---- */
+.models { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 18px; }
 .models figure { margin: 0; }
 .models img { width: 100%; height: auto; aspect-ratio: 1200 / 1372; object-fit: cover; object-position: top; border-radius: 16px; background: var(--cream-card); display: block; }
-.models figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 12px 2px 0; }
+.models figcaption { display: grid; gap: 4px; padding: 12px 2px 0; }
 .models b { font-family: var(--serif); font-weight: 400; font-size: 24px; line-height: 1.1; }
-.models span { font-size: 13px; color: var(--cream-eyebrow); text-align: right; }
+.models span { font-size: 14px; line-height: 1.4; color: var(--cream-eyebrow); }
 @media (max-width: 720px) { .models { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 10px; } .models img { border-radius: 12px; } }
 
 /* ---- modo iniciante e teste: duas colunas como "sobre" ---- */
@@ -154,7 +154,7 @@
 .faq summary:hover { color: var(--accent-light); }
 .faq details p { padding-bottom: 24px; font-size: 17px; line-height: 1.6; color: var(--muted); }
 
-/* ---- movimento: o hero entra em sequência e os modelos aparecem uma vez; o resto é o do site (marquee, fade, dock) ---- */
+/* ---- movimento: o hero entra em sequência e as seções da vitrine aparecem uma vez; o resto é o do site (marquee, fade, dock) ---- */
 @keyframes rise { from { opacity: 0; translate: 0 24px; } }
 @media (prefers-reduced-motion: no-preference) {
   .pc .hero-text > * { animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }

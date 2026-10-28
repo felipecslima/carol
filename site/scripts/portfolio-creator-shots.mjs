@@ -1,5 +1,6 @@
 // Gera as imagens da página /portfolio-creator/ a partir do protótipo do handoff (portfolio-creator-handoff.zip):
-// a capa de cada um dos 15 modelos, o portfólio no modo iniciante (dentro do celular) e as fotos da Carol.
+// o portfólio no modo iniciante (dentro do celular), a prévia de link e as fotos da Carol. As imagens das seções e do
+// exemplo vêm do editor de verdade: scripts/portfolio-creator-secoes.mjs (os modelos deixaram de existir, DEV-096).
 // Uso: node scripts/portfolio-creator-shots.mjs <pasta portfolio-creator-handoff descompactada>
 // Os .dc.html do protótipo dependem do support.js do canvas de design, que não vem no pacote; aqui o
 // renderVals() de cada tela roda no Node e os {{valores}} e <sc-for> são preenchidos antes de abrir no Chromium.
@@ -17,8 +18,6 @@ if (!src) {
 const out = fileURLToPath(new URL('../public/media/pc/', import.meta.url));
 mkdirSync(out, { recursive: true });
 
-// mesmos nomes usados em src/data/portfolio-creator.ts
-const MODELS = ['Nuvem', 'Clean', 'Pop', 'Executivo', 'Editorial', 'Casual', 'Glow', 'Neon', 'Terra', 'Tropical', 'Assinatura', 'Cinema', 'Retro', 'Placar', 'Galeria'];
 
 const get = (obj, path) => path.split('.').reduce((o, k) => o?.[k], obj);
 const fill = (html, vals) => html.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (_, p) => {
@@ -53,10 +52,6 @@ async function shot(file, { width, height, scale, name, outWidth }) {
   console.log(`gravada ${name}`);
 }
 
-// capa do modelo: 1200 px de largura, o trecho de cima que aparece no cartão da galeria (proporção 7:8)
-for (const m of MODELS) {
-  await shot(`Modelo${m}.dc.html`, { width: 1200, height: 1372, scale: 1, name: `modelo-${m.toLowerCase()}.webp`, outWidth: 480 });
-}
 // celular no modo iniciante: a tela tem 390 px, como num iPhone
 await shot('PortfolioIniciante.dc.html', { width: 390, height: 800, scale: 2, name: 'portfolio-iniciante.webp', outWidth: 624 });
 
@@ -81,7 +76,7 @@ await og.setContent(`<!doctype html><html><head><meta charset="utf-8">
   <div class="text">
     <div class="logo">Portfólio <i>Creator</i></div>
     <h1>Seu primeiro portfólio de <em>creator.</em></h1>
-    <p>Mesmo com zero publi. 15 modelos, PDF e link próprio, por Carol Limah.</p>
+    <p>Mesmo com zero publi. Seções prontas, PDF e link próprio, por Carol Limah.</p>
     <div class="cta">Testar grátis</div>
   </div>
   <div class="art"><div class="phone"><img src="data:image/webp;base64,${phone}" alt=""></div></div>

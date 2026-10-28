@@ -46,8 +46,8 @@ export const CAROL = {
 };
 
 export const STEPS = [
-  { title: 'Escolha seu modelo', text: '15 modelos com layouts diferentes: suave, colorido, sério, casual, luxo, neon… e 3 paletas em cada um.' },
-  { title: 'Suba vídeos e prints', text: 'Você sobe até 10 vídeos e os prints das estatísticas do Instagram. A IA lê os prints e preenche os números, e você só confere.' },
+  { title: 'Monte com seções prontas', text: '11 seções pensadas para o que a marca procura: capa, vídeos, números, público, marcas e mais. Você escolhe quais entram, a ordem e o layout de cada uma.' },
+  { title: 'Suba vídeos e seus números', text: 'Você sobe os vídeos que gravou e digita os números do seu Instagram. Eles entram formatados no portfólio, e você confere tudo antes de concluir.' },
   { title: 'Baixe ou publique', text: 'Baixe o PDF para mandar para a marca, ou peça para a equipe colocar seu site no ar.' },
 ];
 
@@ -60,33 +60,24 @@ export const BEGINNER = [
 // o que a marca vê no portfólio pronto (só o que a especificação sustenta)
 export const BENEFITS = [
   { title: 'Seus números em destaque', text: 'Seguidores, views em 30 dias e média por reel logo no começo, do jeito que as marcas procuram.' },
-  { title: 'Prints do Instagram junto dos números', text: 'Seus prints entram no portfólio ao lado dos números que você mostra.' },
-  { title: 'Vídeos em galeria vertical', text: 'Até 10 vídeos, com a marca de cada publi quando você tiver.' },
+  { title: 'Vídeos em galeria vertical', text: 'Seus vídeos em carrossel, grade ou um em destaque, com a marca de cada publi quando você tiver.' },
   { title: 'Quem assiste você', text: 'Gênero, idade e cidades do seu público em gráficos fáceis de ler.' },
 ];
 
-// imagens geradas por scripts/portfolio-creator-shots.mjs (public/media/pc/modelo-<file>.webp)
-export const MODELS = [
-  { name: 'Nuvem', vibe: 'centralizado', file: 'nuvem' },
-  { name: 'Clean', vibe: 'coluna lateral', file: 'clean' },
-  { name: 'Pop Color', vibe: 'bento', file: 'pop' },
-  { name: 'Executivo', vibe: 'relatório', file: 'executivo' },
-  { name: 'Editorial', vibe: 'revista', file: 'editorial' },
-  { name: 'Casual', vibe: 'scrapbook', file: 'casual' },
-  { name: 'Glow Rosé', vibe: 'arcos', file: 'glow' },
-  { name: 'Neon', vibe: 'painel gamer', file: 'neon' },
-  { name: 'Terra', vibe: 'capítulos', file: 'terra' },
-  { name: 'Tropical', vibe: 'embarque', file: 'tropical' },
-  { name: 'Assinatura', vibe: 'elegante', file: 'assinatura' },
-  { name: 'Cinema', vibe: 'trailer', file: 'cinema' },
-  { name: 'Retrô', vibe: 'anos 2000', file: 'retro' },
-  { name: 'Placar', vibe: 'esportivo', file: 'placar' },
-  { name: 'Galeria', vibe: 'museu', file: 'galeria' },
+// vitrine de seções: imagens tiradas do editor de verdade por scripts/portfolio-creator-secoes.mjs
+// (public/media/pc/secao-<file>.webp); os layouts são os nomes das variações em src/blocks/registro.ts
+export const SECOES = [
+  { name: 'Capa', layouts: 'foto grande, foto redonda ou foto e vídeo de fundo', file: 'capa' },
+  { name: 'Vídeos', layouts: 'carrossel, grade ou um grande e os outros pequenos', file: 'videos' },
+  { name: 'Números', layouts: 'cards ou barras comparando', file: 'numeros' },
+  { name: 'Por que eu', layouts: 'lista ou cards', file: 'motivos' },
+  { name: 'Formatos e pacotes', layouts: 'cards ou tabela', file: 'formatos' },
+  { name: 'Como eu trabalho', layouts: 'passos em cartões ou linha', file: 'processo' },
 ];
 
 export const TRIAL = [
   'Sem cartão de crédito',
-  '5 dos 15 modelos liberados para montar, com marca d’água',
+  'Monte o portfólio inteiro e veja como fica, com marca d’água',
   'Feito primeiro para o celular',
 ];
 
@@ -112,8 +103,7 @@ export const PLANS = [
     price: 'R$ 49,90',
     note: 'pagamento único',
     items: [
-      'Escolha entre os 15 modelos e 3 paletas',
-      'IA que lê seus prints do Instagram',
+      'Todas as seções e o Estilo completo: cores, fontes e cantos',
       'Portfólio completo em PDF, sem marca d’água',
       'Mídia kit de 1 página no mesmo estilo',
       'Seu link portfoliocreator.com.br/seunome',
@@ -148,7 +138,7 @@ export const PLANS = [
       'Inclui seu link portfoliocreator.com.br/seunome',
       'Você mesma muda números, vídeos e marcas, quando quiser',
       'Site e PDF se atualizam na hora',
-      'Troque de modelo e de cores quando quiser',
+      'Troque seções, layouts e cores quando quiser',
       'Mensal: cancele quando quiser, sem multa. Anual: sem reembolso proporcional depois dos 7 dias',
     ],
     action: 'Quero este plano',
@@ -161,9 +151,9 @@ export const FAQ = [
   { q: 'O domínio fica no meu nome?', a: 'Fica. O domínio .com.br é registrado no seu nome e no seu CPF. Você cria a conta no Registro.br, a gente te orienta, e a equipe publica seu site em até 2 dias úteis. Já tem o PDF + link? Passe para o domínio próprio por R$ 100,00 mais a taxa do domínio.' },
   { q: 'Como funciona o cupom?', a: 'O LANCAMENTO10 dá 10% no valor do plano até 30/11. Não vale para a taxa do domínio e não soma com outros descontos.' },
   { q: 'E se eu não gostar?', a: 'Você tem 7 dias depois da compra para desistir e receber o dinheiro de volta. É só me chamar no direct do Instagram. Antes de pagar, dá para testar de graça.' },
-  { q: 'O que eu preciso ter em mãos?', a: 'Os vídeos que você gravou (até 10, de até 50 MB e 60 segundos cada) e, se quiser mostrar números, os prints das estatísticas do Instagram.' },
-  { q: 'Como a IA lê meus prints?', a: 'Você sobe os prints das estatísticas e os números são preenchidos automaticamente. Você confere e corrige se precisar.' },
-  { q: 'O teste grátis tem limite?', a: 'No teste, 5 modelos ficam liberados para você montar seu portfólio, com marca d’água. Os outros 10 aparecem com cadeado e são liberados quando você escolhe um plano, assim como baixar o PDF e publicar o site.' },
+  { q: 'O que eu preciso ter em mãos?', a: 'Os vídeos que você gravou (até 100 MB cada) e, se quiser mostrar números, as estatísticas do seu Instagram abertas para copiar.' },
+  { q: 'Como entram os meus números?', a: 'Você digita seguidores, views e dados do público, e eles aparecem formatados no portfólio, com o período de referência. Antes de concluir, a revisão aponta o que ainda está com número de exemplo.' },
+  { q: 'O teste grátis tem limite?', a: 'No teste você monta o portfólio inteiro, com todas as seções, e vê como fica, com marca d’água. Baixar o PDF e publicar o site são liberados quando você escolhe um plano.' },
   { q: 'Posso mudar meu site depois de publicado?', a: 'Pode. Com a atualização mensal, a aba Editar fica liberada e você mesma muda o que quiser: o site e o PDF se atualizam na hora. Sem assinatura, dá para liberar a aba Editar por 30 dias por R$ 49,90. Sem um dos dois, o site fica como foi publicado.' },
   { q: 'Posso cancelar a atualização mensal?', a: 'Pode, quando quiser e sem multa, e a aba Editar continua liberada até o fim do mês já pago. No plano anual (R$ 179), o pagamento já cobre os 12 meses, sem reembolso proporcional depois dos 7 dias de desistência.' },
 ];
