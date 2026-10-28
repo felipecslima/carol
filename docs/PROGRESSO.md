@@ -24,11 +24,18 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
     - **DEV-235**, validação de WhatsApp e e-mail (commit seguinte).
   - Marca do editor leva ao Início (`/app/`), aprovada em 28/out.
   - **Próximo:** (2) DEV-082.
-  - (2) DEV-082: não perder edição quando salvar na conta falha (achado confirmado: recarregar online apagava a edição feita sem conexão).
-  - (3) DEV-232: foco e teclado no editor (anel de foco dos blocos a ~1,2:1, foco entrando na gaveta, atalhos, Delete esconde a seção).
-  - (4) DEV-093: topo em 320 px, abas no desktop e dica de primeiro uso.
-  - (5) DEV-094: esqueleto antes do JS.
-  - (6) DEV-095: destaque do Publicar e barra flutuante com menu "Mais".
+- **Sequência até o lançamento (combinada em 28/out; uma tarefa por vez, cada uma com aprovação e commit):**
+  1. DEV-082: não perder edição quando salvar na conta falha (plano em "Correções da revisão": marcador de pendente, aparelho vence ao abrir, nova tentativa ao voltar a conexão, aviso ao sair).
+  2. DEV-034: proteger /app e /admin por sessão e papel.
+  3. DEV-160, 190, 192 e 193: pedido com plano e preço (os da página de vendas, a confirmar com você), regras de acesso e trava de edição em 7 dias.
+  4. DEV-151 a 153: PDF do mídia kit no servidor (Cloudflare Browser Rendering; pode exigir plano pago no Cloudflare).
+  5. DEV-221: botões da página de vendas levam a /app.
+  6. DEV-144 e 146: prévia do link com imagem e página publicada rápida no 4G.
+  7. DEV-203: exclusão definitiva (Cloudinary, Storage, banco e Auth).
+  8. Resto da revisão do editor: DEV-232 (foco e teclado), DEV-093, DEV-094, DEV-095.
+  9. DEV-233 (erros), DEV-234 (abuso), DEV-230 e 231 (testes).
+  10. Marcar no backlog o que já funciona em localhost (DEV-142, 143, 145, 180 a 185, 210, 211).
+- **Depende de você antes de publicar:** e-mail próprio do login (Resend + DNS do domínio), regerar a secret key e o token do Supabase, domínio do produto, preços finais, CNPJ e o texto dos Termos e da Privacidade (DEV-200 e 204 dependem deles). Slack e WhatsApp oficial podem vir depois: no começo, a operação roda pelo /admin/.
   - Roteiros de medição em `/tmp/rev/`.
 
 ## Esperando aprovação
