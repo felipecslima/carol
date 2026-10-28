@@ -4,6 +4,8 @@
   // src/server/worker.ts: redirects www/http → https e 404 por idioma, por cima do adapter (@astrojs/cloudflare).
   // A pasta dos arquivos estáticos (dist/client) vem do adapter no `astro build`.
   "main": "./src/server/worker.ts",
+  // exclusão definitiva das contas com prazo vencido (DEV-203), todo dia às 03:17 UTC
+  "triggers": { "crons": ["17 3 * * *"] },
   "assets": {
     "binding": "ASSETS",
     // o redirecionamento precisa ver toda requisição, inclusive as de arquivos

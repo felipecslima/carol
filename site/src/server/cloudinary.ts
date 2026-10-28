@@ -52,3 +52,30 @@ export async function apagarArquivo(conta: ContaCloudinary, publicId: string, ti
   const dados = (await resposta.json().catch(() => ({}))) as { result?: string };
   return resposta.ok && (dados.result === 'ok' || dados.result === 'not found');
 }
+
+/**
+ * Apaga todos os arquivos (imagens e vídeos) da pasta de uma creator e a pasta (DEV-203). Usa a Admin API, que apaga
+ * até 1000 por chamada (`partial` = ainda tem). `false` se alguma chamada falhou; a pasta vazia que não sair não conta.
+ */
+export async function apagarPastaDoUsuario(conta: ContaCloudinary, idDoUsuario: string): Promise<boolean> {
+  if (!/^[0-9a-f-]{36}$/.test(idDoUsuario)) return false;
+  const pasta = pastaDoUsuario(idDoUsuario);
+  const autorizacao = `Basic ${btoa(`${conta.chave}:${conta.segredo}`)}`;
+  const api = `https://api.cloudinary.com/v1_1/${conta.nome}`;
+  for (const tipo of ['image', 'video'] as const) {
+    for (let rodada = 0; rodada < 20; rodada++) {
+      const resposta = await fetch(`${api}/resources/${tipo}/upload?prefix=${encodeURIComponent(`${pasta}/`)}`, {
+        method: 'DELETE',
+        headers: { Authorization: autorizacao },
+      });
+      if (!resposta.ok) return false;
+      const dados = (await resposta.json().catch(() => ({}))) as { partial?: boolean };
+      if (!dados.partial) break;
+      if (rodada === 19) return false;
+    }
+  }
+  await fetch(`${api}/folders/${pasta}`, { method: 'DELETE', headers: { Authorization: autorizacao } }).catch(
+    () => undefined,
+  );
+  return true;
+}

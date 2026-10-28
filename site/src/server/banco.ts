@@ -32,3 +32,13 @@ export async function consulta<T = Record<string, unknown>>(
   const texto = await resposta.text();
   return { ok: true, dados: texto ? (JSON.parse(texto) as T[]) : [] };
 }
+
+/** Apaga um usuário do Auth (DEV-203). O cascade do banco leva o perfil e o que é dele. `true` se apagou ou não existia. */
+export async function apagarUsuarioDoAuth(id: string): Promise<boolean> {
+  if (!bancoConfigurado() || !/^[0-9a-f-]{36}$/.test(id)) return false;
+  const resposta = await fetch(`${PUBLIC_SUPABASE_URL}/auth/v1/admin/users/${id}`, {
+    method: 'DELETE',
+    headers: { apikey: SUPABASE_SERVICE_ROLE_KEY!, Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}` },
+  });
+  return resposta.ok || resposta.status === 404;
+}

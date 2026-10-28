@@ -174,7 +174,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-200** Páginas de Termos e Privacidade ligadas no cadastro e na compra.
 - [ ] **DEV-201** Baixar meus dados: .zip só com textos, mídias enviadas, dados da conta e pedidos (nunca estilos, blocos ou PDF).
 - [ ] **DEV-202** Excluir conta: confirmação por código, desativação por 7 dias com recuperação.
-- [ ] **DEV-203** Exclusão definitiva agendada: apaga Cloudinary, Storage, banco e Auth, nessa ordem; mantém só registro de pagamentos.
+- [ ] **DEV-203** Exclusão definitiva agendada: apaga Cloudinary, Storage, banco e Auth, nessa ordem; mantém só registro de pagamentos. *Código feito em 28/out: `server/exclusao.ts` (ordem e regras), `apagarPastaDoUsuario` (Admin API do Cloudinary), `apagarUsuarioDoAuth`, rota `/api/interno/exclusoes` (chave de admin) chamada pelo cron diário do Worker (`scheduled` em `worker.ts`, `triggers` no wrangler). Storage ainda não é usado. **Falta você:** aplicar a migração `20261028000300_exclusao_definitiva.sql` (desliga o pg_cron antigo, que apagava o usuário deixando os arquivos e levando os pedidos; pedidos passam a ficar sem ligação com a pessoa) e pôr `ADMIN_TOKEN` e `CLOUDINARY_URL` como segredos do Worker. Até a migração, o pg_cron antigo continua valendo.*
 - [ ] **DEV-204** E-mail de confirmação e card no Slack ao excluir.
 
 ### E18. Operação mínima
