@@ -125,7 +125,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-141** Escolha do link `/nome`: regras de formato, checagem em tempo real, sugestões, nomes reservados. *Feito: formato, nomes reservados, sugestões a partir do @ e validação ao digitar (`lib/slug.ts`, aba Publicar). Falta checar se o link está livre (precisa do banco, E2).*
 - [ ] **DEV-142** Rota pública `/c/[slug]` renderizada no servidor a partir do JSON publicado, quase sem JavaScript.
 - [ ] **DEV-143** Versão publicada separada do rascunho (editar não muda o que está no ar até publicar de novo).
-- [ ] **DEV-144** Prévia do link (imagem e título) gerada para WhatsApp e Instagram.
+- [x] **DEV-144** Prévia do link (imagem e título) gerada para WhatsApp e Instagram. *Feito em 28/out: a página publicada não tinha nenhuma tag og (o `SeoHead` tirava a prévia de toda página `noindex`); agora `previaSemBusca` liga só nas rotas `/c/` (o HTML do site da Carol não muda). Imagem da capa recortada pelo Cloudinary em 1200x630 JPG (`g_auto`), vídeo vira o primeiro quadro, sem foto vale a imagem do produto (`lib/previa.ts`). Medido: JPEG 1200x630, 55 KB.*
 - [ ] **DEV-145** Selo "Feito com Portfólio Creator" no site.
 - [ ] **DEV-146** Cache e desempenho: página publicada abre rápido no 4G (meta: LCP abaixo de 2,5 s).
 

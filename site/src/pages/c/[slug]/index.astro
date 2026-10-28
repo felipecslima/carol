@@ -5,6 +5,7 @@ import '../../../blocks/blocos.css';
 import LinkNaoEncontrado from '../../../components/LinkNaoEncontrado.astro';
 import SeoHead from '../../../components/SeoHead.astro';
 import PaginaPublicada from '@app/publica/PaginaPublicada';
+import { IMAGEM_PADRAO, previaDoLink } from '@lib/previa';
 import { paginaNoAr } from '@server/pagina';
 
 export const prerender = false;
@@ -14,9 +15,8 @@ const pagina = await paginaNoAr(slug);
 const achou = Boolean(pagina);
 if (!achou) Astro.response.status = 404;
 
-const capa = pagina?.projeto.blocos.find((b) => b.tipo === 'capa')?.dados as Record<string, string> | undefined;
-const titulo = capa?.titulo ? `${capa.titulo} · portfólio` : 'Portfólio de creator';
-const imagem = capa?.fundo || capa?.foto || '';
+// prévia no WhatsApp e no Instagram (DEV-144); link que não existe mostra a imagem do produto
+const previa = pagina ? previaDoLink(pagina.projeto) : null;
 if (achou) Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=60');
 ---
 
@@ -25,11 +25,16 @@ if (achou) Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-max
   <head>
     <SeoHead
       lang="pt"
-      title={achou ? titulo : 'Link não encontrado'}
-      description={capa?.subtitulo ?? 'Portfólio de creator'}
+      title={achou && previa ? previa.titulo : 'Link não encontrado'}
+      description={previa?.descricao ?? 'Portfólio de creator'}
       alternates={{ pt: `/c/${pagina?.slug}/` }}
-      og={imagem ? { image: imagem, alt: titulo, siteName: 'Portfólio Creator' } : undefined}
+      og={{
+        image: achou && previa ? previa.imagem : IMAGEM_PADRAO,
+        alt: previa?.alt ?? 'Portfólio Creator',
+        siteName: 'Portfólio Creator',
+      }}
       noindex
+      previaSemBusca
       analytics={false}
     />
     {achou && (
