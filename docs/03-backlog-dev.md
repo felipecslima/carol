@@ -186,7 +186,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 ### E19. Página de vendas e lista de espera
 
 - [ ] **DEV-220** Formulário de lista de espera salvando em `waitlist`, com aviso no Slack.
-- [ ] **DEV-221** Textos do cupom conforme a decisão e botões apontando para `/app` quando o produto abrir.
+- [ ] **DEV-221** Textos do cupom conforme a decisão e botões apontando para `/app` quando o produto abrir. *Botões feitos (todos os "Testar agora" e "Quero este plano" levam a `/app/novo/`, commit `9226a90`). Falta só o texto do cupom, que depende da sua decisão (hoje: LANCAMENTO10, 10% até 30/11).*
 - [ ] **DEV-097** Texto da página de vendas sem modelos: proposta em `docs/PROPOSTA-PAGINA-VENDAS-SEM-MODELOS.md`, aplicar só com aprovação.
 
 ### E20. Qualidade
