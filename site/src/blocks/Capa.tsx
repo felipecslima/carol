@@ -1,16 +1,10 @@
-import { useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Exemplo } from './Exemplo';
 import { posicaoDoFoco } from './foco';
 import { BotaoVivo, m, Palavras, usePralaxe } from './movimento';
 import type { DadosDaCapa, ModoDeRender, PropsDoBloco } from './tipos';
 
 type VariacaoDaCapa = 'foto-grande' | 'foto-redonda' | 'fundo';
-
-const SUAVE = [0.22, 1, 0.36, 1] as const;
-const surgir = {
-  oculto: { opacity: 0, y: 16 },
-  visivel: { opacity: 1, y: 0, transition: { duration: 0.6, ease: SUAVE } },
-};
 
 export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, VariacaoDaCapa>) {
   const { titulo, subtitulo, arroba, foto, botao, fundo, video_fundo, foto_foco, fundo_foco, veu, usar } = dados;
@@ -21,33 +15,42 @@ export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, Variac
   const posFoto = posicaoDoFoco(foto_foco);
   const posFundo = posicaoDoFoco(fundo_foco);
   const vivo = modo === 'publicado';
+  // na página publicada o vídeo de fundo só começa a baixar depois que a página monta: até lá aparece o pôster (a
+  // imagem do fundo), que é o maior elemento da primeira tela e não disputa a internet com o vídeo (DEV-146)
+  useEffect(() => {
+    const v = video.current;
+    if (!vivo || !v || !video_fundo || v.getAttribute('src') === video_fundo) return;
+    v.src = video_fundo;
+    void v.play().catch(() => undefined);
+  }, [vivo, video_fundo]);
 
+  // entrada em CSS (blocos.css), não em JavaScript: na página publicada a capa aparece e anima já no primeiro desenho,
+  // sem esperar o JS chegar pelo 4G (DEV-146). No editor não anima.
+  const surgir = (i: number) =>
+    vivo
+      ? { className: 'bl-surgir', style: { '--i': i } as CSSProperties }
+      : { className: undefined, style: undefined };
   const texto = (
-    <m.div
-      className="bl-capa-texto"
-      initial={vivo ? 'oculto' : false}
-      animate="visivel"
-      variants={{ oculto: {}, visivel: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } } }}
-    >
+    <div className="bl-capa-texto">
       {arroba && (
-        <m.p className="bl-etiqueta" variants={surgir}>
+        <p className={['bl-etiqueta', surgir(0).className].filter(Boolean).join(' ')} style={surgir(0).style}>
           {arroba}
-        </m.p>
+        </p>
       )}
       <Palavras texto={titulo ?? ''} modo={modo} className="bl-titulo-grande" />
       {subtitulo && (
-        <m.p className="bl-texto" variants={surgir}>
+        <p className={['bl-texto', surgir(2).className].filter(Boolean).join(' ')} style={surgir(2).style}>
           {subtitulo}
-        </m.p>
+        </p>
       )}
       {botao && (
-        <m.div variants={surgir}>
+        <div {...surgir(3)}>
           <BotaoVivo modo={modo} className="bl-botao" href="#contato">
             {botao}
           </BotaoVivo>
-        </m.div>
+        </div>
       )}
-    </m.div>
+    </div>
   );
 
   // foto ou vídeo ocupando a capa inteira; o véu escuro garante o contraste do texto em qualquer imagem.
@@ -73,7 +76,7 @@ export function Capa({ variacao, dados, modo }: PropsDoBloco<DadosDaCapa, Variac
           <m.video
             ref={video}
             className="bl-capa-video"
-            src={video_fundo}
+            src={vivo ? undefined : video_fundo}
             poster={fundo}
             style={{ objectPosition: posFundo, ...(vivo ? { ...paralaxe, y: deslocamento } : {}) }}
             autoPlay
@@ -133,23 +136,11 @@ function FotoDaCapa({
   };
   const conteudo = !foto && <span className="bl-capa-vazia" aria-hidden="true" />;
   if (modo === 'editor') return <div {...props}>{conteudo}</div>;
-  return variacao === 'foto-redonda' ? (
-    <m.div
-      {...props}
-      initial={{ opacity: 0, scale: 0.82 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 180, damping: 20 }}
-    >
+  // entrada em CSS, como o texto da capa (DEV-146)
+  const entrada = variacao === 'foto-redonda' ? 'bl-entrada-redonda' : 'bl-entrada-cortina';
+  return (
+    <div {...props} className={`${props.className} ${entrada}`}>
       {conteudo}
-    </m.div>
-  ) : (
-    <m.div
-      {...props}
-      initial={{ clipPath: 'inset(100% 0 0 0)' }}
-      animate={{ clipPath: 'inset(0% 0 0 0)' }}
-      transition={{ duration: 0.95, ease: SUAVE }}
-    >
-      {conteudo}
-    </m.div>
+    </div>
   );
 }

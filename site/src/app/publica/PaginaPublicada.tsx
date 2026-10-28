@@ -1,9 +1,8 @@
 // Página no ar (DEV-142): o mesmo Bloco do editor, em modo publicado. Renderiza no servidor e hidrata no navegador
 // (o movimento, o vídeo que só toca à vista e o botão fixo precisam de JavaScript; sem ele o <noscript> mostra tudo).
-import { useEffect } from 'react';
+import { useEffect, type CSSProperties } from 'react';
 import { ConteudoDaPagina } from '@blocks/ConteudoDaPagina';
 import type { Projeto } from '@lib/projeto';
-import { temaDoProjeto } from '../editor/tema';
 
 /** Token da sessão da creator, se houver neste aparelho: o servidor não conta a abertura quando é ela mesma. */
 function tokenDaCreator(): string | null {
@@ -22,10 +21,13 @@ export default function PaginaPublicada({
   projeto,
   slug,
   codigo,
+  tema,
 }: {
   projeto: Projeto;
   slug: string;
   codigo?: string;
+  /** variáveis de cor e estilo, calculadas no servidor: a biblioteca de cores não vai para o navegador (DEV-146) */
+  tema: CSSProperties;
 }) {
   // aviso de abertura (DEV-181/182): só navegador de verdade, página à vista, uma vez por visita
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function PaginaPublicada({
   }, [slug, codigo]);
 
   return (
-    <div className="pagina" style={temaDoProjeto(projeto)}>
+    <div className="pagina" style={tema}>
       <ConteudoDaPagina projeto={projeto} />
       <footer className="bl-selo">
         <a href="/portfolio-creator/" rel="noopener">

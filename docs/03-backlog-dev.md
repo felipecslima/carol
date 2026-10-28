@@ -127,7 +127,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 - [ ] **DEV-143** Versão publicada separada do rascunho (editar não muda o que está no ar até publicar de novo).
 - [x] **DEV-144** Prévia do link (imagem e título) gerada para WhatsApp e Instagram. *Feito em 28/out: a página publicada não tinha nenhuma tag og (o `SeoHead` tirava a prévia de toda página `noindex`); agora `previaSemBusca` liga só nas rotas `/c/` (o HTML do site da Carol não muda). Imagem da capa recortada pelo Cloudinary em 1200x630 JPG (`g_auto`), vídeo vira o primeiro quadro, sem foto vale a imagem do produto (`lib/previa.ts`). Medido: JPEG 1200x630, 55 KB.*
 - [ ] **DEV-145** Selo "Feito com Portfólio Creator" no site.
-- [ ] **DEV-146** Cache e desempenho: página publicada abre rápido no 4G (meta: LCP abaixo de 2,5 s).
+- [x] **DEV-146** Cache e desempenho: página publicada abre rápido no 4G (meta: LCP abaixo de 2,5 s). *Feito em 28/out. Medido no build de produção com brotli (como o Cloudflare), 4G lento (1,6 Mbps, 150 ms) e CPU 4x: LCP de 5,1 s para 2,2 a 2,3 s (uma rodada com TTFB alto deu 2,65 s), FCP 0,4 a 0,7 s, CLS 0,04 a 0,06, 371 KB. O que mudou: imagem da capa pedida com prioridade alta no <head>; entrada da capa em CSS (o título ficava invisível até o JS, uns 6 s no 4G); tema calculado no servidor (a biblioteca de cores saiu do navegador); miniaturas dos vídeos como <img loading=lazy> em vez de poster; vídeo de fundo só baixa depois de montar; rotas `/c/` sem as fontes da Carol; hidratação depois do evento load (`client:carregada`, `src/diretivas/`). Cache: `s-maxage=60` na página, `private, no-store` nos links de marca (já existia).*
 
 ### E12. PDF do mídia kit
 

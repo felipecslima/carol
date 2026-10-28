@@ -42,11 +42,22 @@ export function VideoSemSom({
 
   return (
     <div className="bl-video-moldura">
+      {/* miniatura como <img loading="lazy">, não como poster: o navegador só baixa perto da tela, mesmo antes do
+          JavaScript; o poster baixava as miniaturas de todos os vídeos junto com a capa (DEV-146) */}
+      {capa && (
+        <img
+          className="bl-video-miniatura"
+          src={capa}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          style={{ objectPosition: posicao }}
+        />
+      )}
       <video
         ref={video}
-        className="bl-video-capa"
+        className={capa ? 'bl-video-capa bl-video-capa--sobre' : 'bl-video-capa'}
         src={src}
-        poster={capa}
         style={{ objectPosition: posicao }}
         muted
         loop

@@ -2,7 +2,7 @@
 // só quando a seção entra na tela, uma vez; quem pede menos movimento (`prefers-reduced-motion`) vê tudo no lugar,
 // sem deslocamento (o MotionConfig desliga transformações). Cada efeito mostra algo: lista que entra em cadeia
 // ensina a ordem de leitura, número que sobe mostra a escala, barra que enche mostra a proporção.
-import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { useEffect, useRef, type ComponentPropsWithoutRef, type CSSProperties, type ReactNode } from 'react';
 import {
   animate,
   domAnimation,
@@ -220,33 +220,20 @@ export function usePralaxe(alvo: React.RefObject<HTMLElement | null>) {
 /** Título que sobe palavra por palavra, cada uma saindo de uma "janela" (o texto lido pelo leitor de tela é o título inteiro). */
 export function Palavras({ texto, modo, className }: { texto: string; modo: ModoDeRender; className?: string }) {
   if (modo === 'editor') return <h1 className={className}>{texto}</h1>;
+  // palavra por palavra subindo de dentro de uma máscara; em CSS (blocos.css), para valer no primeiro desenho da página
+  // publicada, antes do JavaScript (DEV-146)
   return (
     <h1 className={className} aria-label={texto}>
-      <m.span
-        aria-hidden="true"
-        style={{ display: 'inline' }}
-        initial="oculto"
-        animate="visivel"
-        variants={{ oculto: {}, visivel: { transition: { staggerChildren: 0.055, delayChildren: 0.15 } } }}
-      >
+      <span aria-hidden="true">
         {texto.split(' ').map((p, i, todas) => (
-          <span
-            key={i}
-            style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top', paddingBottom: '0.12em' }}
-          >
-            <m.span
-              style={{ display: 'inline-block' }}
-              variants={{
-                oculto: { y: '110%' },
-                visivel: { y: 0, transition: { duration: 0.75, ease: SUAVE } },
-              }}
-            >
+          <span key={i} className="bl-palavra-mascara">
+            <span className="bl-palavra" style={{ '--i': i } as CSSProperties}>
               {p}
               {i < todas.length - 1 ? '\u00a0' : ''}
-            </m.span>
+            </span>
           </span>
         ))}
-      </m.span>
+      </span>
     </h1>
   );
 }

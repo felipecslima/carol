@@ -20,6 +20,15 @@ const localized404 = {
   },
 };
 
+// `client:carregada`: hidrata depois do evento load (página publicada, DEV-146; ver src/diretivas/carregada.ts)
+const diretivaCarregada = {
+  name: 'client-carregada',
+  hooks: {
+    'astro:config:setup': ({ addClientDirective }) =>
+      addClientDirective({ name: 'carregada', entrypoint: './src/diretivas/carregada.ts' }),
+  },
+};
+
 // `site` garante URLs absolutas no og:image e nas meta tags.
 export default defineConfig({
   site: 'https://eucarollimah.com.br',
@@ -47,5 +56,5 @@ export default defineConfig({
   // sem sessões: evita o KV `SESSION` que o adapter cria sozinho no deploy
   session: false,
   adapter: cloudflare({ imageService: 'passthrough' }),
-  integrations: [localized404, react()],
+  integrations: [localized404, diretivaCarregada, react()],
 });

@@ -5,7 +5,8 @@ import '../../../blocks/blocos.css';
 import LinkNaoEncontrado from '../../../components/LinkNaoEncontrado.astro';
 import SeoHead from '../../../components/SeoHead.astro';
 import PaginaPublicada from '@app/publica/PaginaPublicada';
-import { IMAGEM_PADRAO, previaDoLink } from '@lib/previa';
+import { temaDoProjeto } from '@app/editor/tema';
+import { IMAGEM_PADRAO, imagemDaCapa, previaDoLink } from '@lib/previa';
 import { linkDaMarca, paginaNoAr } from '@server/pagina';
 
 export const prerender = false;
@@ -19,6 +20,8 @@ if (!achou) Astro.response.status = 404;
 
 // prévia no WhatsApp e no Instagram (DEV-144); link que não existe mostra a imagem do produto
 const previa = pagina ? previaDoLink(pagina.projeto) : null;
+// a imagem da capa é o maior elemento da primeira tela: pedida antes do JavaScript (DEV-146)
+const primeiraImagem = pagina ? imagemDaCapa(pagina.projeto) : null;
 // cada link de marca é só de quem recebeu: nunca em cache compartilhado
 if (achou) Astro.response.headers.set('Cache-Control', 'private, no-store');
 ---
@@ -38,8 +41,10 @@ if (achou) Astro.response.headers.set('Cache-Control', 'private, no-store');
       }}
       noindex
       previaSemBusca
+      preload={[]}
       analytics={false}
     />
+    {achou && primeiraImagem && <link rel="preload" as="image" href={primeiraImagem} fetchpriority="high" />}
     {achou && (
       <noscript>
         <style>
@@ -54,7 +59,7 @@ if (achou) Astro.response.headers.set('Cache-Control', 'private, no-store');
   </head>
   <body style="margin:0">
     {pagina && achou ? (
-      <PaginaPublicada client:load projeto={pagina.projeto} slug={pagina.slug} codigo={codigo} />
+      <PaginaPublicada client:carregada projeto={pagina.projeto} tema={temaDoProjeto(pagina.projeto)} slug={pagina.slug} codigo={codigo} />
     ) : (
       <LinkNaoEncontrado />
     )}

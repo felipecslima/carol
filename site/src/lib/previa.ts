@@ -41,3 +41,14 @@ export function previaDoLink(projeto: Projeto): PreviaDoLink {
   const imagem = ordem.map((u) => imagemDePrevia(texto(u))).find(Boolean) ?? IMAGEM_PADRAO;
   return { titulo, descricao, imagem, alt: tituloDaCapa || 'Portfólio de creator' };
 }
+
+/**
+ * Imagem que aparece primeiro na capa publicada (DEV-146): a página pede essa imagem com prioridade alta no <head>,
+ * antes do JavaScript. Na variação "fundo" é o fundo (que também é o pôster do vídeo); nas outras, a foto.
+ */
+export function imagemDaCapa(projeto: Projeto): string | null {
+  const capa = projeto.blocos.find((b) => b.tipo === 'capa');
+  const dados = (capa?.dados ?? {}) as Record<string, unknown>;
+  const url = capa?.variacao === 'fundo' ? dados.fundo : dados.foto;
+  return typeof url === 'string' && /^https:\/\//.test(url) ? url : null;
+}
