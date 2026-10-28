@@ -1,11 +1,16 @@
+import { useState } from 'react';
 import { Exemplo } from './Exemplo';
 import { Item, Lista, Revela } from './movimento';
 import { posicaoDoFoco } from './foco';
 import { VideoSemSom } from './VideoSemSom';
+import { VisorDeVideos } from './VisorDeVideos';
 import type { DadosDeVideos, PropsDoBloco } from './tipos';
 
 export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'carrossel' | 'grade' | 'destaque'>) {
   const { titulo, itens = [] } = dados;
+  // o visor só mostra os vídeos que têm arquivo; `aberto` é a posição dentro dessa lista
+  const comArquivo = itens.filter((v) => v.video);
+  const [aberto, setAberto] = useState<number | null>(null);
   return (
     <section className={`bl bl-videos bl-videos--${variacao}`} id="videos">
       {titulo && (
@@ -29,6 +34,7 @@ export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'c
                 titulo={v.titulo}
                 posicao={posicaoDoFoco(v.capa_foco)}
                 precarregar={variacao === 'destaque' && n === 0 ? 'metadata' : 'none'}
+                aoAbrir={() => setAberto(comArquivo.indexOf(v))}
               />
             ) : (
               <div
@@ -51,6 +57,9 @@ export function Videos({ variacao, dados, modo }: PropsDoBloco<DadosDeVideos, 'c
           </Item>
         ))}
       </Lista>
+      {aberto !== null && modo === 'publicado' && (
+        <VisorDeVideos videos={comArquivo as never} inicio={aberto} aoFechar={() => setAberto(null)} />
+      )}
     </section>
   );
 }

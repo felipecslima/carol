@@ -236,6 +236,9 @@ async function enviarEmPartes(
 
 /** Quadro de capa de um vídeo, a partir do endereço de entrega dele (só vídeos do Cloudinary); `undefined` se não for. */
 export function capaDeVideo(url: string): string | undefined {
-  const m = url.match(/^(https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/)[^/]+\/(.+)\.\w+$/);
+  // o endereço pode vir com transformação (`/f_mp4,q_auto,w_720/`) e/ou versão (`/v123/`), ou sem nenhuma (vídeos antigos)
+  const m = url.match(
+    /^(https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/)(?:[a-z]{1,3}_[^/]*\/)?(?:v\d+\/)?(.+)\.\w+$/,
+  );
   return m ? `${m[1]}so_0,f_jpg,q_auto,w_540/${m[2]}.jpg` : undefined;
 }

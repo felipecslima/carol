@@ -4,8 +4,20 @@ import type { Json } from '@lib/banco.tipos';
 import { projetoSchema, type Projeto } from '@lib/projeto';
 import { supabase } from './supabase';
 
+// A equipe enxerga as linhas de todo mundo (regras de linha do banco), então toda leitura "da minha conta" filtra pelo
+// dono explicitamente; sem isso o admin recebia várias linhas onde esperava uma e a área ficava em "Carregando…".
+async function meuId(): Promise<string> {
+  const { data } = await supabase.auth.getSession();
+  return data.session?.user.id ?? '';
+}
+
 export async function carregarDaNuvem(): Promise<Projeto | null> {
-  const { data, error } = await supabase.from('projects').select('*').eq('tipo', 'site').maybeSingle();
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('tipo', 'site')
+    .eq('dono', await meuId())
+    .maybeSingle();
   if (error || !data) return null;
   const lido = projetoSchema.safeParse({
     tipo: data.tipo,
@@ -61,7 +73,11 @@ export interface Midia {
 }
 
 export async function listarMidias(): Promise<Midia[]> {
-  const { data, error } = await supabase.from('media').select('*').order('criado_em', { ascending: false });
+  const { data, error } = await supabase
+    .from('media')
+    .select('*')
+    .eq('dono', await meuId())
+    .order('criado_em', { ascending: false });
   if (error || !data) return [];
   return data.map((m) => ({
     id: m.id,
@@ -120,6 +136,7 @@ export async function carregarResumo(): Promise<Resumo | null> {
     .from('projects')
     .select('id, status, slug, atualizado_em')
     .eq('tipo', 'site')
+    .eq('dono', await meuId())
     .maybeSingle();
   const projeto = await carregarDaNuvem();
   return data && projeto
@@ -138,7 +155,11 @@ export interface Perfil {
 }
 
 export async function carregarPerfil(): Promise<Perfil | null> {
-  const { data } = await supabase.from('profiles').select('*').maybeSingle();
+  const { data } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', await meuId())
+    .maybeSingle();
   return data
     ? {
         nome: data.nome,
@@ -184,11 +205,12 @@ export async function cancelarExclusao(): Promise<boolean> {
 
 /** Tudo o que a creator escreveu e enviou, para ela baixar (direito da LGPD). Não inclui produtos da plataforma. */
 export async function reunirDados() {
+  const eu = await meuId();
   const [perfil, projetos, midias, pedidos] = await Promise.all([
-    supabase.from('profiles').select('*'),
-    supabase.from('projects').select('*'),
-    supabase.from('media').select('*'),
-    supabase.from('orders').select('*'),
+    supabase.from('profiles').select('*').eq('id', eu),
+    supabase.from('projects').select('*').eq('dono', eu),
+    supabase.from('media').select('*').eq('dono', eu),
+    supabase.from('orders').select('*').eq('dono', eu),
   ]);
   const { data } = await supabase.auth.getUser();
   return {
@@ -244,6 +266,7 @@ export async function listarLinksDeMarcas(): Promise<LinkDeMarca[]> {
   const { data } = await supabase
     .from('brand_links')
     .select('id, codigo, nome_marca, criado_em, brand_opens(aberto_em)')
+    .eq('dono', await meuId())
     .order('criado_em', { ascending: false });
   return (data ?? []).map((l) => ({
     id: l.id,

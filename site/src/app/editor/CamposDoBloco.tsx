@@ -1,10 +1,13 @@
 // Formulário de um bloco, gerado dos campos do registro: texto com contador de letras, listas de itens e a
 // escolha de variação. Tocar em "Exemplo" e trocar o texto tira a marca de exemplo do item.
-import { Fragment, useId, type ReactNode } from 'react';
+import { Fragment, useId, useState, type ReactNode } from 'react';
 import { chaveDeFoco, type Campo, type DefinicaoDeBloco } from '@lib/bloco';
 import type { Bloco } from '@lib/projeto';
 import { CampoDeArquivo } from './CampoDeArquivo';
-import { Lixeira, Mais } from './icones';
+import { AdicionarVarios } from './AdicionarVarios';
+import { Copiar, Descer, Lixeira, Mais, Play, Seta, Subir } from './icones';
+import { DESENHOS, NOMES_CURTOS } from './desenhos';
+import { capaDeVideo } from './upload';
 
 type Dados = Record<string, unknown>;
 
@@ -59,57 +62,199 @@ function CampoDeProporcao({ campo, valor, aoMudar }: { campo: Campo; valor: numb
   );
 }
 
-function ListaDeItens({ campo, itens, aoMudar }: { campo: Campo; itens: Dados[]; aoMudar: (itens: Dados[]) => void }) {
+function Miniatura({ item, cartao, numero }: { item: Dados; cartao: NonNullable<Campo['cartao']>; numero: number }) {
+  const [falhou, setFalhou] = useState(false);
+  if (!cartao.miniatura && !cartao.video)
+    return (
+      <span className="ed-cartao-mini ed-cartao-mini--numero" aria-hidden="true">
+        {numero}
+      </span>
+    );
+  const video = cartao.video ? String(item[cartao.video] ?? '') : '';
+  const origem = String(cartao.miniatura ? (item[cartao.miniatura] ?? '') : '') || (video && capaDeVideo(video)) || '';
+  return (
+    <span className={`ed-cartao-mini${video ? ' ed-cartao-mini--video' : ''}`} aria-hidden="true">
+      {origem && !falhou ? <img src={origem} alt="" onError={() => setFalhou(true)} /> : video ? <Play /> : null}
+    </span>
+  );
+}
+
+function ListaDeItens({
+  campo,
+  itens,
+  variacao,
+  aoMudar,
+}: {
+  campo: Campo;
+  itens: Dados[];
+  variacao: string;
+  aoMudar: (itens: Dados[]) => void;
+}) {
   const campos = campo.itens ?? [];
+  const cartao = campo.cartao;
+  // cartões: um aberto por vez; o item recém-criado já abre para a creator escrever
+  const [aberto, setAberto] = useState<number | null>(cartao ? null : -1);
+  const [confirmando, setConfirmando] = useState<number | null>(null);
   const mudarItem = (i: number, id: string, valor: unknown) => mudarItemVarios(i, { [id]: valor });
   const mudarItemVarios = (i: number, parte: Dados) =>
     aoMudar(itens.map((item, n) => (n === i ? { ...item, ...parte, exemplo: undefined } : item)));
+  const mover = (i: number, para: number) => {
+    if (para < 0 || para >= itens.length) return;
+    const nova = [...itens];
+    nova.splice(para, 0, ...nova.splice(i, 1));
+    aoMudar(nova);
+    setConfirmando(null);
+    if (aberto === i) setAberto(para);
+    else if (aberto === para) setAberto(i);
+  };
+  const duplicar = (i: number) => {
+    aoMudar([...itens.slice(0, i + 1), { ...itens[i], exemplo: undefined }, ...itens.slice(i + 1)]);
+    setAberto(i + 1);
+  };
+  const remover = (i: number) => {
+    aoMudar(itens.filter((_, n) => n !== i));
+    setConfirmando(null);
+    setAberto(null);
+  };
+
+  const camposDoItem = (item: Dados, i: number) =>
+    campos.map((c) =>
+      c.tipo === 'proporcao' ? (
+        <div className="ed-campo" key={c.id}>
+          <label htmlFor={`prop-${i}`}>
+            {c.rotulo}: <b>{Number(item[c.id] ?? 0)}</b>
+          </label>
+          <input
+            id={`prop-${i}`}
+            type="range"
+            min={0}
+            max={100}
+            value={Number(item[c.id] ?? 0)}
+            onChange={(e) => mudarItem(i, c.id, Number(e.target.value))}
+          />
+        </div>
+      ) : c.tipo === 'imagem' || c.tipo === 'video' ? (
+        <CampoDeArquivo
+          key={c.id}
+          campo={c}
+          valor={String(item[c.id] ?? '')}
+          capa={String(item.capa ?? '')}
+          foco={String(item[chaveDeFoco(c)] ?? '')}
+          aoMudar={(parte) => mudarItemVarios(i, parte)}
+        />
+      ) : (
+        <CampoDeTexto key={c.id} campo={c} valor={String(item[c.id] ?? '')} aoMudar={(v) => mudarItem(i, c.id, v)} />
+      ),
+    );
+
+  const confirmacao = (i: number) =>
+    confirmando === i ? (
+      <div className="ed-confirma" role="alertdialog" aria-label="Confirmar remoção">
+        <span>Remover este item?</span>
+        <button type="button" className="ed-link ed-link--perigo" onClick={() => remover(i)}>
+          Remover
+        </button>
+        <button type="button" className="ed-link" onClick={() => setConfirmando(null)}>
+          Cancelar
+        </button>
+      </div>
+    ) : (
+      <button type="button" className="ed-link" onClick={() => setConfirmando(i)}>
+        <Lixeira /> Remover
+      </button>
+    );
+
   return (
     <fieldset className="ed-lista">
       <legend>{campo.rotulo}</legend>
-      {itens.map((item, i) => (
-        <div className="ed-item" key={i}>
-          {campos.map((c) =>
-            c.tipo === 'proporcao' ? (
-              <div className="ed-campo" key={c.id}>
-                <label htmlFor={`prop-${i}`}>
-                  {c.rotulo}: <b>{Number(item[c.id] ?? 0)}</b>
-                </label>
-                <input
-                  id={`prop-${i}`}
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={Number(item[c.id] ?? 0)}
-                  onChange={(e) => mudarItem(i, c.id, Number(e.target.value))}
-                />
+      {itens.map((item, i) => {
+        if (!cartao)
+          return (
+            <div className="ed-item" key={i}>
+              {camposDoItem(item, i)}
+              <div className="ed-item-acoes">
+                {confirmacao(i)}
+                <button type="button" className="ed-link" onClick={() => duplicar(i)}>
+                  <Copiar /> Duplicar
+                </button>
               </div>
-            ) : c.tipo === 'imagem' || c.tipo === 'video' ? (
-              <CampoDeArquivo
-                key={c.id}
-                campo={c}
-                valor={String(item[c.id] ?? '')}
-                capa={String(item.capa ?? '')}
-                foco={String(item[chaveDeFoco(c)] ?? '')}
-                aoMudar={(parte) => mudarItemVarios(i, parte)}
-              />
-            ) : (
-              <CampoDeTexto
-                key={c.id}
-                campo={c}
-                valor={String(item[c.id] ?? '')}
-                aoMudar={(v) => mudarItem(i, c.id, v)}
-              />
-            ),
-          )}
-          <button type="button" className="ed-link" onClick={() => aoMudar(itens.filter((_, n) => n !== i))}>
-            <Lixeira /> Remover
-          </button>
-        </div>
-      ))}
-      <button type="button" className="ed-botao-claro" onClick={() => aoMudar([...itens, {}])}>
-        <Mais /> Adicionar
-      </button>
+            </div>
+          );
+        const titulo = String(item[cartao.titulo] ?? '').trim();
+        const detalhe = cartao.detalhe ? String(item[cartao.detalhe] ?? '').trim() : '';
+        const aberta = aberto === i;
+        const destaque = i === 0 && cartao.destaqueNaVariacao === variacao;
+        return (
+          <div className={`ed-cartao${aberta ? ' ed-cartao--aberto' : ''}`} key={i}>
+            <div className="ed-cartao-topo">
+              <button
+                type="button"
+                className="ed-cartao-resumo"
+                aria-expanded={aberta}
+                onClick={() => (setAberto(aberta ? null : i), setConfirmando(null))}
+              >
+                <Miniatura item={item} cartao={cartao} numero={i + 1} />
+                <span className="ed-cartao-texto">
+                  <span className={`ed-cartao-titulo${titulo ? '' : ' ed-cartao-titulo--vazio'}`}>
+                    {titulo || cartao.vazio}
+                  </span>
+                  <span className="ed-cartao-detalhe">
+                    {destaque && <b className="ed-cartao-selo">Destaque</b>}
+                    {detalhe}
+                  </span>
+                </span>
+                <span className="ed-cartao-seta" aria-hidden="true">
+                  <Seta />
+                </span>
+              </button>
+              <button
+                type="button"
+                className="ed-icone"
+                aria-label={`Subir ${titulo || cartao.vazio}`}
+                disabled={i === 0}
+                onClick={() => mover(i, i - 1)}
+              >
+                <Subir />
+              </button>
+              <button
+                type="button"
+                className="ed-icone"
+                aria-label={`Descer ${titulo || cartao.vazio}`}
+                disabled={i === itens.length - 1}
+                onClick={() => mover(i, i + 1)}
+              >
+                <Descer />
+              </button>
+            </div>
+            {aberta && (
+              <div className="ed-cartao-corpo">
+                {camposDoItem(item, i)}
+                <div className="ed-item-acoes">
+                  {confirmacao(i)}
+                  <button type="button" className="ed-link" onClick={() => duplicar(i)}>
+                    <Copiar /> Duplicar
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+      <div className="ed-lista-rodape">
+        <button
+          type="button"
+          className="ed-botao-claro"
+          onClick={() => {
+            aoMudar([...itens, {}]);
+            if (cartao) setAberto(itens.length);
+          }}
+        >
+          <Mais /> Adicionar
+        </button>
+        {campo.varios && (
+          <AdicionarVarios varios={campo.varios} aoAdicionar={(novos) => aoMudar([...itens, ...novos])} />
+        )}
+      </div>
     </fieldset>
   );
 }
@@ -173,20 +318,32 @@ export function CamposDoBloco({
         </button>
       )}
       {definicao.variacoes.length > 1 && (
-        <fieldset className="ed-variacoes">
+        <fieldset className={`ed-variacoes${DESENHOS[definicao.tipo] ? ' ed-variacoes--desenhos' : ''}`}>
           <legend>Layout</legend>
-          <div role="radiogroup">
-            {definicao.variacoes.map((v) => (
-              <button
-                key={v.id}
-                type="button"
-                role="radio"
-                aria-checked={bloco.variacao === v.id}
-                onClick={() => aoTrocarVariacao(v.id)}
-              >
-                {v.nome}
-              </button>
-            ))}
+          <div
+            role="radiogroup"
+            style={
+              DESENHOS[definicao.tipo]
+                ? { gridTemplateColumns: `repeat(${definicao.variacoes.length}, 1fr)` }
+                : undefined
+            }
+          >
+            {definicao.variacoes.map((v) => {
+              const Desenho = DESENHOS[definicao.tipo]?.[v.id];
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={bloco.variacao === v.id}
+                  aria-label={v.nome}
+                  onClick={() => aoTrocarVariacao(v.id)}
+                >
+                  {Desenho && <Desenho />}
+                  <span>{NOMES_CURTOS[`${definicao.tipo}.${v.id}`] ?? v.nome}</span>
+                </button>
+              );
+            })}
           </div>
         </fieldset>
       )}
@@ -208,6 +365,7 @@ export function CamposDoBloco({
                 key={campo.id}
                 campo={campo}
                 itens={(valor as Dados[] | undefined) ?? []}
+                variacao={bloco.variacao}
                 aoMudar={(itens) => aoMudarDados({ [campo.id]: itens })}
               />
             ) : (

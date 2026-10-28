@@ -2,7 +2,7 @@
 // mensagens claras. O envio roda em segundo plano; o resto da gaveta continua usável.
 import { useEffect, useId, useRef, useState } from 'react';
 import { chaveDeFoco, type Campo } from '@lib/bloco';
-import { Lixeira } from './icones';
+import { Enquadrar, Enviar, Imagem, Lixeira } from './icones';
 import { listarMidias, registrarMidia, type Midia } from '../nuvem';
 import { supabase } from '../supabase';
 import { capaDeVideo, enviarArquivo, mensagemDeErro, problemaDoArquivo, type TipoDeArquivo } from './upload';
@@ -82,10 +82,10 @@ export function CampoDeArquivo({
   const previa = tipo === 'video' ? (valor && capaDeVideo(valor)) || capa : valor;
   const guardaCapa = Boolean(campo.capaSoSeVazia && capa);
   const enviando = progresso !== null;
+  const nAcoes = enviando ? 1 : 2 + (previa ? 1 : 0) + (valor ? 1 : 0);
   return (
     <div className="ed-arquivo">
-      <span className="ed-arquivo-rotulo">{campo.rotulo}</span>
-      <div className="ed-arquivo-corpo">
+      <div className="ed-arquivo-topo">
         {previa ? (
           <span className={`ed-arquivo-miniatura${tipo === 'video' && valor ? ' ed-arquivo-miniatura--video' : ''}`}>
             <img src={previa} alt="" className="ed-arquivo-previa" />
@@ -93,63 +93,75 @@ export function CampoDeArquivo({
         ) : (
           <span className="ed-arquivo-previa ed-arquivo-vazio" aria-hidden="true" />
         )}
-        <div className="ed-arquivo-acoes">
-          <label className="ed-botao-claro ed-enviar" aria-disabled={enviando}>
-            {valor ? 'Trocar' : tipo === 'video' ? 'Enviar vídeo' : 'Enviar foto'}
-            <input
-              id={id}
-              type="file"
-              accept={tipo === 'video' ? 'video/*,.mov,.mp4' : 'image/*,.heic,.heif'}
-              disabled={enviando}
-              onChange={(e) => {
-                void escolher(e.target.files?.[0]);
-                e.target.value = '';
-              }}
-            />
-          </label>
-          <div className="ed-arquivo-links">
-            {!enviando && (
-              <button
-                type="button"
-                className="ed-link"
-                aria-expanded={escolhendo}
-                onClick={() => {
-                  setEscolhendo(!escolhendo);
-                  if (!escolhendo && minhas === null) void listarMidias().then(setMinhas);
-                }}
-              >
-                Minhas mídias
-              </button>
-            )}
-            {previa && !enviando && (
-              <button
-                type="button"
-                className="ed-link"
-                aria-expanded={ajustando}
-                onClick={() => setAjustando(!ajustando)}
-              >
-                Enquadramento
-              </button>
-            )}
-            {valor && !enviando && (
-              <button
-                type="button"
-                className="ed-link"
-                onClick={() =>
-                  aoMudar(
-                    tipo === 'video' && !campo.capaSoSeVazia
-                      ? { [campo.id]: '', [chaveCapa]: '', [chaveFoco]: '' }
-                      : tipo === 'video'
-                        ? { [campo.id]: '' }
-                        : { [campo.id]: '', [chaveFoco]: '' },
-                  )
-                }
-              >
-                <Lixeira /> Remover
-              </button>
-            )}
-          </div>
-        </div>
+        <span className="ed-arquivo-texto">
+          <span className="ed-arquivo-rotulo">{campo.rotulo}</span>
+          <span className="ed-arquivo-estado">
+            {enviando
+              ? `Enviando… ${Math.round(progresso * 100)}%`
+              : valor
+                ? tipo === 'video'
+                  ? 'Vídeo aplicado'
+                  : 'Foto aplicada'
+                : tipo === 'video'
+                  ? 'Nenhum vídeo ainda'
+                  : 'Nenhuma foto ainda'}
+          </span>
+        </span>
+      </div>
+      <div className="ed-arquivo-acoes" style={{ gridTemplateColumns: `repeat(${nAcoes}, 1fr)` }}>
+        <label className="ed-acao ed-enviar" aria-disabled={enviando}>
+          <Enviar />
+          <span>{valor ? 'Trocar' : 'Enviar'}</span>
+          <input
+            id={id}
+            type="file"
+            accept={tipo === 'video' ? 'video/*,.mov,.mp4' : 'image/*,.heic,.heif'}
+            disabled={enviando}
+            aria-label={`${valor ? 'Trocar' : 'Enviar'} ${tipo === 'video' ? 'vídeo' : 'foto'}: ${campo.rotulo}`}
+            onChange={(e) => {
+              void escolher(e.target.files?.[0]);
+              e.target.value = '';
+            }}
+          />
+        </label>
+        {!enviando && (
+          <button
+            type="button"
+            className="ed-acao"
+            aria-expanded={escolhendo}
+            onClick={() => {
+              setEscolhendo(!escolhendo);
+              if (!escolhendo && minhas === null) void listarMidias().then(setMinhas);
+            }}
+          >
+            <Imagem />
+            <span>Mídias</span>
+          </button>
+        )}
+        {previa && !enviando && (
+          <button type="button" className="ed-acao" aria-expanded={ajustando} onClick={() => setAjustando(!ajustando)}>
+            <Enquadrar />
+            <span>Enquadrar</span>
+          </button>
+        )}
+        {valor && !enviando && (
+          <button
+            type="button"
+            className="ed-acao ed-acao--perigo"
+            onClick={() =>
+              aoMudar(
+                tipo === 'video' && !campo.capaSoSeVazia
+                  ? { [campo.id]: '', [chaveCapa]: '', [chaveFoco]: '' }
+                  : tipo === 'video'
+                    ? { [campo.id]: '' }
+                    : { [campo.id]: '', [chaveFoco]: '' },
+              )
+            }
+          >
+            <Lixeira />
+            <span>Remover</span>
+          </button>
+        )}
       </div>
       {ajustando && previa && (
         <Enquadramento imagem={previa} foco={foco} aoMudar={(novo) => aoMudar({ [chaveFoco]: novo })} />
@@ -209,9 +221,7 @@ export function CampoDeArquivo({
           <span style={{ width: `${Math.round(progresso * 100)}%` }} />
         </div>
       )}
-      {enviando && (
-        <span className="ed-dica">Enviando… {Math.round(progresso * 100)}%. Você pode continuar editando.</span>
-      )}
+      {enviando && <span className="ed-dica">Você pode continuar editando.</span>}
       {erro && (
         <p className="ed-aviso" role="alert">
           {erro}

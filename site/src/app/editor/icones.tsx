@@ -42,3 +42,8 @@ export const Imagem = icone(<path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M9 9a1 1 
 export const Casa = icone(<path d="M4 11l8-7 8 7M6 10v10h12V10M10 20v-6h4v6" />);
 export const Pessoa = icone(<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-7 8-7s8 3 8 7" />);
 export const Pasta = icone(<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />);
+export const Copiar = icone(<path d="M9 9h11v11H9zM5 15V4h11" />);
+export const Seta = icone(<path d="M6 9l6 6 6-6" />);
+export const Play = icone(<path d="M8 5l11 7-11 7z" />);
+export const Enviar = icone(<path d="M4 15v4h16v-4M12 16V4M7 9l5-5 5 5" />);
+export const Enquadrar = icone(<path d="M7 3v14h14M3 7h14v14" />);

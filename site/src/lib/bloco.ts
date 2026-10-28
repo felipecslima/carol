@@ -44,6 +44,23 @@ export interface Campo {
   seTem?: readonly string[];
   /** campo de vídeo: só grava o quadro de capa se `capaEm` ainda estiver vazio (não troca a imagem que a creator já pôs) */
   capaSoSeVazia?: boolean;
+  /** lista de itens: cada item vira um cartão recolhido (miniatura, título e detalhe) que abre para editar */
+  cartao?: {
+    /** campo do item usado como título do cartão */
+    titulo: string;
+    /** campo mostrado em letra menor ao lado do título */
+    detalhe?: string;
+    /** campo de imagem (ou o quadro de capa do vídeo) usado como miniatura */
+    miniatura?: string;
+    /** campo de vídeo do item (a miniatura cai no quadro dele) */
+    video?: string;
+    /** texto quando o item ainda não tem título */
+    vazio: string;
+    /** nesta variação do bloco, o primeiro item é o grande e ganha a etiqueta "Destaque" */
+    destaqueNaVariacao?: string;
+  };
+  /** lista de itens: oferece "Adicionar vários", criando um item por arquivo; vale o id do campo do item que recebe o arquivo */
+  varios?: { campo: string; tipo: 'video' | 'image'; rotulo: string };
   /** o texto de exemplo serve como está (ex.: título "Como eu trabalho"): a revisão não cobra troca */
   serveComoEsta?: boolean;
   /** exemplo que não pode ir para o ar (ex.: número inventado): bloqueia a publicação enquanto for o placeholder */

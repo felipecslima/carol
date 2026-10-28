@@ -338,7 +338,13 @@
   align-items: center;
   justify-content: space-between;
 }
+.ar-acoes {
+  display: flex;
+  align-items: center;
+}
 .ar-sair {
+  display: inline-flex;
+  align-items: center;
   min-height: 44px;
   padding: 0 12px;
   border: 0;

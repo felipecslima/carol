@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
-/** Vídeo de portfólio: sempre mudo, em loop e tocando sozinho, sem controle de volume (nenhuma marca é surpreendida
- *  por som). Só toca enquanto aparece na tela, para não baixar 6 vídeos de uma vez no 4G, e quem pede menos movimento
+/** Vídeo de portfólio: na página, sempre mudo, em loop e tocando sozinho, sem controle de volume (nenhuma marca é
+ *  surpreendida por som; o som só existe no visor, que o visitante abre tocando). Só toca enquanto aparece na tela, para não baixar 6 vídeos de uma vez no 4G, e quem pede menos movimento
  *  vê só a capa. O botão pausa e retoma, para quem não quer o movimento. */
 export function VideoSemSom({
   src,
@@ -9,6 +9,7 @@ export function VideoSemSom({
   titulo,
   posicao,
   precarregar = 'metadata',
+  aoAbrir,
 }: {
   src: string;
   capa?: string;
@@ -16,6 +17,8 @@ export function VideoSemSom({
   /** object-position do enquadramento escolhido pela creator */
   posicao?: string;
   precarregar?: 'none' | 'metadata';
+  /** tocar no vídeo abre o visor, com som */
+  aoAbrir?: () => void;
 }) {
   const video = useRef<HTMLVideoElement>(null);
   const [pausado, setPausado] = useState(false);
@@ -51,6 +54,13 @@ export function VideoSemSom({
         preload={precarregar}
         aria-label={titulo}
       />
+      {aoAbrir && (
+        <button type="button" className="bl-video-abrir" aria-label={`Assistir com som: ${titulo}`} onClick={aoAbrir}>
+          <span className="bl-video-som" aria-hidden="true">
+            Com som
+          </span>
+        </button>
+      )}
       <button
         type="button"
         className="bl-video-pausa"

@@ -10,7 +10,10 @@ import './tema.css';
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const ESPERA = 30;
 
-export default function Entrar() {
+const PAPEIS_EQUIPE = ['admin', 'operacao', 'assistente'];
+
+/** `equipe`: entrada separada do admin (/admin/entrar/): não cria conta nova e só deixa passar quem é da equipe. */
+export default function Entrar({ equipe = false }: { equipe?: boolean }) {
   const [email, setEmail] = useState('');
   const [codigo, setCodigo] = useState('');
   const [etapa, setEtapa] = useState<'email' | 'codigo'>('email');
@@ -31,7 +34,7 @@ export default function Entrar() {
     if (!EMAIL.test(limpo)) return setErro('Esse e-mail parece incompleto. Confira e tente de novo.');
     setErro(null);
     setOcupado(true);
-    const { error } = await supabase.auth.signInWithOtp({ email: limpo, options: { shouldCreateUser: true } });
+    const { error } = await supabase.auth.signInWithOtp({ email: limpo, options: { shouldCreateUser: !equipe } });
     setOcupado(false);
     if (error) {
       return setErro(
@@ -50,26 +53,56 @@ export default function Entrar() {
     if (codigo.length !== 6) return setErro('O código tem 6 números.');
     setErro(null);
     setOcupado(true);
-    const { error } = await supabase.auth.verifyOtp({ email, token: codigo, type: 'email' });
-    setOcupado(false);
-    if (error) return setErro('Esse código não funcionou. Confira os 6 números ou peça um novo.');
-    window.location.href = '/app/';
+    const { data, error } = await supabase.auth.verifyOtp({ email, token: codigo, type: 'email' });
+    if (error) {
+      setOcupado(false);
+      return setErro('Esse código não funcionou. Confira os 6 números ou peça um novo.');
+    }
+    if (equipe) {
+      const papel = String((data.user?.app_metadata as { papel?: string } | undefined)?.papel ?? '');
+      if (!PAPEIS_EQUIPE.includes(papel)) {
+        await supabase.auth.signOut();
+        setOcupado(false);
+        return setErro('Esta conta não é da equipe. Se você é creator, entre pela página da creator.');
+      }
+    }
+    window.location.href = equipe ? '/admin/' : '/app/';
   }
 
   return (
     <div className="as">
       <header className="as-topo">
-        <a href="/portfolio-creator/" className="marca-link" aria-label="Portfólio Creator: voltar para a página inicial">
+        {equipe ? (
           <Marca />
-        </a>
+        ) : (
+          <a
+            href="/portfolio-creator/"
+            className="marca-link"
+            aria-label="Portfólio Creator: voltar para a página inicial"
+          >
+            <Marca />
+          </a>
+        )}
       </header>
       <main className="as-corpo">
         {etapa === 'email' ? (
           <>
             <h1 className="as-titulo">
-              Entre para guardar <em>seu portfólio</em>
+              {equipe ? (
+                <>
+                  Área da <em>equipe</em>
+                </>
+              ) : (
+                <>
+                  Entre para guardar <em>seu portfólio</em>
+                </>
+              )}
             </h1>
-            <p className="as-texto">Sem senha: a gente manda um código de 6 números para o seu e-mail.</p>
+            <p className="as-texto">
+              {equipe
+                ? 'Acesso só para quem é da equipe. Sem senha: mandamos um código de 6 números para o seu e-mail.'
+                : 'Sem senha: a gente manda um código de 6 números para o seu e-mail.'}
+            </p>
             <form
               className="as-campo"
               onSubmit={(e) => {

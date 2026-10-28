@@ -83,6 +83,7 @@ export const BLOCOS = {
         id: 'itens',
         rotulo: 'Itens',
         tipo: 'lista',
+        cartao: { titulo: 'rotulo', detalhe: 'valor', vazio: 'Item sem nome' },
         itens: [
           { id: 'rotulo', rotulo: 'O que é (ex.: Nicho)', tipo: 'etiqueta', maximo: 24, obrigatorio: true },
           { id: 'valor', rotulo: 'Resposta', tipo: 'etiqueta', maximo: 48, obrigatorio: true },
@@ -124,6 +125,7 @@ export const BLOCOS = {
         id: 'itens',
         rotulo: 'Motivos',
         tipo: 'lista',
+        cartao: { titulo: 'titulo', vazio: 'Motivo sem texto' },
         itens: [
           {
             id: 'titulo',
@@ -156,7 +158,14 @@ export const BLOCOS = {
     ],
     // os números são sempre da creator: nenhum exemplo pode ir para o ar (regra 1 do guia)
     campos: [
-      { id: 'itens', rotulo: 'Números', tipo: 'lista', itens: itemDeNumero, bloqueiaPublicacao: true },
+      {
+        id: 'itens',
+        rotulo: 'Números',
+        tipo: 'lista',
+        itens: itemDeNumero,
+        bloqueiaPublicacao: true,
+        cartao: { titulo: 'rotulo', detalhe: 'valor', vazio: 'Número sem nome' },
+      },
       { id: 'selo', rotulo: 'Selo', tipo: 'etiqueta', maximo: 60 },
     ],
   },
@@ -174,6 +183,15 @@ export const BLOCOS = {
         id: 'itens',
         rotulo: 'Vídeos',
         tipo: 'lista',
+        cartao: {
+          titulo: 'titulo',
+          detalhe: 'visualizacoes',
+          miniatura: 'capa',
+          video: 'video',
+          vazio: 'Vídeo sem título',
+          destaqueNaVariacao: 'destaque',
+        },
+        varios: { campo: 'video', tipo: 'video', rotulo: 'Adicionar vários vídeos' },
         itens: [
           { id: 'titulo', rotulo: 'Título do vídeo', tipo: 'titulo', maximo: 60, obrigatorio: true },
           { id: 'visualizacoes', rotulo: 'Visualizações', tipo: 'etiqueta', maximo: 12 },
@@ -198,6 +216,7 @@ export const BLOCOS = {
         id: 'itens',
         rotulo: 'Marcas',
         tipo: 'lista',
+        cartao: { titulo: 'nome', detalhe: 'resultado', miniatura: 'logo', vazio: 'Marca sem nome' },
         itens: [
           { id: 'nome', rotulo: 'Nome da marca', tipo: 'titulo', maximo: 40, obrigatorio: true },
           { id: 'resultado', rotulo: 'Resultado da publi', tipo: 'etiqueta', maximo: 60 },
@@ -216,7 +235,14 @@ export const BLOCOS = {
     ],
     campos: [
       titulo,
-      { id: 'itens', rotulo: 'Dados do público', tipo: 'lista', itens: itemDeNumero, bloqueiaPublicacao: true },
+      {
+        id: 'itens',
+        rotulo: 'Dados do público',
+        tipo: 'lista',
+        itens: itemDeNumero,
+        bloqueiaPublicacao: true,
+        cartao: { titulo: 'rotulo', detalhe: 'valor', vazio: 'Dado sem nome' },
+      },
       { id: 'selo', rotulo: 'Selo', tipo: 'etiqueta', maximo: 60 },
     ],
   },
@@ -233,6 +259,7 @@ export const BLOCOS = {
         id: 'itens',
         rotulo: 'Formatos',
         tipo: 'lista',
+        cartao: { titulo: 'titulo', detalhe: 'preco', vazio: 'Formato sem nome' },
         itens: [
           { id: 'titulo', rotulo: 'Nome do formato', tipo: 'titulo', maximo: 40, obrigatorio: true },
           { id: 'descricao', rotulo: 'Descrição', tipo: 'texto', maximo: 140 },
@@ -262,6 +289,7 @@ export const BLOCOS = {
         id: 'itens',
         rotulo: 'Etapas',
         tipo: 'lista',
+        cartao: { titulo: 'titulo', detalhe: 'prazo', vazio: 'Etapa sem nome' },
         itens: [
           { id: 'titulo', rotulo: 'Etapa', tipo: 'titulo', maximo: 30, obrigatorio: true },
           { id: 'texto', rotulo: 'O que acontece', tipo: 'texto', maximo: 100 },

@@ -154,7 +154,7 @@ export default function Admin() {
           Área da <em>equipe.</em>
         </h1>
         <p className="app-lead">Entre com a sua conta da equipe para continuar.</p>
-        <a className="app-cta" href="/app/entrar/">
+        <a className="app-cta" href="/admin/entrar/">
           Entrar
         </a>
       </main>
@@ -172,6 +172,13 @@ export default function Admin() {
         <a className="app-link" href="/app/">
           Voltar para a minha área
         </a>
+        <button
+          type="button"
+          className="app-link"
+          onClick={() => void sair().then(() => (window.location.href = '/admin/entrar/'))}
+        >
+          Sair e entrar com outra conta
+        </button>
       </main>
     );
   return <Painel sessao={sessao} />;
@@ -208,13 +215,16 @@ function Painel({ sessao }: { sessao: Session }) {
             </button>
           ))}
         </nav>
+        <a className="ed-botao-claro" href="/app/">
+          Minha área
+        </a>
         <span className="ad-quem">
           {papelDe(sessao)} · {sessao.user.email}
         </span>
         <button
           type="button"
           className="ed-botao-claro"
-          onClick={() => void sair().then(() => (window.location.href = '/app/entrar/'))}
+          onClick={() => void sair().then(() => (window.location.href = '/admin/entrar/'))}
         >
           Sair
         </button>

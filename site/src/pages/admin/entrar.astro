@@ -1,0 +1,24 @@
+---
+// Entrada separada da equipe: mesmo login por código, sem criar conta nova, e só deixa passar quem tem papel de equipe.
+import '../../styles/global.css';
+import SeoHead from '../../components/SeoHead.astro';
+import Entrar from '@app/Entrar';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Portfólio Creator: entrada da equipe"
+      description="Entrada da equipe do Portfólio Creator."
+      alternates={{ pt: '/admin/entrar/' }}
+      noindex
+      analytics={false}
+      themeColor="#FBF4EC"
+    />
+  </head>
+  <body style="margin:0">
+    <Entrar equipe client:only="react" />
+  </body>
+</html>

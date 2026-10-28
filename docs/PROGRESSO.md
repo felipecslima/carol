@@ -11,9 +11,19 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **Próximos passos (precisam do usuário):** (1) **SMTP próprio** (ex.: Resend com o domínio) para o e-mail do login trazer o código: hoje o Supabase só manda link, não deixa editar o modelo no plano grátis e limita a 2 e-mails por hora (em dev há o atalho "Já tenho um código"); (2) **regerar a secret key e o token de acesso** do Supabase, que foram colados no chat; (3) reiniciar o Claude Code para o MCP novo valer; (4) decidir o próximo passo do template (Editorial ou Onda 2); (5) quando quiser publicar: preços dos planos, CNPJ e Termos, domínio.
 - **Jornada completa com 1 modelo (24 e 25/out):** entrar → assistente → editor → números → revisão → **Publicar** (link livre conferido no servidor, pedido `aguardando_pagamento`) → **pago** (`POST /api/pedido/pago` com `x-admin-token`; vai virar o botão do Slack) → **`/c/<link>` no ar** → **Mandar para uma marca** (link `/c/<link>/<código>`, aviso de abertura) → área mostra link, copiar e aberturas. Tudo **só em localhost**. Roteiro de ponta a ponta: `/tmp/jornada.mjs` (volta a conta de teste para rascunho ao final). **Ainda é stub:** Slack (card e botões), WhatsApp (avisos), PDF do mídia kit no servidor, preço e plano (o pedido sai com plano `site` e sem valor), prazo de edição só gravado (7 dias; a trava não roda), cache e prévia de link por imagem (DEV-144/146).
 - **Falta construir:** Slack, WhatsApp, PDF do mídia kit no servidor, rotina que apaga os arquivos do Cloudinary na exclusão de conta, demais modelos (DEV-070 a 073), DEV-089 (trocar modelo e formato), DEV-092 (eventos).
-- **Regras vivas:** nunca mexer no site da Carol sem pedido; nunca mencionar a avó; nunca inventar número, depoimento, case ou preço; mensagens de erro sempre em português e validação no front antes de enviar; vídeos sempre mudos.
+- **Regras vivas:** nunca mexer no site da Carol sem pedido; nunca mencionar a avó; nunca inventar número, depoimento, case ou preço; mensagens de erro sempre em português e validação no front antes de enviar; vídeos sempre mudos na página (o som só existe no visor, aberto pelo toque do visitante).
 - **Ambiente:** `site/.env` (chaves Supabase e Cloudinary, não versionado), token do CLI do Supabase em `SUPABASE_CAROL` (`~/.zshrc`), `wrangler login` feito, `CLOUDINARY_URL` gravado como segredo do Worker `carol`. `/api/upload/assinatura` já exige login. Amplitude desligada nas páginas do app.
 - **OCR:** código removido por ora; a spec `docs/04-ocr-prints.md` fica (código no commit `6ecf8fc`).
+- **Em andamento (27/out): correções da revisão de UX do editor**, uma tarefa por vez, cada uma com aprovação e commit:
+  - (0) commit do trabalho pendente (feito).
+  - (1) **DEV-096, sem modelos.** Decisão do usuário: acabam os modelos para escolher; o editor e as seções montam tudo. A etapa do assistente vira "Escolha suas cores" e os docs são atualizados. `modelo` fica só como valor interno `'nuvem'`, sem migração.
+  - (1b) DEV-097: proposta do texto da página de vendas sem modelos (só muda com aprovação).
+  - (2) DEV-082: não perder edição quando salvar na conta falha (achado confirmado: recarregar online apagava a edição feita sem conexão).
+  - (3) DEV-232: foco e teclado no editor (anel de foco dos blocos a ~1,2:1, foco entrando na gaveta, atalhos, Delete esconde a seção).
+  - (4) DEV-093: topo em 320 px, abas no desktop e dica de primeiro uso.
+  - (5) DEV-094: esqueleto antes do JS.
+  - (6) DEV-095: destaque do Publicar e barra flutuante com menu "Mais".
+  - Roteiros de medição em `/tmp/rev/`.
 
 ## Esperando aprovação
 
@@ -72,6 +82,17 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 - **DEV-069 (visual do modelo Nuvem):** os 8 blocos (2 variações cada) e o modelo Nuvem com 3 paletas (lavanda, pêssego, menta) renderizam em `/app/blocos/?paleta=0&modo=claro` (só no `npm run dev`). Referência: `prototipo/ModeloNuvem` do handoff. **O usuário precisa olhar e aprovar** antes dos modelos Clean, Pop Color, Casual e Glow Rosé (DEV-070 a 073). Pontos a avaliar: paleta Pêssego sai com botão marrom (a regra Fidelity escurece o tom 40); capa e vídeos sem foto mostram "Sua foto"/"Seu vídeo"; as variações escolhidas são as duas primeiras de cada bloco no `docs/02-construtor.md`.
 
 ## Diário
+
+### 27/out/2026
+- Revisão de UX do editor em 10 critérios, medida com Playwright (dev, build de produção com 4G lento e conta de teste com gravações interceptadas). Nota 6/10. Achados principais: perda de edição feita sem conexão, foco de teclado invisível nos blocos, topo cortado em 320 px e tela em branco até ~2,2 s.
+- Commit do trabalho que estava pendente:
+  - Gaveta de Vídeos com cartões e "Adicionar vários".
+  - Visor de vídeos com som na página publicada.
+  - Desenhos dos layouts na gaveta.
+  - Entrada separada da equipe (`/admin/entrar/`).
+  - Leituras "da minha conta" filtradas pelo dono.
+  - `capaDeVideo` aceita endereço com transformação.
+  - Antes do commit: corrigidos 2 avisos do lint (estado copiado em efeito no Estilo; ref no visor) e formatados os arquivos com o Prettier.
 
 ### 23/out/2026 (tarde)
 - `dev` criada, 3 commits `Setup:`; DEV-001 implementada.

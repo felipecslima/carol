@@ -1,4 +1,5 @@
 import { LayoutGroup, motion } from 'motion/react';
+import { useState } from 'react';
 // Painéis das abas de baixo: Seções (ordem e bandeja), Adicionar bloco e Estilo.
 import { REGISTRO } from '@blocks/registro';
 import { MAXIMO_DE_BLOCOS, type Projeto } from '@lib/projeto';
@@ -154,6 +155,14 @@ const FONTES: Array<[Fontes, string]> = [
   ['par-1', 'Serifada e grotesca'],
 ];
 
+// aceita "#8c77e0", "8c77e0" e "#c7e" (forma curta); devolve "#rrggbb" ou null
+function lerHexa(texto: string): string | null {
+  const m = texto.trim().replace(/^#/, '');
+  if (/^[0-9a-f]{3}$/i.test(m)) return `#${[...m].map((c) => c + c).join('')}`.toLowerCase();
+  if (/^[0-9a-f]{6}$/i.test(m)) return `#${m}`.toLowerCase();
+  return null;
+}
+
 export function PainelEstilo({
   projeto,
   aoMudar,
@@ -161,6 +170,22 @@ export function PainelEstilo({
   projeto: Projeto;
   aoMudar: (mudanca: Partial<Projeto>, aviso: string) => void;
 }) {
+  const corAtual = projeto.corPropria ?? NUVEM.paletas[projeto.paleta]?.origem ?? '#8c77e0';
+  const [hexa, setHexa] = useState(corAtual);
+  const [hexaInvalido, setHexaInvalido] = useState(false);
+  // a cor mudou por fora (paleta pronta, desfazer): o campo volta a mostrar a cor em uso
+  const [corVista, setCorVista] = useState(corAtual);
+  if (corVista !== corAtual) {
+    setCorVista(corAtual);
+    setHexa(corAtual);
+    setHexaInvalido(false);
+  }
+  const digitarHexa = (texto: string) => {
+    setHexa(texto);
+    const cor = lerHexa(texto);
+    setHexaInvalido(false);
+    if (cor && cor !== projeto.corPropria) aoMudar({ corPropria: cor }, 'Cor própria');
+  };
   return (
     <div className="ed-form">
       <fieldset className="ed-variacoes">
@@ -197,6 +222,31 @@ export function PainelEstilo({
             onChange={(ev) => aoMudar({ corPropria: ev.target.value }, 'Cor própria')}
           />
         </label>
+        <div className="ed-campo ed-hexa">
+          <label htmlFor="ed-hexa">Ou digite o código da cor (hexa)</label>
+          <input
+            id="ed-hexa"
+            type="text"
+            inputMode="text"
+            autoComplete="off"
+            spellCheck={false}
+            maxLength={7}
+            placeholder="#8c77e0"
+            value={hexa}
+            aria-invalid={hexaInvalido}
+            aria-describedby={hexaInvalido ? 'ed-hexa-erro' : undefined}
+            onChange={(ev) => digitarHexa(ev.target.value)}
+            onBlur={() => {
+              if (lerHexa(hexa)) setHexa(lerHexa(hexa) as string);
+              else setHexaInvalido(true);
+            }}
+          />
+          {hexaInvalido && (
+            <p id="ed-hexa-erro" className="ed-erro" role="alert">
+              Esse código não parece uma cor. Use 6 letras ou números, como #8c77e0.
+            </p>
+          )}
+        </div>
       </fieldset>
       <fieldset className="ed-variacoes">
         <legend>Cantos</legend>

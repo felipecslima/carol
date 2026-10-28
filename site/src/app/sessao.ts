@@ -16,3 +16,9 @@ export function useSessao(): Session | null | undefined {
 }
 
 export const sair = () => supabase.auth.signOut();
+
+/** Papel da equipe (`admin`, `operacao`, `assistente`) gravado no servidor em app_metadata; vazio para creators. */
+export const papelDaEquipe = (sessao: Session): string => {
+  const papel = String((sessao.user.app_metadata as { papel?: string }).papel ?? '');
+  return ['admin', 'operacao', 'assistente'].includes(papel) ? papel : '';
+};
