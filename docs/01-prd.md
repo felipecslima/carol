@@ -211,7 +211,7 @@ Todas medidas pelos eventos do editor, pela tabela de pedidos e pelos registros 
 
 ## 9. Prazo e fases
 
-- **Atenção ao cupom:** o cupom de lançamento vence em 30/11. Com todo o P0 acima, o lançamento dificilmente cabe até lá. Decidir entre mover a data do cupom ou cortar P0.
+- **Cupom:** o cupom de lançamento (LANCAMENTO10) foi removido em 28/out, por decisão do usuário. Lança sem cupom.
 - **Dependências que demoram e devem começar já:** CNPJ e Termos; número e modelos de mensagem do WhatsApp na Meta.
 - **Ordem sugerida:**
   1. Base: Supabase, login, estrutura de dados, papéis de cor, estilo padrão (Nuvem) com as seções.

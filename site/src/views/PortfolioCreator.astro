@@ -54,17 +54,9 @@ const jsonLd = {
       og={{ image: '/og-portfolio-creator.jpg', alt: 'Portfólio Creator: seu primeiro portfólio de creator', siteName: 'Portfólio Creator' }}
       themeColor="#24130F"
     />
-    <!-- antes do primeiro desenho: depois do prazo do cupom, a faixa e os avisos de cupom não aparecem -->
-    <script is:inline define:vars={{ fim: PC.cupomFim }}>
-      if (Date.now() > Date.parse(fim)) document.documentElement.classList.add('sem-cupom');
-    </script>
   </head>
   <body>
     <a class="skip" href="#conteudo">Pular para o conteúdo</a>
-    <p class="promo" data-cupom>
-      10% no valor do plano com o cupom <b class="cupom">{PC.cupom}</b> até {PC.cupomAte}.{' '}
-      <a href="#plano">Ver planos</a>
-    </p>
     <nav class="nav" aria-label="Principal">
       <div class="wrap">
         <a class="logo" href="#topo">Portfólio <i>Creator</i></a>
@@ -221,7 +213,6 @@ const jsonLd = {
             <h2 class="h2">Planos que cabem em <em>uma publi</em></h2>
             <div class="sec-aside">
               <p>Uma única publi fechada já paga o seu portfólio. Você monta de graça; ao publicar, a equipe te chama no WhatsApp com o link de pagamento.</p>
-              <p class="coupon-note" data-cupom><b>{PC.cupom}</b>: 10% no valor do plano até {PC.cupomAte}. Não vale para a taxa do domínio.</p>
             </div>
           </div>
           <ul class="plans">

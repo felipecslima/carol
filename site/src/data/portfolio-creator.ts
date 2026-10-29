@@ -19,10 +19,6 @@ export const PC = {
   // PENDENTE antes de vender: página de Termos e Privacidade (o rascunho do handoff ainda não tem razão social,
   // CNPJ nem e-mail). Vazio mostra o texto sem link.
   termos: '/portfolio-creator/termos/',
-  cupom: 'LANCAMENTO10',
-  cupomAte: '30/11',
-  /** fim do cupom (fim do dia em Brasília): depois disso a faixa e os avisos de cupom somem sozinhos */
-  cupomFim: '2026-11-30T23:59:59-03:00',
   // vagas abertas para as 5 primeiras creators; null esconde a contagem
   vagas: null as number | null,
 };
@@ -149,7 +145,6 @@ export const FAQ = [
   { q: 'Posso usar sem seguidores ou sem nunca ter feito publi?', a: 'Pode. O modo iniciante esconde números e marcas e destaca seus vídeos de exemplo e o que você entrega. O guia que vou lançar ensina a gravar com produtos que você já tem.' },
   { q: 'Quanto custa no total?', a: 'PDF + link: R$ 49,90, uma vez. Site: R$ 149,90 mais R$ 40 de domínio no 1º ano, R$ 189,90 no total; renovar no 2º ano é opcional, R$ 79,90 por ano. Atualização: R$ 19,90 por mês ou R$ 179 por ano.' },
   { q: 'O domínio fica no meu nome?', a: 'Fica. O domínio .com.br é registrado no seu nome e no seu CPF. Você cria a conta no Registro.br, a gente te orienta, e a equipe publica seu site em até 2 dias úteis. Já tem o PDF + link? Passe para o domínio próprio por R$ 100,00 mais a taxa do domínio.' },
-  { q: 'Como funciona o cupom?', a: 'O LANCAMENTO10 dá 10% no valor do plano até 30/11. Não vale para a taxa do domínio e não soma com outros descontos.' },
   { q: 'E se eu não gostar?', a: 'Você tem 7 dias depois da compra para desistir e receber o dinheiro de volta. É só me chamar no direct do Instagram. Antes de pagar, dá para testar de graça.' },
   { q: 'O que eu preciso ter em mãos?', a: 'Os vídeos que você gravou (até 100 MB cada) e, se quiser mostrar números, as estatísticas do seu Instagram abertas para copiar.' },
   { q: 'Como entram os meus números?', a: 'Você digita seguidores, views e dados do público, e eles aparecem formatados no portfólio, com o período de referência. Antes de concluir, a revisão aponta o que ainda está com número de exemplo.' },

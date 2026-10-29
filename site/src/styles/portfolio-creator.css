@@ -114,10 +114,6 @@
 .free div.item > span:not(.soon) { font-size: 15px; line-height: 1.5; color: var(--subtle); }
 
 /* ---- planos ---- */
-.promo { background: var(--accent); color: var(--bg); text-align: center; padding: 10px var(--gutter); font-size: 14px; font-weight: 600; line-height: 1.5; }
-.promo a { color: var(--bg); text-decoration: underline; text-underline-offset: 3px; }
-.cupom { display: inline-block; background: var(--bg); color: var(--cream); padding: 1px 8px; border-radius: 6px; letter-spacing: 0.04em; }
-.sem-cupom [data-cupom] { display: none !important; }
 .plans { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; align-items: stretch; }
 .plan { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: clamp(24px, 3vw, 36px); border-radius: 20px; background: #fff; color: var(--bg); }
 .plan-site { background: var(--bg); color: var(--text); }
@@ -136,8 +132,6 @@
 .plan-site .btn:hover { background: var(--cream-italic); color: #fff; }
 .plan-atualizacao .btn { background: var(--green); color: #fff; }
 .plan-help { display: block; text-align: center; margin-top: 12px; color: var(--yellow); font-weight: 600; font-size: 15px; text-decoration: underline; text-underline-offset: 4px; }
-.coupon-note { font-size: 15px; color: var(--ink-2); }
-.coupon-note b { color: var(--cream-italic); letter-spacing: 0.04em; }
 .why { font-size: 18px; line-height: 1.6; max-width: 720px; color: var(--ink-2); }
 .why b { color: var(--bg); }
 .pay-note { font-size: 14px; color: var(--cream-eyebrow); }
@@ -172,17 +166,12 @@
 /* a chamada final tem uma frase longa; o título gigante da Carol cabe uma frase curta */
 .pc .contact .h2 { font-size: clamp(40px, 5.4vw, 76px); max-width: 1000px; }
 
-/* faixa do cupom: branco sobre o rosa fechado, que passa de 4,5:1 */
-.promo { background: #D42A5B; color: #fff; }
-.promo a { color: #fff; }
-.cupom { background: #fff; color: var(--cream-italic); }
 /* no tablet e no celular o título vem antes da foto, como no resto da página */
 @media (max-width: 999px) { .pc .about-text { order: -1; } }
 
 /* ---- ajustes da crítica ---- */
 /* o aviso do hero fica discreto mas legível */
 .hero-note { max-width: 52ch; }
-.promo a { display: inline-block; padding: 12px 4px; margin: -12px 0; }
 /* benefícios em lista com título e frase, ao lado do exemplo */
 .checks-rich li { display: flex; flex-direction: column; gap: 2px; }
 .checks-rich b { font-weight: 600; color: var(--text); }
