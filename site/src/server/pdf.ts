@@ -9,7 +9,7 @@ import { env } from 'cloudflare:workers';
 import { guardarArquivo, linkAssinado } from './banco';
 
 export const BALDE_DOS_KITS = 'midia-kits';
-const caminhoDoKit = (projetoId: string) => `${projetoId}.pdf`;
+export const caminhoDoKit = (projetoId: string) => `${projetoId}.pdf`;
 /** endereço que o navegador da Cloudflare abre; nunca sai para a rede (ver `setRequestInterception` abaixo) */
 const INTERNO = 'https://kit.interno';
 

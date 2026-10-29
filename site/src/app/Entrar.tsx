@@ -147,6 +147,12 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
                 </button>
               )}
             </form>
+            {!equipe && (
+              <p className="as-legal">
+                Ao entrar, você concorda com os <a href="/portfolio-creator/termos/">Termos de Uso</a> e a{' '}
+                <a href="/portfolio-creator/privacidade/">Política de Privacidade</a>.
+              </p>
+            )}
           </>
         ) : (
           <>

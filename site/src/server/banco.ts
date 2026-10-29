@@ -64,6 +64,22 @@ export async function guardarArquivo(
   return resposta.ok;
 }
 
+/** Apaga arquivos do Storage (DEV-203). `true` se apagou ou já não existiam; lista vazia não chama nada. */
+export async function apagarArquivosDoStorage(balde: string, caminhos: string[]): Promise<boolean> {
+  if (!bancoConfigurado()) return false;
+  if (!caminhos.length) return true;
+  const resposta = await fetch(`${PUBLIC_SUPABASE_URL}/storage/v1/object/${balde}`, {
+    method: 'DELETE',
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY!,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ prefixes: caminhos }),
+  });
+  return resposta.ok;
+}
+
 /** Link temporário para baixar um arquivo privado do Storage; `null` se o arquivo não existe. */
 export async function linkAssinado(balde: string, caminho: string, segundos: number): Promise<string | null> {
   if (!bancoConfigurado()) return null;

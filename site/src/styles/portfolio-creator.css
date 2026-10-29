@@ -221,3 +221,24 @@
 /* ligação com o app: texto discreto abaixo dos botões do topo */
 .hero-conta { margin: 14px 0 0; font-size: 15px; color: var(--muted); }
 .hero-conta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; padding: 10px 0; }
+
+/* ---- Termos e Privacidade (views/PaginaLegal.astro): coluna de leitura no fundo escuro ---- */
+.legal-voltar { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 500; color: var(--muted); }
+.legal-voltar:hover { color: var(--accent-light); }
+.legal { padding-block: clamp(48px, 7vw, 96px) clamp(64px, 8vw, 120px); }
+.legal-topo { max-width: 68ch; margin-bottom: clamp(32px, 4vw, 48px); }
+.legal-topo .h1 { font-size: clamp(44px, 5.4vw, 72px); }
+.legal-data { margin: 16px 0 0; font-size: 14px; color: var(--subtle); }
+.legal-texto { max-width: 68ch; font-size: 17px; line-height: 1.7; color: var(--text-2); }
+.legal-texto h2 { margin: 2.6em 0 0.6em; font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3vw, 36px); line-height: 1.1; color: var(--text); }
+.legal-texto h3 { margin: 1.8em 0 0.4em; font-size: 17px; font-weight: 600; color: var(--text); }
+.legal-texto p, .legal-texto ul { margin: 0 0 1em; }
+.legal-texto ul { padding-left: 1.2em; }
+.legal-texto li + li { margin-top: 0.4em; }
+.legal-texto li::marker { color: var(--accent-light); }
+.legal-texto strong { color: var(--text); font-weight: 600; }
+.legal-texto a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent-light); text-underline-offset: 3px; }
+.legal-texto a:hover { color: var(--accent-light); }
+/* trecho que ainda depende de confirmação (rascunho): amarelo do produto, texto escuro */
+.legal-texto mark { padding: 0.05em 0.3em; border-radius: 4px; background: var(--yellow); color: var(--bg); }
+.legal-aviso { margin-bottom: 2em; padding: 16px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-band); font-size: 15px; }

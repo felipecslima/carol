@@ -18,7 +18,7 @@ export const PC = {
   whatsapp: '',
   // PENDENTE antes de vender: página de Termos e Privacidade (o rascunho do handoff ainda não tem razão social,
   // CNPJ nem e-mail). Vazio mostra o texto sem link.
-  termos: '',
+  termos: '/portfolio-creator/termos/',
   cupom: 'LANCAMENTO10',
   cupomAte: '30/11',
   /** fim do cupom (fim do dia em Brasília): depois disso a faixa e os avisos de cupom somem sozinhos */

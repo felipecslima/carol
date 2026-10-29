@@ -1,0 +1,134 @@
+---
+// Política de Privacidade (DEV-200, LGPD). Rascunho escrito a partir do que o produto guarda hoje (migrações em
+// supabase/migrations, server/exclusao.ts, SeoHead com Amplitude só fora do app); revisão jurídica pendente.
+// Quando entrar um serviço novo que recebe dados (Google, Slack, WhatsApp, gateway), atualizar a lista de serviços.
+import PaginaLegal from '../../views/PaginaLegal.astro';
+import { DIAS_PARA_EXCLUIR } from '../../server/exclusao';
+import { EMPRESA } from '../../data/empresa';
+---
+
+<PaginaLegal
+  titulo="Política de Privacidade"
+  descricao="Quais dados o Portfólio Creator guarda, para quê, com quem compartilha e como pedir para ver ou apagar."
+  caminho="/portfolio-creator/privacidade/"
+  atualizadoEm={EMPRESA.atualizadoEm}
+>
+  <p class="legal-aviso">
+    Rascunho em revisão. Os trechos marcados em amarelo ainda serão confirmados antes da versão final.
+  </p>
+
+  <p>
+    Esta política explica como o Portfólio Creator trata os seus dados, de acordo com a Lei Geral de Proteção de
+    Dados (Lei 13.709/2018, LGPD). A controladora dos dados é <strong>{EMPRESA.razaoSocial}</strong>, CNPJ
+    {EMPRESA.cnpj}, de {EMPRESA.cidade}. Para qualquer assunto de privacidade, inclusive falar com a pessoa
+    encarregada dos dados, escreva para <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>.
+  </p>
+
+  <h2>1. Quais dados guardamos</h2>
+  <h3>Da sua conta</h3>
+  <ul>
+    <li><strong>E-mail</strong>, para você entrar com o código de 6 números.</li>
+    <li>
+      <strong>Perfil</strong>: nome, @ das redes, WhatsApp, cidade e nicho, se você preencher. O WhatsApp é usado para
+      combinar o pagamento e falar com você sobre o seu pedido.
+    </li>
+  </ul>
+  <h3>Do seu portfólio</h3>
+  <ul>
+    <li>
+      Textos, fotos, vídeos, números de público, marcas, formatos e valores que você coloca. Você escolhe o que entra.
+      Ao publicar, esse conteúdo fica visível para qualquer pessoa com o link, e o PDF pode ser baixado por quem
+      receber o arquivo.
+    </li>
+    <li>
+      Sem conta, o rascunho fica só no seu aparelho, no armazenamento do navegador. Com conta, ele também fica no
+      aparelho até ser salvo na nuvem, e a cópia do aparelho é apagada quando você sai da conta.
+    </li>
+  </ul>
+  <h3>Dos pedidos</h3>
+  <ul>
+    <li>Plano escolhido, situação do pedido e datas. Não recebemos nem guardamos dados de cartão.</li>
+  </ul>
+  <h3>Dos links para marcas</h3>
+  <ul>
+    <li>
+      O nome da marca que você informa ao criar o link e a data e hora em que o link foi aberto. Não guardamos o IP
+      nem qualquer dado que identifique quem abriu.
+    </li>
+  </ul>
+  <h3>De uso e de erros</h3>
+  <ul>
+    <li>
+      Alguns momentos do uso do app ligados à sua conta, como criar um pedido ou publicar, para entender o que
+      funciona e o que precisa melhorar.
+    </li>
+    <li>
+      Quando algo dá erro, a mensagem do erro, a página e o tipo de navegador, para corrigir o problema. Isso fica nos
+      registros do servidor e não inclui o conteúdo do seu portfólio.
+    </li>
+    <li>
+      Na página de apresentação do Portfólio Creator (fora do app e fora dos portfólios publicados), usamos o
+      Amplitude para medir visitas e cliques, com gravação da navegação na página. <mark>Confirmar: aviso de
+      cookies na página de apresentação.</mark>
+    </li>
+  </ul>
+
+  <h2>2. Para que usamos</h2>
+  <ul>
+    <li>Criar e manter a sua conta e guardar o seu portfólio (execução do contrato).</li>
+    <li>Publicar a sua página, gerar o PDF e contar as aberturas dos seus links (execução do contrato).</li>
+    <li>Combinar e confirmar pagamentos e cumprir obrigações fiscais (execução do contrato e obrigação legal).</li>
+    <li>Proteger o serviço contra abuso e corrigir erros (legítimo interesse).</li>
+    <li>Melhorar o produto com dados de uso (legítimo interesse).</li>
+  </ul>
+  <p>Não vendemos os seus dados e não usamos o seu conteúdo para anúncios.</p>
+
+  <h2>3. Com quem compartilhamos</h2>
+  <p>Usamos serviços de terceiros para o Portfólio Creator funcionar. Eles tratam os dados só para prestar esse serviço:</p>
+  <ul>
+    <li><strong>Supabase</strong>: banco de dados, login e o arquivo PDF do mídia kit.</li>
+    <li><strong>Cloudinary</strong>: fotos e vídeos do portfólio.</li>
+    <li><strong>Cloudflare</strong>: hospedagem das páginas, geração do PDF e registros de erro.</li>
+    <li><strong>Amplitude</strong>: medição da página de apresentação.</li>
+  </ul>
+  <p>
+    Alguns desses serviços guardam dados em servidores fora do Brasil, com as garantias previstas na LGPD para
+    transferência internacional. Também podemos informar dados a autoridades quando a lei exigir.
+  </p>
+
+  <h2>4. Por quanto tempo</h2>
+  <p>
+    Guardamos os seus dados enquanto a sua conta existir. Quando você pede a exclusão na área Conta, a conta fica
+    desativada por {DIAS_PARA_EXCLUIR} dias e os seus portfólios saem do ar; nesse prazo, basta entrar de novo para
+    desistir. Depois, apagamos a conta, o perfil, os portfólios, as fotos, os vídeos, os PDFs e os links. Os
+    registros de pedidos e pagamentos ficam guardados sem ligação com você, pelo prazo exigido pela lei fiscal.
+  </p>
+
+  <h2>5. Os seus direitos</h2>
+  <p>Pela LGPD, você pode pedir, a qualquer momento:</p>
+  <ul>
+    <li>confirmação de que tratamos os seus dados e acesso a eles;</li>
+    <li>correção de dados incompletos ou errados;</li>
+    <li>anonimização, bloqueio ou eliminação de dados desnecessários;</li>
+    <li>portabilidade dos dados;</li>
+    <li>eliminação dos dados, que também pode ser feita direto na área Conta;</li>
+    <li>informação sobre com quem compartilhamos os dados;</li>
+    <li>revisão de decisões tomadas só de forma automática.</li>
+  </ul>
+  <p>
+    Para isso, escreva para <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>. Respondemos em até
+    <mark>15 dias</mark>. Você também pode reclamar na Autoridade Nacional de Proteção de Dados (ANPD).
+  </p>
+
+  <h2>6. Segurança</h2>
+  <p>
+    O acesso aos dados é restrito: cada conta só enxerga o que é dela, e a equipe só altera dados pelo painel, com
+    registro de cada ação. A conexão é sempre criptografada. Nenhum sistema é totalmente imune a falhas; se houver um
+    incidente que coloque os seus dados em risco, avisamos você e a ANPD.
+  </p>
+
+  <h2>7. Mudanças nesta política</h2>
+  <p>
+    Se esta política mudar, avisamos por e-mail ou dentro do app. A data no topo mostra a última atualização.
+  </p>
+</PaginaLegal>

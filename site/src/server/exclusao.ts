@@ -1,6 +1,6 @@
 // Exclusão definitiva de conta (DEV-203, LGPD). A creator pede na Conta; a conta fica desativada por 7 dias e ela
 // pode voltar atrás entrando de novo. Vencido o prazo, uma rotina diária apaga, nesta ordem: arquivos no Cloudinary,
-// arquivos no Storage (ainda não usamos), dados no banco e o usuário no Auth. Apagar o usuário leva o perfil e, pelo
+// PDFs do mídia kit no Storage, dados no banco e o usuário no Auth. Apagar o usuário leva o perfil e, pelo
 // cascade, projetos, mídias, links e eventos; os pedidos ficam, sem ligação com a pessoa (registro de pagamentos).
 // Se os arquivos não saem, nada mais é apagado: a rotina tenta de novo no dia seguinte.
 

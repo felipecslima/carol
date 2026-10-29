@@ -172,7 +172,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### E17. LGPD
 
-- [ ] **DEV-200** Páginas de Termos e Privacidade ligadas no cadastro e na compra.
+- [ ] **DEV-200** Páginas de Termos e Privacidade ligadas no cadastro e na compra. *28/out: rascunho em `/portfolio-creator/termos/` e `/privacidade/` (noindex), links no login e no rodapé da página do Creator; falta revisão jurídica dos trechos em amarelo e ligar na tela de compra.*
 - [ ] **DEV-201** Baixar meus dados: .zip só com textos, mídias enviadas, dados da conta e pedidos (nunca estilos, blocos ou PDF).
 - [ ] **DEV-202** Excluir conta: confirmação por código, desativação por 7 dias com recuperação.
 - [ ] **DEV-203** Exclusão definitiva agendada: apaga Cloudinary, Storage, banco e Auth, nessa ordem; mantém só registro de pagamentos. *Código feito em 28/out: `server/exclusao.ts` (ordem e regras), `apagarPastaDoUsuario` (Admin API do Cloudinary), `apagarUsuarioDoAuth`, rota `/api/interno/exclusoes` (chave de admin) chamada pelo cron diário do Worker (`scheduled` em `worker.ts`, `triggers` no wrangler). Storage ainda não é usado. Migração `20261028000300_exclusao_definitiva.sql` aplicada em 28/out (pg_cron antigo desligado; pedidos ficam sem ligação com a pessoa). **Falta você:** pôr `ADMIN_TOKEN` e `CLOUDINARY_URL` como segredos do Worker; até lá a rotina diária não roda.*

@@ -73,6 +73,19 @@
   line-height: 1.5;
   max-width: 46ch;
 }
+.as-legal {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--as-suave);
+  max-width: 46ch;
+}
+.as-legal a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding-block: 12px;
+}
 .as-campo {
   display: grid;
   gap: 8px;

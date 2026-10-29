@@ -320,7 +320,8 @@ const jsonLd = {
           <li><a href="/app/entrar/">Entrar</a></li>
           <li><a href="/">Site da Carol</a></li>
           {SOCIAL.filter((l) => /instagram/i.test(l.href)).map((l) => <li><a href={l.href} target="_blank" rel="me noopener">{l.label}</a></li>)}
-          {PC.termos && <li><a href={PC.termos}>Termos e privacidade</a></li>}
+          {PC.termos && <li><a href={PC.termos}>Termos de Uso</a></li>}
+          {PC.termos && <li><a href="/portfolio-creator/privacidade/">Privacidade</a></li>}
         </ul>
         <span>© 2026 Carol Limah</span>
       </div>

@@ -2,9 +2,10 @@
 // a chave de admin; também dá para chamar à mão com `x-admin-token`.
 import { ADMIN_TOKEN, CLOUDINARY_URL } from 'astro:env/server';
 import type { APIRoute } from 'astro';
-import { apagarUsuarioDoAuth, bancoConfigurado, consulta } from '@server/banco';
+import { apagarArquivosDoStorage, apagarUsuarioDoAuth, bancoConfigurado, consulta } from '@server/banco';
 import { apagarPastaDoUsuario, lerConta } from '@server/cloudinary';
 import { excluirContasVencidas } from '@server/exclusao';
+import { BALDE_DOS_KITS, caminhoDoKit } from '@server/pdf';
 import { mesmaChave } from '@server/usuario';
 
 export const prerender = false;
@@ -22,7 +23,14 @@ export const POST: APIRoute = async ({ request }) => {
       );
       return ok ? dados.map((d) => d.id) : null;
     },
-    apagarArquivos: (id) => apagarPastaDoUsuario(conta, id),
+    // PDFs do mídia kit no Storage (um por projeto) e depois a pasta no Cloudinary; os projetos ainda existem aqui
+    apagarArquivos: async (id) => {
+      const projetos = await consulta<{ id: string }>(`projects?dono=eq.${id}&select=id`);
+      if (!projetos.ok) return false;
+      const pdfs = projetos.dados.map((p) => caminhoDoKit(p.id));
+      if (!(await apagarArquivosDoStorage(BALDE_DOS_KITS, pdfs))) return false;
+      return apagarPastaDoUsuario(conta, id);
+    },
     apagarUsuario: apagarUsuarioDoAuth,
     registrar: async (id, detalhes) => {
       await consulta('audit_log', { metodo: 'POST', corpo: { acao: 'conta_excluida', alvo: id, detalhes } });
