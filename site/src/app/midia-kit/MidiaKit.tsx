@@ -1,4 +1,4 @@
-// Mídia kit em 1 página A4 (DEV-150), na tela do editor: a folha com o rascunho deste aparelho. Marca d'água de teste
+// Mídia kit em 2 páginas A4 (DEV-150, DEV-154), na tela do editor: as folhas com o rascunho deste aparelho. Marca d'água de teste
 // até pagar um plano; pago, sai o selo discreto (DEV-152). "Salvar como PDF" usa a impressão do navegador; o PDF
 // guardado de verdade sai da versão publicada, no servidor (KitParaPdf.tsx, DEV-151).
 import { useEffect, useMemo, useState } from 'react';

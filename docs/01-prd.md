@@ -121,7 +121,7 @@ As metas abaixo são **hipóteses iniciais**; revisar depois das 5 primeiras cre
 - [ ] Revisão final: alertas vermelhos bloqueiam (placeholder não trocado, número de exemplo, sem contato); amarelos ela pode ignorar.
 - [ ] Escolha do link `/nome` com checagem na hora e nomes reservados bloqueados.
 - [ ] Portfólio publicado leve, renderizado no servidor, abre rápido no 4G.
-- [ ] PDF do mídia kit de 1 página gerado do mesmo conteúdo.
+- [ ] PDF do mídia kit em 2 páginas A4 (1 quando o conteúdo cabe), diagramado como matéria de revista, gerado do mesmo conteúdo (DEV-154).
 - [ ] Prévia do link (imagem e título) no WhatsApp e no Instagram.
 - [ ] Selo "Feito com Portfólio Creator" no site e no PDF.
 

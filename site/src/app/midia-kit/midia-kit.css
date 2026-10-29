@@ -1,24 +1,27 @@
-/* Mídia kit A4 (1 página). Na tela, a folha aparece centralizada; na impressão, ocupa a página inteira. */
+/* Mídia kit em 2 páginas A4 (DEV-154). Na tela, as folhas aparecem empilhadas e centralizadas; na impressão, cada
+   uma ocupa uma página. A diagramação da folha está em kit/kit.css. */
 .mk {
   min-height: 100dvh;
   background: #e9e1d8;
   padding: 16px;
   font-family: 'Hanken Grotesk', system-ui, sans-serif;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
+  align-content: start;
   gap: 16px;
 }
 .mk-barra {
   display: flex;
   gap: 16px;
   align-items: center;
-  width: 794px;
-  max-width: 100%;
+  width: min(794px, 100%);
   justify-content: space-between;
 }
 .mk-barra a {
   color: #24130f;
   font-weight: 700;
+  white-space: nowrap;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -30,6 +33,7 @@
   border-radius: 999px;
   background: #d42a5b;
   color: #fff;
+  white-space: nowrap;
   font:
     800 16px 'Hanken Grotesk',
     system-ui,
@@ -40,40 +44,23 @@
   outline: 3px solid #24130f;
   outline-offset: 3px;
 }
-.mk-folha {
-  position: relative;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 8px 32px rgba(36, 19, 15, 0.18);
+
+/* as folhas são reduzidas só na tela (celular inclusive), sem rolagem lateral; o PDF sai em tamanho real */
+.mk-vista {
   flex: none;
 }
-.mk-conteudo {
+.mk-folhas {
+  display: flex;
+  flex-direction: column;
+  width: 794px;
   transform-origin: top left;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  /* as seções seguem a ordem da creator: as largas ocupam a linha toda e as estreitas (números, público, sobre,
-     formatos) fazem pares; seção repetida ou de tipo novo entra na fila em vez de cair em cima de outra */
-  grid-auto-flow: row dense;
-  align-content: start;
-  --respiro: 20px;
 }
-.mk-conteudo > .bl {
-  grid-column: 1 / -1;
+.mk-folha {
+  flex: none;
+  box-shadow: 0 8px 32px rgba(36, 19, 15, 0.18);
 }
-.mk-conteudo > :is(.bl-numeros, .bl-publico, .bl-sobre, .bl-formatos) {
-  grid-column: span 1;
-}
-.mk-conteudo > .bl {
-  width: 100%;
-  padding-inline: 32px;
-}
-.mk-conteudo > .bl-contato {
-  margin-inline: 0;
-  width: auto;
-}
-.mk-conteudo .bl-cards-numero {
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-}
+
+/* conta sem plano pago: marca d'água em cada página (DEV-152) */
 .mk-marca {
   position: absolute;
   inset: 0;
@@ -108,129 +95,21 @@
   .mk-barra {
     display: none;
   }
+  .mk-vista {
+    width: 210mm !important;
+    height: auto !important;
+  }
+  .mk-folhas {
+    display: block;
+    transform: none !important;
+  }
   .mk-folha {
     width: 210mm !important;
     height: 297mm !important;
     box-shadow: none;
-    transform: none !important;
+    break-after: page;
   }
-  .mk-vista {
-    width: 210mm !important;
-    height: 297mm !important;
+  .mk-folha:last-child {
+    break-after: auto;
   }
-  .mk-folha,
-  .mk-conteudo {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-
-/* versão compacta das seções para caber em 1 página */
-.mk-conteudo .bl-capa {
-  gap: 12px;
-}
-.mk-conteudo .bl-capa-foto {
-  width: 120px;
-  border-width: 6px;
-  box-shadow: 0 0 0 4px var(--destaque);
-}
-.mk-conteudo .bl-titulo-grande {
-  font-size: 36px;
-}
-.mk-conteudo .bl-video {
-  width: 120px;
-}
-.mk-conteudo .bl-sobre-foto {
-  max-height: 200px;
-  aspect-ratio: 1;
-}
-.mk-conteudo .bl-texto {
-  font-size: 15px;
-}
-.mk-conteudo .bl-titulo {
-  font-size: 24px;
-  margin-bottom: 12px;
-}
-.mk-conteudo .bl-numero {
-  font-size: 28px;
-  white-space: nowrap;
-}
-
-/* a folha A4 é reduzida para caber na tela (celular inclusive), sem rolagem lateral */
-.mk-vista {
-  flex: none;
-}
-.mk-folha {
-  transform-origin: top left;
-}
-.mk-barra {
-  width: min(794px, 100%);
-}
-.mk-conteudo .bl-video b {
-  overflow-wrap: anywhere;
-  font-size: 13px;
-  line-height: 1.15;
-}
-.mk-conteudo .bl-video {
-  min-width: 0;
-}
-.mk-conteudo .bl-video span {
-  font-size: 12px;
-  overflow-wrap: anywhere;
-}
-
-/* marcas em linha corrida (a lista pode ter 20 nomes) */
-.mk-conteudo .bl-marcas .bl-lista-marcas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.mk-conteudo .bl-marcas .bl-lista-marcas li {
-  padding: 6px 12px;
-  border-radius: 999px;
-}
-.mk-conteudo .bl-marcas .bl-lista-marcas b {
-  font-size: 12px;
-}
-.mk-conteudo .bl-formatos .bl-lista-formatos {
-  grid-template-columns: 1fr;
-  gap: 8px;
-}
-.mk-conteudo .bl-formatos .bl-cartao {
-  padding: 14px 16px;
-}
-.mk-conteudo .bl-formatos .bl-lista-formatos li b {
-  font-size: 16px;
-}
-.mk-conteudo .bl-formatos .bl-lista-formatos li span {
-  font-size: 13px;
-}
-
-/* capa com fundo na folha A4: mais baixa para caber em 1 página */
-.mk-conteudo .bl-capa--fundo {
-  min-height: 300px;
-  border-radius: 0;
-}
-.mk-conteudo .bl-capa--fundo .bl-capa-texto {
-  padding-top: 80px;
-}
-/* PDF pago: só um selo discreto no rodapé da folha, no lugar da marca d'água (DEV-152) */
-.mk-selo {
-  position: absolute;
-  right: 24px;
-  bottom: 14px;
-  margin: 0;
-  font:
-    600 10px 'Hanken Grotesk',
-    system-ui,
-    sans-serif;
-  letter-spacing: 0.02em;
-  color: rgba(36, 19, 15, 0.45);
-}
-
-/* PDF guardado (DEV-151): sem <video>. O quadro do vídeo entrava no PDF como imagem sem compressão (1,1 MB num kit de
-   1,5 MB) e os vídeos atrasavam a geração; no lugar fica a miniatura em JPEG que já está embaixo dele (escondido sem sair do lugar: é o vídeo que dá a
-   proporção da moldura) */
-.mk--pdf video {
-  visibility: hidden;
 }

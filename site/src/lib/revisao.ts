@@ -1,5 +1,7 @@
 // Revisão final antes de publicar (DEV-140). Vermelho bloqueia: exemplo que sobrou, número de exemplo, contato
-// faltando ou inválido. Amarelo a creator pode ignorar: foto, vídeo e @ vazios. Só olha as seções visíveis.
+// faltando ou inválido. Amarelo a creator pode ignorar: foto, vídeo e @ vazios, e o que fica de fora do mídia kit
+// pelos limites de cada região (DEV-154). Só olha as seções visíveis.
+import { cortesDoKit } from '@app/midia-kit/kit/dadosDoKit';
 import type { Registro } from './bloco';
 import { analisarEmail, analisarWhatsapp } from './formatos';
 import { blocosVisiveis, type Bloco, type Projeto } from './projeto';
@@ -108,6 +110,9 @@ export function revisar(projeto: Projeto, referencia: Projeto, registro: Registr
         mensagem: `Vídeos: ${semCapa === 1 ? 'um vídeo está' : `${semCapa} vídeos estão`} sem capa.`,
       });
   }
+
+  for (const corte of cortesDoKit(projeto, registro))
+    alertas.push({ gravidade: 'amarelo', bloco: corte.bloco, mensagem: corte.mensagem });
 
   // vermelhos primeiro
   return alertas.sort((a, b) => Number(b.gravidade === 'vermelho') - Number(a.gravidade === 'vermelho'));
