@@ -4,46 +4,25 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Onde parei
 
-- **Fase:** E1 a E4 prontas **sem publicação**: assistente, editor, números, revisão, link, mídia kit A4, upload, login e nuvem, área da creator, LGPD (baixar e excluir conta). Depois: crítica de design, tema escuro do app, **template com 11 blocos**, enquadramento de mídia, vídeos mudos, capa com fundo (película, vídeo ou imagem) e movimento com motion.dev. Detalhes de cada item em "Esperando aprovação" abaixo.
-- **DEV-154 feita (28/out):** mídia kit editorial em 1 ou 2 páginas A4, HTML e PDF aprovados pelo usuário, commit na `dev`. Falta só ler o QR com a câmera do celular. Detalhes em "Esperando aprovação".
-- **Modo de trabalho:** tudo na branch `dev`, tudo em localhost; nada foi para a `main` nem para produção (o usuário disse "sem publicação"). Commit por tarefa, sem atribuição de IA. Testes unitários adiados de propósito: o que falta está em `docs/TESTES-PENDENTES.md`.
-- **Conta de teste:** `carol.limah.teste@example.com` (projeto Supabase `Creators`), com dados reais do site. Código de acesso: `npm run acesso:teste` (em `site/`), entrar em `http://localhost:4321/app/entrar/`. Para reaplicar os dados: `npm run seed:carol <foto>`.
-- **Proposta em andamento:** `docs/PROPOSTA-TEMPLATE-2026-10-24.md`. **Onda 1 feita.** Faltam: **Editorial** (voz do site da Carol; agora candidato a opção de Estilo, sem modelos desde 27/out), Onda 2 (case simples, marcas com fit, bastidores, prévia "o que a marca vê em 10 s") e Onda 3, (as correções do mídia kit viraram a DEV-154). São 11 seções (decisão do usuário; PRD atualizado em 27/out com a DEV-096).
-- **Próximos passos (precisam do usuário):** (1) **SMTP próprio** (ex.: Resend com o domínio) para o e-mail do login trazer o código: hoje o Supabase só manda link, não deixa editar o modelo no plano grátis e limita a 2 e-mails por hora (em dev há o atalho "Já tenho um código"); (2) **regerar a secret key e o token de acesso** do Supabase, que foram colados no chat; (3) reiniciar o Claude Code para o MCP novo valer; (4) decidir o próximo passo do template (Editorial como opção de Estilo ou Onda 2); (5) quando quiser publicar: preços dos planos, CNPJ e Termos, domínio.
-- **Jornada completa (24 e 25/out):** entrar → assistente → editor → números → revisão → **Publicar** (link livre conferido no servidor, pedido `aguardando_pagamento`) → **pago** (`POST /api/pedido/pago` com `x-admin-token`; vai virar o botão do Slack) → **`/c/<link>` no ar** → **Mandar para uma marca** (link `/c/<link>/<código>`, aviso de abertura) → área mostra link, copiar e aberturas. Tudo **só em localhost**. Roteiro de ponta a ponta: `/tmp/jornada.mjs` (volta a conta de teste para rascunho ao final). **Ainda é stub:** Slack (card e botões), WhatsApp (avisos), PDF do mídia kit no servidor, preço e plano (o pedido sai com plano `site` e sem valor), prazo de edição só gravado (7 dias; a trava não roda), cache e prévia de link por imagem (DEV-144/146).
-- **Falta construir:** Slack, WhatsApp, PDF do mídia kit no servidor, rotina que apaga os arquivos do Cloudinary na exclusão de conta, DEV-089 (trocar formato), DEV-092 (eventos).
+- **Estado em 28/out (fim do dia):** a sequência de código até o lançamento está **concluída e commitada na `dev`**, tudo em localhost. Nada foi para a `main` nem para produção. Funciona de ponta a ponta: assistente → editor → revisão → publicar com plano (PDF + link ou Site) → pagamento marcado no admin → página `/c/<link>` no ar (prévia no WhatsApp, rápida no 4G) → links para marcas com aviso de abertura → PDF do mídia kit gerado no servidor e guardado → prazo de 7 dias para publicar mudanças e "Liberar a edição".
+- **Último trabalho:** DEV-154 (mídia kit editorial "Revista", 1 ou 2 páginas A4, aprovado; falta ler o QR com a câmera) e o PDF no servidor (DEV-151 a 153, grátis pelo Browser Run da Cloudflare). Como o PDF é feito e como mudar o layout: `docs/05-pdf-midia-kit.md`; teste real: `npm run pdf:kit -- <código da equipe>`.
+- **Banco:** migrações `protecao`, `exclusao_definitiva`, `limites` e `midia_kits` aplicadas em 28/out. `supabase/tests/rls.sql` roda verde (6 grupos).
+- **Modo de trabalho:** branch `dev`; uma tarefa `DEV-###` por vez, com plano, testes e commit sem atribuição de IA. Testes unitários adiados de propósito: o que falta está em `docs/TESTES-PENDENTES.md`. Roteiros de verificação em `/tmp/rev/` e `/tmp/dev154/` (somem ao reiniciar; o do PDF virou `site/scripts/pdf-kit.mjs`).
+- **Contas de teste:** creator `carol.limah.teste@example.com` (`npm run acesso:teste`, em rascunho) e equipe `equipe.teste@example.com` (`npm run equipe:teste`, papel admin). O único portfólio no ar é o `eu-carollimah` (de outra conta). Servidor de desenvolvimento: `cd site && npx astro dev` (porta 4321).
+- **Depende de você para publicar:**
+  1. **Segredos do Worker** (`wrangler secret put`): `SUPABASE_SERVICE_ROLE_KEY` (regerada), `CLOUDINARY_URL` e `ADMIN_TOKEN`. Sem eles a rotina diária de exclusão de contas não roda. Regerar também o token de acesso do Supabase (foram colados no chat).
+  2. **E-mail próprio do login** (Resend + DNS do domínio): hoje o Supabase manda só link, sem modelo editável, e limita a 2 e-mails por hora.
+  3. **Confirmar valores:** preços (`site/src/lib/planos.ts`, iguais aos da página de vendas), limites (`site/src/lib/limites.ts`: 300 arquivos, 3 GB, 50 links por dia) e o texto do cupom (DEV-221).
+  4. **Domínio do produto, CNPJ, Termos e Privacidade** (DEV-200 e 204).
+  5. **Sentry** (DEV-233), se quiser além dos logs do Cloudflare: criar a conta e mandar a DSN.
+  6. Apagar as 3 fotos órfãs no Cloudinary (`creators/71134f88…`, conta de teste); o controle de permissões bloqueou o agente.
+  7. Ler o QR do mídia kit com a câmera do celular (DEV-154).
+- **Pode vir depois do lançamento:** Slack (card do pedido com botões, DEV-161/164), WhatsApp oficial (avisos, DEV-162/184), gateway de pagamento (hoje o pagamento é combinado pelo WhatsApp e marcado no admin), DEV-089 (trocar formato), DEV-092 (eventos), proposta do template (Editorial como opção de Estilo ou Onda 2, `docs/PROPOSTA-TEMPLATE-2026-10-24.md`), auditoria de leitor de tela fora do editor (DEV-232).
+- **Limites conhecidos:** com edições pendentes em dois aparelhos, vence o que abrir primeiro (DEV-082); o plano grátis do Browser Run dá ~30 a 60 PDFs por dia (DEV-151); sem gateway, a assinatura mensal é um pedido por mês.
 - **Regras vivas:** nunca mexer no site da Carol sem pedido; nunca mencionar a avó; nunca inventar número, depoimento, case ou preço; mensagens de erro sempre em português e validação no front antes de enviar; vídeos sempre mudos na página (o som só existe no visor, aberto pelo toque do visitante).
-- **Ambiente:** `site/.env` (chaves Supabase e Cloudinary, não versionado), token do CLI do Supabase em `SUPABASE_CAROL` (`~/.zshrc`), `wrangler login` feito, `CLOUDINARY_URL` gravado como segredo do Worker `carol`. `/api/upload/assinatura` já exige login. Amplitude desligada nas páginas do app.
+- **Ambiente:** `site/.env` (chaves Supabase e Cloudinary, não versionado), token do CLI do Supabase em `SUPABASE_CAROL` (`~/.zshrc`), `wrangler login` feito (com permissão de Browser Run), `cloudflared` instalado pelo Homebrew e sem uso (pode remover com `brew uninstall cloudflared`). Amplitude desligada nas páginas do app.
 - **OCR:** código removido por ora; a spec `docs/04-ocr-prints.md` fica (código no commit `6ecf8fc`).
-- **Em andamento (27/out): correções da revisão de UX do editor**, uma tarefa por vez, cada uma com aprovação e commit:
-  - (0) commit do trabalho pendente (feito).
-  - (1) **DEV-096, sem modelos** (aprovada, commit `787a989`). Decisão do usuário: acabam os modelos para escolher; o editor e as seções montam tudo. A etapa do assistente vira "Escolha suas cores" e os docs são atualizados. `modelo` fica só como valor interno `'nuvem'`, sem migração.
-  - (1b) **DEV-097:** feita (commits `00e6357`, `6f786d0` e `f1d1ea0`).
-  - (1c) Pedidos de 28/out, que entraram antes da DEV-082, todos aprovados:
-    - **DEV-098**, menu do topo pelas seções (`eb4bebe`);
-    - **DEV-099**, espaçamento (`b7a2717`);
-    - **DEV-235**, validação de WhatsApp e e-mail (commit seguinte).
-  - Marca do editor leva ao Início (`/app/`), aprovada em 28/out.
-  - (2) **DEV-082** aprovada (28/out). (3) **DEV-034** feita (28/out). **Falta aplicar no banco** a migração `supabase/migrations/20261028000200_protecao.sql`: o sistema de permissões bloqueou a aplicação pelo agente (rodar no SQL Editor do Supabase ou liberar `apply_migration`). (4) **DEV-160, 190, 192 e 193** feitas (28/out): plano ao publicar, regras de acesso num lugar só (`lib/acesso.ts`), prazo de edição de 7 dias que trava sem tirar do ar e "Liberar a edição" (mensal, anual ou 30 dias) pago pelo admin. Preços = os da página de vendas (`lib/planos.ts`); confirme antes do lançamento. Sem gateway: o pagamento continua pelo WhatsApp. Corrigido junto: o link da miniatura no Início cobria a área inteira; a marca d'água do mídia kit agora depende do pagamento (DEV-152 em parte). Crítica em `site/.impeccable/critique/2026-10-28-planos-e-prazo.md`. **DEV-151 e 153 esperam você:** PDF no servidor precisa do Cloudflare Browser Rendering (plano pago do Workers e binding de navegador no wrangler). (5) DEV-221: botões já feitos; falta o texto do cupom (decisão sua). (6) **DEV-144** feita: o portfólio publicado não tinha prévia nenhuma no WhatsApp (sem tags og por ser `noindex`); agora tem imagem 1200x630 da capa. (7) **DEV-146** feita: LCP da página publicada de 5,1 s para 2,2 a 2,3 s no 4G lento (o título da capa ficava invisível uns 6 s esperando o JS). (8) **DEV-203** com o código feito; falta você aplicar a migração `20261028000300_exclusao_definitiva.sql` e pôr os segredos no Worker (a rodada real pelo agente foi bloqueada pelas permissões). (9) **DEV-232** (parte do editor) feita. (10) **DEV-093** feita. (11) **DEV-094** feita. (12) **DEV-095** feita. (13) **DEV-233** feita sem Sentry (logs do Worker); o Sentry espera a sua conta. (14) **DEV-234** feita; falta você aplicar a migração `20261028000400_limites.sql`. (15) **DEV-230** feita (jornada sem conta no celular). (16) **DEV-231** feita: o teste de RLS confirmou a brecha da assistente até a migração `protecao` ser aplicada. (17) Backlog marcado: DEV-142, 143, 145, 180 a 183, 185, 210 e 211 funcionam em localhost; DEV-184 em parte. **Sequência de código concluída em 28/out.** O que falta depende de você (lista abaixo).
-- **Sequência até o lançamento (combinada em 28/out; uma tarefa por vez, cada uma com aprovação e commit):**
-  1. DEV-082: não perder edição quando salvar na conta falha (plano em "Correções da revisão": marcador de pendente, aparelho vence ao abrir, nova tentativa ao voltar a conexão, aviso ao sair).
-  2. DEV-034: proteger /app e /admin por sessão e papel.
-  3. DEV-160, 190, 192 e 193: pedido com plano e preço (os da página de vendas, a confirmar com você), regras de acesso e trava de edição em 7 dias.
-  4. DEV-151 a 153: PDF do mídia kit no servidor (Cloudflare Browser Rendering; pode exigir plano pago no Cloudflare).
-  5. DEV-221: botões da página de vendas levam a /app.
-  6. DEV-144 e 146: prévia do link com imagem e página publicada rápida no 4G.
-  7. DEV-203: exclusão definitiva (Cloudinary, Storage, banco e Auth).
-  8. Resto da revisão do editor: DEV-232 (foco e teclado), DEV-093, DEV-094, DEV-095.
-  9. DEV-233 (erros), DEV-234 (abuso), DEV-230 e 231 (testes).
-  10. Marcar no backlog o que já funciona em localhost (DEV-142, 143, 145, 180 a 185, 210, 211).
-- **Depende de você antes de publicar (atualizado em 28/out, fim da sequência de código):**
-  1. ~~Aplicar 3 migrações~~ **Feito em 28/out pelo agente, com o seu pedido:** `protecao`, `exclusao_definitiva` e `limites` aplicadas; `supabase/tests/rls.sql` rodado: todos os 6 grupos passam (inclusive a assistente, que não grava mais direto); salvar na conta continua funcionando (conferido com a conta de teste). Avisos restantes do Supabase: as funções de pedir e cancelar exclusão (de propósito) e a proteção de senha vazada (o login é por código).
-  2. **Segredos do Worker** (`wrangler secret put`): `SUPABASE_SERVICE_ROLE_KEY` (regerada), `CLOUDINARY_URL`, `ADMIN_TOKEN`. Regerar também o token de acesso do Supabase.
-  3. ~~PDF no servidor~~ **Feito em 28/out (DEV-151 a 153), grátis pelo Browser Run da Cloudflare:** não precisa de plano pago para começar (10 min de navegador por dia, ~30 a 60 PDFs). Se o volume crescer, aí sim o plano pago do Workers (US$ 0,09 por hora a mais). Em produção, o binding `BROWSER` já está no `wrangler.jsonc`. Como foi feito e como mudar o layout: `docs/05-pdf-midia-kit.md` (teste real: `npm run pdf:kit`).
-  4. **Sentry (DEV-233):** criar a conta e mandar a DSN, se quiser além dos logs do Cloudflare.
-  5. **Confirmar valores:** preços (`src/lib/planos.ts`, iguais aos da página de vendas), limites (`src/lib/limites.ts`: 300 arquivos, 3 GB, 50 links por dia) e o texto do cupom (DEV-221).
-  6. E-mail próprio do login (Resend + DNS), domínio do produto, CNPJ, Termos e Privacidade (DEV-200 e 204), apagar as 3 fotos órfãs no Cloudinary (`creators/71134f88…`, roteiro `/tmp/rev/orfa.mjs`). Slack e WhatsApp oficial podem vir depois.
-  - Roteiros de medição em `/tmp/rev/`.
+- **Sequência até o lançamento (combinada e feita em 28/out, uma tarefa por commit):** DEV-082 (`425b1e5`), DEV-034 (`eda5135`), DEV-160/190/192/193 (`ea77acb`), DEV-221 (`49544eb`), DEV-144 (`6787c44`), DEV-146 (`51207d0`), DEV-203 (`07d902c`), DEV-232 (`11bf88f`), DEV-093 (`2beed0b`), DEV-094 (`4903c39`), DEV-095 (`6ff283e`), DEV-233 (`00d2886`), DEV-234 (`318c90f`), DEV-230 (`2ec8d6e`), DEV-231 (`4b9302e`), backlog marcado (`7f9a6c5`), migrações aplicadas (`62a61be`), DEV-151 a 153 (`c5d0c4f`), DEV-154 (`18cba2a`). Antes, na revisão de UX do editor (27 e 28/out): DEV-096, 097, 098, 099, 235 e a marca do editor levando ao Início.
 
 ## Esperando aprovação
 
@@ -124,6 +103,15 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Diário
 
 ### 28/out/2026
+- **Sequência até o lançamento, toda em código** (commits na lista de "Onde parei"):
+  - salvar sem perder edição (DEV-082) e proteção por sessão e papel (DEV-034: brechas da equipe gravando direto no banco e de rascunho passando entre contas no mesmo aparelho);
+  - plano ao publicar, regras de acesso, prazo de 7 dias e liberar a edição (DEV-160, 190, 192, 193);
+  - prévia do link no WhatsApp (DEV-144: o portfólio publicado não tinha nenhuma) e página publicada rápida no 4G (DEV-146: LCP de 5,1 s para 2,2 a 2,3 s);
+  - exclusão definitiva na ordem certa (DEV-203), foco e teclado, topo em 320 px, esqueleto e hierarquia do editor (DEV-232, 093, 094, 095);
+  - logs de erro (DEV-233), limites contra abuso (DEV-234), teste de ponta a ponta (DEV-230) e teste de RLS (DEV-231).
+- **Migrações aplicadas pelo agente a pedido do usuário:** `protecao`, `exclusao_definitiva`, `limites` e `midia_kits`. O teste de RLS, que tinha confirmado a brecha da assistente, ficou verde.
+- **PDF do mídia kit no servidor** (DEV-151 a 153): grátis pelo Browser Run da Cloudflare, guardado no Supabase Storage, regerado a cada publicação. A ideia do endereço interno respondido pelo Worker veio do `document-renderer`. O túnel foi bloqueado pelas permissões e não foi usado. Medido: 10 a 20 s por PDF no build de produção. Documento: `docs/05-pdf-midia-kit.md`.
+- **DEV-154:** mídia kit editorial "Revista" (feito em outra sessão, aprovado).
 - **DEV-097:** página de vendas sem modelos. Textos, imagens do portfólio real da Carol feitas no editor e enquadramento do topo (`00e6357`, `6f786d0`, `f1d1ea0`).
 - **DEV-098:** menu no topo da página, pelas seções (`eb4bebe`). Coluna nova `projects.menu` aplicada no Supabase.
 - **DEV-099:** espaçamento (`b7a2717`).
