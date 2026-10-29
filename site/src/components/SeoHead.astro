@@ -23,7 +23,7 @@ interface Props {
   themeColor?: string;
   /** fontes do primeiro desenho (padrão: as do site da Carol) */
   preload?: string[];
-  /** analytics (Amplitude com Session Replay); desligado nas páginas do app, onde a creator digita dados dela */
+  /** analytics (Amplitude, visitas e cliques, com aviso de medição); desligado nas páginas do app, onde a creator digita dados dela */
   analytics?: boolean;
 }
 const {
@@ -35,6 +35,11 @@ const {
   analytics = true,
 } = Astro.props;
 const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
+const AVISO_DE_MEDICAO: Record<Lang, { rotulo: string; texto: string; link: string }> = {
+  pt: { rotulo: 'Aviso de medição', texto: 'Usamos o Amplitude para contar visitas e cliques nesta página.', link: 'Privacidade' },
+  en: { rotulo: 'Analytics notice', texto: 'We use Amplitude to count visits and clicks on this page.', link: 'Privacy (in Portuguese)' },
+  es: { rotulo: 'Aviso de medición', texto: 'Usamos Amplitude para contar visitas y clics en esta página.', link: 'Privacidad (en portugués)' },
+};
 const canonical = abs(alternates[lang]!);
 const langs = LANGS.filter((l) => alternates[l]);
 ---
@@ -74,10 +79,42 @@ const langs = LANGS.filter((l) => alternates[l]);
 {analytics && <Fragment>
 <script is:inline src="https://cdn.amplitude.com/script/86c8a9bc2c7bbeb3e38d5662653bbf02.js"></script>
 <script is:inline>
-  window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1, serverZone: 'US' }));
+  // sem gravação de sessão (decisão de 28/out, LGPD): só visitas e cliques
   window.amplitude.init('86c8a9bc2c7bbeb3e38d5662653bbf02', {
     serverZone: 'US',
     autocapture: true,
   });
 </script>
+<!-- aviso de medição (LGPD): uma vez por navegador; "Ok" guarda a escolha e some -->
+<script is:inline define:vars={{ aviso: AVISO_DE_MEDICAO[lang] }}>
+  if (!localStorage.getItem('aviso-medicao')) {
+    addEventListener('DOMContentLoaded', () => {
+      const faixa = document.createElement('div');
+      faixa.className = 'aviso-medicao';
+      faixa.setAttribute('role', 'region');
+      faixa.setAttribute('aria-label', aviso.rotulo);
+      faixa.innerHTML = '<p></p><button type="button"></button>';
+      const p = faixa.querySelector('p');
+      p.append(aviso.texto + ' ');
+      const a = document.createElement('a');
+      a.href = '/portfolio-creator/privacidade/';
+      a.textContent = aviso.link;
+      p.append(a, '.');
+      const ok = faixa.querySelector('button');
+      ok.textContent = 'Ok';
+      ok.addEventListener('click', () => {
+        localStorage.setItem('aviso-medicao', '1');
+        faixa.remove();
+      });
+      document.body.append(faixa);
+    });
+  }
+</script>
+<style is:global>
+  .aviso-medicao { position: fixed; z-index: 90; left: 12px; right: 12px; bottom: 12px; max-width: 520px; margin-inline: auto; display: flex; align-items: center; gap: 12px 16px; padding: 12px 12px 12px 18px; border: 1px solid rgba(243, 236, 226, 0.16); border-radius: 16px; background: #2b211c; color: #f3ece2; font: 14px/1.5 var(--sans, system-ui, sans-serif); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); }
+  .aviso-medicao p { margin: 0; flex: 1; max-width: none; }
+  .aviso-medicao a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .aviso-medicao button { flex: none; min-width: 64px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: #f3ece2; color: #17110d; font: 600 14px var(--sans, system-ui, sans-serif); cursor: pointer; }
+  .aviso-medicao button:focus-visible { outline: 2px solid #f3ece2; outline-offset: 3px; }
+</style>
 </Fragment>}

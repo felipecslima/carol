@@ -242,3 +242,5 @@
 /* trecho que ainda depende de confirmação (rascunho): amarelo do produto, texto escuro */
 .legal-texto mark { padding: 0.05em 0.3em; border-radius: 4px; background: var(--yellow); color: var(--bg); }
 .legal-aviso { margin-bottom: 2em; padding: 16px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-band); font-size: 15px; }
+/* enquanto o aviso de medição (SeoHead) estiver na tela, o botão fixo espera: os dois ocupam o pé da tela */
+body:has(.aviso-medicao) .dock { display: none; }
