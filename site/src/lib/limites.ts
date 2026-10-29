@@ -4,7 +4,7 @@
 /** fotos e vídeos guardados na biblioteca */
 export const MIDIAS_POR_CONTA = 300;
 /** espaço total das mídias (bytes) */
-export const ESPACO_POR_CONTA = 3 * 1024 ** 3;
+export const ESPACO_POR_CONTA = 1 * 1024 ** 3;
 /** links de marca criados em 24 horas */
 export const LINKS_DE_MARCA_POR_DIA = 50;
 /** a mesma marca abrindo o mesmo link de novo dentro deste tempo não conta outra abertura */
@@ -15,6 +15,6 @@ export function problemaDeEspaco(quantidade: number, bytes: number): string | nu
   if (quantidade >= MIDIAS_POR_CONTA)
     return `Sua biblioteca chegou ao limite de ${MIDIAS_POR_CONTA} arquivos. Apague alguns em Mídias para enviar outros.`;
   if (bytes >= ESPACO_POR_CONTA)
-    return 'Sua biblioteca chegou ao limite de 3 GB. Apague alguns vídeos em Mídias para enviar outros.';
+    return 'Sua biblioteca chegou ao limite de 1 GB. Apague alguns vídeos em Mídias para enviar outros.';
   return null;
 }
