@@ -11,7 +11,7 @@ import { EMPRESA } from '../../data/empresa';
   titulo="Política de Privacidade"
   descricao="Quais dados o Portfólio Creator guarda, para quê, com quem compartilha e como pedir para ver ou apagar."
   caminho="/portfolio-creator/privacidade/"
-  atualizadoEm={EMPRESA.atualizadoEm}
+  atualizadoEm="31 de outubro de 2026"
 >
   <p class="legal-aviso">
     Versão em revisão jurídica. Pode mudar antes do lançamento.
@@ -27,7 +27,12 @@ import { EMPRESA } from '../../data/empresa';
   <h2>1. Quais dados guardamos</h2>
   <h3>Da sua conta</h3>
   <ul>
-    <li><strong>E-mail</strong>, para você entrar com o código de 6 números.</li>
+    <li><strong>E-mail</strong>, para você entrar com o código de 6 números ou com a sua conta Google.</li>
+    <li>
+      <strong>Se você entrar com o Google</strong>: o Google nos envia o seu e-mail, nome e foto do perfil, que ficam
+      guardados junto do seu login. Usamos só o e-mail; o nome e a foto não aparecem no seu portfólio. Não recebemos a
+      sua senha do Google.
+    </li>
     <li>
       <strong>Perfil</strong>: nome, @ das redes, WhatsApp, cidade e nicho, se você preencher. O WhatsApp é usado para
       combinar o pagamento e falar com você sobre o seu pedido.
@@ -94,6 +99,7 @@ import { EMPRESA } from '../../data/empresa';
   <p>Usamos serviços de terceiros para o Portfólio Creator funcionar. Eles tratam os dados só para prestar esse serviço:</p>
   <ul>
     <li><strong>Supabase</strong>: banco de dados, login e o arquivo PDF do mídia kit.</li>
+    <li><strong>Google</strong>: login com a sua conta Google, se você escolher entrar assim.</li>
     <li><strong>Cloudinary</strong>: fotos e vídeos do portfólio.</li>
     <li><strong>Cloudflare</strong>: hospedagem das páginas, geração do PDF e registros de erro.</li>
     <li><strong>Amplitude</strong>: medição da página de apresentação.</li>

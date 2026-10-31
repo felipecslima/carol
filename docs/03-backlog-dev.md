@@ -203,7 +203,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 ### Adiado da versão 1
 
-- [ ] **DEV-031** Entrar com Google.
+- [x] **DEV-031** Entrar com Google. *Feito em 31/out: "Continuar com o Google" em `/app/entrar/` acima do código por e-mail (a equipe continua só com código), PKCE com o fluxo guardado na aba, volta tratada só na tela de entrar, cancelamento e erro em português. O botão só aparece com o Google ligado no Supabase e some no navegador do Instagram, Facebook e TikTok (o Google bloqueia ali), com aviso para abrir no Safari ou no Chrome. Cliente OAuth criado e Google ligado no Supabase pelo usuário em 31/out; testado com conta real em localhost (a conta que já entrava por código ficou com as duas formas, sem conta nova). Google na Privacidade. Falta antes do lançamento: publicar o app no Google (sai de "Teste").*
 - [ ] **DEV-103** Bio gerada pela IA a partir das respostas (servidor, com limite de uso por conta grátis).
 - [ ] **DEV-195** Limite de IA na conta grátis. Depende: quantidade definida.
 

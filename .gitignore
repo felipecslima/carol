@@ -22,3 +22,6 @@ design_handoff_carol_portfolio/media/*.mov
 site/.impeccable/hook.cache.json
 site/.impeccable/live/
 site/.impeccable/review/
+
+# credenciais do Google OAuth baixadas do Cloud Console (nunca versionar)
+client_secret_*.json
