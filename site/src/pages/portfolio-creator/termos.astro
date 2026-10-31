@@ -1,6 +1,6 @@
 ---
-// Termos de Uso (DEV-200). Rascunho escrito a partir do que o produto faz hoje; revisão jurídica pendente (ver
-// views/PaginaLegal.astro). Preços e limites saem do código, para não divergirem.
+// Termos de Uso (DEV-200). Escritos a partir do que o produto faz hoje; no ar desde o beta (31/out), sem revisão jurídica
+// ainda (decisão do usuário). Preços e limites saem do código, para não divergirem.
 import PaginaLegal from '../../views/PaginaLegal.astro';
 import { PLANOS_DE_EDICAO, PLANOS_DE_PUBLICACAO } from '../../lib/planos';
 import { ESPACO_POR_CONTA, LINKS_DE_MARCA_POR_DIA, MIDIAS_POR_CONTA } from '../../lib/limites';
@@ -16,10 +16,6 @@ const gb = ESPACO_POR_CONTA / 1024 ** 3;
   caminho="/portfolio-creator/termos/"
   atualizadoEm={EMPRESA.atualizadoEm}
 >
-  <p class="legal-aviso">
-    Versão em revisão jurídica. Pode mudar antes do lançamento.
-  </p>
-
   <p>
     O Portfólio Creator é um serviço para montar portfólio e mídia kit de creators, com página própria e PDF. Ele é
     oferecido por <strong>{EMPRESA.razaoSocial}</strong>, CNPJ {EMPRESA.cnpj}, com sede em {EMPRESA.cidade}. Ao criar

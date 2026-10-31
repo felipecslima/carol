@@ -1,6 +1,7 @@
 ---
 // Política de Privacidade (DEV-200, LGPD). Rascunho escrito a partir do que o produto guarda hoje (migrações em
-// supabase/migrations, server/exclusao.ts, SeoHead com Amplitude só fora do app); revisão jurídica pendente.
+// supabase/migrations, server/exclusao.ts, SeoHead com Amplitude só fora do app); no ar desde o beta (31/out), sem
+// revisão jurídica ainda (decisão do usuário).
 // Quando entrar um serviço novo que recebe dados (Google, Slack, WhatsApp, gateway), atualizar a lista de serviços.
 import PaginaLegal from '../../views/PaginaLegal.astro';
 import { DIAS_PARA_EXCLUIR } from '../../server/exclusao';
@@ -13,10 +14,6 @@ import { EMPRESA } from '../../data/empresa';
   caminho="/portfolio-creator/privacidade/"
   atualizadoEm="31 de outubro de 2026"
 >
-  <p class="legal-aviso">
-    Versão em revisão jurídica. Pode mudar antes do lançamento.
-  </p>
-
   <p>
     Esta política explica como o Portfólio Creator trata os seus dados, de acordo com a Lei Geral de Proteção de
     Dados (Lei 13.709/2018, LGPD). A controladora dos dados é <strong>{EMPRESA.razaoSocial}</strong>, CNPJ

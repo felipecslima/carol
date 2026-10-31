@@ -1,8 +1,7 @@
 ---
 // Termos de Uso e Política de Privacidade do Portfólio Creator (DEV-200). Mesmo esqueleto e cores da página de vendas
 // (global.css + portfolio-creator.css), em coluna de leitura. Os textos ficam em pages/portfolio-creator/termos e
-// privacidade. Rascunho sem revisão jurídica: os trechos em <mark> ainda precisam de confirmação, e a página fica
-// fora da busca (noindex) até a revisão.
+// privacidade. Abertas à busca desde o beta (31/out); revisão jurídica fica para depois (decisão do usuário).
 import '../styles/global.css';
 import '../styles/portfolio-creator.css';
 import SeoHead from '../components/SeoHead.astro';
@@ -25,7 +24,6 @@ const { titulo, descricao, caminho, atualizadoEm } = Astro.props;
       title={`${titulo} | Portfólio Creator`}
       description={descricao}
       alternates={{ pt: caminho }}
-      noindex
       analytics={false}
       themeColor="#24130F"
     />
