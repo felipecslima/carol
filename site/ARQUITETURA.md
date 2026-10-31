@@ -54,13 +54,10 @@ As páginas do site são **100% estáticas**: tudo vira HTML no build, a partir 
 carol/                          ← raiz do git (github.com/felipecslima/carol)
 ├── HANDOFF*.md, CATALOGO-videos.md
 ├── design_handoff_carol_portfolio/   protótipo do design original (sem os .mov)
-├── medias/                     ✗ fora do git: originais da Carol (~4,7 GB)
-├── portfolio-creator-handoff.zip ✗ fora do git (*.zip é ignorado)
 └── site/                       ← o projeto Astro
     ├── src/                    código (seções 4 a 9)
     ├── public/                 arquivos servidos como estão
     ├── scripts/                geradores rodados à mão (seção 11)
-    ├── media-backup/           ✗ fora do git: MP4 720p já enviados ao Cloudinary
     ├── dist/                   ✗ fora do git: saída do build (dist/client = site, dist/server = Worker)
     ├── .env                    ✗ fora do git: credenciais do Cloudinary
     ├── .env.production         versionado: só o cloud name público
@@ -69,7 +66,7 @@ carol/                          ← raiz do git (github.com/felipecslima/carol)
     └── PRODUCT.md, DESIGN.md, HANDOFF.md, ARQUITETURA.md
 ```
 
-**Atenção:** `medias/`, `media-backup/` e os dois `.zip` (o de mockups e o `portfolio-creator-handoff.zip`) **só existem nesta máquina**. Um clone novo não tem os vídeos originais nem a especificação do Portfólio Creator. Vale guardar cópias num drive.
+**Atenção:** os vídeos e fotos originais da Carol ficam fora do projeto, em `~/work/motion-studio/Publis aprovadas/` (só nesta máquina). Os vídeos do site estão no Cloudinary (`carol-limah/`), que **não tem backup ligado**. Vale guardar cópias num drive ou ligar o backup do Cloudinary. `medias/`, `site/media-backup/` e os `.zip` saíram do projeto em 31/out.
 
 ---
 
@@ -203,11 +200,11 @@ Módulos TypeScript empacotados pelo Astro (Vite) e carregados por um `<script>`
 
 | Tipo | Onde fica | Como chega à página |
 |---|---|---|
-| Vídeos do portfólio | Cloudinary `carol-limah/<id>.mp4` (cópia local em `media-backup/`) | `videoSrc(id)`: o MP4 original, sem transformação (`f_auto,q_auto` deixava o arquivo maior e gastava créditos) |
+| Vídeos do portfólio | Cloudinary `carol-limah/<id>.mp4` (originais em `~/work/motion-studio/Publis aprovadas/`) | `videoSrc(id)`: o MP4 original, sem transformação (`f_auto,q_auto` deixava o arquivo maior e gastava créditos) |
 | Capas dos vídeos | Geradas pelo Cloudinary a partir do vídeo | `posterSrc(id, w)` → `so_<segundo>,w_<w>,f_auto,q_auto`. O segundo vem de `POSTER_T`. Duas larguras no `srcset` (360 e 720) |
 | Fotos | `public/media/<id>.webp` e `<id>-600.webp` | `srcset` 600w/1100w |
 | Capas dos reels mais vistos | `public/media/reels/r<k>.webp` | Recortes do print da aba Reels |
-| Imagens do Portfólio Creator | `public/media/pc/` | Geradas por `portfolio-creator-shots.mjs` |
+| Imagens do Portfólio Creator | `public/media/pc/` | Geradas por `portfolio-creator-secoes.mjs` (as do antigo protótipo já estão na pasta) |
 
 **Alternância local/Cloudinary:** se `PUBLIC_CLOUDINARY_CLOUD_NAME` não estiver definido, `videoSrc` e `posterSrc` apontam para `/media/`. Como os MP4 saíram de `public/media`, isso só funciona se você copiar os vídeos de volta para lá; na prática, o `.env` local precisa do cloud name.
 
@@ -223,8 +220,7 @@ São rodados à mão, não fazem parte do build. **Os arquivos que eles geram s�
 |---|---|---|---|
 | `media-kit-pdf.mjs` | `npm run pdf` (faz o build antes) | `public/carol-limah-media-kit{,-en,-es}.pdf` | Mudar `content.ts`, `ui.ts` (textos `mk*`) ou o `MediaKit` |
 | `og-image.mjs` | `npm run og` | `public/og-{pt,en,es}.jpg` (1200×630) | Mudar o título do hero |
-| `cloudinary-upload.mjs` | `node scripts/cloudinary-upload.mjs media-backup [--force]` | Vídeos no Cloudinary | Entrar vídeo novo em `MEDIA` |
-| `portfolio-creator-shots.mjs` | `node scripts/portfolio-creator-shots.mjs <pasta do handoff>` | `public/media/pc/*` | Mudar o protótipo do Portfólio Creator |
+| `cloudinary-upload.mjs` | `node scripts/cloudinary-upload.mjs <pasta com os MP4> [--force]` | Vídeos no Cloudinary | Entrar vídeo novo em `MEDIA` |
 
 Detalhes que importam:
 - **PDF:** serve o `dist/` com um servidor HTTP próprio em porta aleatória, porque o `astro preview` do Astro 7 vira daemon e trava a segunda execução. Espera `document.fonts.ready` antes de imprimir e copia o PDF também para `dist/`.
@@ -370,9 +366,9 @@ O build roda no Cloudflare a partir do repositório no GitHub (branch `main`). P
 ## 17. Como estender
 
 **Vídeo novo no portfólio**
-1. Converter para MP4 720×1280 e pôr em `media-backup/<id>.mp4`.
+1. Converter para MP4 720×1280 e pôr numa pasta como `<id>.mp4` (por exemplo `/tmp/novos/`).
 2. Acrescentar o item em `MEDIA` (na posição da ordem) e o segundo da capa em `POSTER_T`.
-3. `node scripts/cloudinary-upload.mjs media-backup`, depois `npm run pdf`.
+3. `node scripts/cloudinary-upload.mjs /tmp/novos`, depois `npm run pdf`.
 4. Se ele pertence a uma parada de nicho, incluir o `id` em `ids` da parada em `niches.ts`.
 
 **Nicho novo:** acrescentar um item em `SRC` (`niches.ts`) com `key`, `slug`, textos `L` e paradas. Rotas, rodapé, sitemap, hreflang e seletor de idioma se atualizam sozinhos. Para aparecer em Formatos, aponte `SERVICES[].niche` para a `key`.
@@ -389,7 +385,7 @@ O build roda no Cloudflare a partir do repositório no GitHub (branch `main`). P
 
 | Item | Risco | Sugestão |
 |---|---|---|
-| Arquivos fora do git (`medias/`, `media-backup/`, `.zip`) | Perder a máquina é perder os originais e a especificação do Portfólio Creator | Cópia num drive |
+| Originais fora do projeto (`~/work/motion-studio/Publis aprovadas/`) e Cloudinary sem backup | Perder a máquina ou apagar no Cloudinary é perder os arquivos | Cópia num drive e backup do Cloudinary ligado |
 | PDFs e `og-*.jpg` gerados à mão | Ficam desatualizados em silêncio se alguém esquecer de rodar | Checklist no PR, ou gerar no CI |
 | Título do hero duplicado em `og-image.mjs` | Mudar o hero e não a prévia | Ler `heroH1` de `ui.ts` |
 | Upload lê `content.ts` por regex | Mudar o formato da linha quebra o upload em silêncio | Importar `MEDIA` direto |

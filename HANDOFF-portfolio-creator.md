@@ -33,7 +33,7 @@ A página de vendas vive no site da Carol para começar a captar interesse antes
 ## 3. Como foi pensado
 
 ### Fonte
-Tudo vem do pacote `portfolio-creator-handoff.zip`, na raiz do projeto. **O arquivo está fora do git** (`*.zip` é ignorado) e só existe nesta máquina, então vale guardar uma cópia:
+Tudo veio do pacote `portfolio-creator-handoff.zip` (apagado em 31/out: os modelos do protótipo foram descartados em 27/out e o que valia está em `docs/` e no código). O pacote tinha:
 
 | Arquivo | Conteúdo |
 |---|---|
@@ -98,7 +98,7 @@ site/src/views/PortfolioCreator.astro  ← a página
 site/src/pages/portfolio-creator/      ← rota
 site/src/styles/portfolio-creator.css  ← tokens de cor do produto sobre o global.css
 site/src/scripts/portfolio-creator.ts  ← menu, pausa da faixa, revelação dos modelos, CTA fixo
-site/scripts/portfolio-creator-shots.mjs ← gera as imagens a partir do protótipo
+site/scripts/portfolio-creator-secoes.mjs ← gera as imagens a partir do editor de verdade
 site/public/media/pc/                  ← capas dos 15 modelos, portfólio iniciante, fotos da Carol
 site/public/og-portfolio-creator.jpg   ← prévia de link
 ```
@@ -117,10 +117,10 @@ As ferramentas grátis (`FREE`) aparecem como "em breve" enquanto o `href` estiv
 
 ### Regerar as imagens
 ```
-unzip portfolio-creator-handoff.zip -d /tmp/pc
-cd site && node scripts/portfolio-creator-shots.mjs /tmp/pc/portfolio-creator-handoff
+cd site && npx astro dev   # em outro terminal
+node scripts/portfolio-creator-secoes.mjs
 ```
-Os `.dc.html` do protótipo dependem de um runtime que não vem no pacote. O script preenche os valores de cada tela no Node antes de abrir no Chromium.
+As imagens saem do editor de verdade (modo Ver), com o portfólio da conta de teste. As do protótipo (`portfolio-creator-shots.mjs`) deixaram de ser geradas em 31/out; as já geradas continuam em `public/media/pc/`.
 
 ---
 

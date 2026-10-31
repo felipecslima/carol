@@ -18,7 +18,6 @@ A arquitetura técnica (build, rotas, dados, idiomas, mídia, hospedagem, riscos
 | Arquivo | Conteúdo |
 |---|---|
 | `HANDOFF-critique.md` | Histórico das críticas de design do site da Carol, decisões e dados do Instagram |
-| `CATALOGO-videos.md` | Catálogo dos vídeos de `medias/` com marca, assunto e views conferidas |
+| `CATALOGO-videos.md` | Catálogo dos vídeos originais da Carol com marca, assunto e views conferidas |
 | `design_handoff_carol_portfolio/` | Protótipo e especificação do design original do site |
-| `portfolio-creator-handoff.zip` | Especificação, preços, pendências e protótipo do Portfólio Creator |
-| `medias/` | Vídeos e fotos originais da Carol (fonte dos arquivos do site) |
+| `~/work/motion-studio/Publis aprovadas/` (fora do projeto) | Vídeos e fotos originais da Carol (fonte dos arquivos do site); a pasta `medias/` saiu do projeto em 31/out |

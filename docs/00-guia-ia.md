@@ -193,7 +193,7 @@ Os blocos guardam **dados**, não visual. Trocar paleta, estilo ou formato muda 
 - Botão diz exatamente o que acontece ("Publicar", depois "Publicado").
 - Erro explica o que houve e como resolver, sem pedir desculpas ("Esse vídeo tem 1min20. Use até 60s.").
 - Placeholders e dicas no tom da Carol; os textos finais de exemplo vêm da Carol: use rascunhos marcados como `TODO(Carol)` quando não existirem.
-- Visual do estilo padrão e das seções: os protótipos `portfolio-creator-handoff.zip > prototipo/Modelo*.dc.html` servem de referência visual, não são modelos para construir. Sempre **adaptados para celular** (os protótipos têm 1200 px fixos e conteúdo de exemplo escrito no HTML).
+- Visual do estilo padrão e das seções: o site da Carol e o que já está no app são a referência (os protótipos do `portfolio-creator-handoff.zip` foram apagados em 31/out). Sempre **adaptados para celular** (os protótipos têm 1200 px fixos e conteúdo de exemplo escrito no HTML).
 
 ## 9. Definição de pronto (vale para toda tarefa)
 

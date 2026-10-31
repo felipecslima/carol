@@ -36,7 +36,7 @@ Ele existe para **gerar pedidos de parceria**. Uma visita deu certo quando a mar
 
 ### De onde veio
 1. **Design em alta fidelidade** (`../design_handoff_carol_portfolio/`): protótipo em HTML de uma página, inspirado na estrutura de jumoura.com.br. A paleta espresso/caramelo e as fontes Instrument Serif + Hanken Grotesk vieram daí e são decisões fixas. O `README.md` dessa pasta é a especificação original.
-2. **Catálogo dos vídeos** (`../CATALOGO-videos.md`): cada vídeo de `../medias/` foi transcrito com Whisper e analisado quadro a quadro. Títulos, marcas e views foram conferidos no próprio vídeo e casados com as capas do print da aba Reels, em vez de serem chutados.
+2. **Catálogo dos vídeos** (`../CATALOGO-videos.md`): cada vídeo original (hoje em `~/work/motion-studio/Publis aprovadas/`) foi transcrito com Whisper e analisado quadro a quadro. Títulos, marcas e views foram conferidos no próprio vídeo e casados com as capas do print da aba Reels, em vez de serem chutados.
 3. **Rodadas de crítica** (`../HANDOFF-critique.md`): a página passou por várias críticas com o fluxo `/impeccable`, e a nota subiu de 20/32 para 24/32. O arquivo registra cada decisão, correção e pendência dessas rodadas.
 
 ### Direção visual: "The Late Table"
@@ -161,7 +161,7 @@ Todos os comandos rodam em `site/`.
 | Atualizar números | Editar `INSIGHTS`, `REELS_STATS`, `TOP_REELS` ou `AUDIENCE` em `content.ts` a partir de prints novos. Depois, `npm run pdf` |
 | Media kit em PDF | `npm run pdf`. **Rodar sempre que mudar `content.ts`**: os PDFs ficam em `public/` e são commitados |
 | Prévia de link | `npm run og`. Rodar sempre que mudar o título do hero (`heroH1` em `ui.ts`) |
-| Vídeo novo | Converter para MP4 720×1280 → pôr em `media-backup/` → adicionar em `MEDIA` e em `POSTER_T` → `node scripts/cloudinary-upload.mjs media-backup` → `npm run pdf` |
+| Vídeo novo | Converter para MP4 720×1280 → pôr numa pasta (ex.: `/tmp/novos/`) → adicionar em `MEDIA` e em `POSTER_T` → `node scripts/cloudinary-upload.mjs /tmp/novos` → `npm run pdf` |
 | Marca nova | Acrescentar em `BRANDS` (só depois de a Carol confirmar a parceria) |
 | Trocar o e-mail | Constante `EMAIL` em `content.ts`. Ela alimenta o Copiar, os `mailto`, o media kit e o rótulo do Sobre. Depois, `npm run pdf` |
 | Texto novo | Nos três idiomas, em `ui.ts` ou ao lado do dado em `src/data/` |
@@ -180,7 +180,7 @@ Todos os comandos rodam em `site/`.
 ### Depende da Carol
 - [ ] `v43`: a Carol aparece de uniforme no consultório. Fica no media kit? Com que título?
 - [ ] Nomes que faltam: o restaurante do `v17` ("Jantar a dois"), a hospedagem em Ilhabela do `v21` (placa e fala dizem "Reserva") e se foi parceria, a festa do `v27` (palco "Sampa Tribal") e a pousada do `v30` (placa "…imê Pousada em…").
-- [ ] **Arquivos dos reels mais vistos**, que não estão em `../medias/`: 762 mil (favoritos de beleza do Mercado Livre), "Eu sou do Amazonas" (760 mil), helicóptero (750 e 688 mil), 9.9 do Mercado Livre (683 mil) e outros. Com eles, o portfólio mostraria o melhor desempenho do perfil.
+- [ ] **Arquivos dos reels mais vistos**, que não estão entre os originais: 762 mil (favoritos de beleza do Mercado Livre), "Eu sou do Amazonas" (760 mil), helicóptero (750 e 688 mil), 9.9 do Mercado Livre (683 mil) e outros. Com eles, o portfólio mostraria o melhor desempenho do perfil.
 - [ ] URLs dos posts no Instagram, para um botão "Ver no Instagram" no lightbox.
 - [ ] Opcional, mas marcas pedem: taxa de engajamento, alcance de stories (stories é vendido e não tem métrica), faixa de investimento ou pacotes.
 - [ ] E-mail com domínio próprio (ex. `contato@eucarollimah.com.br`) via Cloudflare Email Routing + "Enviar como" do Gmail. Depois, trocar `EMAIL`.
@@ -204,6 +204,6 @@ Todos os comandos rodam em `site/`.
 | `PRODUCT.md` | Público, propósito, posicionamento, regras de marca e princípios |
 | `DESIGN.md` | Sistema visual completo (tokens, tipografia, componentes, o que fazer e evitar) |
 | `../HANDOFF-critique.md` | Histórico das críticas, decisões do usuário, dados do Instagram, tarefas e pendências |
-| `../CATALOGO-videos.md` | Cada vídeo de `medias/`: marca, assunto, duração, views conferidas |
+| `../CATALOGO-videos.md` | Cada vídeo original: marca, assunto, duração, views conferidas |
 | `../design_handoff_carol_portfolio/` | Protótipo e especificação do design original |
 | `.impeccable/` | Configuração e snapshots das críticas do fluxo `/impeccable` |

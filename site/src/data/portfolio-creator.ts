@@ -1,6 +1,6 @@
 // Portfólio Creator: produto da Carol para creators iniciantes montarem portfólio e mídia kit.
 // Página de vendas em /portfolio-creator/ (só em português). Textos, preços e regras vêm do handoff
-// (portfolio-creator-handoff.zip: 01-especificacao.md, 02-planos-e-precos.md). Frases que só estavam no
+// (portfolio-creator-handoff.zip, apagado em 31/out: 01-especificacao.md, 02-planos-e-precos.md). Frases que só estavam no
 // protótipo e não na especificação ("menos de 15 minutos", "acompanhamento da Carol", "contato que fecha")
 // ficam de fora até a Carol confirmar.
 
