@@ -8,7 +8,8 @@ const env = Object.fromEntries(
     .filter((l) => l.includes('='))
     .map((l) => [l.slice(0, l.indexOf('=')), l.slice(l.indexOf('=') + 1).trim()]),
 );
-const email = process.argv[2] ?? 'carol.limah.teste@example.com';
+// conta de teste que fica (decisão de 31/out): a do usuário, também a dona do eu-carollimah no ar
+const email = process.argv[2] ?? 'lfj182@gmail.com';
 const r = await fetch(`${env.PUBLIC_SUPABASE_URL}/auth/v1/admin/generate_link`, {
   method: 'POST',
   headers: { apikey: env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`, 'Content-Type': 'application/json' },
@@ -19,4 +20,4 @@ if (!r.ok || !dados.email_otp) {
   console.error('Não deu para gerar o código:', dados.msg ?? dados.message ?? r.status);
   process.exit(1);
 }
-console.log(`\n  E-mail: ${email}\n  Código: ${dados.email_otp}   (vale 15 minutos)\n  Entre em: http://localhost:4321/app/entrar/\n`);
+console.log(`\n  E-mail: ${email}\n  Código: ${dados.email_otp}   (vale 15 minutos)\n  Entre em: http://localhost:4321/app/entrar/?teste=${encodeURIComponent(email)}\n`);

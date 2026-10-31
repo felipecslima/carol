@@ -62,9 +62,14 @@ function lerVoltaDoGoogle(): VoltaDoGoogle {
 
 /** `equipe`: entrada separada do admin (/admin/entrar/): não cria conta nova e só deixa passar quem é da equipe. */
 export default function Entrar({ equipe = false }: { equipe?: boolean }) {
-  const [email, setEmail] = useState('');
+  // só em desenvolvimento: `?teste=<e-mail>` abre direto na etapa do código (o `npm run acesso:teste` imprime esse
+  // link), para entrar nas contas de teste sem mandar e-mail para endereço que não existe
+  const [teste] = useState(() =>
+    import.meta.env.DEV ? new URLSearchParams(window.location.search).get('teste')?.trim().toLowerCase() || null : null,
+  );
+  const [email, setEmail] = useState(teste ?? '');
   const [codigo, setCodigo] = useState('');
-  const [etapa, setEtapa] = useState<'email' | 'codigo'>('email');
+  const [etapa, setEtapa] = useState<'email' | 'codigo'>(teste ? 'codigo' : 'email');
   const [ocupado, setOcupado] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const [espera, setEspera] = useState(0);
@@ -313,20 +318,6 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
               <button type="submit" className="as-botao" disabled={ocupado || !email.trim()}>
                 {ocupado ? 'Enviando…' : 'Enviar código'}
               </button>
-              {import.meta.env.DEV && (
-                <button
-                  type="button"
-                  className="as-link"
-                  disabled={!analisarEmail(email).ok}
-                  onClick={() => {
-                    setEmail(email.trim().toLowerCase());
-                    setErro(null);
-                    setEtapa('codigo');
-                  }}
-                >
-                  Já tenho um código (só em desenvolvimento)
-                </button>
-              )}
             </form>
             {!equipe && (
               <p className="as-legal">

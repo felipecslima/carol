@@ -1,4 +1,5 @@
-// Cria (ou atualiza) um usuário da equipe de teste com papel `admin` e gera o código de acesso dele. Só desenvolvimento.
+// Dá o papel da equipe (padrão `admin`) a uma conta e gera o código de acesso dela. Só desenvolvimento. Sem e-mail, usa a
+// conta de teste que fica (lfj182@gmail.com, já `admin`); com `assistente`, ela perde as ações do admin até voltar a `admin`.
 // O papel fica em app_metadata, que só o servidor consegue gravar. Uso: `npm run equipe:teste [e-mail] [papel]`.
 import { readFileSync } from 'node:fs';
 
@@ -8,7 +9,7 @@ const env = Object.fromEntries(
     .filter((l) => l.includes('='))
     .map((l) => [l.slice(0, l.indexOf('=')), l.slice(l.indexOf('=') + 1).trim()]),
 );
-const email = process.argv[2] ?? 'equipe.teste@example.com';
+const email = process.argv[2] ?? 'lfj182@gmail.com';
 const papel = process.argv[3] ?? 'admin';
 const chamar = (caminho, init = {}) =>
   fetch(`${env.PUBLIC_SUPABASE_URL}${caminho}`, {
@@ -26,4 +27,4 @@ if (!r.ok) {
   console.error('Não deu para dar o papel de equipe:', r.status);
   process.exit(1);
 }
-console.log(`\n  Equipe (${papel}): ${email}\n  Código: ${link.email_otp}   (vale 15 minutos)\n  Entre em: http://localhost:4321/app/entrar/ e depois abra http://localhost:4321/admin/\n`);
+console.log(`\n  Equipe (${papel}): ${email}\n  Código: ${link.email_otp}   (vale 15 minutos)\n  Entre em: http://localhost:4321/admin/entrar/?teste=${encodeURIComponent(email)} e depois abra http://localhost:4321/admin/\n`);

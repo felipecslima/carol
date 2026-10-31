@@ -1,5 +1,5 @@
 // Gera de verdade o PDF do mídia kit de um portfólio no ar, pelo navegador da Cloudflare, e baixa (docs/05-pdf-midia-kit.md).
-// Usa a ação "gerar_pdf" do admin com a conta da equipe de teste. Precisa do servidor rodando (npx astro dev).
+// Usa a ação "gerar_pdf" do admin com a conta de teste (lfj182@gmail.com, papel admin; outra: PDF_EMAIL=…). Precisa do servidor rodando (npx astro dev).
 //   npm run equipe:teste                              → código da conta da equipe
 //   npm run pdf:kit -- <código> [link] [endereço]     → padrão: eu-carollimah, http://localhost:4321
 // Cada geração gasta tempo do plano grátis (10 min/dia); várias seguidas batem no limite por minuto (429).
@@ -14,9 +14,9 @@ if (!codigo) {
 
 const navegador = await chromium.launch();
 const pagina = await (await navegador.newContext()).newPage();
-await pagina.goto(`${base}/admin/entrar/`);
-await pagina.fill('input[type=email]', 'equipe.teste@example.com');
-await pagina.click('text=Já tenho um código');
+// `?teste=` abre direto na etapa do código (só em `astro dev`)
+const email = process.env.PDF_EMAIL ?? 'lfj182@gmail.com';
+await pagina.goto(`${base}/admin/entrar/?teste=${encodeURIComponent(email)}`);
 await pagina.fill('#codigo', codigo);
 await pagina.keyboard.press('Enter');
 await pagina.waitForURL(/admin\/(?!entrar)/, { timeout: 20000 });

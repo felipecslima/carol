@@ -19,8 +19,13 @@ const env = Object.fromEntries(
 const BASE = env.PUBLIC_SUPABASE_URL;
 const CHAVE = env.SUPABASE_SERVICE_ROLE_KEY;
 const [, cKey, cSecret, CLOUD] = env.CLOUDINARY_URL.match(/^cloudinary:\/\/([^:]+):([^@]+)@(.+)$/);
-// outra conta de teste com os mesmos dados: SEED_EMAIL=outra@example.com npm run seed:carol <foto>
-const EMAIL_DE_TESTE = process.env.SEED_EMAIL ?? 'carol.limah.teste@example.com';
+// SOBRESCREVE perfil e projeto da conta: só com e-mail informado (SEED_EMAIL=conta@… npm run seed:carol <foto>). A conta de
+// teste antiga foi excluída em 31/out; a que fica tem o portfólio no ar, e o seed recusa conta com portfólio no ar.
+const EMAIL_DE_TESTE = process.env.SEED_EMAIL;
+if (!EMAIL_DE_TESTE) {
+  console.error('Informe a conta: SEED_EMAIL=conta@exemplo npm run seed:carol <foto>. O perfil e o projeto dela serão sobrescritos.');
+  process.exit(1);
+}
 
 const h = { apikey: CHAVE, Authorization: `Bearer ${CHAVE}`, 'Content-Type': 'application/json' };
 const api = async (caminho, init = {}) => {
@@ -36,6 +41,11 @@ let usuario = (lista.users ?? []).find((u) => u.email === EMAIL_DE_TESTE);
 if (!usuario) usuario = await api('/auth/v1/admin/users', { method: 'POST', body: JSON.stringify({ email: EMAIL_DE_TESTE, email_confirm: true }) });
 const uid = usuario.id;
 console.log('usuário:', EMAIL_DE_TESTE, uid.slice(0, 8) + '…');
+const noAr = await api(`/rest/v1/projects?dono=eq.${uid}&status=eq.no_ar&select=slug`);
+if (noAr?.length) {
+  console.error(`Parei: ${EMAIL_DE_TESTE} tem portfólio no ar (/c/${noAr[0].slug}/). O seed sobrescreveria o rascunho dele.`);
+  process.exit(1);
+}
 
 // ---------- perfil (dados do site) ----------
 // cria ou atualiza antes da foto: mídias e projeto apontam para o perfil, que pode faltar (ex.: depois de um teste
