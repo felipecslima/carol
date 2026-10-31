@@ -173,7 +173,7 @@ export default function Assistente() {
 
             {etapa === 'nome' && (
               <>
-                <h1 className="as-titulo">Como você quer ser chamada?</h1>
+                <h1 className="as-titulo">Como podemos te chamar?</h1>
                 <div className="as-campo">
                   <label htmlFor="nome">Seu nome</label>
                   <input
@@ -394,7 +394,7 @@ export default function Assistente() {
               <>
                 <h1 className="as-titulo">Seus números do Instagram</h1>
                 <p className="as-texto">
-                  Só você sabe esses números, e a página mostra o selo “Informado pela creator”. Pode pular e preencher
+                  Só você sabe esses números, e a página mostra o selo “Informado pelo próprio perfil”. Pode pular e preencher
                   depois.
                 </p>
                 <PainelNumeros

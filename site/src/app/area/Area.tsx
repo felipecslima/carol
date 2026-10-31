@@ -118,7 +118,7 @@ export default function Area({ sessao }: { sessao: Session }) {
           )}
         </main>
 
-        <nav className="ar-abas" aria-label="Área da creator">
+        <nav className="ar-abas" aria-label="Sua área">
           {ABAS.map(([id, rotulo, Icone]) => (
             <button key={id} type="button" aria-current={aba === id ? 'page' : undefined} onClick={() => ir(id)}>
               {aba === id && (

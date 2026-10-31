@@ -125,7 +125,7 @@ function itensDePublico(n: Numeros, variacao: string): Item[] {
 /** Grava os números no projeto e preenche os blocos Números e Público (sem marca de exemplo, com selo e período). */
 export function aplicarNumeros(projeto: Projeto, n: Numeros): Projeto {
   const periodo = textoDoPeriodo(n.periodo);
-  const selo = `Informado pela creator${periodo ? ` · ${periodo}` : ''}`;
+  const selo = `Informado pelo próprio perfil${periodo ? ` · ${periodo}` : ''}`;
   const blocos = projeto.blocos.map((b) => {
     if (b.tipo === 'numeros') return { ...b, dados: { ...b.dados, itens: itensDeNumeros(n), selo } };
     if (b.tipo === 'publico') return { ...b, dados: { ...b.dados, itens: itensDePublico(n, b.variacao), selo } };

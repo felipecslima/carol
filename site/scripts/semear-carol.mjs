@@ -90,7 +90,7 @@ const video = (id, t, titulo, visualizacoes, marca) => ({
   video: `https://res.cloudinary.com/${CLOUD}/video/upload/carol-limah/${id}.mp4`,
   capa: `https://res.cloudinary.com/${CLOUD}/video/upload/so_${t},w_360,f_auto,q_auto/carol-limah/${id}.jpg`,
 });
-const selo = 'Informado pela creator · 20/09 a 19/10';
+const selo = 'Informado pelo próprio perfil · 20/09 a 19/10';
 // público (AUDIENCE em content.ts, Insights de 20/set a 19/out/2026)
 const faixas = [['13-17', 1.8], ['18-24', 11.4], ['25-34', 38.5], ['35-44', 29.7], ['45-54', 13.3], ['55-64', 3.9], ['65+', 1.5]];
 const cidades = [['São Paulo', 45], ['São José dos Campos', 22], ['Jacareí', 12], ['Ribeirão Preto', 2.3]];

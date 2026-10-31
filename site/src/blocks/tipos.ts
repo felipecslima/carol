@@ -82,7 +82,7 @@ export interface DadosDoSobre {
 }
 export interface DadosDeNumeros {
   itens?: ItemDeNumero[];
-  /** "Informado pela creator · 20/09 a 19/10": aparece quando os números vêm da creator */
+  /** "Informado pelo próprio perfil · 20/09 a 19/10": aparece quando os números vêm de quem montou a página */
   selo?: string;
 }
 export interface DadosDeVideos {
