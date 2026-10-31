@@ -5,7 +5,7 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Onde parei
 
 - **Estado em 31/out:** o código previsto até o lançamento está **feito e commitado na `dev`** e foi testado só em localhost. Nada foi para a `main` nem para produção. Funciona de ponta a ponta: assistente → editor → revisão → publicar com plano (PDF + link ou Site) → pagamento marcado no admin → página `/c/<link>` no ar (prévia no WhatsApp, rápida no 4G) → links para marcas com aviso de abertura → PDF do mídia kit gerado no servidor e guardado → prazo de 7 dias para publicar mudanças e "Liberar a edição".
-- **Último trabalho:** DEV-031, login com Google, aprovado e commitado em 31/out (testado com conta real em localhost). Código do lançamento completo de novo; o que falta está em "Depende de você". Próximo passo: revisão final e merge na `main` quando o usuário pedir para publicar.
+- **Último trabalho:** DEV-035, Turnstile no pedido do código, aprovado e commitado em 31/out. Antes: DEV-031, login com Google (`57dc7bc`). Depois: revisão final e merge na `main` quando o usuário pedir para publicar.
 - **Depende de você antes de abrir ao público:**
   1. **`wrangler login` expirou** (visto em 31/out). Sem ele, `astro dev` e `npm run build` não sobem, porque o binding remoto do Browser Run (PDF) pede login; o `npm run test:e2e` só roda sobre o último build já gerado. Rode `npx wrangler login` num terminal seu, dentro de `site/`. O login de 28/out foi feito com permissão de Browser Run: confira que ela continua e que o PDF sai (`npm run pdf:kit`). Nos testes de 31/out usei uma config temporária sem o binding remoto, já apagada.
   2. **Google (DEV-031): login funcionando** (cliente OAuth criado e ligado no Supabase em 31/out). Antes do lançamento: publicar o app no Google Cloud (https://console.cloud.google.com/auth/audience → Publicar app), senão só entram os usuários de teste. Opcional: verificação de marca, para a tela do Google mostrar o nome do produto em vez do endereço do Supabase (pede a Privacidade no ar). O arquivo `client_secret_*.json` na raiz é ignorado pelo Git; pode ser apagado.
@@ -33,7 +33,8 @@ Nada.
 ## Diário
 
 ### 31/out/2026
-- **DEV-031, entrar com o Google:** feito, testado com conta real e aprovado. Commits antes: documentos (`76a1edb`) e DEV-200 (`354ff31`).
+- **DEV-035, Turnstile no login:** feito, testado por pessoa e aprovado.
+- **DEV-031, entrar com o Google:** feito, testado com conta real e aprovado (`57dc7bc`). Commits antes: documentos (`76a1edb`) e DEV-200 (`354ff31`).
 - **DEV-200 na compra:** Termos e Privacidade ligados junto do botão ao reservar o link e ao liberar a edição. Aprovado e commitado.
 - **Documentos arrumados:** "Onde parei" reescrito com o que falta até o lançamento. As 29 entradas antigas de "Esperando aprovação", todas já aprovadas e commitadas, foram para `docs/ENTREGAS.md` sem mudança de texto. No backlog, conferidos no código: DEV-141, 203, 231, 233 e 234 marcados como feitos; DEV-230 (falta e2e de publicar e da marca abrir) e DEV-232 (falta leitor de tela fora do editor) seguem abertos, com o que falta escrito.
 - **Ambiente:** o `wrangler login` expirou e trava `astro dev` e o build (binding remoto do Browser Run). O servidor de desenvolvimento que estava de pé desde 28/out respondia 404 em todos os arquivos e foi parado. Para seguir sem o login, há uma config temporária `site/astro.config.semremoto.mjs` (não versionada, sem o binding remoto; o PDF não sai): `npx astro dev --background --config astro.config.semremoto.mjs`. Apagar depois do `wrangler login`.

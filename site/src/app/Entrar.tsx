@@ -4,6 +4,7 @@
 import { Marca } from './Marca';
 import { useEffect, useRef, useState } from 'react';
 import { googleLigado, supabase } from './supabase';
+import { Turnstile, turnstileLigado, type ControleTurnstile } from './Turnstile';
 import { analisarEmail } from '@lib/formatos';
 import './assistente/assistente.css';
 import './refino.css';
@@ -14,6 +15,8 @@ const ESPERA = 30;
 const PAPEIS_EQUIPE = ['admin', 'operacao', 'assistente'];
 
 const GOOGLE_CANCELADO = 'Você cancelou a entrada com o Google. Tente de novo ou receba um código no e-mail.';
+const MARCAR_CAIXA = 'Marque a caixa “Confirme que é humano” e toque de novo para enviar.';
+const ACESSO_NAO_CONFERIDO = 'Não conseguimos confirmar o acesso. Recarregue a página e tente de novo.';
 const GOOGLE_FALHOU = 'Não deu para entrar com o Google agora. Tente de novo ou receba um código no e-mail.';
 
 // navegador de dentro do Instagram, Facebook, TikTok e Line: o Google bloqueia a entrada ali (disallowed_useragent)
@@ -79,6 +82,7 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
   const [erroGoogle, setErroGoogle] = useState<string | null>(voltaDoGoogle?.erro ?? null);
   const [voltando, setVoltando] = useState(Boolean(voltaDoGoogle?.code));
   const campo = useRef<HTMLInputElement>(null);
+  const turnstile = useRef<ControleTurnstile>(null);
 
   useEffect(() => {
     if (equipe) return;
@@ -129,13 +133,29 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
     const limpo = analise.arrumado;
     setErro(null);
     setOcupado(true);
-    const { error } = await supabase.auth.signInWithOtp({ email: limpo, options: { shouldCreateUser: !equipe } });
+    // Turnstile (DEV-035): o Supabase recusa o pedido de código sem o comprovante da Cloudflare
+    let captchaToken: string | undefined;
+    if (turnstileLigado) {
+      const r = await turnstile.current?.comprovante();
+      if (!r || !('token' in r)) {
+        setOcupado(false);
+        return setErro(r && r.falta === 'marcar' ? MARCAR_CAIXA : ACESSO_NAO_CONFERIDO);
+      }
+      captchaToken = r.token;
+    }
+    const { error } = await supabase.auth.signInWithOtp({
+      email: limpo,
+      options: { shouldCreateUser: !equipe, captchaToken },
+    });
+    turnstile.current?.renovar(); // cada comprovante vale um pedido
     setOcupado(false);
     if (error) {
       return setErro(
-        error.status === 429 || /rate|seconds/i.test(error.message)
-          ? 'Muitos pedidos seguidos. Espere um pouco e peça o código de novo.'
-          : 'Não deu para enviar o código agora. Tente de novo em instantes.',
+        /captcha/i.test(error.message)
+          ? ACESSO_NAO_CONFERIDO
+          : error.status === 429 || /rate|seconds/i.test(error.message)
+            ? 'Muitos pedidos seguidos. Espere um pouco e peça o código de novo.'
+            : 'Não deu para enviar o código agora. Tente de novo em instantes.',
       );
     }
     setEmail(limpo);
@@ -289,6 +309,7 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
                   {erro}
                 </span>
               )}
+              <Turnstile ref={turnstile} />
               <button type="submit" className="as-botao" disabled={ocupado || !email.trim()}>
                 {ocupado ? 'Enviando…' : 'Enviar código'}
               </button>
@@ -350,6 +371,7 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
               <button type="submit" className="as-botao" disabled={ocupado || codigo.length !== 6}>
                 {ocupado ? 'Entrando…' : 'Entrar'}
               </button>
+              <Turnstile ref={turnstile} />
               <button
                 type="button"
                 className="as-link"
