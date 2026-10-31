@@ -23,6 +23,15 @@ export const POST: APIRoute = async ({ request }) => {
       );
       return ok ? dados.map((d) => d.id) : null;
     },
+    pastaEmUsoPorOutros: async (id) => {
+      const r = await consulta<boolean>('rpc/pasta_em_uso_por_outros', {
+        metodo: 'POST',
+        corpo: { p_dono: id },
+        retornar: true,
+      });
+      const valor = r.dados as unknown;
+      return r.ok && typeof valor === 'boolean' ? valor : null;
+    },
     // PDFs do mídia kit no Storage (um por projeto) e depois a pasta no Cloudinary; os projetos ainda existem aqui
     apagarArquivos: async (id) => {
       const projetos = await consulta<{ id: string }>(`projects?dono=eq.${id}&select=id`);
@@ -33,7 +42,8 @@ export const POST: APIRoute = async ({ request }) => {
     },
     apagarUsuario: apagarUsuarioDoAuth,
     registrar: async (id, detalhes) => {
-      await consulta('audit_log', { metodo: 'POST', corpo: { acao: 'conta_excluida', alvo: id, detalhes } });
+      const acao = 'bloqueada' in detalhes ? 'exclusao_bloqueada' : 'conta_excluida';
+      await consulta('audit_log', { metodo: 'POST', corpo: { acao, alvo: id, detalhes } });
     },
   });
   return Response.json(r, { status: r.ok ? 200 : 502 });
