@@ -86,6 +86,9 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
   const [voltaDoGoogle] = useState(() => (equipe ? null : lerVoltaDoGoogle()));
   const [erroGoogle, setErroGoogle] = useState<string | null>(voltaDoGoogle?.erro ?? null);
   const [voltando, setVoltando] = useState(Boolean(voltaDoGoogle?.code));
+  // já logada: vai direto para o app (ou o admin, se for da equipe) sem mostrar o formulário. A volta do Google e o
+  // `?teste=` seguem o caminho deles
+  const [conferindo, setConferindo] = useState(!voltaDoGoogle && !teste);
   const campo = useRef<HTMLInputElement>(null);
   const turnstile = useRef<ControleTurnstile>(null);
 
@@ -124,7 +127,21 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
       .catch(falhou);
   }, [voltaDoGoogle]);
 
-  useEffect(() => campo.current?.focus(), [etapa]);
+  useEffect(() => {
+    if (!conferindo) return;
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        const sessao = data.session;
+        if (sessao && !equipe) return window.location.replace('/app/');
+        const papel = String((sessao?.user.app_metadata as { papel?: string } | undefined)?.papel ?? '');
+        if (sessao && PAPEIS_EQUIPE.includes(papel)) return window.location.replace('/admin/');
+        setConferindo(false);
+      })
+      .catch(() => setConferindo(false));
+  }, [conferindo, equipe]);
+
+  useEffect(() => campo.current?.focus(), [etapa, conferindo]);
   useEffect(() => {
     if (espera <= 0) return;
     const t = setTimeout(() => setEspera(espera - 1), 1000);
@@ -229,8 +246,8 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
           </a>
         )}
       </header>
-      <main className="as-corpo">
-        {voltando ? (
+      <main className="as-corpo" aria-busy={conferindo || undefined}>
+        {conferindo ? null : voltando ? (
           <>
             <h1 className="as-titulo">
               Entrando com o <em>Google</em>
