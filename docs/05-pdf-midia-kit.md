@@ -149,7 +149,7 @@ O kit é a matéria de capa da creator numa revista: o título da capa vira a ma
    ```sh
    cd site
    npm run equipe:teste                         # código da conta da equipe de teste
-   npm run pdf:kit -- <código>                  # gera o PDF do eu-carollimah e salva em site/mk-eu-carollimah.pdf
+   npm run pdf:kit -- <código>                  # gera o PDF do lfj182 e salva em site/mk-lfj182.pdf
    npm run pdf:kit -- <código> outro-link       # outro portfólio no ar
    ```
    A resposta traz o tempo de cada etapa (abrir, carregar, imprimir, guardar). Cada teste gasta tempo do plano grátis, e várias seguidas batem no limite por minuto (429).

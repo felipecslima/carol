@@ -47,7 +47,7 @@ const ler = async (caminho) => {
   if (!r.ok) throw new Error(`${caminho} → ${r.status}`);
   return r.json();
 };
-// só lê (nada é gravado); padrão: a conta que tem o eu-carollimah
+// só lê (nada é gravado); padrão: a conta que tem o /c/lfj182
 const EMAIL = process.env.SEED_EMAIL ?? 'lfj182@gmail.com';
 const usuario = (await ler('/auth/v1/admin/users?per_page=200')).users.find((u) => u.email === EMAIL);
 const linha = usuario && (await ler(`/rest/v1/projects?dono=eq.${usuario.id}&tipo=eq.site&select=*`))[0];

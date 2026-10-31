@@ -8,7 +8,7 @@ const env = Object.fromEntries(
     .filter((l) => l.includes('='))
     .map((l) => [l.slice(0, l.indexOf('=')), l.slice(l.indexOf('=') + 1).trim()]),
 );
-// conta de teste que fica (decisão de 31/out): a do usuário, também a dona do eu-carollimah no ar
+// conta de teste que fica (decisão de 31/out): a do usuário, também a dona do /c/lfj182 no ar
 const email = process.argv[2] ?? 'lfj182@gmail.com';
 const r = await fetch(`${env.PUBLIC_SUPABASE_URL}/auth/v1/admin/generate_link`, {
   method: 'POST',

@@ -1,12 +1,12 @@
 // Gera de verdade o PDF do mídia kit de um portfólio no ar, pelo navegador da Cloudflare, e baixa (docs/05-pdf-midia-kit.md).
 // Usa a ação "gerar_pdf" do admin com a conta de teste (lfj182@gmail.com, papel admin; outra: PDF_EMAIL=…). Precisa do servidor rodando (npx astro dev).
 //   npm run equipe:teste                              → código da conta da equipe
-//   npm run pdf:kit -- <código> [link] [endereço]     → padrão: eu-carollimah, http://localhost:4321
+//   npm run pdf:kit -- <código> [link] [endereço]     → padrão: lfj182, http://localhost:4321
 // Cada geração gasta tempo do plano grátis (10 min/dia); várias seguidas batem no limite por minuto (429).
 import { writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
-const [codigo, slug = 'eu-carollimah', base = 'http://localhost:4321'] = process.argv.slice(2);
+const [codigo, slug = 'lfj182', base = 'http://localhost:4321'] = process.argv.slice(2);
 if (!codigo) {
   console.error('Uso: npm run pdf:kit -- <código da equipe> [link] [endereço]');
   process.exit(1);
