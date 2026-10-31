@@ -1,0 +1,6 @@
+/* Ordem dos CSS desta tela num arquivo único: o build de produção reordena CSS importado em módulos separados e o
+   editor.css (tema claro antigo) caía depois do tema.css (ver assistente/estilos.css). */
+@import '../editor/editor.css';
+@import './area.css';
+@import '../refino.css';
+@import '../tema.css';
