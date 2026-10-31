@@ -15,10 +15,7 @@ import { PainelNumeros } from '../editor/PainelNumeros';
 import { salvarPerfil } from '../nuvem';
 import { salvarRascunho } from '../editor/persistencia';
 import { useSessao } from '../sessao';
-import '../editor/editor.css';
-import './assistente.css';
-import '../refino.css';
-import '../tema.css';
+import './estilos.css';
 
 const NICHOS = ['Gastronomia', 'Viagem', 'Beleza', 'Lifestyle', 'Moda', 'Casa', 'Maternidade', 'Fitness'];
 

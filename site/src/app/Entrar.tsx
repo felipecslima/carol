@@ -6,9 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { googleLigado, supabase } from './supabase';
 import { Turnstile, turnstileLigado, type ControleTurnstile } from './Turnstile';
 import { analisarEmail } from '@lib/formatos';
-import './assistente/assistente.css';
-import './refino.css';
-import './tema.css';
+import './assistente/estilos.css';
 
 const ESPERA = 30;
 

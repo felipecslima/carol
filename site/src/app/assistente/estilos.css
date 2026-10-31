@@ -1,0 +1,7 @@
+/* Os CSS do assistente e do login, na ordem que vale: o tema vence o assistente. Importar este arquivo único
+   (e não os três soltos) porque o build de produção reordena CSS importado em módulos separados (31/out: o login e o
+   assistente saíram claros porque o assistente.css caiu depois do tema.css; no `astro dev` a ordem estava certa). */
+@import '../editor/editor.css';
+@import './assistente.css';
+@import '../refino.css';
+@import '../tema.css';
