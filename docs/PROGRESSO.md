@@ -33,6 +33,8 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Esperando aprovação
 
+- **DEV-236, textos neutros em gênero (31/out, pedido do usuário):** 11 trocas em 9 arquivos (lista no backlog). Conferido: `tsc`, ESLint, Vitest 120 de 120 e e2e 5 de 5. **Falta:** (1) commit com sua aprovação; (2) o selo "Informado pela creator · período" fica **gravado dentro do projeto** (`dados.selo`), então o portfólio no ar `lfj182` (rascunho e versão publicada) ainda mostra o texto antigo até alguém trocar no editor ou eu atualizar direto no banco, o que depende da sua autorização; (3) a correção só vale em produção depois de um novo merge na `main`. Fora do escopo e sem mudança: documentos em `docs/` (a história de usuário do PRD ainda diz "ser avisada") e comentários de código.
+
 - **Trava da exclusão definitiva (31/out, consequência do incidente das mídias):** `server/exclusao.ts` e `pages/api/interno/exclusoes.ts` ganharam `pastaEmUsoPorOutros`: antes de apagar a pasta do Cloudinary, a rotina pergunta ao banco (função `pasta_em_uso_por_outros`, migração `20261031000100_pasta_em_uso.sql`, **aplicada no Supabase em 31/out**) se mídia ou projeto de outra conta cita a pasta. Se sim, não apaga nada daquela conta e grava `exclusao_bloqueada` no `audit_log`; se a consulta falha, também não apaga e tenta no dia seguinte. **Falta:** rodar `tsc`, ESLint e Vitest, testar a função no banco e **commitar com sua aprovação** (código e migração estão sem commit).
 
 ## Diário

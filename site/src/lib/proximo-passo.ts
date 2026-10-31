@@ -53,7 +53,7 @@ export function proximoPasso(e: EntradaDoPasso): PassoSeguinte {
   if (e.estado === 'no_ar' && e.slug)
     return {
       titulo: 'Seu portfólio está no ar',
-      texto: 'Agora é mandar para as marcas. Cada marca recebe um link próprio e você é avisada quando abrir.',
+      texto: 'Agora é mandar para as marcas. Cada marca recebe um link próprio e você recebe um aviso quando abrir.',
       acao: { rotulo: 'Mandar para uma marca', href: '/app/#projetos' },
       secundaria: { rotulo: 'Abrir meu link', href: `/c/${e.slug}/` },
     };

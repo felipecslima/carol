@@ -223,7 +223,7 @@ export default function Entrar({ equipe = false }: { equipe?: boolean }) {
       if (!PAPEIS_EQUIPE.includes(papel)) {
         await supabase.auth.signOut();
         setOcupado(false);
-        return setErro('Esta conta não é da equipe. Se você é creator, entre pela página da creator.');
+        return setErro('Esta conta não é da equipe. Se você é creator, entre pela página de entrada do Portfólio Creator.');
       }
     }
     window.location.href = equipe ? '/admin/' : '/app/';

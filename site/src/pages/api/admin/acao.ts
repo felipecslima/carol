@@ -90,7 +90,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
     case 'premium_dar': {
       if (!c.creator || !/^[0-9a-f-]{36}$/.test(c.creator) || !c.molde || !MOLDES.includes(c.molde))
-        return erro('Escolha a creator e o molde.');
+        return erro('Escolha a conta e o molde.');
       const r = await consulta('premium_grants', {
         metodo: 'POST',
         corpo: { creator: c.creator, molde: c.molde, motivo: (c.motivo ?? '').slice(0, 200), liberado_por: quem.id },
