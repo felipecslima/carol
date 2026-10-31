@@ -1,0 +1,31 @@
+---
+// Editor do Portfólio Creator: ilha React só no navegador (precisa de toque, teclado e localStorage).
+import '../../styles/global.css';
+import '../../blocks/blocos.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
+import SeoHead from '../../components/SeoHead.astro';
+import Editor from '@app/editor/Editor';
+import { Esqueleto } from '@app/editor/Esqueleto';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Portfólio Creator: editor"
+      description="Editor do Portfólio Creator."
+      alternates={{ pt: '/app/editor/' }}
+      noindex
+      analytics={false}
+      themeColor="#FBF4EC"
+    />
+    <MonitorDeErros />
+  </head>
+  <body style="margin:0;background:#24130f">
+    <!-- o esqueleto vem no HTML e some quando o editor monta (DEV-094) -->
+    <Editor client:only="react">
+      <Esqueleto slot="fallback" />
+    </Editor>
+  </body>
+</html>

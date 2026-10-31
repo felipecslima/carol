@@ -1,0 +1,103 @@
+<!--
+  E-mail do código de entrada (DEV-036). Aplicado pela API do Supabase nos modelos "Magic link" (conta existente) e
+  "Confirm signup" (conta nova), trocando {{TITULO}} pelo título de cada um. Enviado pelo Resend
+  (nao-responda@envio.eucarollimah.com.br). Só o código: sem link, porque o link abre no app de e-mail e perde a sessão.
+  Estilos em linha (clientes de e-mail ignoram <style>); cores do app: creme #FBF4EC, espresso #24130F, rosa #D42A5B.
+-->
+<!doctype html>
+<html lang="pt-BR">
+  <body style="margin: 0; padding: 0; background: #fbf4ec">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #fbf4ec">
+      <tr>
+        <td align="center" style="padding: 40px 20px">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 480px">
+            <tr>
+              <td
+                style="
+                  font-family: Georgia, 'Times New Roman', serif;
+                  font-size: 22px;
+                  color: #24130f;
+                  padding-bottom: 32px;
+                "
+              >
+                Portfólio <span style="color: #d42a5b; font-style: italic">Creator</span>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  font-family: Georgia, 'Times New Roman', serif;
+                  font-size: 30px;
+                  line-height: 1.15;
+                  color: #24130f;
+                  padding-bottom: 16px;
+                "
+              >
+                {{TITULO}}
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+                  font-size: 16px;
+                  line-height: 1.5;
+                  color: #5a443e;
+                  padding-bottom: 24px;
+                "
+              >
+                Digite estes 6 números na tela do Portfólio Creator:
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-bottom: 24px">
+                <div
+                  style="
+                    display: inline-block;
+                    padding: 16px 24px;
+                    border-radius: 16px;
+                    background: #24130f;
+                    color: #fbf4ec;
+                    font-family: 'SF Mono', Menlo, Consolas, monospace;
+                    font-size: 34px;
+                    font-weight: 700;
+                    letter-spacing: 8px;
+                  "
+                >
+                  {{ .Token }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+                  font-size: 15px;
+                  line-height: 1.5;
+                  color: #5a443e;
+                  padding-bottom: 32px;
+                "
+              >
+                O código vale por 15 minutos e funciona uma vez só. Se você não pediu, pode ignorar este e-mail: ninguém
+                entra na sua conta sem ele.
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+                  font-size: 13px;
+                  color: #6b5249;
+                  border-top: 1px solid #e8dccf;
+                  padding-top: 16px;
+                "
+              >
+                Portfólio Creator · eucarollimah.com.br/portfolio-creator
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+/* esqueleto do editor (DEV-094): mesmas alturas do editor (topo 56 px, abas 60 px) para não pular quando ele montar */
+.esq {
+  min-height: 100dvh;
+  background: #24130f;
+  color: #fbf4ec;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+}
+.esq-topo {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: rgba(36, 19, 15, 0.92);
+  border-bottom: 1px solid rgba(251, 244, 236, 0.14);
+  box-sizing: border-box;
+}
+.esq-marca {
+  font:
+    400 26px/1 'Instrument Serif',
+    Georgia,
+    serif;
+  white-space: nowrap;
+}
+.esq-marca i {
+  color: #ff8fb0;
+}
+.esq-msg {
+  margin: 0;
+  padding: 120px 20px 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: #d2bfb6;
+}
+.esq-abas {
+  position: fixed;
+  inset: auto 0 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  min-height: 60px;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(36, 19, 15, 0.94);
+  border-top: 1px solid rgba(251, 244, 236, 0.14);
+}
+.esq-abas span {
+  display: grid;
+  place-items: end center;
+  padding-bottom: 12px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #d2bfb6;
+}
+@media (min-width: 900px) {
+  .esq-abas {
+    grid-template-columns: repeat(5, 120px);
+    justify-content: center;
+  }
+}
+@media (max-width: 359px) {
+  .esq-marca {
+    font-size: 22px;
+  }
+}

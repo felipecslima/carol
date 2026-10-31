@@ -1,0 +1,1277 @@
+/* Pele dos blocos: só lê variáveis de tema (src/themes). Nada de cor, fonte ou raio escritos aqui.
+   Variáveis: --pagina, --cartao, --texto, --texto-suave, --destaque, --sobre-destaque, --destaque-suave, --apoio,
+   --borda, --raio, --raio-grande, --respiro, --fonte-titulo, --fonte-texto. */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/nunito-400-latin.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/nunito-700-latin.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(/fonts/nunito-800-latin.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(/fonts/nunito-900-latin.woff2) format('woff2');
+}
+
+.pagina {
+  background: var(--pagina);
+  color: var(--texto);
+  font-family: var(--fonte-texto);
+  line-height: 1.55;
+}
+.bl {
+  padding: var(--respiro) clamp(20px, 5cqi, 64px) 0;
+  max-width: 1120px;
+  margin-inline: auto;
+}
+.bl:last-child {
+  padding-bottom: var(--respiro);
+}
+
+.bl-titulo-grande,
+.bl-titulo,
+.bl-numero,
+.bl-cartao b,
+.bl-video b {
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+}
+.bl-titulo-grande {
+  font-size: clamp(34px, 7cqi, 60px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.bl-titulo {
+  font-size: clamp(26px, 4.4cqi, 36px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+  text-wrap: balance;
+}
+.bl-texto {
+  font-size: 18px;
+  max-width: 60ch;
+  text-wrap: pretty;
+}
+.bl-etiqueta {
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+.bl-botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 28px;
+  border-radius: 999px;
+  background: var(--destaque);
+  color: var(--sobre-destaque);
+  font-weight: 800;
+  font-size: 17px;
+  text-decoration: none;
+  border: 2px solid var(--destaque);
+}
+.bl-botao--vazado {
+  background: transparent;
+  color: var(--destaque);
+}
+.bl-botao:focus-visible,
+.bl-briefing :is(input, textarea):focus-visible {
+  outline: 3px solid var(--texto);
+  outline-offset: 3px;
+}
+
+.bl-cartao {
+  background: var(--cartao);
+  border-radius: var(--raio-grande);
+  padding: 24px;
+}
+
+/* etiqueta de exemplo: só aparece no editor */
+.bl-exemplo {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+/* espaços de foto e vídeo ainda vazios (placeholder): tom da paleta e legenda, para ficar claro o que vai ali. O
+   próprio <video> fica de fora: ele é transparente por cima da miniatura até ter quadro (DEV-146) */
+.bl-capa-foto:not([role]),
+.bl-sobre-foto:not([role]),
+.bl-video-capa:not([role], video) {
+  background-color: color-mix(in oklab, var(--destaque) 22%, var(--cartao));
+  display: grid;
+  place-items: center;
+  color: var(--texto-suave);
+  font-weight: 800;
+  text-align: center;
+}
+.bl-sobre-foto:not([role])::after {
+  content: 'Sua foto';
+}
+.bl-video-capa:not([role], video)::after {
+  content: 'Seu vídeo';
+}
+.bl-capa-vazia {
+  display: grid;
+  place-items: center;
+  background: color-mix(in oklab, var(--destaque) 22%, var(--cartao));
+  color: var(--texto-suave);
+  font-weight: 800;
+}
+.bl-capa-vazia::after {
+  content: 'Sua foto';
+}
+
+/* capa */
+.bl-capa {
+  display: grid;
+  gap: 24px;
+  justify-items: center;
+  text-align: center;
+}
+.bl-capa-foto {
+  width: 168px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--cartao) center / cover;
+  border: 10px solid var(--cartao);
+  box-shadow: 0 0 0 6px var(--destaque);
+}
+.bl-capa-vazia {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.bl-capa-texto {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+}
+.bl-capa--foto-grande {
+  text-align: left;
+  justify-items: stretch;
+}
+.bl-capa--foto-grande .bl-capa-foto {
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--raio-grande);
+  border: 0;
+  box-shadow: none;
+}
+.bl-capa--foto-grande .bl-capa-texto {
+  justify-items: start;
+}
+@media (min-width: 880px) {
+  .pagina:not(.mini-tela) .bl-capa--foto-grande {
+    grid-template-columns: 5fr 7fr;
+    align-items: center;
+    gap: 56px;
+  }
+}
+
+/* sobre */
+.bl-sobre {
+  display: grid;
+  gap: 24px;
+}
+.bl-sobre-foto {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--raio-grande);
+  background: center / cover;
+}
+.bl-sobre-texto {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+/* aqui o título está dentro da grade: o gap já separa, a margem dele somaria */
+.bl-sobre-texto .bl-titulo {
+  margin-bottom: 4px;
+}
+.bl-etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+.bl-etiquetas li {
+  background: var(--cartao);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-weight: 700;
+}
+@media (min-width: 880px) {
+  .pagina:not(.mini-tela) .bl-sobre--texto-foto {
+    grid-template-columns: 4fr 6fr;
+    gap: 56px;
+    align-items: center;
+  }
+}
+
+/* números e público em cards */
+.bl-cards-numero {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.bl-cards-numero .bl-cartao {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+.bl-numero {
+  font-size: clamp(30px, 6cqi, 40px);
+  line-height: 1.05;
+}
+
+/* barras (números e público) */
+.bl-barras {
+  list-style: none;
+  padding: 28px;
+  display: grid;
+  gap: 20px;
+  background: var(--cartao);
+  border-radius: var(--raio-grande);
+}
+.bl-barra-rotulo {
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.bl-barra {
+  height: 16px;
+  border-radius: 999px;
+  background: var(--destaque-suave);
+  margin-top: 10px;
+  overflow: hidden;
+}
+.bl-barra span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--destaque);
+}
+
+/* vídeos */
+.bl-lista-videos {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+}
+.bl-video {
+  flex: none;
+  width: 180px;
+  scroll-snap-align: start;
+  display: grid;
+  gap: 2px;
+  align-content: start;
+}
+.bl-video-capa {
+  aspect-ratio: 9 / 16;
+  border-radius: var(--raio-grande);
+  background: var(--cartao) center / cover;
+  margin-bottom: 8px;
+}
+.bl-video span {
+  color: var(--texto-suave);
+  font-size: 14px;
+}
+.bl-videos--grade .bl-lista-videos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  overflow: visible;
+}
+.bl-videos--grade .bl-video {
+  width: auto;
+}
+
+/* marcas */
+.bl-lista-marcas {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.bl-lista-marcas li {
+  background: var(--cartao);
+  border-radius: var(--raio-grande);
+  padding: 16px 22px;
+  display: grid;
+  gap: 2px;
+}
+.bl-lista-marcas img {
+  max-height: 40px;
+  width: auto;
+}
+.bl-lista-marcas span {
+  color: var(--texto-suave);
+  font-size: 14px;
+}
+/* lista de nomes: etiquetas compactas que quebram de linha (antes cada nome era uma barra de largura total) */
+.bl-marcas--lista .bl-lista-marcas {
+  gap: 10px;
+}
+.bl-marcas--lista .bl-lista-marcas li {
+  border-radius: 999px;
+  padding: 10px 20px;
+  grid-auto-flow: column;
+  align-items: baseline;
+  gap: 8px;
+}
+.bl-marcas--lista .bl-lista-marcas li b {
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+/* formatos */
+.bl-lista-formatos {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+.bl-lista-formatos li {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.bl-lista-formatos li b {
+  font-size: 20px;
+}
+.bl-lista-formatos li span {
+  color: var(--texto-suave);
+}
+.bl-lista-formatos em {
+  font-style: normal;
+  font-weight: 800;
+  color: var(--destaque);
+}
+.bl-formatos--tabela .bl-lista-formatos {
+  display: block;
+  background: var(--cartao);
+  border-radius: var(--raio-grande);
+  padding: 8px 24px;
+}
+.bl-formatos--tabela .bl-lista-formatos li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--borda);
+}
+.bl-formatos--tabela .bl-lista-formatos li:last-child {
+  border-bottom: 0;
+}
+
+/* contato: faixa de destaque no fim da página */
+.bl-contato {
+  /* faixa de lado a lado, cantos retos: fecha a página sem ilha escura flutuando */
+  margin: var(--respiro) 0 0;
+  max-width: none;
+  padding: clamp(56px, 11cqi, 104px) clamp(20px, 5cqi, 64px);
+  background: var(--texto);
+  color: var(--fundo);
+  border-radius: 0;
+  text-align: center;
+  display: grid;
+  gap: 24px;
+  justify-items: center;
+}
+.bl-contato .bl-botao {
+  background: var(--destaque-suave);
+  color: var(--texto);
+  border-color: var(--destaque-suave);
+}
+.bl-contato .bl-botao--vazado {
+  background: transparent;
+  color: var(--fundo);
+  border-color: var(--fundo);
+}
+.bl-contato-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.bl-prazo {
+  font-size: 15px;
+  opacity: 0.85;
+}
+.bl-briefing {
+  display: grid;
+  gap: 12px;
+  width: min(100%, 460px);
+  text-align: left;
+}
+.bl-briefing label {
+  display: grid;
+  gap: 6px;
+  font-weight: 700;
+}
+.bl-briefing :is(input, textarea) {
+  font: inherit;
+  padding: 12px 16px;
+  border-radius: var(--raio);
+  border: 2px solid var(--borda);
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+/* selo "informado pela creator" dos números e do público */
+.bl-selo {
+  margin-top: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+.bl-selo::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  vertical-align: -1px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+/* vídeo tocável dentro do card: ocupa a largura do card em vez do tamanho do arquivo */
+video.bl-video-capa {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  background: var(--cartao);
+}
+
+/* capa com foto ou vídeo de fundo: tela cheia, texto embaixo à esquerda, véu escuro para o contraste */
+.bl-capa--fundo {
+  position: relative;
+  isolation: isolate;
+  max-width: none;
+  padding: 0;
+  min-height: clamp(500px, 125cqi, 780px);
+  display: grid;
+  align-items: end;
+  justify-items: start;
+  text-align: left;
+  color: #fff;
+  overflow: hidden;
+  border-radius: 0; /* largura total: cantos retos, sem a cor da página aparecendo atrás da imagem */
+}
+.bl-capa-fundo,
+.bl-capa-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+.bl-capa-fundo {
+  background: color-mix(in oklab, var(--destaque) 40%, var(--cartao)) center 30% / cover no-repeat;
+}
+.bl-capa-video {
+  object-fit: cover;
+  object-position: center 30%; /* vídeo vertical num hero largo: mantém o rosto, que costuma estar no alto */
+}
+.bl-capa--fundo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* --veu: 1 é a película padrão; a creator ajusta de 0 (nenhuma) a ~1,67 (a mais escura) */
+  background: linear-gradient(
+    to top,
+    rgba(18, 10, 8, calc(0.82 * var(--veu, 1))) 0%,
+    rgba(18, 10, 8, calc(0.5 * var(--veu, 1))) 42%,
+    rgba(18, 10, 8, calc(0.12 * var(--veu, 1))) 100%
+  );
+}
+.bl-capa--fundo .bl-capa-texto {
+  justify-items: start;
+  padding: 140px clamp(20px, 6cqi, 64px) clamp(32px, 7cqi, 72px);
+  max-width: 820px;
+}
+.bl-capa--fundo .bl-titulo-grande,
+.bl-capa--fundo .bl-texto {
+  color: #fff;
+}
+.bl-capa--fundo .bl-etiqueta {
+  color: rgba(255, 255, 255, 0.88);
+}
+.bl-capa--fundo .bl-botao {
+  background: #fff;
+  border-color: #fff;
+  color: #1a100c;
+}
+.bl-capa--fundo .bl-exemplo {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  margin: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(18, 10, 8, 0.6);
+  color: #fff;
+}
+.bl-capa-pausa {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  background: rgba(18, 10, 8, 0.55);
+  color: #fff;
+  font: 700 14px var(--fonte-texto);
+  cursor: pointer;
+}
+.bl-capa-pausa:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+/* quem pede menos movimento vê só a imagem (o quadro do vídeo), sem o vídeo tocando */
+@media (prefers-reduced-motion: reduce) {
+  .bl-capa-video,
+  .bl-capa-pausa {
+    display: none;
+  }
+}
+
+/* em 1 olhada: o essencial logo depois da capa */
+.bl-lista-resumo {
+  list-style: none;
+  padding: 20px 24px;
+  display: grid;
+  gap: 16px 24px;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  background: var(--cartao);
+  border-radius: var(--raio-grande);
+}
+.bl-lista-resumo li {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+}
+.bl-lista-resumo span {
+  color: var(--texto-suave);
+  font-size: 14px;
+}
+.bl-lista-resumo b {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.2;
+}
+.bl-resumo--lista .bl-lista-resumo {
+  grid-template-columns: 1fr;
+  background: none;
+  padding: 0;
+  gap: 0;
+}
+.bl-resumo--lista .bl-lista-resumo li {
+  grid-template-columns: minmax(96px, 1fr) 2fr;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--borda);
+}
+
+/* por que eu */
+.bl-lista-motivos {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.bl-lista-motivos li {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.bl-lista-motivos li b {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.bl-lista-motivos li span {
+  color: var(--texto-suave);
+}
+.bl-motivos--lista .bl-lista-motivos li {
+  padding-left: 32px;
+  position: relative;
+}
+.bl-motivos--lista .bl-lista-motivos li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 18px;
+  height: 18px;
+  background: var(--destaque);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+.bl-motivos--cards .bl-lista-motivos {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* como eu trabalho: a numeração é conteúdo (ordem das etapas) */
+.bl-lista-processo {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+  counter-reset: passo;
+}
+.bl-lista-processo li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.bl-lista-processo li > div {
+  display: grid;
+  gap: 2px;
+}
+.bl-lista-processo li b {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.bl-lista-processo li span:not(.bl-passo-n) {
+  color: var(--texto-suave);
+}
+.bl-passo-n {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--destaque);
+  color: var(--sobre-destaque);
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+}
+.bl-processo--linha .bl-lista-processo {
+  gap: 0;
+}
+.bl-processo--linha .bl-lista-processo li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--borda);
+}
+.bl-processo--linha .bl-lista-processo li:last-child {
+  border-bottom: 0;
+}
+.bl-exemplo {
+  grid-column: 1 / -1;
+}
+
+/* formatos com entregável */
+.bl-lista-formatos li {
+  grid-template-rows: 1fr auto;
+}
+.bl-formato-corpo {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.bl-inclui {
+  font-size: 15px;
+}
+.bl-prazo-formato {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+.bl-sob-consulta {
+  color: var(--texto-suave) !important;
+  font-weight: 700 !important;
+  font-size: 15px;
+}
+.bl-formatos--tabela .bl-lista-formatos li {
+  align-items: baseline;
+  gap: 16px;
+}
+
+/* vídeo em destaque: o primeiro grande, os outros pequenos embaixo */
+.bl-videos--destaque .bl-lista-videos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: visible;
+  gap: 12px;
+}
+.bl-videos--destaque .bl-video {
+  flex: 0 0 150px;
+  width: auto;
+}
+.bl-videos--destaque .bl-video--destaque {
+  flex: 0 0 100%;
+  grid-template-columns: min(100%, 400px);
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.bl-videos--destaque .bl-video--destaque .bl-video-capa {
+  aspect-ratio: 4 / 5;
+}
+.bl-videos--destaque .bl-video--destaque b {
+  font-size: 20px;
+}
+
+/* botão de WhatsApp que acompanha a rolagem no celular; some perto do Contato e no desktop */
+.bl-fixo-trilho {
+  position: sticky;
+  bottom: 0;
+  height: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.bl-fixo {
+  position: absolute;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+@media (min-width: 880px) {
+  .pagina:not(.mini-tela) .bl-fixo-trilho {
+    display: none;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  .bl-fixo-trilho {
+    animation: bl-fixo linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes bl-fixo {
+    0%,
+    9% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    15%,
+    86% {
+      opacity: 1;
+      visibility: visible;
+    }
+    94%,
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+@media print {
+  .bl-fixo-trilho {
+    display: none;
+  }
+}
+
+/* no modo Ver do editor, o botão "Voltar a editar" ocupa a base da tela: o de WhatsApp sobe */
+.ed-ver .bl-fixo {
+  bottom: 84px;
+}
+
+/* vídeo de portfólio: sempre mudo e em loop; o botão só pausa */
+.bl-video-moldura {
+  position: relative;
+}
+.bl-video-moldura .bl-video-capa {
+  margin-bottom: 0;
+}
+/* miniatura embaixo do vídeo (DEV-146): o vídeo fica transparente até ter quadro e cobre a miniatura ao tocar */
+.bl-video-miniatura {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--raio-grande);
+  background: var(--cartao);
+}
+video.bl-video-capa--sobre {
+  position: relative;
+  background: transparent;
+}
+.bl-video:has(.bl-video-moldura) > .bl-video-moldura {
+  margin-bottom: 8px;
+}
+.bl-video-pausa {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(18, 10, 8, 0.55);
+  color: #fff;
+  cursor: pointer;
+}
+.bl-video-pausa::before {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  background: currentColor;
+  -webkit-mask: var(--icone-pausa) center / contain no-repeat;
+  mask: var(--icone-pausa) center / contain no-repeat;
+  --icone-pausa: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 4h3.5v16H7zM13.5 4H17v16h-3.5z'/%3E%3C/svg%3E");
+}
+.bl-video-pausa[data-pausado]::before {
+  --icone-pausa: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 4.5v15l12-7.5z'/%3E%3C/svg%3E");
+}
+.bl-video-pausa:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+/* quem pede menos movimento vê só a capa: sem vídeo tocando, o botão não tem o que pausar */
+@media (prefers-reduced-motion: reduce) {
+  .bl-video-pausa {
+    display: none;
+  }
+}
+
+/* fio das etapas: liga os números e se desenha ao rolar */
+.bl-processo-corpo {
+  position: relative;
+}
+.bl-fio {
+  position: absolute;
+  left: 17px; /* centro da bolinha de 36 px (com o cartão, vai por cima) */
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background: var(--destaque-suave);
+}
+.bl-processo--passos .bl-fio {
+  left: 41px; /* 24 px de respiro do cartão + metade da bolinha */
+}
+.bl-fio-preenchido {
+  display: block;
+  height: 100%;
+  background: var(--destaque);
+  transform-origin: top;
+}
+.bl-lista-processo {
+  position: relative;
+}
+
+/* selo da página no ar (DEV-145): discreto, no fim, fora do botão fixo */
+.bl-selo {
+  padding: 28px 20px 96px;
+  text-align: center;
+  font-size: 0.75rem;
+  background: var(--pagina);
+}
+.bl-selo a {
+  color: var(--texto-suave);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  padding: 12px 8px;
+}
+.bl-selo a:hover,
+.bl-selo a:focus-visible {
+  color: var(--texto);
+  text-decoration: underline;
+}
+
+/* tocar no vídeo abre o visor (com som); o botão de pausa continua por cima */
+.bl-video-abrir {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.bl-video-abrir:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -3px;
+}
+.bl-video-som {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  padding: 6px 12px 6px 30px;
+  border-radius: 999px;
+  background: rgba(18, 10, 8, 0.55)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9h4l5-4v14l-5-4H4zM17 8.5a5 5 0 0 1 0 7'/%3E%3C/svg%3E")
+    9px center / 16px no-repeat;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+.bl-video-pausa {
+  z-index: 2;
+}
+
+/* visor de vídeos: tela cheia escura, com som, passa para o lado */
+.bl-visor {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #120a08;
+  color: #fbf4ec;
+  overflow: hidden;
+}
+.bl-visor[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+}
+.bl-visor::backdrop {
+  background: #120a08;
+}
+.bl-visor svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.bl-visor-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 0 20px;
+}
+.bl-visor-contagem {
+  font-size: 14px;
+  opacity: 0.75;
+}
+.bl-visor-botao,
+.bl-visor-seta {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(251, 244, 236, 0.1);
+  color: inherit;
+  cursor: pointer;
+}
+.bl-visor-botao:hover,
+.bl-visor-seta:hover:not(:disabled) {
+  background: rgba(251, 244, 236, 0.2);
+}
+.bl-visor-botao:focus-visible,
+.bl-visor-seta:focus-visible,
+.bl-visor-mini:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+.bl-visor-seta:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.bl-visor-meio {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 0;
+  padding: 8px 14px;
+}
+.bl-visor-palco {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  cursor: pointer;
+}
+.bl-visor-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.bl-visor-tocar {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(18, 10, 8, 0.6);
+  pointer-events: none;
+}
+.bl-visor-tocar svg {
+  fill: currentColor;
+  stroke: none;
+  width: 28px;
+  height: 28px;
+}
+.bl-visor-barra {
+  position: absolute;
+  inset: auto 0 0;
+  height: 3px;
+  background: rgba(251, 244, 236, 0.2);
+}
+.bl-visor-barra span {
+  display: block;
+  height: 100%;
+  background: #ff8fb0;
+  transform-origin: left;
+}
+.bl-visor-legenda {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 14px 4px 20px;
+}
+.bl-visor-legenda div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.bl-visor-legenda b {
+  font-size: 18px;
+}
+.bl-visor-legenda span {
+  font-size: 14px;
+  opacity: 0.75;
+}
+.bl-visor-tira {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 14px calc(14px + env(safe-area-inset-bottom));
+  scrollbar-width: none;
+}
+.bl-visor-mini {
+  flex: none;
+  width: 44px;
+  height: 64px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: rgba(251, 244, 236, 0.12) center / cover;
+  opacity: 0.55;
+  cursor: pointer;
+}
+.bl-visor-mini[aria-current='true'] {
+  border-color: #ff8fb0;
+  opacity: 1;
+}
+@media (max-width: 640px) {
+  .bl-visor-seta {
+    display: none;
+  }
+  .bl-visor-meio {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---- menu do topo (DEV-098): as seções na ordem da página numa faixa que desliza; o Contato sempre à vista ---- */
+.bl-menu {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: var(--pagina);
+  border-bottom: 1px solid var(--borda);
+}
+.bl-menu-dentro {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 1120px;
+  height: 60px;
+  margin: 0 auto;
+  padding: 0 clamp(12px, 5cqi, 56px) 0 clamp(4px, 5cqi, 46px);
+}
+.bl-menu-trilho {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0 24px 0 12px;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* esmaecido nas duas bordas: o item que passa da beirada some aos poucos, em vez de cortar seco, e o da direita
+     mostra que tem mais itens para o lado; o recuo interno deixa o primeiro e o último inteiros quando parados */
+  mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 24px), transparent);
+}
+.bl-menu-trilho::-webkit-scrollbar {
+  display: none;
+}
+.bl-menu-trilho li {
+  flex: none;
+}
+.bl-menu a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--texto-suave);
+  font-family: var(--fonte-texto);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 2px;
+}
+.bl-menu a:hover,
+.bl-menu a[aria-current='location'] {
+  color: var(--texto);
+}
+.bl-menu-trilho a[aria-current='location'] {
+  text-decoration-line: underline;
+  text-decoration-color: var(--destaque);
+}
+.bl-menu a:focus-visible {
+  outline: 3px solid var(--texto);
+  outline-offset: -3px;
+  border-radius: 999px;
+}
+/* Contato: o único botão, fora da faixa que desliza, na ponta direita */
+.bl-menu-contato {
+  flex: none;
+}
+.bl-menu-contato a,
+.bl-menu-contato a:hover,
+.bl-menu-contato a[aria-current='location'] {
+  position: relative;
+  min-height: 38px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--destaque);
+  color: var(--sobre-destaque);
+}
+/* o botão parece com 38 px, mais leve na faixa, mas o toque pega 44 px */
+.bl-menu-contato a::before {
+  content: '';
+  position: absolute;
+  inset: -3px 0;
+}
+.bl-menu-contato a:focus-visible {
+  outline-offset: 3px;
+}
+@media (min-width: 880px) {
+  .bl-menu-trilho {
+    mask-image: none;
+    padding: 0;
+  }
+}
+/* a seção para logo abaixo do menu quando a pessoa toca num item */
+.pagina .bl[id] {
+  scroll-margin-top: 68px;
+}
+
+/* ---------- entrada da capa na página publicada (DEV-146) ----------
+   Em CSS, não em JavaScript: a capa aparece e anima já no primeiro desenho, sem esperar o JS chegar pelo 4G. Os
+   tempos e curvas são os mesmos da versão anterior (motion). */
+@keyframes bl-surgir {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes bl-subir {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes bl-crescer {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+}
+@keyframes bl-cortina {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+.bl-surgir {
+  animation: bl-surgir 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.1s + var(--i, 0) * 0.12s);
+}
+.bl-palavra-mascara {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+}
+.bl-palavra {
+  display: inline-block;
+  animation: bl-subir 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.055s);
+}
+.bl-entrada-redonda {
+  animation: bl-crescer 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+.bl-entrada-cortina {
+  animation: bl-cortina 0.95s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bl-surgir,
+  .bl-palavra,
+  .bl-entrada-redonda,
+  .bl-entrada-cortina {
+    animation: none;
+  }
+}

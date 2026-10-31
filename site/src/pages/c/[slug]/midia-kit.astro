@@ -1,0 +1,35 @@
+---
+// Mídia kit da versão publicada, em 2 páginas A4 (DEV-151, DEV-154): é esta página que o navegador da Cloudflare abre para gerar
+// o PDF guardado (src/server/pdf.ts). Só existe para portfólio no ar; fora da busca. O conteúdo é o mesmo do /c/<link>,
+// que já é público.
+import '../../../styles/global.css';
+import '../../../blocks/blocos.css';
+import LinkNaoEncontrado from '../../../components/LinkNaoEncontrado.astro';
+import SeoHead from '../../../components/SeoHead.astro';
+import KitParaPdf from '@app/midia-kit/KitParaPdf';
+import { paginaNoAr } from '@server/pagina';
+
+export const prerender = false;
+
+const slug = (Astro.params.slug ?? '').toLowerCase();
+const pagina = await paginaNoAr(slug);
+if (!pagina) Astro.response.status = 404;
+if (pagina) Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=60');
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Mídia kit"
+      description="Mídia kit em PDF."
+      alternates={{ pt: `/c/${slug}/midia-kit/` }}
+      noindex
+      analytics={false}
+      themeColor="#ffffff"
+      preload={[]}
+    />
+  </head>
+  <body style="margin:0">{pagina ? <KitParaPdf client:load projeto={pagina.projeto} /> : <LinkNaoEncontrado />}</body>
+</html>

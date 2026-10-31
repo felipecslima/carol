@@ -17,6 +17,30 @@
         ],
         "createdAt": "2026-10-23T02:39:28.027Z",
         "reason": "agent: src is the Astro expression posterSrc(m.id) (Cloudinary/local poster), not empty; pre-existing markup"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "bricolage grotesque",
+        "createdAt": "2026-10-23T16:00:05.029Z",
+        "reason": "Portfólio Creator brand fonts from the product handoff (portfolio-creator-handoff/marca/cores-e-fontes.md), used only on /portfolio-creator/"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "dm sans",
+        "createdAt": "2026-10-23T16:00:05.048Z",
+        "reason": "Portfólio Creator brand fonts from the product handoff (portfolio-creator-handoff/marca/cores-e-fontes.md), used only on /portfolio-creator/"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "caveat",
+        "createdAt": "2026-10-23T16:00:05.066Z",
+        "reason": "Portfólio Creator brand fonts from the product handoff (portfolio-creator-handoff/marca/cores-e-fontes.md), used only on /portfolio-creator/"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "nunito",
+        "createdAt": "2026-10-23T22:21:27.673Z",
+        "reason": "Fonte do modelo Nuvem do Portfólio Creator (prototipo/ModeloNuvem do handoff); o DESIGN.md descreve só o site da Carol. Decisão do agente, não confirmada pelo usuário."
       }
     ]
   }

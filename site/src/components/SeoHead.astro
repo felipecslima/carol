@@ -9,18 +9,39 @@ interface Props {
   lang: Lang;
   title: string;
   description: string;
-  /** caminho desta página em cada idioma, ex. { pt: '/viagens-e-hospedagem/', en: '/en/travel-and-stays/', … } */
-  alternates: L;
+  /** caminho desta página em cada idioma, ex. { pt: '/viagens-e-hospedagem/', en: '/en/travel-and-stays/', … };
+   *  página que só existe em português (Portfólio Creator) passa só { pt } e fica sem hreflang */
+  alternates: Partial<L> & { pt: string };
   ogType?: string;
   jsonLd?: object;
   /** páginas fora da busca (404): sem canonical nem prévia de link */
   noindex?: boolean;
+  /** prévia de link (og) mesmo fora da busca: portfólio publicado, que não entra no Google mas é mandado no WhatsApp */
+  previaSemBusca?: boolean;
+  /** prévia de link própria (padrão: /og-<idioma>.jpg, gerada por `npm run og`) */
+  og?: { image: string; alt: string; siteName: string };
+  themeColor?: string;
+  /** fontes do primeiro desenho (padrão: as do site da Carol) */
+  preload?: string[];
+  /** analytics (Amplitude, visitas e cliques, com aviso de medição); desligado nas páginas do app, onde a creator digita dados dela */
+  analytics?: boolean;
 }
-const { lang, title, description, alternates, ogType = 'website', jsonLd, noindex = false } = Astro.props;
+const {
+  lang, title, description, alternates, ogType = 'website', jsonLd, noindex = false, previaSemBusca = false,
+  og = { image: `/og-${lang}.jpg`, alt: UI[lang].ogImageAlt, siteName: 'Carol Limah' },
+  themeColor = '#17110d',
+  // o título do hero é o maior elemento da primeira tela: a serif chega junto com o HTML
+  preload = ['/fonts/instrument-serif-normal-latin.woff2', '/fonts/hanken-grotesk-latin.woff2'],
+  analytics = true,
+} = Astro.props;
 const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
-const canonical = abs(alternates[lang]);
-// prévia de link com o título no idioma (gerada por `npm run og`)
-const ogImage = abs(`/og-${lang}.jpg`);
+const AVISO_DE_MEDICAO: Record<Lang, { rotulo: string; texto: string; link: string }> = {
+  pt: { rotulo: 'Aviso de medição', texto: 'Usamos o Amplitude para contar visitas e cliques nesta página.', link: 'Privacidade' },
+  en: { rotulo: 'Analytics notice', texto: 'We use Amplitude to count visits and clicks on this page.', link: 'Privacy (in Portuguese)' },
+  es: { rotulo: 'Aviso de medición', texto: 'Usamos Amplitude para contar visitas y clics en esta página.', link: 'Privacidad (en portugués)' },
+};
+const canonical = abs(alternates[lang]!);
+const langs = LANGS.filter((l) => alternates[l]);
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,36 +49,72 @@ const ogImage = abs(`/og-${lang}.jpg`);
 <meta name="description" content={description} />
 {noindex ? <meta name="robots" content="noindex" /> : <Fragment>
 <link rel="canonical" href={canonical} />
-{LANGS.map((l) => <link rel="alternate" hreflang={LOCALE[l]} href={abs(alternates[l])} />)}
+{langs.length > 1 && <Fragment>
+{langs.map((l) => <link rel="alternate" hreflang={LOCALE[l]} href={abs(alternates[l]!)} />)}
 <link rel="alternate" hreflang="x-default" href={abs(alternates.pt)} />
+</Fragment>}
+</Fragment>}
+{(!noindex || previaSemBusca) && <Fragment>
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonical} />
-<meta property="og:site_name" content="Carol Limah" />
+<meta property="og:site_name" content={og.siteName} />
 <meta property="og:locale" content={OG_LOCALE[lang]} />
-{LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={OG_LOCALE[l]} />)}
+{langs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={OG_LOCALE[l]} />)}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={ogImage} />
+<meta property="og:image" content={abs(og.image)} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={UI[lang].ogImageAlt} />
+<meta property="og:image:alt" content={og.alt} />
 <meta name="twitter:card" content="summary_large_image" />
 </Fragment>}
 {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
-<meta name="theme-color" content="#17110d" />
+<meta name="theme-color" content={themeColor} />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 {CLOUDINARY_ORIGIN && <link rel="preconnect" href={CLOUDINARY_ORIGIN} />}
-<!-- o título do hero é o maior elemento da primeira tela: a serif chega junto com o HTML -->
-<link rel="preload" href="/fonts/instrument-serif-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+{preload.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
 <!-- Amplitude: a chave é a pública do projeto (só envia eventos), por isso fica no HTML -->
+{analytics && <Fragment>
 <script is:inline src="https://cdn.amplitude.com/script/86c8a9bc2c7bbeb3e38d5662653bbf02.js"></script>
 <script is:inline>
-  window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1, serverZone: 'US' }));
+  // sem gravação de sessão (decisão de 28/out, LGPD): só visitas e cliques
   window.amplitude.init('86c8a9bc2c7bbeb3e38d5662653bbf02', {
     serverZone: 'US',
     autocapture: true,
   });
 </script>
+<!-- aviso de medição (LGPD): uma vez por navegador; "Ok" guarda a escolha e some -->
+<script is:inline define:vars={{ aviso: AVISO_DE_MEDICAO[lang] }}>
+  if (!localStorage.getItem('aviso-medicao')) {
+    addEventListener('DOMContentLoaded', () => {
+      const faixa = document.createElement('div');
+      faixa.className = 'aviso-medicao';
+      faixa.setAttribute('role', 'region');
+      faixa.setAttribute('aria-label', aviso.rotulo);
+      faixa.innerHTML = '<p></p><button type="button"></button>';
+      const p = faixa.querySelector('p');
+      p.append(aviso.texto + ' ');
+      const a = document.createElement('a');
+      a.href = '/portfolio-creator/privacidade/';
+      a.textContent = aviso.link;
+      p.append(a, '.');
+      const ok = faixa.querySelector('button');
+      ok.textContent = 'Ok';
+      ok.addEventListener('click', () => {
+        localStorage.setItem('aviso-medicao', '1');
+        faixa.remove();
+      });
+      document.body.append(faixa);
+    });
+  }
+</script>
+<style is:global>
+  .aviso-medicao { position: fixed; z-index: 90; left: 12px; right: 12px; bottom: 12px; max-width: 520px; margin-inline: auto; display: flex; align-items: center; gap: 12px 16px; padding: 12px 12px 12px 18px; border: 1px solid rgba(243, 236, 226, 0.16); border-radius: 16px; background: #2b211c; color: #f3ece2; font: 14px/1.5 var(--sans, system-ui, sans-serif); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); }
+  .aviso-medicao p { margin: 0; flex: 1; max-width: none; }
+  .aviso-medicao a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .aviso-medicao button { flex: none; min-width: 64px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: #f3ece2; color: #17110d; font: 600 14px var(--sans, system-ui, sans-serif); cursor: pointer; }
+  .aviso-medicao button:focus-visible { outline: 2px solid #f3ece2; outline-offset: 3px; }
+</style>
+</Fragment>}

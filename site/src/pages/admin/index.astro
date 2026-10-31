@@ -1,0 +1,28 @@
+---
+// Admin da equipe (DEV-300): ilha React só no navegador, fora da busca. As permissões são conferidas no banco (RLS)
+// e nas rotas /api/admin; esta página sozinha não dá acesso a nada.
+import '../../styles/global.css';
+import '../../app/app.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
+import SeoHead from '../../components/SeoHead.astro';
+import Admin from '@app/admin/Admin';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Portfólio Creator: admin"
+      description="Admin do Portfólio Creator."
+      alternates={{ pt: '/admin/' }}
+      noindex
+      analytics={false}
+      themeColor="#24130F"
+    />
+    <MonitorDeErros />
+  </head>
+  <body class="app-root">
+    <Admin client:only="react" />
+  </body>
+</html>

@@ -1,0 +1,115 @@
+/* Mídia kit em 2 páginas A4 (DEV-154). Na tela, as folhas aparecem empilhadas e centralizadas; na impressão, cada
+   uma ocupa uma página. A diagramação da folha está em kit/kit.css. */
+.mk {
+  min-height: 100dvh;
+  background: #e9e1d8;
+  padding: 16px;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-content: start;
+  gap: 16px;
+}
+.mk-barra {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  width: min(794px, 100%);
+  justify-content: space-between;
+}
+.mk-barra a {
+  color: #24130f;
+  font-weight: 700;
+  white-space: nowrap;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.mk-barra button {
+  min-height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: #d42a5b;
+  color: #fff;
+  white-space: nowrap;
+  font:
+    800 16px 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+.mk :is(a, button):focus-visible {
+  outline: 3px solid #24130f;
+  outline-offset: 3px;
+}
+
+/* as folhas são reduzidas só na tela (celular inclusive), sem rolagem lateral; o PDF sai em tamanho real */
+.mk-vista {
+  flex: none;
+}
+.mk-folhas {
+  display: flex;
+  flex-direction: column;
+  width: 794px;
+  transform-origin: top left;
+}
+.mk-folha {
+  flex: none;
+  box-shadow: 0 8px 32px rgba(36, 19, 15, 0.18);
+}
+
+/* conta sem plano pago: marca d'água em cada página (DEV-152) */
+.mk-marca {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font:
+    900 56px 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  color: rgba(36, 19, 15, 0.1);
+  transform: rotate(-30deg);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  html,
+  body {
+    margin: 0;
+    background: #fff;
+  }
+  .mk {
+    padding: 0;
+    background: #fff;
+    display: block;
+  }
+  .mk-barra {
+    display: none;
+  }
+  .mk-vista {
+    width: 210mm !important;
+    height: auto !important;
+  }
+  .mk-folhas {
+    display: block;
+    transform: none !important;
+  }
+  .mk-folha {
+    width: 210mm !important;
+    height: 297mm !important;
+    box-shadow: none;
+    break-after: page;
+  }
+  .mk-folha:last-child {
+    break-after: auto;
+  }
+}

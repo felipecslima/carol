@@ -1,0 +1,27 @@
+---
+// Assistente de início do Portfólio Creator: ilha React só no navegador.
+import '../../styles/global.css';
+import '../../blocks/blocos.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
+import SeoHead from '../../components/SeoHead.astro';
+import Assistente from '@app/assistente/Assistente';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Portfólio Creator: comece seu portfólio"
+      description="Comece seu portfólio."
+      alternates={{ pt: '/app/novo/' }}
+      noindex
+      analytics={false}
+      themeColor="#FBF4EC"
+    />
+    <MonitorDeErros />
+  </head>
+  <body style="margin:0">
+    <Assistente client:only="react" />
+  </body>
+</html>

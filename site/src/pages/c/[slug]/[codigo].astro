@@ -1,0 +1,69 @@
+---
+// Link para uma marca: /c/<link>/<código>. Mostra o mesmo portfólio; a abertura é registrada pelo navegador.
+import '../../../styles/global.css';
+import '../../../blocks/blocos.css';
+import LinkNaoEncontrado from '../../../components/LinkNaoEncontrado.astro';
+import MonitorDeErros from '../../../components/MonitorDeErros.astro';
+import SeoHead from '../../../components/SeoHead.astro';
+import PaginaPublicada from '@app/publica/PaginaPublicada';
+import { temaDoProjeto } from '@app/editor/tema';
+import { IMAGEM_PADRAO, imagemDaCapa, previaDoLink } from '@lib/previa';
+import { linkDaMarca, paginaNoAr } from '@server/pagina';
+
+export const prerender = false;
+
+const slug = (Astro.params.slug ?? '').toLowerCase();
+const codigo = (Astro.params.codigo ?? '').toLowerCase();
+const pagina = await paginaNoAr(slug);
+const marca = pagina ? await linkDaMarca(pagina.projetoId, codigo) : null;
+const achou = Boolean(pagina && marca);
+if (!achou) Astro.response.status = 404;
+
+// prévia no WhatsApp e no Instagram (DEV-144); link que não existe mostra a imagem do produto
+const previa = pagina ? previaDoLink(pagina.projeto) : null;
+// a imagem da capa é o maior elemento da primeira tela: pedida antes do JavaScript (DEV-146)
+const primeiraImagem = pagina ? imagemDaCapa(pagina.projeto) : null;
+// cada link de marca é só de quem recebeu: nunca em cache compartilhado
+if (achou) Astro.response.headers.set('Cache-Control', 'private, no-store');
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title={achou && previa ? previa.titulo : 'Link não encontrado'}
+      description={previa?.descricao ?? 'Portfólio de creator'}
+      alternates={{ pt: `/c/${pagina?.slug}/${codigo}/` }}
+      og={{
+        image: achou && previa ? previa.imagem : IMAGEM_PADRAO,
+        alt: previa?.alt ?? 'Portfólio Creator',
+        siteName: 'Portfólio Creator',
+      }}
+      noindex
+      previaSemBusca
+      preload={[]}
+      analytics={false}
+    />
+    {achou && primeiraImagem && <link rel="preload" as="image" href={primeiraImagem} fetchpriority="high" />}
+    {achou && (
+      <noscript>
+        <style>
+          [style*='opacity'] {
+            opacity: 1 !important;
+            transform: none !important;
+            clip-path: none !important;
+          }
+        </style>
+      </noscript>
+    )}
+    <MonitorDeErros />
+  </head>
+  <body style="margin:0">
+    {pagina && achou ? (
+      <PaginaPublicada client:carregada projeto={pagina.projeto} tema={temaDoProjeto(pagina.projeto)} slug={pagina.slug} codigo={codigo} />
+    ) : (
+      <LinkNaoEncontrado />
+    )}
+  </body>
+</html>

@@ -1,0 +1,26 @@
+---
+// Login por código de e-mail: ilha React só no navegador; depois de entrar, volta para a área.
+import '../../styles/global.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
+import SeoHead from '../../components/SeoHead.astro';
+import Entrar from '@app/Entrar';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Portfólio Creator: entrar"
+      description="Entrar no Portfólio Creator."
+      alternates={{ pt: '/app/entrar/' }}
+      noindex
+      analytics={false}
+      themeColor="#FBF4EC"
+    />
+    <MonitorDeErros />
+  </head>
+  <body style="margin:0">
+    <Entrar client:only="react" />
+  </body>
+</html>

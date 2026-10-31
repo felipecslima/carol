@@ -1,14 +1,21 @@
 {
   "name": "carol",
   "compatibility_date": "2026-10-01",
-  // worker.js só redireciona http/www para https://eucarollimah.com.br; o resto é o que o `astro build` gera em dist/
-  "main": "./worker.js",
+  // src/server/worker.ts: redirects www/http → https e 404 por idioma, por cima do adapter (@astrojs/cloudflare).
+  // A pasta dos arquivos estáticos (dist/client) vem do adapter no `astro build`.
+  "main": "./src/server/worker.ts",
+  // exclusão definitiva das contas com prazo vencido (DEV-203), todo dia às 03:17 UTC
+  "triggers": { "crons": ["17 3 * * *"] },
+  // logs do Worker no painel do Cloudflare: erros do navegador (/api/erro) e do servidor (middleware), DEV-233
+  "observability": { "enabled": true },
+  // navegador da Cloudflare (Browser Run) para gerar o PDF do mídia kit, DEV-151. "remote": em desenvolvimento usa o
+  // da conta (não existe navegador local)
+  "browser": { "binding": "BROWSER", "remote": true },
   "assets": {
-    "directory": "./dist",
     "binding": "ASSETS",
     // o redirecionamento precisa ver toda requisição, inclusive as de arquivos
     "run_worker_first": true,
-    // dist/404.html (src/pages/404.astro) com status 404
+    // dist/client/404.html (src/pages/404.astro) com status 404
     "not_found_handling": "404-page"
   }
 }

@@ -1,0 +1,1054 @@
+/* Tema do app: o mesmo mundo da página de vendas e do site da Carol. Base espresso, serifa nos títulos, fios finos de 1 px,
+   rosa como grifo e como botão. Importado por último em cada tela. Tokens abaixo; nada de cor solta fora deles.
+   Escala de raios do site: 12 (campo), 16 (cartão), 20 (mídia), pílula. */
+.ed,
+.ed-gaveta,
+.as,
+.ar,
+.ad {
+  --ed-bg: #24130f;
+  --ed-card: #2d1a14;
+  --ed-hover: #3a2721;
+  --ed-texto: #fbf4ec;
+  --ed-suave: #d2bfb6;
+  --ed-borda: rgba(251, 244, 236, 0.14);
+  --ed-campo: rgba(251, 244, 236, 0.06);
+  --ed-rosa: #d42a5b;
+  --ed-rosa-hover: #e5386a;
+  --ed-rosa-escuro: #ff8fb0; /* rosa de texto sobre o escuro (o "accent-light" do site) */
+  --ed-escuro: #fbf4ec; /* realce: creme sobre o escuro */
+  --ed-sobre-realce: #24130f;
+  --ed-foco: #fbf4ec;
+  --ed-ok: #8fd9b6;
+  --ed-alerta: #ffe08a;
+  --ed-erro: #ff9aa8;
+  --r-campo: 12px;
+  --r-cartao: 16px;
+  --r-midia: 20px;
+  --linha: var(--ed-borda);
+  --rosa-texto: var(--ed-rosa-escuro);
+  --as-bg: var(--ed-bg);
+  --as-texto: var(--ed-texto);
+  --as-suave: var(--ed-suave);
+  --as-borda: var(--ed-borda);
+  --as-rosa: var(--ed-rosa);
+  --as-rosa-escuro: var(--ed-rosa-escuro);
+  --serif: 'Instrument Serif', Georgia, serif;
+  color-scheme: dark;
+  accent-color: #d42a5b;
+  caret-color: #ff8fb0;
+}
+:is(.ed, .ed-gaveta, .as, .ar) ::selection {
+  background: #d42a5b;
+  color: #fff;
+}
+:is(.ed, .ed-gaveta, .as, .ar, .ed-gaveta-corpo) {
+  scrollbar-color: rgba(251, 244, 236, 0.28) transparent;
+  scrollbar-width: thin;
+}
+:is(.ed, .ed-gaveta, .as, .ar) ::placeholder {
+  color: rgba(210, 191, 182, 0.7);
+}
+
+/* ícones desenhados (máscara de SVG): no lugar de ✓ e ! como texto */
+.ed-variacoes [role='radio'][aria-checked='true']::before,
+.ed-chip-cor[data-ativo='true']::before,
+.ed-salvo--salvo::after,
+.as .as-erro::before,
+.bl-selo::before {
+  content: '';
+  flex: none;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background: currentColor;
+  -webkit-mask: var(--icone-check) center / contain no-repeat;
+  mask: var(--icone-check) center / contain no-repeat;
+}
+:root {
+  --icone-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E");
+  --icone-alerta: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5.5M12 16.4v.01'/%3E%3C/svg%3E");
+}
+.as .as-erro::before {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  background: var(--ed-erro);
+  border-radius: 0;
+  -webkit-mask: var(--icone-alerta) center / contain no-repeat;
+  mask: var(--icone-alerta) center / contain no-repeat;
+}
+.bl-selo::before {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+
+/* ---------- marca e títulos ---------- */
+.marca {
+  font-family: var(--serif, 'Instrument Serif', Georgia, serif);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #fbf4ec;
+}
+.marca i {
+  font-style: italic;
+  color: #ff8fb0;
+}
+:is(.as-titulo, .ar-titulo, .ar-ola, .ed-gaveta-titulo) {
+  color: #fbf4ec;
+}
+.as .as-titulo {
+  font-size: clamp(42px, 12vw, 60px);
+  line-height: 0.98;
+}
+.ar .ar-ola {
+  font-size: clamp(52px, 15vw, 72px);
+  line-height: 0.96;
+}
+.ar .ar-titulo {
+  font-size: clamp(44px, 12vw, 56px);
+  line-height: 0.98;
+}
+.as .as-titulo em,
+.ar .ar-ola em {
+  color: #ff8fb0;
+}
+.ed-gaveta .ed-gaveta-titulo {
+  font-size: 30px;
+}
+
+/* ---------- barras: mesma base, fio fino (como o cabeçalho do site) ---------- */
+.ed-topo,
+.ar-topo {
+  background: rgba(36, 19, 15, 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ed-borda);
+}
+.ed-abas,
+.ar-abas {
+  background: rgba(36, 19, 15, 0.94);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--ed-borda);
+}
+.ed-abas button,
+.ar-abas button {
+  color: var(--ed-suave);
+}
+.ed-abas button[aria-pressed='true'],
+.ar-abas button[aria-current='page'] {
+  color: #ff8fb0;
+}
+.ed-pendencias {
+  background: #d42a5b;
+  color: #fff;
+}
+.ed-salvo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ed-ok);
+}
+.ed-salvo--salvando {
+  color: var(--ed-suave);
+}
+.ed-salvo--erro,
+.ed-salvo--offline {
+  color: var(--ed-erro);
+}
+.ed-icone:not(:disabled):hover {
+  background: var(--ed-hover);
+}
+.ed-entrar {
+  color: #ff8fb0;
+}
+.ed-carregando,
+.app-lead {
+  color: var(--ed-suave);
+}
+
+/* ---------- foco, selos e movimento de entrada ---------- */
+:is(.ed, .ed-gaveta, .as, .ar) :is(button, a, input, textarea, [role='button']):focus-visible {
+  outline: 3px solid #fbf4ec;
+  outline-offset: 3px;
+}
+.ed-flutuante :focus-visible,
+.ed-toast :focus-visible {
+  outline-color: #24130f;
+}
+
+/* ---------- barra flutuante, aviso e Ver ---------- */
+.ed-flutuante {
+  background: #fbf4ec;
+  color: #24130f;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+}
+.ed-flutuante button:hover:not(:disabled) {
+  background: rgba(36, 19, 15, 0.09);
+}
+.ed-toast {
+  background: #fbf4ec;
+  color: #24130f;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+}
+.ed-toast button {
+  background: #24130f;
+  color: #fbf4ec;
+}
+.ed-sair-ver {
+  background: #fbf4ec;
+  color: #24130f;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+}
+.ed-sair-ver:focus-visible {
+  outline: 3px solid #ff8fb0;
+}
+
+/* ---------- gaveta ---------- */
+.ed-gaveta {
+  background: var(--ed-card);
+  color: var(--ed-texto);
+  border-top: 1px solid var(--ed-borda);
+  box-shadow: 0 -18px 48px rgba(0, 0, 0, 0.5);
+}
+.ed-gaveta-topo {
+  border-bottom: 1px solid var(--ed-borda);
+}
+
+/* ---------- formulários ---------- */
+:is(.ed, .ed-gaveta, .as, .ar)
+  :is(.ed-form, .ed-campo, .as-campo)
+  :is(input:not([type='range'], [type='color'], [type='file']), textarea),
+.ed-link-campo,
+.ed-form input[type='date'] {
+  background: var(--ed-campo);
+  border: 1.5px solid var(--ed-borda);
+  border-radius: var(--r-campo);
+  color: var(--ed-texto);
+}
+.as .as-campo input {
+  border-radius: var(--r-campo);
+  padding: 14px 16px;
+  font-size: 18px;
+}
+:is(.ed, .ed-gaveta, .as, .ar)
+  :is(.ed-form, .ed-campo, .as-campo)
+  :is(input:not([type='range'], [type='color'], [type='file']), textarea):focus,
+.ed-link-campo:focus-within {
+  border-color: #fbf4ec;
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 4px rgba(251, 244, 236, 0.14);
+}
+.ed-form input[type='date'] {
+  color-scheme: dark;
+}
+.ar .ed-campo input:disabled,
+.ar .ed-campo input[readonly] {
+  background: transparent;
+  color: var(--ed-suave);
+  border-style: dashed;
+}
+:is(.ed, .ed-gaveta, .as, .ar) :is(.ed-dica, .ed-contador, .as-dica, .as-texto) {
+  color: var(--ed-suave);
+}
+.ed-campo label b {
+  color: #ff8fb0;
+}
+.as .as-erro,
+.ed-erro {
+  color: var(--ed-erro);
+}
+.as .as-campo input[aria-invalid='true'],
+.ed-form input[aria-invalid='true'] {
+  border-color: var(--ed-erro);
+}
+/* campo com formato (WhatsApp, e-mail): a situação aparece no lugar do contador de letras */
+.ed-situacao {
+  font-size: 13px;
+  line-height: 1.45;
+}
+.ed-situacao:empty {
+  display: none;
+}
+.ed-situacao-ok {
+  color: var(--ed-ok);
+  font-weight: 600;
+}
+.ed-situacao .ed-erro {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+.ed-situacao-usar {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--ed-borda);
+  border-radius: 999px;
+  background: var(--ed-campo);
+  color: var(--ed-texto);
+  font: inherit;
+  font-weight: 700;
+}
+.ed-situacao-usar:focus-visible {
+  outline: 3px solid var(--ed-foco);
+  outline-offset: 2px;
+}
+.ed-link-campo span {
+  color: var(--ed-suave);
+}
+
+/* ---------- botões ---------- */
+.ed-primario,
+.as .as-botao,
+.ar .ar-botao,
+.app-cta {
+  background: #d42a5b;
+  color: #fff;
+}
+.ed-primario:hover:not(:disabled),
+.as .as-botao:hover:not(:disabled),
+.app-cta:hover {
+  background: #e5386a;
+}
+:is(.ed, .ed-gaveta, .as, .ar) :is(.ed-primario, .as-botao):disabled {
+  background: var(--ed-hover);
+  color: var(--ed-suave);
+  opacity: 1;
+}
+/* entrar com o Google (DEV-031): botão claro do guia de marca do Google, no formato dos botões do app */
+.as-google {
+  display: grid;
+  gap: 12px;
+}
+.as .as-botao-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #1f1f1f;
+  font: inherit;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.as .as-botao-google:hover:not(:disabled) {
+  background: #f2ebe4;
+}
+.as .as-botao-google:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.as-ou {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--ed-suave);
+}
+.as-ou::before,
+.as-ou::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ed-borda);
+}
+@media (prefers-reduced-motion: reduce) {
+  .as .as-botao-google {
+    transition: none;
+  }
+}
+.ed-botao-claro,
+.as .as-botao--vazado {
+  background: transparent;
+  border: 1.5px solid rgba(251, 244, 236, 0.42);
+  color: var(--ed-texto);
+}
+.ed-botao-claro:hover:not(:disabled),
+.as .as-botao--vazado:hover:not(:disabled) {
+  background: rgba(251, 244, 236, 0.08);
+  border-color: #fbf4ec;
+}
+.ed-link,
+.as .as-link,
+.app-link {
+  color: #ff8fb0;
+}
+.ed .ed-link--perigo,
+.ed-gaveta .ed-link--perigo,
+.ar .ed-link--perigo {
+  color: var(--ed-erro);
+}
+
+/* ---------- opções (layout, cor, cantos, fonte, clima) ---------- */
+.ed-variacoes [role='radio'],
+.as .as-opcoes button {
+  background: transparent;
+  border: 1.5px solid var(--ed-borda);
+  color: var(--ed-texto);
+}
+.ed-variacoes [role='radio']:hover,
+.as .as-opcoes button:hover {
+  border-color: rgba(251, 244, 236, 0.5);
+}
+.ed-variacoes [role='radio'][aria-checked='true'],
+.as .as-opcoes button[aria-pressed='true'],
+.as .as-opcoes button[aria-checked='true'],
+.ed-chip-cor[data-ativo='true'] {
+  background: #fbf4ec;
+  border-color: #fbf4ec;
+  color: #24130f;
+}
+.ed-variacoes [role='radio'][aria-checked='true']::before {
+  background: currentColor;
+}
+.ed-chip-cor {
+  background: transparent;
+  border: 1.5px solid var(--ed-borda);
+  color: var(--ed-texto);
+}
+.ed-amostra {
+  border: 2px solid rgba(251, 244, 236, 0.75);
+  box-shadow: none;
+}
+.as .as-passos span {
+  background: var(--ed-borda);
+}
+.as .as-passos span[data-feito] {
+  background: #ff8fb0;
+}
+.as .as-passo-texto {
+  background: none;
+  color: var(--ed-suave);
+}
+.as .as-previa {
+  border: 1px solid var(--ed-borda);
+  border-radius: var(--r-midia);
+}
+
+/* ---------- listas, itens e alertas: fio, sem cartão dentro de cartão ---------- */
+.ed-item,
+.ed-secoes li,
+.ed-biblioteca li,
+.as .as-video {
+  background: rgba(251, 244, 236, 0.04);
+  border: 1px solid var(--ed-borda);
+  border-radius: var(--r-cartao);
+}
+.ed-fixa,
+.ed-biblioteca li span:not(.ed-fixa) {
+  color: var(--ed-suave);
+}
+.ed-aviso {
+  background: rgba(255, 224, 138, 0.1);
+  border: 1px solid rgba(255, 224, 138, 0.3);
+  color: var(--ed-alerta);
+  border-radius: var(--r-cartao);
+}
+.ed-ok {
+  background: rgba(143, 217, 182, 0.1);
+  border: 1px solid rgba(143, 217, 182, 0.28);
+  color: var(--ed-ok);
+  border-radius: var(--r-cartao);
+}
+.ed-alerta {
+  background: rgba(251, 244, 236, 0.04);
+  border: 1px solid var(--ed-borda);
+  border-radius: var(--r-cartao);
+}
+.ed-alerta--vermelho {
+  border-color: rgba(255, 143, 176, 0.55);
+  background: rgba(212, 42, 91, 0.12);
+}
+.ed-alerta--vermelho b {
+  color: #ff8fb0;
+}
+.ed-alerta--amarelo {
+  border-color: rgba(255, 224, 138, 0.4);
+  background: rgba(255, 224, 138, 0.08);
+}
+.ed-alerta--amarelo b {
+  color: var(--ed-alerta);
+}
+
+/* progresso e arquivos */
+.ed-progresso {
+  background: var(--ed-bg);
+  border-bottom: 1px solid var(--ed-borda);
+  color: var(--ed-suave);
+}
+.ed-progresso-barra,
+.ed-progresso-envio,
+.ar .ar-barra {
+  background: rgba(251, 244, 236, 0.14);
+}
+.ed-progresso-barra span,
+.ed-progresso-envio span {
+  background: #ff8fb0;
+}
+.ed-arquivo-previa,
+.ed-midias img {
+  background: var(--ed-hover);
+  border-radius: var(--r-campo);
+}
+.ed-arquivo-vazio {
+  background: transparent;
+  border: 1.5px dashed rgba(251, 244, 236, 0.3);
+}
+.ed-escolher button {
+  border: 1.5px solid var(--ed-borda);
+  background: transparent;
+  border-radius: var(--r-campo);
+}
+.ed-escolher button:hover {
+  border-color: #fbf4ec;
+}
+.ed-enviar:focus-within {
+  outline: 3px solid #fbf4ec;
+}
+
+/* ---------- área ---------- */
+.ar .ar-bloco {
+  border: 0;
+  border-top: 1px solid var(--ed-borda);
+  background: transparent;
+}
+.ar .ar-bloco:first-of-type {
+  border-top: 0;
+}
+.ar .ar-perigo {
+  border: 1px solid rgba(255, 143, 176, 0.4);
+  background: rgba(212, 42, 91, 0.1);
+  border-radius: var(--r-midia);
+}
+.ar .ar-perigo .ed-botao-claro {
+  border-color: rgba(255, 143, 176, 0.7);
+  color: #ff8fb0;
+}
+/* o próximo passo é o foco da tela: faixa creme (como as faixas creme do site) sobre a base escura */
+.ar .ar-passo {
+  background: #fbf4ec;
+  color: #24130f;
+  border-radius: var(--r-midia);
+  padding: 28px 24px 24px;
+  gap: 14px;
+}
+.ar .ar-passo h2 {
+  color: #24130f;
+  font-size: clamp(34px, 9.5vw, 44px);
+  line-height: 1;
+}
+.ar .ar-passo p {
+  color: #4a3a34;
+  font-size: 17px;
+  line-height: 1.5;
+}
+.ar .ar-passo .ar-barra {
+  background: rgba(36, 19, 15, 0.12);
+}
+.ar .ar-passo .ar-barra span {
+  background: #d42a5b;
+}
+.ar .ar-passo .ar-link-claro {
+  color: #24130f;
+  text-decoration-color: rgba(36, 19, 15, 0.4);
+}
+.ar .ar-passo :focus-visible {
+  outline-color: #24130f;
+}
+.ar .ar-portfolio,
+.ar .ar-projeto {
+  background: var(--ed-card);
+  border: 1px solid var(--ed-borda);
+  border-radius: var(--r-midia);
+}
+.ar .ar-portfolio:hover {
+  border-color: rgba(251, 244, 236, 0.5);
+}
+.ar .ar-portfolio-info b {
+  color: #fbf4ec;
+}
+.ar .ar-portfolio-info span {
+  color: var(--ed-suave);
+}
+.ar .ar-miniatura {
+  border-radius: var(--r-cartao);
+}
+.ar .ar-vazio {
+  border: 1.5px dashed rgba(251, 244, 236, 0.28);
+  border-radius: var(--r-midia);
+}
+.ar .ar-link-texto {
+  color: #fbf4ec;
+  text-decoration-color: rgba(251, 244, 236, 0.35);
+}
+.ar .ar-link-texto:hover {
+  text-decoration-color: #ff8fb0;
+}
+.ar .ar-estado {
+  background: rgba(255, 224, 138, 0.14);
+  color: var(--ed-alerta);
+}
+.ar .ar-estado--no_ar {
+  background: rgba(143, 217, 182, 0.14);
+  color: var(--ed-ok);
+}
+.ar .ar-estado--edicao_travada,
+.ar .ar-estado--fora_do_ar {
+  background: rgba(251, 244, 236, 0.1);
+  color: var(--ed-suave);
+}
+.ar .ar-faixa {
+  background: rgba(255, 224, 138, 0.14);
+  border-bottom: 1px solid rgba(255, 224, 138, 0.3);
+  color: var(--ed-alerta);
+}
+
+/* entrada: um momento só, quando a área abre (o título e o cartão sobem em sequência) */
+@media (prefers-reduced-motion: no-preference) {
+  .ar .ar-secao > * {
+    animation: tema-sobe 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .ar .ar-secao > :nth-child(2) {
+    animation-delay: 0.08s;
+  }
+  .ar .ar-secao > :nth-child(3) {
+    animation-delay: 0.16s;
+  }
+  @keyframes tema-sobe {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+}
+
+/* ---------- landing de /app/ sem login e mídia kit (a mesa em volta da folha) ---------- */
+.app-root {
+  --bg: #24130f;
+  --text: #fbf4ec;
+  --muted: #d2bfb6;
+  --accent: #ff8fb0;
+  --btn: #d42a5b;
+  --btn-hover: #e5386a;
+  color-scheme: dark;
+}
+.mk {
+  background: #17110d;
+}
+.mk-barra a {
+  color: #fbf4ec;
+}
+.mk-barra button {
+  background: #d42a5b;
+}
+.mk :is(a, button):focus-visible {
+  outline-color: #fbf4ec;
+}
+
+/* avisos: cartão curto e legível, acima da barra de baixo (antes uma pílula espremida no topo) */
+.ed-toast {
+  top: auto;
+  bottom: calc(76px + env(safe-area-inset-bottom));
+  width: min(440px, calc(100vw - 32px));
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 12px 12px 18px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.ed-toast button {
+  flex: none;
+}
+.ar .ed-link {
+  padding-left: 0;
+}
+
+/* acertos do desktop e do assistente */
+.as .as-passos .as-passo-texto {
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+}
+.as .as-corpo {
+  padding-bottom: 130px;
+}
+
+/* celular: o contador em texto basta; os pontos só aparecem onde há espaço (a marca em serifa ocupa mais) */
+@media (max-width: 520px) {
+  .as .as-passos span:not(.as-passo-texto) {
+    display: none;
+  }
+}
+
+@media (min-width: 960px) {
+  .ar .ar-secao--inicio .ar-portfolio .ar-miniatura {
+    height: 210px;
+  }
+}
+
+/* capa de largura total: o contorno de seleção fica por dentro e sem curva (não há cantos a acompanhar) */
+.ed-bloco:has(.bl-capa--fundo) {
+  border-radius: 0;
+  outline-offset: -3px;
+}
+.ed-bloco[data-selecionado]:has(.bl-capa--fundo) {
+  outline: 0;
+}
+.ed-bloco[data-selecionado]:has(.bl-capa--fundo)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border: 3px solid var(--ed-rosa);
+  pointer-events: none;
+}
+
+/* seleção das seções: contorno reto desenhado por cima (o conteúdo, inclusive o de largura total, não o cobre) */
+.ed-bloco,
+.ed-bloco:not([data-selecionado]):hover,
+.ed-bloco[data-selecionado] {
+  border-radius: 0;
+  outline: 0;
+}
+.ed-bloco::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border: 3px solid transparent;
+}
+.ed-bloco[data-selecionado]::after {
+  border-color: var(--ed-rosa);
+}
+.ed-bloco:not([data-selecionado]):hover::after {
+  border: 2px dashed rgba(212, 42, 91, 0.55);
+}
+
+/* ---------- escolha de plano (publicar e liberar edição, DEV-160 e 193) ---------- */
+.pl-planos {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.pl-planos legend {
+  padding: 0;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ed-texto);
+}
+.pl-plano {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  column-gap: 12px;
+  row-gap: 4px;
+  min-height: 44px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--ed-borda);
+  border-radius: 14px;
+  color: var(--ed-texto);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+.pl-plano:hover {
+  border-color: rgba(251, 244, 236, 0.5);
+}
+.pl-plano:has(input:checked) {
+  border-color: var(--ed-texto);
+  background: var(--ed-card);
+}
+.pl-plano:has(input:focus-visible) {
+  outline: 2px solid var(--ed-foco);
+  outline-offset: 2px;
+}
+.pl-plano input {
+  /* anel desenhado: o rádio nativo no escuro vira um disco cinza com borda abaixo de 3:1 */
+  appearance: none;
+  margin: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ed-suave);
+  border-radius: 50%;
+  align-self: center;
+}
+.pl-plano input:checked {
+  border-color: var(--ed-rosa-escuro);
+  background: radial-gradient(circle, var(--ed-rosa-escuro) 0 4px, transparent 4.5px);
+}
+.pl-plano-nome {
+  font-weight: 700;
+  font-size: 15px;
+}
+.pl-plano-valor {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pl-plano-resumo {
+  grid-column: 2 / -1;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ed-suave);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-plano {
+    transition: none;
+  }
+}
+/* aceite dos Termos junto do botão de compra (DEV-200): links sublinhados, com altura de toque sem mexer na linha */
+.pl-termos a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding-block: 12px;
+}
+.pl-termos a:hover {
+  color: var(--ed-texto);
+}
+/* link dentro de um aviso (ex.: "Liberar a edição" no prazo vencido): sublinhado e com altura de toque */
+.ed-aviso a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* foco de teclado nas seções do editor (DEV-232): o anel creme de antes sumia no fundo claro (1,2:1); agora rosa com
+   um filete branco por dentro, que passa de 3:1 em qualquer paleta, clara ou escura */
+.ed .ed-bloco:focus-visible {
+  outline: 0;
+}
+.ed .ed-bloco:focus-visible::after {
+  border: 3px solid var(--ed-rosa);
+  box-shadow: inset 0 0 0 3px #fff;
+}
+/* título da gaveta recebe o foco ao abrir (para o leitor de tela), sem anel: não é um controle */
+.ed-gaveta-titulo:focus {
+  outline: 0;
+}
+/* alvos de toque de 44 px: "Entendi" da dica e o seletor de cor própria */
+.ed-toast button {
+  min-height: 44px;
+}
+
+/* ---------- topo do editor em telas estreitas, abas no desktop e dica (DEV-093) ---------- */
+.ed-salvo {
+  white-space: nowrap;
+}
+.ed-salvo-curto,
+.marca-curta {
+  display: none;
+}
+.ed-entrar svg {
+  display: none;
+}
+@media (max-width: 479px) {
+  /* texto completo só para o leitor de tela (e na dica do mouse); fica o ícone ou o texto curto do problema */
+  .ed-salvo-texto,
+  .ed-entrar-texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .ed-salvo-curto {
+    display: inline;
+  }
+  .ed-salvo {
+    margin-left: 2px;
+    min-width: 20px;
+  }
+  .ed-salvo--salvando::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: ed-pulsar 1s ease-in-out infinite alternate;
+  }
+  .ed-entrar {
+    width: 44px;
+    justify-content: center;
+    padding: 0;
+  }
+  .ed-entrar svg {
+    display: block;
+  }
+  .ed-topo .marca {
+    font-size: 22px;
+  }
+}
+@media (max-width: 359px) {
+  .ed-topo .marca:not(.marca-curta) {
+    display: none;
+  }
+  .ed-topo .marca-curta {
+    display: inline;
+  }
+}
+@keyframes ed-pulsar {
+  to {
+    opacity: 0.3;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ed-salvo--salvando::before {
+    animation: none;
+  }
+}
+/* no desktop as 5 abas não esticam até 256 px cada: ficam juntas no centro da barra */
+@media (min-width: 900px) {
+  .ed-abas {
+    grid-template-columns: repeat(5, minmax(0, 120px));
+    justify-content: center;
+  }
+}
+/* a dica de primeiro uso não bloqueia o toque na página: só o botão "Entendi" recebe o toque */
+.ed-toast--dica {
+  pointer-events: none;
+}
+.ed-toast--dica button {
+  pointer-events: auto;
+}
+
+/* ---------- hierarquia (DEV-095): o rosa fica para Publicar e para a seção selecionada ---------- */
+/* Publicar é o fim do caminho: botão contido, em rosa, dentro da barra; o número de pendências vai junto */
+.ed-abas .ed-aba-publicar {
+  margin: 6px 6px 6px 2px;
+  min-height: 48px;
+  border-radius: 14px;
+}
+/* com pendências: só o contorno (não chama para publicar antes da hora); pronto para publicar: rosa cheio */
+.ed-abas .ed-aba-publicar:not(.ed-aba-publicar--pronto) {
+  box-shadow: inset 0 0 0 1.5px var(--ed-rosa-escuro);
+  color: var(--ed-rosa-escuro);
+}
+.ed-abas .ed-aba-publicar--pronto {
+  background: var(--ed-rosa);
+  color: #fff;
+}
+.ed-abas .ed-aba-publicar--pronto:hover,
+.ed-abas .ed-aba-publicar--pronto[aria-pressed='true'] {
+  background: var(--ed-rosa-hover);
+  color: #fff;
+}
+.ed-abas .ed-aba-publicar:not(.ed-aba-publicar--pronto)[aria-pressed='true'] {
+  background: rgba(255, 143, 176, 0.14);
+  color: var(--ed-rosa-escuro);
+}
+.ed-aba-publicar .ed-pendencias {
+  top: -6px;
+  left: auto;
+  right: -4px;
+  border: 2px solid #24130f;
+}
+/* aba aberta: creme com um fio em cima (antes rosa, o mesmo do Publicar e da seleção) */
+.ed-abas button[aria-pressed='true']:not(.ed-aba-publicar) {
+  color: #fbf4ec;
+  font-weight: 800;
+  box-shadow: inset 0 3px 0 #fbf4ec;
+}
+/* Entrar e a barra de progresso em tons neutros */
+.ed-entrar {
+  color: var(--ed-texto);
+}
+.ed-progresso-barra span {
+  background: var(--ed-suave);
+}
+
+/* menu "Mais" da barra flutuante */
+.ed-mais {
+  position: relative;
+}
+.ed-mais-menu {
+  position: absolute;
+  right: -6px;
+  bottom: calc(100% + 12px);
+  display: grid;
+  width: min(280px, calc(100vw - 24px));
+  padding: 6px;
+  border-radius: 16px;
+  background: #fbf4ec;
+  color: #24130f;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+}
+.ed-flutuante .ed-mais-botao {
+  padding: 0 14px 0 10px;
+}
+.ed-flutuante .ed-mais-item {
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: left;
+}
+.ed-mais-item svg {
+  flex: none;
+  margin-top: 1px;
+}
+.ed-mais-texto {
+  display: grid;
+  gap: 2px;
+}
+.ed-mais-rotulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ed-mais-detalhe {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #5a443e;
+}
+.ed-mais-atalho {
+  display: none;
+  font:
+    600 12px 'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+  color: #7a625b;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ed-mais-atalho {
+    display: inline;
+  }
+}
+.ed-flutuante .ed-mais-item--perigo {
+  color: #8a1c16;
+}
+.ed-mais-item:focus-visible {
+  outline: 3px solid #24130f;
+  outline-offset: -3px;
+}

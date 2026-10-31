@@ -1,0 +1,15 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "noImplicitOverride": true,
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@blocks/*": ["./src/blocks/*"],
+      "@themes/*": ["./src/themes/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@server/*": ["./src/server/*"]
+    }
+  }
+}

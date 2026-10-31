@@ -1,0 +1,62 @@
+---
+// Termos de Uso e Política de Privacidade do Portfólio Creator (DEV-200). Mesmo esqueleto e cores da página de vendas
+// (global.css + portfolio-creator.css), em coluna de leitura. Os textos ficam em pages/portfolio-creator/termos e
+// privacidade. Abertas à busca desde o beta (31/out); revisão jurídica fica para depois (decisão do usuário).
+import '../styles/global.css';
+import '../styles/portfolio-creator.css';
+import SeoHead from '../components/SeoHead.astro';
+import { PC_PATH } from '../data/portfolio-creator';
+
+interface Props {
+  titulo: string;
+  descricao: string;
+  caminho: string;
+  atualizadoEm: string;
+}
+const { titulo, descricao, caminho, atualizadoEm } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR" class="pc">
+  <head>
+    <SeoHead
+      lang="pt"
+      title={`${titulo} | Portfólio Creator`}
+      description={descricao}
+      alternates={{ pt: caminho }}
+      analytics={false}
+      themeColor="#24130F"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+    <nav class="nav" aria-label="Principal">
+      <div class="wrap">
+        <a class="logo" href={PC_PATH}>Portfólio <i>Creator</i></a>
+        <a class="legal-voltar" href={PC_PATH}>Voltar para a página</a>
+      </div>
+    </nav>
+
+    <main id="conteudo" tabindex="-1" class="wrap legal">
+      <header class="legal-topo">
+        <h1 class="h1">{titulo}</h1>
+        <p class="legal-data">Atualizado em {atualizadoEm}</p>
+      </header>
+      <div class="legal-texto">
+        <slot />
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <a class="logo" href={PC_PATH}>Portfólio <i>Creator</i></a>
+        <ul class="foot-social" aria-label="Documentos">
+          <li><a href="/portfolio-creator/termos/" aria-current={caminho.endsWith('/termos/') ? 'page' : undefined}>Termos de Uso</a></li>
+          <li><a href="/portfolio-creator/privacidade/" aria-current={caminho.endsWith('/privacidade/') ? 'page' : undefined}>Privacidade</a></li>
+          <li><a href="/app/entrar/">Entrar</a></li>
+        </ul>
+        <span>© 2026 Carol Limah</span>
+      </div>
+    </footer>
+  </body>
+</html>

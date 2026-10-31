@@ -1,0 +1,216 @@
+/* Assistente de início (celular primeiro): escolher o modelo e responder uma pergunta por tela. */
+.as {
+  --as-bg: #fbf4ec;
+  --as-texto: #24130f;
+  --as-suave: #5e4842;
+  --as-borda: #eedfd5;
+  --as-rosa: #d42a5b;
+  --as-rosa-escuro: #b71f4e;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--as-bg);
+  color: var(--as-texto);
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+}
+.as button {
+  font: inherit;
+  cursor: pointer;
+}
+.as :is(button, input, textarea, a):focus-visible {
+  outline: 3px solid #24130f;
+  outline-offset: 3px;
+}
+.as-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  min-height: 56px;
+}
+.as-marca {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: 18px;
+}
+.as-marca i {
+  color: var(--as-rosa);
+  font-style: normal;
+}
+.as-passos {
+  display: flex;
+  gap: 6px;
+}
+.as-passos span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--as-borda);
+}
+.as-passos span[data-feito] {
+  background: var(--as-rosa);
+}
+.as-corpo {
+  flex: 1;
+  display: grid;
+  align-content: start;
+  gap: 24px;
+  padding: 16px 20px 32px;
+  max-width: 560px;
+  width: 100%;
+  margin-inline: auto;
+}
+.as-titulo {
+  font-size: clamp(30px, 8vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  text-wrap: balance;
+}
+.as-texto {
+  font-size: 17px;
+  color: var(--as-suave);
+  line-height: 1.5;
+  max-width: 46ch;
+}
+.as-legal {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--as-suave);
+  max-width: 46ch;
+}
+.as-legal a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding-block: 12px;
+}
+.as-campo {
+  display: grid;
+  gap: 8px;
+}
+.as-campo label {
+  font-weight: 700;
+}
+.as-campo input {
+  font: inherit;
+  font-size: 20px;
+  padding: 16px 18px;
+  border: 2px solid var(--as-borda);
+  border-radius: 18px;
+  background: #fff;
+  color: var(--as-texto);
+  width: 100%;
+}
+.as-campo input:focus {
+  border-color: #24130f;
+  outline: none;
+}
+.as-dica {
+  font-size: 14px;
+  color: var(--as-suave);
+}
+.as-opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.as-opcoes button {
+  min-height: 48px;
+  padding: 0 20px;
+  border: 2px solid var(--as-borda);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--as-texto);
+  font-weight: 700;
+}
+.as-opcoes button[aria-pressed='true'],
+.as-opcoes button[aria-checked='true'] {
+  border-color: #24130f;
+  background: #24130f;
+  color: #fff;
+}
+.as-acoes {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 12px;
+  padding: 12px 20px calc(16px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--as-bg) 70%, transparent);
+  max-width: 560px;
+  width: 100%;
+  margin-inline: auto;
+}
+.as-botao {
+  flex: 1;
+  min-height: 56px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--as-rosa);
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+}
+.as-botao:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.as-botao--vazado {
+  flex: none;
+  padding: 0 24px;
+  background: transparent;
+  color: var(--as-texto);
+  border: 2px solid var(--as-borda);
+}
+
+/* escolha das cores: prévia da página e as paletas prontas, cada uma com a amostra e o nome */
+.as-cores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  width: min(100%, 360px);
+  gap: 8px;
+}
+.as-cores button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+/* a prévia fica na largura de um celular (mais larga, a miniatura cresce e só mostra a foto) e some em degradê
+   embaixo, em vez de parecer cortada */
+.as-previa {
+  width: min(100%, 360px);
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 78%, transparent);
+  border-radius: 28px;
+  border: 1px solid var(--as-borda);
+  pointer-events: none;
+}
+.as-previa .bl {
+  transform: scale(0.82);
+  transform-origin: top center;
+}
+
+.as-video {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--as-borda);
+  border-radius: 22px;
+  background: #fff;
+}
+.as-link {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--as-rosa-escuro);
+  font-weight: 700;
+}
+.as-adicionar {
+  flex: none;
+  justify-self: start;
+}

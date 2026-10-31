@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "supabase/templates/codigo.html"
+        ],
+        "createdAt": "2026-10-31T21:31:03.370Z",
+        "reason": "creme #FBF4EC é a cor da marca do site da Carol (faixas creme do site e do app, docs/PROGRESSO.md 24/out); o e-mail do código mantém essa identidade"
+      }
+    ]
+  }
+}

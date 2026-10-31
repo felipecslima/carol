@@ -1,0 +1,147 @@
+---
+// Termos de Uso (DEV-200). Escritos a partir do que o produto faz hoje; no ar desde o beta (31/out), sem revisão jurídica
+// ainda (decisão do usuário). Preços e limites saem do código, para não divergirem.
+import PaginaLegal from '../../views/PaginaLegal.astro';
+import { PLANOS_DE_EDICAO, PLANOS_DE_PUBLICACAO } from '../../lib/planos';
+import { ESPACO_POR_CONTA, LINKS_DE_MARCA_POR_DIA, MIDIAS_POR_CONTA } from '../../lib/limites';
+import { EMPRESA } from '../../data/empresa';
+
+const reais = (centavos: number) => (centavos / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const gb = ESPACO_POR_CONTA / 1024 ** 3;
+---
+
+<PaginaLegal
+  titulo="Termos de Uso"
+  descricao="As regras para usar o Portfólio Creator: conta, planos, pagamento, conteúdo e cancelamento."
+  caminho="/portfolio-creator/termos/"
+  atualizadoEm={EMPRESA.atualizadoEm}
+>
+  <p>
+    O Portfólio Creator é um serviço para montar portfólio e mídia kit de creators, com página própria e PDF. Ele é
+    oferecido por <strong>{EMPRESA.razaoSocial}</strong>, CNPJ {EMPRESA.cnpj}, com sede em {EMPRESA.cidade}. Ao criar
+    uma conta ou contratar um plano, você concorda com estes termos e com a{' '}
+    <a href="/portfolio-creator/privacidade/">Política de Privacidade</a>.
+  </p>
+
+  <h2>1. Quem pode usar</h2>
+  <p>
+    O serviço é só para pessoas com 18 anos ou mais.
+    Você é responsável pelos dados que informa e por manter o acesso ao seu e-mail, que é a forma de entrar na conta.
+  </p>
+
+  <h2>2. Conta e acesso</h2>
+  <p>
+    Dá para montar o portfólio sem conta: o rascunho fica guardado no seu aparelho. Para guardar na nuvem, publicar
+    ou baixar o PDF, você entra com o seu e-mail, recebendo um código de 6 números, sem senha. Não compartilhe esse
+    código com ninguém.
+  </p>
+
+  <h2>3. Teste grátis</h2>
+  <p>
+    Você pode montar o portfólio inteiro e ver como ele fica sem pagar e sem cartão. No teste, o resultado aparece com
+    marca d’água. Para pôr o portfólio no ar com link próprio e baixar o PDF sem marca d’água, é preciso contratar
+    um plano.
+  </p>
+
+  <h2>4. Planos e preços</h2>
+  <h3>Para publicar</h3>
+  <ul>
+    {PLANOS_DE_PUBLICACAO.map((p) => (
+      <li>
+        <strong>{p.nome}:</strong> {reais(p.valor)}{p.extra && <>, mais {reais(p.extra.valor)} {p.extra.nome}</>}. {p.resumo}
+      </li>
+    ))}
+  </ul>
+  <p>
+    Depois da primeira publicação, você pode editar e publicar de novo por 7 dias. Passado esse prazo, o portfólio continua no ar, e a edição fica travada até você
+    contratar um plano de edição.
+  </p>
+  <h3>Para continuar editando</h3>
+  <ul>
+    {PLANOS_DE_EDICAO.map((p) => (
+      <li>
+        <strong>{p.nome}:</strong> {reais(p.valor)}{p.periodo && `/${p.periodo}`}. {p.resumo}
+      </li>
+    ))}
+  </ul>
+  <p>
+    Os preços podem mudar; a mudança não afeta o que você já pagou.
+  </p>
+  <p>
+    No plano Portfólio em site, o domínio .com.br é registrado no Registro.br em seu nome, com o seu CPF, e é seu.
+    A taxa cobrada cobre o primeiro ano. Do segundo ano em diante, você renova o domínio direto no Registro.br, no
+    valor cobrado por ele; se não renovar, o domínio expira e o portfólio continua no link do Portfólio Creator.
+  </p>
+
+  <h2>5. Pagamento</h2>
+  <p>
+    Por enquanto, o pagamento é combinado pelo WhatsApp e confirmado pela nossa equipe. O plano é liberado depois da
+    confirmação. Não guardamos dados de cartão. O plano mensal é cobrado mês a mês, como um novo pedido a cada mês;
+    se você não pagar um mês, a edição volta a travar, e o portfólio continua no ar.
+  </p>
+
+  <h2>6. Arrependimento e reembolso</h2>
+  <p>
+    Pelo Código de Defesa do Consumidor (art. 49), você pode desistir da compra em até 7 dias depois do pagamento e
+    receber o valor de volta, sem precisar explicar o motivo. Para isso, escreva para{' '}
+    <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>. Se o domínio do plano Portfólio em site já tiver sido
+    registrado, a taxa do domínio não é devolvida, e o domínio continua seu.
+  </p>
+
+  <h2>7. Seu conteúdo</h2>
+  <p>
+    Os textos, fotos, vídeos, números e marcas que você põe no portfólio continuam sendo seus. Para o serviço
+    funcionar, você nos autoriza a guardar, processar e mostrar esse conteúdo na sua página, nos links que você
+    cria e no PDF, só para esse fim. A autorização termina quando você apaga o conteúdo ou a conta.
+  </p>
+  <p>Ao publicar, você garante que:</p>
+  <ul>
+    <li>tem direito de usar as fotos, os vídeos e as músicas, e a autorização das pessoas que aparecem neles;</li>
+    <li>os números de público e de resultados são verdadeiros;</li>
+    <li>pode citar as marcas e os trabalhos que mostra, conforme os contratos que você tem com elas;</li>
+    <li>o conteúdo não é ilegal, ofensivo, enganoso nem viola direitos de outras pessoas.</li>
+  </ul>
+  <p>
+    Podemos tirar do ar conteúdo que viole estes termos ou a lei, avisando você sempre que possível. O que for
+    publicado fica visível para qualquer pessoa que tiver o link.
+  </p>
+
+  <h2>8. Limites de uso</h2>
+  <p>
+    Para manter o serviço estável para todo mundo, cada conta tem até {MIDIAS_POR_CONTA} fotos e vídeos e até {gb} GB
+    de espaço na biblioteca, e pode criar até {LINKS_DE_MARCA_POR_DIA} links de marca por dia. Não é permitido usar o
+    serviço para enviar spam, tentar acessar contas de outras pessoas ou sobrecarregar o sistema.
+  </p>
+
+  <h2>9. Disponibilidade</h2>
+  <p>
+    Trabalhamos para o serviço ficar no ar o tempo todo, mas pode haver pausas para manutenção ou por falhas dos
+    serviços que usamos. Não prometemos resultados com marcas: o Portfólio Creator ajuda a apresentar o seu
+    trabalho, e as parcerias dependem de cada negociação.
+  </p>
+
+  <h2>10. Exclusão da conta</h2>
+  <p>
+    Você pode pedir a exclusão da conta quando quiser, na área Conta. A conta fica desativada por 7 dias e seus
+    portfólios saem do ar; nesse prazo, basta entrar de novo para desistir. Depois disso, apagamos sua conta, seus
+    portfólios, fotos, vídeos e links. Planos pagos e não usados não são reembolsados na exclusão, exceto no caso do
+    item 6. Também podemos encerrar contas que violem estes termos.
+  </p>
+
+  <h2>11. Mudanças nestes termos</h2>
+  <p>
+    Se os termos mudarem, avisamos por e-mail ou dentro do app antes de a mudança valer. A data no topo desta página
+    mostra a última atualização.
+  </p>
+
+  <h2>12. Lei e foro</h2>
+  <p>
+    Estes termos seguem a lei brasileira. Fica eleito o foro do seu domicílio, como garante o Código de Defesa do
+    Consumidor; nos demais casos, o foro de {EMPRESA.cidade}.
+  </p>
+
+  <h2>Contato</h2>
+  <p>
+    Dúvidas sobre estes termos: <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>.
+  </p>
+</PaginaLegal>

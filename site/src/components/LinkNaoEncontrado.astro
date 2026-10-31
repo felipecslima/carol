@@ -1,0 +1,16 @@
+---
+// Corpo da página de link que não existe, ainda não foi ao ar ou saiu do ar (o status 404 é definido pela rota).
+---
+
+<style>
+      body:has(.nao-achou) { margin: 0; min-height: 100svh; display: grid; place-items: center; padding: 24px; background: #17110d; color: #f6ece0; font-family: 'Hanken Grotesk', system-ui, sans-serif; text-align: center; }
+      main { max-width: 420px; display: grid; gap: 14px; }
+      h1 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(2rem, 8vw, 2.8rem); line-height: 1.1; }
+      p { margin: 0; color: #cdbcab; line-height: 1.5; }
+      a { color: inherit; padding: 12px; }
+    </style>
+<main class="nao-achou">
+      <h1>Este link não está no ar</h1>
+      <p>O endereço pode ter sido digitado errado, ou o portfólio ainda não foi publicado. Confira o link com quem te enviou.</p>
+      <a href="/portfolio-creator/">Conhecer o Portfólio Creator</a>
+    </main>

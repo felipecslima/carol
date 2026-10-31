@@ -1,0 +1,28 @@
+---
+// Área logada do Portfólio Creator: uma ilha React só no navegador (sem SSR), fora do sitemap e da busca.
+import '../../styles/global.css';
+import '../../app/app.css';
+import '../../blocks/blocos.css';
+import MonitorDeErros from '../../components/MonitorDeErros.astro';
+import SeoHead from '../../components/SeoHead.astro';
+import App from '@app/App';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title="Portfólio Creator: sua área"
+      description="Área do Portfólio Creator."
+      alternates={{ pt: '/app/' }}
+      noindex
+      analytics={false}
+      themeColor="#24130F"
+    />
+    <MonitorDeErros />
+  </head>
+  <body class="app-root">
+    <App client:only="react" />
+  </body>
+</html>

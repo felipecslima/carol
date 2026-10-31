@@ -1,0 +1,66 @@
+---
+// Portfólio no ar: /c/<link>. Renderizado no servidor a partir da versão publicada.
+import '../../../styles/global.css';
+import '../../../blocks/blocos.css';
+import LinkNaoEncontrado from '../../../components/LinkNaoEncontrado.astro';
+import MonitorDeErros from '../../../components/MonitorDeErros.astro';
+import SeoHead from '../../../components/SeoHead.astro';
+import PaginaPublicada from '@app/publica/PaginaPublicada';
+import { temaDoProjeto } from '@app/editor/tema';
+import { IMAGEM_PADRAO, imagemDaCapa, previaDoLink } from '@lib/previa';
+import { paginaNoAr } from '@server/pagina';
+
+export const prerender = false;
+
+const slug = (Astro.params.slug ?? '').toLowerCase();
+const pagina = await paginaNoAr(slug);
+const achou = Boolean(pagina);
+if (!achou) Astro.response.status = 404;
+
+// prévia no WhatsApp e no Instagram (DEV-144); link que não existe mostra a imagem do produto
+const previa = pagina ? previaDoLink(pagina.projeto) : null;
+// a imagem da capa é o maior elemento da primeira tela: pedida antes do JavaScript (DEV-146)
+const primeiraImagem = pagina ? imagemDaCapa(pagina.projeto) : null;
+if (achou) Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=60');
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <SeoHead
+      lang="pt"
+      title={achou && previa ? previa.titulo : 'Link não encontrado'}
+      description={previa?.descricao ?? 'Portfólio de creator'}
+      alternates={{ pt: `/c/${pagina?.slug}/` }}
+      og={{
+        image: achou && previa ? previa.imagem : IMAGEM_PADRAO,
+        alt: previa?.alt ?? 'Portfólio Creator',
+        siteName: 'Portfólio Creator',
+      }}
+      noindex
+      previaSemBusca
+      preload={[]}
+      analytics={false}
+    />
+    {achou && primeiraImagem && <link rel="preload" as="image" href={primeiraImagem} fetchpriority="high" />}
+    {achou && (
+      <noscript>
+        <style>
+          [style*='opacity'] {
+            opacity: 1 !important;
+            transform: none !important;
+            clip-path: none !important;
+          }
+        </style>
+      </noscript>
+    )}
+    <MonitorDeErros />
+  </head>
+  <body style="margin:0">
+    {pagina && achou ? (
+      <PaginaPublicada client:carregada projeto={pagina.projeto} tema={temaDoProjeto(pagina.projeto)} slug={pagina.slug} />
+    ) : (
+      <LinkNaoEncontrado />
+    )}
+  </body>
+</html>

@@ -9,13 +9,51 @@
     "preview": "astro preview",
     "test:e2e": "playwright test",
     "pdf": "astro build && node scripts/media-kit-pdf.mjs",
-    "og": "node scripts/og-image.mjs"
+    "og": "node scripts/og-image.mjs",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "astro check",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
+    "seed:carol": "node scripts/semear-carol.mjs",
+    "acesso:teste": "node scripts/acesso-teste.mjs",
+    "equipe:teste": "node scripts/equipe-teste.mjs",
+    "pdf:kit": "node scripts/pdf-kit.mjs"
   },
   "dependencies": {
-    "astro": "^7.4.1"
+    "@astrojs/react": "^7.1.1",
+    "@cloudflare/puppeteer": "^1.4.0",
+    "@material/material-color-utilities": "^0.4.0",
+    "@supabase/supabase-js": "^2.118.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "astro": "^7.4.1",
+    "motion": "^14.6.0",
+    "qrcode-generator": "^2.0.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "vaul": "^1.1.2",
+    "zod": "^4.6.7",
+    "zundo": "^2.3.0",
+    "zustand": "^5.0.16"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/cloudflare": "^14.4.2",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.64.1",
-    "cloudinary": "^2.11.0"
+    "@types/node": "^26.6.5",
+    "cloudinary": "^2.11.0",
+    "eslint": "^10.13.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.152.0"
   }
 }
