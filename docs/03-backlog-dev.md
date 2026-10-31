@@ -190,7 +190,7 @@ Prioridade: **P0** = lançamento, **P1** = logo depois, **P2** = futuro. Tarefas
 
 - [ ] **DEV-220** Formulário de lista de espera salvando em `waitlist`, com aviso no Slack.
 - [x] **DEV-221** Textos do cupom conforme a decisão e botões apontando para `/app` quando o produto abrir. *Botões feitos (todos os "Testar agora" e "Quero este plano" levam a `/app/novo/`, commit `9226a90`). 28/out: cupom removido por decisão do usuário (faixa do topo, nota dos planos, pergunta nas dúvidas e trecho dos Termos).*
-- [ ] **DEV-097** Texto da página de vendas sem modelos: proposta em `docs/PROPOSTA-PAGINA-VENDAS-SEM-MODELOS.md`, aplicar só com aprovação.
+- [x] **DEV-097** Texto da página de vendas sem modelos. *Feito e aprovado em 28/out (`00e6357`, `6f786d0`, `f1d1ea0`): textos, imagens do portfólio real da Carol feitas no editor e enquadramento do topo. A proposta que guiou a tarefa saiu do repositório em 31/out (fica no histórico do Git).*
 
 ### E20. Qualidade
 

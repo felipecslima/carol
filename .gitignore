@@ -25,3 +25,6 @@ site/.impeccable/review/
 
 # credenciais do Google OAuth baixadas do Cloud Console (nunca versionar)
 client_secret_*.json
+
+# arquivos temporários do CLI do Supabase (link do projeto e versão)
+**/supabase/.temp/
