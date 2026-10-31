@@ -45,9 +45,7 @@ import { carregarRascunho, limparPendente, marcarPendente, salvarRascunho, temPe
 import { carregarDaNuvem, salvarNaNuvem } from '../nuvem';
 import { useSessao } from '../sessao';
 import { supabaseConfigurado } from '../supabase';
-import './editor.css';
-import '../refino.css';
-import '../tema.css';
+import './estilos.css';
 
 type Painel = 'editar' | 'secoes' | 'adicionar' | 'estilo' | 'numeros' | 'revisao' | 'midias' | null;
 

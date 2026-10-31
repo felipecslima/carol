@@ -6,10 +6,7 @@ import { ehPlano, formatarValor, PLANOS } from '@lib/planos';
 import { sair, useSessao } from '../sessao';
 import { supabase } from '../supabase';
 import { Marca } from '../Marca';
-import '../editor/editor.css';
-import '../refino.css';
-import '../tema.css';
-import './admin.css';
+import './estilos.css';
 
 type Aba = 'painel' | 'pedidos' | 'creators' | 'no-ar' | 'registro';
 const ABAS: Array<[Aba, string]> = [

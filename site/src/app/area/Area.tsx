@@ -12,10 +12,7 @@ import { carregarPerfil, carregarResumo, cancelarExclusao, type Perfil, type Res
 import { Conta } from './Conta';
 import { Inicio } from './Inicio';
 import { Projetos } from './Projetos';
-import '../editor/editor.css';
-import './area.css';
-import '../refino.css';
-import '../tema.css';
+import './estilos.css';
 
 type Aba = 'inicio' | 'projetos' | 'midias' | 'conta';
 const ABAS: Array<[Aba, string, () => ReactElement]> = [
