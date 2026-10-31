@@ -5,8 +5,8 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 ## Onde parei
 
 - **Estado em 31/out:** o código previsto até o lançamento está **feito e commitado na `dev`** e foi testado só em localhost. Nada foi para a `main` nem para produção. Funciona de ponta a ponta: assistente → editor → revisão → publicar com plano (PDF + link ou Site) → pagamento marcado no admin → página `/c/<link>` no ar (prévia no WhatsApp, rápida no 4G) → links para marcas com aviso de abertura → PDF do mídia kit gerado no servidor e guardado → prazo de 7 dias para publicar mudanças e "Liberar a edição".
-- **Último trabalho (31/out):** DEV-200, Termos e Privacidade ligados na tela de compra, **esperando aprovação** (abaixo). Junto, os documentos foram arrumados: backlog conferido no código e entregas antigas movidas para `docs/ENTREGAS.md`.
-- **Próximo passo:** depois da aprovação do DEV-200, o login com Google (DEV-031) quando chegarem as credenciais. Por último, revisão final e merge na `main` quando o usuário pedir para publicar.
+- **Último trabalho (31/out):** DEV-200, Termos e Privacidade ligados na tela de compra, aprovado e commitado. Antes, os documentos foram arrumados (`76a1edb`): backlog conferido no código e entregas antigas movidas para `docs/ENTREGAS.md`.
+- **Em andamento:** DEV-031, login com Google (plano aprovado em 31/out). O código e as URLs de volta no Supabase ficam comigo; o cliente OAuth no Google Cloud e o Client ID e o Secret colados no Supabase ficam com o usuário. Depois: revisão final e merge na `main` quando o usuário pedir para publicar.
 - **Depende de você antes de abrir ao público:**
   1. **`wrangler login` expirou** (visto em 31/out). Sem ele, `astro dev` e `npm run build` não sobem, porque o binding remoto do Browser Run (PDF) pede login; o `npm run test:e2e` só roda sobre o último build já gerado. Rode `npx wrangler login` num terminal seu, dentro de `site/`. O login de 28/out foi feito com permissão de Browser Run: confira que ela continua e que o PDF sai (`npm run pdf:kit`). Nos testes de 31/out usei uma config temporária sem o binding remoto, já apagada.
   2. **Login com Google (DEV-031, decidido em 28/out):** "Continuar com Google" como botão principal e o código por e-mail como alternativa (o limite de 2 e-mails por hora do Supabase, sem SMTP próprio, fica só para quem não usa Google). Falta criar o cliente OAuth no Google Cloud Console e passar o Client ID e o Secret. Depois disso: ativar no Supabase, pôr o botão no login e incluir o Google na Privacidade.
@@ -29,16 +29,12 @@ Diário do projeto e memória entre sessões. Toda IA que trabalhar aqui lê a s
 
 ## Esperando aprovação
 
-- **DEV-200, Termos na tela de compra (31/out):**
-  - **O que muda:** junto do botão de compra aparece "Ao reservar o link, você concorda com os Termos de Uso e a Política de Privacidade." (aba Publicar, quando ela escolhe o plano) e "Ao pedir a liberação, você concorda com…" (Início, ao liberar a edição). Os dois links abrem em outra aba, para ela não sair do editor. Quem já pagou e só publica mudanças não vê a linha; no prazo vencido ela aparece no Início, onde está a compra.
-  - **Arquivos:** `site/src/app/EscolhaDePlano.tsx` (`AceiteDosTermos`), `editor/PainelRevisao.tsx`, `area/LiberarEdicao.tsx`, `tema.css` (`.pl-termos`: sublinhado e área de toque, como no login).
-  - **Escolha:** aceite pela frase junto do botão, como no login e na página de vendas, sem caixa de marcar. A cláusula dos Termos ("Ao criar uma conta ou contratar um plano, você concorda…") já cobre. Se a revisão jurídica pedir caixa de marcar ou registro do aceite no pedido, é uma mudança pequena (o registro mexe no banco).
-  - **Testes:** roteiro `/tmp/rev/dev200-compra.mjs` (pedidos interceptados, nada gravado), 42 de 44 em 390 e 1280 px: texto, ordem antes do botão, links certos abrindo em outra aba com o editor ficando, contraste de 8,3 a 9:1, sem rolagem horizontal, linha ausente para quem já pagou e no prazo vencido no editor. As 2 falhas são a altura de toque no desktop (42 px; no celular 62 px); link no meio de frase, com mouse, fica aceito. `npm run test:e2e` 5 de 5, Vitest 120 de 120, Prettier, ESLint e `tsc` limpos. Revisão independente do diff sem problemas. Banco não mudou, então o `rls.sql` não precisou rodar.
+Nada.
 
 ## Diário
 
 ### 31/out/2026
-- **DEV-200 na compra:** Termos e Privacidade ligados junto do botão ao reservar o link e ao liberar a edição. Esperando aprovação.
+- **DEV-200 na compra:** Termos e Privacidade ligados junto do botão ao reservar o link e ao liberar a edição. Aprovado.
 - **Documentos arrumados:** "Onde parei" reescrito com o que falta até o lançamento. As 29 entradas antigas de "Esperando aprovação", todas já aprovadas e commitadas, foram para `docs/ENTREGAS.md` sem mudança de texto. No backlog, conferidos no código: DEV-141, 203, 231, 233 e 234 marcados como feitos; DEV-230 (falta e2e de publicar e da marca abrir) e DEV-232 (falta leitor de tela fora do editor) seguem abertos, com o que falta escrito.
 - **Ambiente:** o `wrangler login` expirou e trava `astro dev` e o build (binding remoto do Browser Run). O servidor de desenvolvimento que estava de pé desde 28/out respondia 404 em todos os arquivos e foi parado.
 

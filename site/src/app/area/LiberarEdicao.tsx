@@ -2,7 +2,7 @@
 // manda o link de pagamento pelo WhatsApp e, quando marca como pago, a edição volta sozinha.
 import { useState } from 'react';
 import { PLANOS_DE_EDICAO, type IdDoPlano } from '@lib/planos';
-import { EscolhaDePlano } from '../EscolhaDePlano';
+import { AceiteDosTermos, EscolhaDePlano } from '../EscolhaDePlano';
 import { pedirEdicao } from '../nuvem';
 
 export function LiberarEdicao({ jaPedida }: { jaPedida: boolean }) {
@@ -45,6 +45,7 @@ export function LiberarEdicao({ jaPedida }: { jaPedida: boolean }) {
             Nada é cobrado agora. A equipe te chama no WhatsApp com o link de pagamento; quando for confirmado, a edição
             volta sozinha.
           </p>
+          <AceiteDosTermos acao="Ao pedir a liberação" />
           <button type="button" className="ed-primario ar-botao" disabled={enviando} onClick={() => void aoPedir()}>
             {enviando ? 'Enviando…' : 'Pedir a liberação'}
           </button>

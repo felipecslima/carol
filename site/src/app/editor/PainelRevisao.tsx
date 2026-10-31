@@ -5,7 +5,7 @@ import { PLANOS_DE_PUBLICACAO, type IdDoPlano } from '@lib/planos';
 import type { Projeto } from '@lib/projeto';
 import { podePublicar, type Alerta } from '@lib/revisao';
 import { normalizarSlug, problemaDoSlug, sugerirSlugs } from '@lib/slug';
-import { EscolhaDePlano } from '../EscolhaDePlano';
+import { AceiteDosTermos, EscolhaDePlano } from '../EscolhaDePlano';
 import { carregarAcesso, publicar, type RespostaDePublicar } from '../nuvem';
 
 export function PainelRevisao({
@@ -172,6 +172,7 @@ export function PainelRevisao({
               o pagamento for confirmado. Depois disso, você tem 7 dias para publicar mudanças.
             </p>
           )}
+          {escolhePlano && !travada && <AceiteDosTermos acao="Ao reservar o link" />}
           {travada ? (
             <a className="ed-primario" href="/app/#liberar-edicao">
               Liberar a edição no Início

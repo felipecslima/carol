@@ -37,3 +37,20 @@ export function EscolhaDePlano({
     </fieldset>
   );
 }
+
+/** Aceite dos Termos junto do botão de compra (DEV-200). Abre em outra aba para não tirar a creator da tela. */
+export function AceiteDosTermos({ acao }: { acao: string }) {
+  return (
+    <p className="ed-dica pl-termos">
+      {acao}, você concorda com os{' '}
+      <a href="/portfolio-creator/termos/" target="_blank" rel="noopener">
+        Termos de Uso
+      </a>{' '}
+      e a{' '}
+      <a href="/portfolio-creator/privacidade/" target="_blank" rel="noopener">
+        Política de Privacidade
+      </a>
+      .
+    </p>
+  );
+}

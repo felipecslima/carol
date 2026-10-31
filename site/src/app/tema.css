@@ -769,6 +769,16 @@
     transition: none;
   }
 }
+/* aceite dos Termos junto do botão de compra (DEV-200): links sublinhados, com altura de toque sem mexer na linha */
+.pl-termos a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding-block: 12px;
+}
+.pl-termos a:hover {
+  color: var(--ed-texto);
+}
 /* link dentro de um aviso (ex.: "Liberar a edição" no prazo vencido): sublinhado e com altura de toque */
 .ed-aviso a {
   display: inline-flex;
