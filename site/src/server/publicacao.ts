@@ -4,13 +4,24 @@
 import { PROJETO_DE_EXEMPLO } from '@blocks/exemplos';
 import { REGISTRO } from '@blocks/registro';
 import { acessoDa, type PedidoParaAcesso } from '@lib/acesso';
-import { PLANOS, type IdDoPlano } from '@lib/planos';
+import { analisarWhatsapp } from '@lib/formatos';
+import { PLANOS, PLANOS_DE_EDICAO, type IdDoPlano } from '@lib/planos';
 import { projetoSchema, type Projeto } from '@lib/projeto';
 import { podePublicar, revisar } from '@lib/revisao';
 import { problemaDoSlug } from '@lib/slug';
 import { consulta } from './banco';
 
 const DIAS_DE_EDICAO = 7;
+
+const SEM_WHATSAPP = 'Informe o seu WhatsApp para a equipe mandar o link de pagamento. Escreva o número com DDD.';
+const SEM_SERVIDOR = 'Não conseguimos falar com o servidor agora. Tente de novo em instantes.';
+
+/** O WhatsApp do perfil é por onde a equipe manda o link de pagamento: sem um número válido o pedido não abre. `null`: banco fora. */
+async function temWhatsappValido(donoId: string): Promise<boolean | null> {
+  const r = await consulta<{ whatsapp: string }>(`profiles?id=eq.${donoId}&select=whatsapp`);
+  if (!r.ok) return null;
+  return analisarWhatsapp(r.dados[0]?.whatsapp ?? '').ok;
+}
 
 interface LinhaDoProjeto {
   id: string;
@@ -87,6 +98,11 @@ export async function pedirPublicacao(
     return falha(409, 'Esse link já é de outra pessoa. Escolha outro, por exemplo com seu @ ou sua cidade.');
 
   if (acesso.pago) return publicarAgora(linha, projeto, slug);
+
+  // vai abrir um pedido: a equipe precisa do WhatsApp para mandar o link de pagamento (DEV-238)
+  const comWhats = await temWhatsappValido(donoId);
+  if (comWhats === null) return falha(503, SEM_SERVIDOR);
+  if (!comWhats) return falha(422, SEM_WHATSAPP);
 
   // ainda sem pagamento: reserva o link e abre o pedido (uma vez só)
   const reservou = await consulta(`projects?id=eq.${linha.id}`, {
@@ -201,11 +217,58 @@ export async function marcarPedidoPago(
   return r.ok ? { ok: true, tipo, slug: r.slug, projetoId: r.projetoId } : { ok: false, erro: r.erro };
 }
 
+/**
+ * Admin marca um pedido pago como reembolsado (DEV-239, arrependimento de 7 dias; Termos, item 6). O pedido deixa de
+ * contar como pago e, em qualquer desistência, o portfólio sai do ar. Nada é apagado: o rascunho fica na conta.
+ * Pedido de publicação sem outro pedido de publicação pago: o prazo de edição também zera e a conta volta ao modo de
+ * teste (sem isso ela seguiria "paga" pelo prazo e publicaria de graça, ver `acessoDa`); para voltar ao ar, novo pedido.
+ * Pedido de edição: a edição liberada por ele deixa de valer; a publicação paga continua valendo. O valor é devolvido
+ * fora do sistema.
+ */
+export async function reembolsarPedido(
+  pedidoId: string,
+): Promise<{ ok: boolean; erro?: string; tipo?: string; saiuDoAr?: boolean; modoDeTeste?: boolean }> {
+  const lido = await consulta<{ id: string; plano: string; status: string; projeto_id: string | null }>(
+    `orders?id=eq.${pedidoId}&select=id,plano,status,projeto_id`,
+  );
+  if (!lido.ok) return { ok: false, erro: 'Não deu para falar com o banco agora. Tente de novo.' };
+  const pedido = lido.dados[0];
+  if (!pedido) return { ok: false, erro: 'Pedido não encontrado.' };
+  if (pedido.status !== 'pago') return { ok: false, erro: 'Só dá para reembolsar um pedido que está pago.' };
+
+  const marcou = await consulta(`orders?id=eq.${pedido.id}&status=eq.pago`, {
+    metodo: 'PATCH',
+    corpo: { status: 'reembolsado' },
+  });
+  if (!marcou.ok) return { ok: false, erro: 'Não deu para marcar agora.' };
+
+  const tipo = PLANOS[pedido.plano as IdDoPlano]?.tipo ?? 'publicacao';
+  if (!pedido.projeto_id) return { ok: true, tipo, saiuDoAr: false, modoDeTeste: false };
+
+  const semAviso =
+    'O pedido foi marcado como reembolsado, mas não deu para tirar o portfólio do ar. Tire pela aba No ar.';
+  let modoDeTeste = false;
+  if (tipo === 'publicacao') {
+    const restantes = await consulta<{ id: string }>(
+      `orders?projeto_id=eq.${pedido.projeto_id}&status=eq.pago&plano=in.(pdf,site)&select=id&limit=1`,
+    );
+    if (!restantes.ok) return { ok: false, erro: semAviso };
+    modoDeTeste = restantes.dados.length === 0;
+  }
+  const tirou = await consulta(`projects?id=eq.${pedido.projeto_id}`, {
+    metodo: 'PATCH',
+    corpo: modoDeTeste ? { status: 'fora_do_ar', prazo_edicao: null } : { status: 'fora_do_ar' },
+  });
+  if (!tirou.ok) return { ok: false, erro: semAviso };
+  return { ok: true, tipo, saiuDoAr: true, modoDeTeste };
+}
+
 export type ResultadoDoPedidoDeEdicao = { ok: true; jaPedido: boolean } | { ok: false; status: number; erro: string };
 
 /** A creator pede para liberar a edição (DEV-193): abre um pedido do plano escolhido, um aberto por plano. */
 export async function pedirEdicao(donoId: string, plano: IdDoPlano): Promise<ResultadoDoPedidoDeEdicao> {
-  if (PLANOS[plano]?.tipo !== 'edicao')
+  // só os planos à venda (a "Edição por 30 dias" saiu em 31/out)
+  if (!PLANOS_DE_EDICAO.some((p) => p.id === plano))
     return { ok: false, status: 422, erro: 'Escolha uma forma de liberar a edição.' };
   const { ok, dados } = await consulta<{ id: string; prazo_edicao: string | null }>(
     `projects?dono=eq.${donoId}&tipo=eq.site&select=id,prazo_edicao`,
@@ -224,6 +287,9 @@ export async function pedirEdicao(donoId: string, plano: IdDoPlano): Promise<Res
     `orders?projeto_id=eq.${linha.id}&status=eq.aguardando_pagamento&plano=eq.${plano}&select=id`,
   );
   if (aberto.dados.length > 0) return { ok: true, jaPedido: true };
+  const comWhats = await temWhatsappValido(donoId);
+  if (comWhats === null) return { ok: false, status: 503, erro: SEM_SERVIDOR };
+  if (!comWhats) return { ok: false, status: 422, erro: SEM_WHATSAPP };
   const criou = await consulta('orders', { metodo: 'POST', corpo: { projeto_id: linha.id, dono: donoId, plano } });
   if (!criou.ok)
     return { ok: false, status: 502, erro: 'Não conseguimos enviar o pedido agora. Tente de novo em instantes.' };

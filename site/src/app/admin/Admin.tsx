@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { ehPlano, formatarValor, PLANOS } from '@lib/planos';
+import { DIAS_PARA_EXCLUIR } from '@server/exclusao';
 import { sair, useSessao } from '../sessao';
 import { supabase } from '../supabase';
 import { Marca } from '../Marca';
@@ -24,6 +25,7 @@ interface Perfil {
   whatsapp: string;
   cidade: string;
   criado_em: string;
+  exclusao_pedida_em: string | null;
 }
 interface Projeto {
   id: string;
@@ -73,10 +75,14 @@ const ESTADO: Record<string, string> = {
   fora_do_ar: 'Fora do ar',
   pago: 'Pago',
   cancelado: 'Cancelado',
+  reembolsado: 'Reembolsado',
 };
 const ACAO: Record<string, string> = {
   pedido_pago: 'Pedido pago',
   pedido_cancelado: 'Pedido cancelado',
+  pedido_reembolsado: 'Pedido reembolsado',
+  exclusao_bloqueada: 'Exclusão bloqueada',
+  conta_excluida: 'Conta excluída',
   tirar_do_ar: 'Tirou do ar',
   recolocar_no_ar: 'Recolocou no ar',
   premium_liberado: 'Premium liberado',
@@ -96,7 +102,7 @@ async function carregar(): Promise<Dados | null> {
   const [perfis, projetos, pedidos, premium, registro, aberturas] = await Promise.all([
     supabase
       .from('profiles')
-      .select('id, nome, arroba, whatsapp, cidade, criado_em')
+      .select('id, nome, arroba, whatsapp, cidade, criado_em, exclusao_pedida_em')
       .order('criado_em', { ascending: false }),
     supabase.from('projects').select('id, dono, status, slug, publicado_em, atualizado_em, criado_em'),
     supabase
@@ -287,6 +293,11 @@ function VisaoGeral({ d }: { d: Dados }) {
     (p) => p.status === 'aguardando_pagamento' && agora - new Date(p.criado_em).getTime() > 2 * DIA,
   );
   const noAr = d.projetos.filter((p) => p.status === 'no_ar' || p.status === 'edicao_travada');
+  // a rotina diária apaga no dia seguinte ao prazo; passou disso, algo travou (ex.: arquivos usados por outra conta) e a
+  // equipe precisa concluir à mão em até 15 dias (Política de Privacidade, item 4)
+  const exclusoesAtrasadas = d.perfis.filter(
+    (p) => p.exclusao_pedida_em && agora - new Date(p.exclusao_pedida_em).getTime() > (DIAS_PARA_EXCLUIR + 1) * DIA,
+  );
   const numeros: Array<[string, number, string?]> = [
     ['Creators', d.perfis.length],
     ['Novas na semana', d.perfis.filter((p) => semana(p.criado_em)).length],
@@ -315,10 +326,24 @@ function VisaoGeral({ d }: { d: Dados }) {
       ) : (
         <p className="ed-dica">Nenhum pedido parado há mais de 2 dias.</p>
       )}
+      {exclusoesAtrasadas.length > 0 && (
+        <p className="ad-aviso" role="alert">
+          {exclusoesAtrasadas.length === 1 ? '1 conta está' : `${exclusoesAtrasadas.length} contas estão`} com a
+          exclusão atrasada: a rotina diária não conseguiu apagar (veja &quot;Exclusão bloqueada&quot; no Registro de
+          ações). Conclua à mão em até 15 dias, como diz a Política de Privacidade:{' '}
+          {exclusoesAtrasadas
+            .map(
+              (p) =>
+                `${p.nome || 'sem nome'} (pedida há ${Math.floor((agora - new Date(p.exclusao_pedida_em!).getTime()) / DIA)} dias)`,
+            )
+            .join(', ')}
+          .
+        </p>
+      )}
       <p className="ed-dica">
         Vendas pagas:{' '}
         {formatarValor(d.pedidos.filter((p) => p.status === 'pago').reduce((t, p) => t + valorDoPlano(p.plano), 0))}{' '}
-        (valor dos planos, sem a taxa do domínio).
+        (valor dos planos).
       </p>
     </section>
   );
@@ -337,13 +362,15 @@ function Pedidos({
   podeAgir: boolean;
   executar: Executar;
 }) {
-  const [filtro, setFiltro] = useState<'aguardando_pagamento' | 'pago' | 'cancelado' | 'todos'>('aguardando_pagamento');
+  const [filtro, setFiltro] = useState<'aguardando_pagamento' | 'pago' | 'cancelado' | 'reembolsado' | 'todos'>(
+    'aguardando_pagamento',
+  );
   const lista = d.pedidos.filter((p) => filtro === 'todos' || p.status === filtro);
   return (
     <section>
       <h1>Pedidos</h1>
       <div className="ad-filtros" role="group" aria-label="Filtrar pedidos">
-        {(['aguardando_pagamento', 'pago', 'cancelado', 'todos'] as const).map((f) => (
+        {(['aguardando_pagamento', 'pago', 'cancelado', 'reembolsado', 'todos'] as const).map((f) => (
           <button key={f} type="button" aria-pressed={filtro === f} onClick={() => setFiltro(f)}>
             {f === 'todos' ? 'Todos' : ESTADO[f]}
           </button>
@@ -395,6 +422,42 @@ function Pedidos({
                       Cancelar pedido
                     </button>
                   </>
+                )}
+                {podeAgir && p.status === 'pago' && (
+                  <button
+                    type="button"
+                    className="ed-link"
+                    onClick={() => {
+                      const deEdicao = ehPlano(p.plano) && PLANOS[p.plano].tipo === 'edicao';
+                      // qualquer desistência tira do ar (Termos, item 6); só volta ao modo de teste quem não tem
+                      // outro pedido de publicação pago
+                      const outraPublicacaoPaga = d.pedidos.some(
+                        (o) =>
+                          o.id !== p.id &&
+                          o.projeto_id === p.projeto_id &&
+                          o.status === 'pago' &&
+                          ehPlano(o.plano) &&
+                          PLANOS[o.plano].tipo === 'publicacao',
+                      );
+                      const efeito = deEdicao
+                        ? 'O portfólio sai do ar e a edição liberada por este pedido deixa de valer.'
+                        : outraPublicacaoPaga
+                          ? 'O portfólio sai do ar. Como há outro pedido de publicação pago, a pessoa pode publicar de novo.'
+                          : 'O portfólio sai do ar e volta ao modo de teste, com marca d’água.';
+                      if (
+                        !window.confirm(
+                          `Marcar como reembolsado o pedido de ${creator?.nome || 'sem nome'} (${nomeDoPlano(p.plano)})?\n\n${efeito} Nada é apagado.\nO valor precisa ser devolvido por fora do sistema.`,
+                        )
+                      )
+                        return;
+                      void executar(
+                        { acao: 'reembolsar_pedido', pedido: p.id },
+                        'Pedido reembolsado. O portfólio saiu do ar.',
+                      );
+                    }}
+                  >
+                    Marcar como reembolsado
+                  </button>
                 )}
               </div>
             </li>

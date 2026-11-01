@@ -25,6 +25,9 @@ interface Props {
   preload?: string[];
   /** analytics (Amplitude, visitas e cliques, com aviso de medição); desligado nas páginas do app, onde a creator digita dados dela */
   analytics?: boolean;
+  /** aviso de medição com "Recusar" (Política do Portfólio Creator, item 1): só na página de apresentação do Creator.
+   *  Quem recusa não é medido nesta página. O site da Carol fica sem essa opção (decisão do usuário, 31/out). */
+  podeRecusar?: boolean;
 }
 const {
   lang, title, description, alternates, ogType = 'website', jsonLd, noindex = false, previaSemBusca = false,
@@ -33,6 +36,7 @@ const {
   // o título do hero é o maior elemento da primeira tela: a serif chega junto com o HTML
   preload = ['/fonts/instrument-serif-normal-latin.woff2', '/fonts/hanken-grotesk-latin.woff2'],
   analytics = true,
+  podeRecusar = false,
 } = Astro.props;
 const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
 const AVISO_DE_MEDICAO: Record<Lang, { rotulo: string; texto: string; link: string }> = {
@@ -79,12 +83,58 @@ const langs = LANGS.filter((l) => alternates[l]);
 {analytics && <Fragment>
 <script is:inline src="https://cdn.amplitude.com/script/86c8a9bc2c7bbeb3e38d5662653bbf02.js"></script>
 <script is:inline>
-  // sem gravação de sessão (decisão de 28/out, LGPD): só visitas e cliques
+  // sem gravação de sessão (decisão de 28/out, LGPD): só visitas e cliques. Sem IP e sem captura de formulários
+  // (31/out): nada de "Form Started/Submitted" nem de mudanças em campos; cliques só em links e botões
   window.amplitude.init('86c8a9bc2c7bbeb3e38d5662653bbf02', {
     serverZone: 'US',
-    autocapture: true,
+    trackingOptions: { ipAddress: false },
+    autocapture: {
+      formInteractions: false,
+      elementInteractions: { cssSelectorAllowlist: ['a', 'button', '[role="button"]'] },
+    },
   });
 </script>
+{podeRecusar ? <Fragment>
+<!-- quem recusou a medição na página do Creator: o Amplitude não envia nada -->
+<script is:inline>
+  if (localStorage.getItem('medicao-recusada') === '1') window.amplitude.setOptOut(true);
+</script>
+<!-- aviso de medição do Creator: "Recusar" ou "Ok", uma vez por navegador (chave própria: o "Ok" dado no site da Carol
+     não esconde a opção de recusar aqui) -->
+<script is:inline>
+  if (!localStorage.getItem('aviso-medicao-pc')) {
+    addEventListener('DOMContentLoaded', () => {
+      const faixa = document.createElement('div');
+      faixa.className = 'aviso-medicao';
+      faixa.setAttribute('role', 'region');
+      faixa.setAttribute('aria-label', 'Aviso de medição');
+      faixa.innerHTML = '<p></p><div class="aviso-botoes"><button type="button" class="aviso-recusar">Recusar</button><button type="button">Ok</button></div>';
+      const p = faixa.querySelector('p');
+      p.append('Usamos o Amplitude para contar visitas, cliques e de onde veio o acesso nesta página. ');
+      const a = document.createElement('a');
+      a.href = '/portfolio-creator/privacidade/';
+      a.textContent = 'Privacidade';
+      p.append(a, '.');
+      const [recusar, ok] = faixa.querySelectorAll('button');
+      // desliga antes do clique: senão o próprio clique em "Recusar" ainda seria medido
+      const desligar = () => window.amplitude.setOptOut(true);
+      recusar.addEventListener('pointerdown', desligar);
+      recusar.addEventListener('keydown', (e) => (e.key === 'Enter' || e.key === ' ') && desligar());
+      recusar.addEventListener('click', () => {
+        localStorage.setItem('medicao-recusada', '1');
+        localStorage.setItem('aviso-medicao-pc', '1');
+        window.amplitude.setOptOut(true);
+        faixa.remove();
+      });
+      ok.addEventListener('click', () => {
+        localStorage.setItem('aviso-medicao-pc', '1');
+        faixa.remove();
+      });
+      document.body.append(faixa);
+    });
+  }
+</script>
+</Fragment> : <Fragment>
 <!-- aviso de medição (LGPD): uma vez por navegador; "Ok" guarda a escolha e some -->
 <script is:inline define:vars={{ aviso: AVISO_DE_MEDICAO[lang] }}>
   if (!localStorage.getItem('aviso-medicao')) {
@@ -110,6 +160,7 @@ const langs = LANGS.filter((l) => alternates[l]);
     });
   }
 </script>
+</Fragment>}
 <style is:global>
   .aviso-medicao { position: fixed; z-index: 90; left: 12px; right: 12px; bottom: 12px; max-width: 520px; margin-inline: auto; display: flex; align-items: center; gap: 12px 16px; padding: 12px 12px 12px 18px; border: 1px solid rgba(243, 236, 226, 0.16); border-radius: 16px; background: #2b211c; color: #f3ece2; font: 14px/1.5 var(--sans, system-ui, sans-serif); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); }
   .aviso-medicao p { margin: 0; flex: 1; max-width: none; }

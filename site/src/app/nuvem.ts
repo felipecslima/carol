@@ -241,19 +241,27 @@ export async function carregarPerfil(): Promise<Perfil | null> {
     : null;
 }
 
-export async function salvarPerfil(id: string, p: Omit<Perfil, 'exclusaoPedidaEm'>): Promise<boolean> {
-  const { error } = await supabase
-    .from('profiles')
-    .update({
-      nome: p.nome,
-      arroba: p.arroba,
-      whatsapp: p.whatsapp,
-      cidade: p.cidade,
-      nicho: p.nicho,
-      modo_iniciante: p.modoIniciante,
-    })
-    .eq('id', id);
+/** Grava só os campos informados: o assistente, por exemplo, não sabe o WhatsApp e não pode apagar o que já existe. */
+export async function salvarPerfil(id: string, p: Partial<Omit<Perfil, 'exclusaoPedidaEm'>>): Promise<boolean> {
+  const campos = {
+    ...(p.nome !== undefined && { nome: p.nome }),
+    ...(p.arroba !== undefined && { arroba: p.arroba }),
+    ...(p.whatsapp !== undefined && { whatsapp: p.whatsapp }),
+    ...(p.cidade !== undefined && { cidade: p.cidade }),
+    ...(p.nicho !== undefined && { nicho: p.nicho }),
+    ...(p.modoIniciante !== undefined && { modo_iniciante: p.modoIniciante }),
+  };
+  const { error } = await supabase.from('profiles').update(campos).eq('id', id);
   return !error;
+}
+
+/** O WhatsApp do perfil é por onde a equipe manda o link de pagamento; publicar e pedir edição exigem um número válido. */
+export async function salvarWhatsappDoPerfil(numero: string): Promise<boolean> {
+  try {
+    return await salvarPerfil(await meuId(), { whatsapp: numero });
+  } catch {
+    return false;
+  }
 }
 
 export async function apagarProjeto(id: string): Promise<boolean> {

@@ -1,8 +1,7 @@
 ---
-// Política de Privacidade (DEV-200, LGPD). Rascunho escrito a partir do que o produto guarda hoje (migrações em
-// supabase/migrations, server/exclusao.ts, SeoHead com Amplitude só fora do app); no ar desde o beta (31/out), sem
-// revisão jurídica ainda (decisão do usuário).
-// Quando entrar um serviço novo que recebe dados (Google, Slack, WhatsApp, gateway), atualizar a lista de serviços.
+// Política de Privacidade (DEV-241, LGPD). Versão revisada em 31/out. Trechos em <mark class="pendente"> ainda dependem
+// de decisão da empresa ou do advogado e precisam sair antes de publicar. Quando entrar um serviço novo que recebe
+// dados (Slack, WhatsApp oficial, gateway), atualizar a lista de serviços.
 import PaginaLegal from '../../views/PaginaLegal.astro';
 import { DIAS_PARA_EXCLUIR } from '../../server/exclusao';
 import { EMPRESA } from '../../data/empresa';
@@ -12,13 +11,17 @@ import { EMPRESA } from '../../data/empresa';
   titulo="Política de Privacidade"
   descricao="Quais dados o Portfólio Creator guarda, para quê, com quem compartilha e como pedir para ver ou apagar."
   caminho="/portfolio-creator/privacidade/"
-  atualizadoEm="31 de outubro de 2026"
+  atualizadoEm={EMPRESA.atualizadoEm}
 >
   <p>
-    Esta política explica como o Portfólio Creator trata os seus dados, de acordo com a Lei Geral de Proteção de
-    Dados (Lei 13.709/2018, LGPD). A controladora dos dados é <strong>{EMPRESA.razaoSocial}</strong>, CNPJ
-    {EMPRESA.cnpj}, de {EMPRESA.cidade}. Para qualquer assunto de privacidade, inclusive falar com a pessoa
-    encarregada dos dados, escreva para <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>.
+    Esta política explica como o Portfólio Creator trata os seus dados, de acordo com a Lei Geral de Proteção de Dados
+    (Lei 13.709/2018, LGPD). A controladora dos dados é <strong>{EMPRESA.razaoSocial}</strong>, CNPJ {EMPRESA.cnpj}, de{' '}
+    {EMPRESA.cidade}. Para qualquer assunto de privacidade, escreva para{' '}
+    <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>.
+  </p>
+  <p>
+    Como agente de tratamento de pequeno porte (Resolução CD/ANPD nº 2/2022), não indicamos uma pessoa encarregada: esse
+    e-mail é o nosso canal de comunicação com você e com a Agência Nacional de Proteção de Dados (ANPD).
   </p>
 
   <h2>1. Quais dados guardamos</h2>
@@ -31,54 +34,77 @@ import { EMPRESA } from '../../data/empresa';
       sua senha do Google.
     </li>
     <li>
-      <strong>Perfil</strong>: nome, @ das redes, WhatsApp, cidade e nicho, se você preencher. O WhatsApp é usado para
-      combinar o pagamento e falar com você sobre o seu pedido.
+      <strong>Perfil</strong>: nome, @ das redes, WhatsApp, cidade e nicho, se você preencher. O WhatsApp do perfil não
+      aparece no portfólio: ele é usado só para enviarmos o link de pagamento do seu pedido, a partir do nosso número
+      oficial, {EMPRESA.whatsapp}.
     </li>
   </ul>
   <h3>Do plano Portfólio em site</h3>
   <ul>
     <li>
-      Nome completo e CPF, só para registrar o domínio .com.br em seu nome no Registro.br, que também passa a tratar
-      esses dados como responsável pelo registro.
+      Você registra o domínio .com.br direto no Registro.br, que trata o seu nome e CPF como responsável pelo registro.
+      Nós não recebemos nem guardamos o seu CPF.
     </li>
   </ul>
   <h3>Do seu portfólio</h3>
   <ul>
     <li>
       Textos, fotos, vídeos, números de público, marcas, formatos e valores que você coloca. Você escolhe o que entra.
-      Ao publicar, esse conteúdo fica visível para qualquer pessoa com o link, e o PDF pode ser baixado por quem
-      receber o arquivo.
+      Ao publicar, esse conteúdo fica visível para qualquer pessoa com o link, e o PDF pode ser baixado por quem receber
+      o arquivo.
     </li>
+    <li>O WhatsApp que você coloca no bloco Contato do portfólio é público: ele aparece na sua página e no PDF.</li>
     <li>
       Sem conta, o rascunho fica só no seu aparelho, no armazenamento do navegador. Com conta, ele também fica no
-      aparelho até ser salvo na nuvem, e a cópia do aparelho é apagada quando você sai da conta.
+      aparelho até ser salvo na nuvem. Ao sair da conta, a cópia do aparelho é apagada, a menos que haja uma edição
+      ainda não salva.
     </li>
   </ul>
   <h3>Dos pedidos</h3>
   <ul>
-    <li>Plano escolhido, situação do pedido e datas. Não recebemos nem guardamos dados de cartão.</li>
+    <li>
+      Plano escolhido, situação do pedido e datas. O pagamento é feito na plataforma de pagamento, que trata os dados
+      que você informa nela. Não recebemos nem guardamos dados de cartão.
+    </li>
   </ul>
   <h3>Dos links para marcas</h3>
   <ul>
     <li>
-      O nome da marca que você informa ao criar o link e a data e hora em que o link foi aberto. Não guardamos o IP
+      O nome da marca que você informa ao criar o link e a data e hora em que o link foi aberto. O app não grava o IP
       nem qualquer dado que identifique quem abriu.
     </li>
   </ul>
   <h3>De uso e de erros</h3>
   <ul>
     <li>
-      Alguns momentos do uso do app ligados à sua conta, como criar um pedido ou publicar, para entender o que
-      funciona e o que precisa melhorar.
+      Alguns momentos do uso do app ligados à sua conta, como criar um pedido ou publicar, para entender o que funciona
+      e o que precisa melhorar.
     </li>
     <li>
-      Quando algo dá erro, a mensagem do erro, a página e o tipo de navegador, para corrigir o problema. Isso fica nos
-      registros do servidor e não inclui o conteúdo do seu portfólio.
+      Quando algo dá erro, o app registra a mensagem do erro, a página e o tipo de navegador, sem o conteúdo do seu
+      portfólio. A empresa de hospedagem (Cloudflare) também pode registrar dados técnicos da conexão, como o IP, por um
+      período limitado.
     </li>
     <li>
-      Na página de apresentação do Portfólio Creator e no site da Carol Limah (fora do app e fora dos portfólios
-      publicados), usamos o Amplitude para contar visitas e cliques. Não gravamos a sua navegação. Um aviso aparece na
-      primeira visita.
+      Na página de apresentação do Portfólio Creator (fora do app e dos portfólios publicados), usamos o Amplitude para
+      contar visitas, cliques e de onde veio o acesso. Não gravamos a sua navegação, não coletamos o IP e não
+      registramos o que é digitado em formulários. Um aviso aparece na primeira visita, com a opção de recusar a
+      medição.
+    </li>
+  </ul>
+  <h3>Registros de acesso</h3>
+  <ul>
+    <li>
+      Data, hora e IP de cada acesso à sua conta, guardados em sigilo por 6 meses, como exige o Marco Civil da Internet
+      (Lei 12.965/2014, art. 15).
+    </li>
+  </ul>
+  <h3>No seu navegador</h3>
+  <ul>
+    <li>
+      Guardamos no armazenamento do navegador o rascunho do portfólio e a sua sessão de login. A verificação contra
+      robôs (Turnstile) e o Amplitude, só na página de apresentação, também podem guardar identificadores técnicos. Não
+      usamos cookies de anúncio.
     </li>
   </ul>
 
@@ -86,36 +112,70 @@ import { EMPRESA } from '../../data/empresa';
   <ul>
     <li>Criar e manter a sua conta e guardar o seu portfólio (execução do contrato).</li>
     <li>Publicar a sua página, gerar o PDF e contar as aberturas dos seus links (execução do contrato).</li>
-    <li>Combinar e confirmar pagamentos e cumprir obrigações fiscais (execução do contrato e obrigação legal).</li>
-    <li>Proteger o serviço contra abuso e corrigir erros (legítimo interesse).</li>
+    <li>
+      Enviar o link de pagamento pelo WhatsApp, confirmar pagamentos e cumprir obrigações fiscais (execução do contrato
+      e obrigação legal).
+    </li>
+    <li>
+      Proteger o serviço contra abuso e corrigir erros (legítimo interesse). Guardar os registros de acesso por 6 meses
+      (obrigação legal, Marco Civil da Internet).
+    </li>
     <li>Melhorar o produto com dados de uso (legítimo interesse).</li>
   </ul>
   <p>Não vendemos os seus dados e não usamos o seu conteúdo para anúncios.</p>
 
   <h2>3. Com quem compartilhamos</h2>
-  <p>Usamos serviços de terceiros para o Portfólio Creator funcionar. Eles tratam os dados só para prestar esse serviço:</p>
+  <p>
+    Usamos serviços de terceiros para o Portfólio Creator funcionar. Eles tratam os dados só para prestar esse serviço:
+  </p>
   <ul>
-    <li><strong>Supabase</strong>: banco de dados, login e o arquivo PDF do mídia kit.</li>
+    <li>
+      <strong>Supabase</strong>: banco de dados, login e o arquivo PDF do mídia kit, em servidores nos Estados Unidos.
+    </li>
     <li><strong>Google</strong>: login com a sua conta Google, se você escolher entrar assim.</li>
+    <li><strong>Resend</strong>: envio do e-mail com o código de entrada.</li>
     <li><strong>Cloudinary</strong>: fotos e vídeos do portfólio.</li>
     <li>
       <strong>Cloudflare</strong>: hospedagem das páginas, geração do PDF, registros de erro e a verificação contra robôs
       ao pedir o código de entrada (Turnstile).
     </li>
+    <li><strong>WhatsApp</strong>: envio do link de pagamento do seu pedido.</li>
+    <li>
+      <strong>Plataforma de pagamento</strong>: processa o pagamento do seu pedido e trata os dados que você informa
+      nela, como nome, CPF e forma de pagamento, de acordo com a política dela.
+    </li>
     <li><strong>Amplitude</strong>: medição da página de apresentação.</li>
-    <li><strong>Registro.br</strong>: registro do domínio, no plano Portfólio em site.</li>
   </ul>
   <p>
-    Alguns desses serviços guardam dados em servidores fora do Brasil, com as garantias previstas na LGPD para
-    transferência internacional. Também podemos informar dados a autoridades quando a lei exigir.
+    Supabase, Google, Resend, Cloudinary, Cloudflare, WhatsApp e Amplitude podem guardar ou processar dados fora do
+    Brasil, principalmente nos Estados Unidos. Nessas transferências, usamos as cláusulas-padrão contratuais aprovadas
+    pela ANPD (Resolução CD/ANPD nº 19/2024). Também podemos informar dados a autoridades quando a lei exigir.
+  </p>
+  <p>
+    <mark class="pendente"
+      >[PENDENTE, pesquisa de 31/out: só o WhatsApp tem as cláusulas-padrão da ANPD no contrato, e só se o número oficial
+      for uma conta WhatsApp Business. Supabase, Resend, Cloudinary, Cloudflare e Amplitude oferecem só as cláusulas da
+      União Europeia, que não valem no Brasil desde 23/08/2025. O Google, no login, trata os dados como responsável
+      próprio. Antes de publicar: assinar as cláusulas da ANPD com esses cinco (o contrato do Supabase prevê isso, Anexo
+      2, item 4.4) ou trocar esta frase por outra base legal. Usando as cláusulas, a Resolução 19 (art. 17 e cláusula 14)
+      pede esta parte em destaque e com a duração e as transferências posteriores. Detalhes em
+      docs/REVISAO-JURIDICA.md.]</mark
+    >
   </p>
 
   <h2>4. Por quanto tempo</h2>
   <p>
     Guardamos os seus dados enquanto a sua conta existir. Quando você pede a exclusão na área Conta, a conta fica
     desativada por {DIAS_PARA_EXCLUIR} dias e os seus portfólios saem do ar; nesse prazo, basta entrar de novo para
-    desistir. Depois, apagamos a conta, o perfil, os portfólios, as fotos, os vídeos, os PDFs e os links. Os
-    registros de pedidos e pagamentos ficam guardados sem ligação com você, pelo prazo exigido pela lei fiscal.
+    desistir. Depois, apagamos a conta, o perfil, os portfólios, as fotos, os vídeos, os PDFs, os links e os dados de uso
+    ligados à conta. Se algum arquivo não puder ser apagado pela rotina automática, a equipe conclui a exclusão
+    manualmente em até 15 dias.
+  </p>
+  <p>
+    Os registros de pedidos ficam guardados no app sem ligação com você. Documentos fiscais, como notas fiscais, ficam
+    guardados por 5 anos, como exige a lei fiscal. O registro de ações da equipe, que pode conter o identificador da sua
+    conta ou o link do portfólio, fica guardado por 5 anos. Os registros de acesso ficam guardados por 6 meses e depois
+    são apagados.
   </p>
 
   <h2>5. Os seus direitos</h2>
@@ -124,14 +184,17 @@ import { EMPRESA } from '../../data/empresa';
     <li>confirmação de que tratamos os seus dados e acesso a eles;</li>
     <li>correção de dados incompletos ou errados;</li>
     <li>anonimização, bloqueio ou eliminação de dados desnecessários;</li>
-    <li>portabilidade dos dados;</li>
+    <li>
+      portabilidade dos dados, que também pode ser feita em parte na área Conta, pelo botão Baixar meus dados;
+    </li>
     <li>eliminação dos dados, que também pode ser feita direto na área Conta;</li>
     <li>informação sobre com quem compartilhamos os dados;</li>
+    <li>oposição a tratamentos feitos com base no legítimo interesse;</li>
     <li>revisão de decisões tomadas só de forma automática.</li>
   </ul>
   <p>
-    Para isso, escreva para <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>. Respondemos em até
-    15 dias. Você também pode reclamar na Autoridade Nacional de Proteção de Dados (ANPD).
+    Para isso, escreva para <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>. Respondemos em até 15 dias. Você
+    também pode reclamar na Agência Nacional de Proteção de Dados (ANPD).
   </p>
 
   <h2>6. Segurança</h2>
@@ -143,12 +206,14 @@ import { EMPRESA } from '../../data/empresa';
 
   <h2>7. Menores de idade</h2>
   <p>
-    O Portfólio Creator é só para maiores de 18 anos. Se soubermos que uma conta é de alguém mais novo, ela será
-    excluída junto com os dados.
+    O Portfólio Creator é só para maiores de 18 anos, e não é permitido criar ou gerenciar uma conta em nome de menor de
+    idade, inclusive por pais ou responsáveis. Se soubermos que uma conta é de alguém mais novo, ela será excluída junto
+    com os dados.
   </p>
 
   <h2>8. Mudanças nesta política</h2>
   <p>
-    Se esta política mudar, avisamos por e-mail ou dentro do app. A data no topo mostra a última atualização.
+    Se esta política mudar, avisamos por e-mail com pelo menos 15 dias de antecedência. A data no topo mostra a última
+    atualização.
   </p>
 </PaginaLegal>

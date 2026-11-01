@@ -92,7 +92,6 @@ export default function Assistente() {
       await salvarPerfil(sessao.user.id, {
         nome: r.nome.trim(),
         arroba: normalizarArroba(r.arroba),
-        whatsapp: '',
         cidade: r.cidade.trim(),
         nicho: r.nicho.trim(),
         modoIniciante: !r.jaFezPubli,
@@ -394,8 +393,8 @@ export default function Assistente() {
               <>
                 <h1 className="as-titulo">Seus números do Instagram</h1>
                 <p className="as-texto">
-                  Só você sabe esses números, e a página mostra o selo “Informado pelo próprio perfil”. Pode pular e preencher
-                  depois.
+                  Só você sabe esses números, e a página mostra o selo “Informado pelo próprio perfil”. Pode pular e
+                  preencher depois.
                 </p>
                 <PainelNumeros
                   inicial={numeros}

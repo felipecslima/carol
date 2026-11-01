@@ -225,8 +225,15 @@
 .legal-texto ul { padding-left: 1.2em; }
 .legal-texto li + li { margin-top: 0.4em; }
 .legal-texto li::marker { color: var(--accent-light); }
+/* trecho que ainda depende de decisão da empresa ou do advogado: não pode ir ao ar (DEV-241) */
+.legal-texto mark.pendente { background: #ffe08a; color: #24130f; padding: 0.1em 0.35em; border-radius: 4px; }
 .legal-texto strong { color: var(--text); font-weight: 600; }
 .legal-texto a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent-light); text-underline-offset: 3px; }
 .legal-texto a:hover { color: var(--accent-light); }
 /* enquanto o aviso de medição (SeoHead) estiver na tela, o botão fixo espera: os dois ocupam o pé da tela */
 body:has(.aviso-medicao) .dock { display: none; }
+/* aviso de medição com "Recusar" (só nesta página, ver SeoHead `podeRecusar`) */
+.aviso-medicao { flex-wrap: wrap; }
+.aviso-medicao p { min-width: 220px; }
+.aviso-medicao .aviso-botoes { display: flex; gap: 8px; margin-left: auto; }
+.aviso-medicao button.aviso-recusar { background: transparent; color: #f3ece2; box-shadow: inset 0 0 0 1px rgba(243, 236, 226, 0.45); }

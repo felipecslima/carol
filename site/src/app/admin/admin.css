@@ -173,6 +173,10 @@
 .ad-estado--fora_do_ar {
   color: var(--ed-alerta);
 }
+.ad-estado--cancelado,
+.ad-estado--reembolsado {
+  color: var(--ed-erro);
+}
 .ad-premium {
   font-size: 13px;
   color: var(--ed-rosa-escuro);

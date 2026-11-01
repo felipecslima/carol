@@ -18,6 +18,7 @@ insert into public.projects (id, dono, tipo, modelo, paleta, fontes, cantos, cli
   ('b1000000-0000-4000-8000-00000000000b', 'b0000000-0000-4000-8000-00000000000b', 'site', 'nuvem', 0, 'par-nuvem', 'redondos', 'claro', '[]', '[]');
 insert into public.orders (projeto_id, dono, plano) values
   ('b1000000-0000-4000-8000-00000000000b', 'b0000000-0000-4000-8000-00000000000b', 'pdf');
+insert into public.registros_de_acesso (conta, ip) values ('b0000000-0000-4000-8000-00000000000b', '200.0.0.1');
 
 create temp table _passos (n serial, teste text);
 grant all on _passos to authenticated, anon;
@@ -97,6 +98,21 @@ do $$ begin
   insert into _passos (teste) values ('A não cria projeto no ar, pedido pago, Premium nem link no projeto de B');
 end $$;
 
+-- registros de acesso (Marco Civil, DEV-243): só o servidor lê e grava
+do $$ begin
+  begin
+    perform count(*) from public.registros_de_acesso;
+    raise exception 'FALHOU: creator lê os registros de acesso';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    insert into public.registros_de_acesso (conta, ip) values ('a0000000-0000-4000-8000-00000000000a', '1.1.1.1');
+    raise exception 'FALHOU: creator grava registro de acesso direto';
+  exception when insufficient_privilege then null;
+  end;
+  insert into _passos (teste) values ('creator não lê nem grava registros de acesso');
+end $$;
+
 -- ===== assistente da equipe: lê tudo, não grava nada direto (só pelo servidor, com registro) =====
 reset role;
 set local role authenticated;
@@ -112,7 +128,15 @@ do $$ declare n int; begin
   update public.orders set status = 'pago' where dono = 'b0000000-0000-4000-8000-00000000000b';
   get diagnostics n = row_count;
   if n <> 0 then raise exception 'FALHOU: a assistente marcou um pedido como pago direto no banco'; end if;
-  insert into _passos (teste) values ('assistente lê tudo e não grava direto');
+  update public.orders set status = 'reembolsado' where dono = 'b0000000-0000-4000-8000-00000000000b';
+  get diagnostics n = row_count;
+  if n <> 0 then raise exception 'FALHOU: a assistente marcou um pedido como reembolsado direto no banco'; end if;
+  begin
+    perform count(*) from public.registros_de_acesso;
+    raise exception 'FALHOU: a equipe lê os registros de acesso pelo app';
+  exception when insufficient_privilege then null;
+  end;
+  insert into _passos (teste) values ('assistente lê tudo, não grava direto (nem reembolsado) e não lê registros de acesso');
 end $$;
 
 -- ===== sem conta =====
@@ -122,14 +146,14 @@ set local request.jwt.claims = '{"role":"anon"}';
 
 -- sem conta: zero linhas ou nem permissão de ler a tabela (as duas respostas protegem)
 do $$ declare t text; n int; begin
-  foreach t in array array['projects', 'profiles', 'orders', 'media', 'brand_links'] loop
+  foreach t in array array['projects', 'profiles', 'orders', 'media', 'brand_links', 'registros_de_acesso'] loop
     begin
       execute format('select count(*) from public.%I', t) into n;
       if n <> 0 then raise exception 'FALHOU: sem conta enxerga %', t; end if;
     exception when insufficient_privilege then null;
     end;
   end loop;
-  insert into _passos (teste) values ('sem conta não enxerga nada');
+  insert into _passos (teste) values ('sem conta não enxerga nada (inclusive registros de acesso)');
 end $$;
 
 reset role;

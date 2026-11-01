@@ -31,9 +31,9 @@ export const PLANOS: Record<IdDoPlano, Plano> = {
     id: 'site',
     nome: 'Portfólio em site',
     valor: 14990,
-    extra: { nome: 'do domínio no 1º ano', valor: 4000 },
     tipo: 'publicacao',
-    resumo: 'Tudo do PDF, num site com domínio .com.br no seu nome.',
+    // o domínio .com.br a pessoa registra e paga direto no Registro.br (Termos, item 4); não passa por nós
+    resumo: 'Pagamento único. Tudo do PDF, num site com domínio .com.br seu.',
   },
   'atualizacao-mensal': {
     id: 'atualizacao-mensal',
@@ -42,7 +42,7 @@ export const PLANOS: Record<IdDoPlano, Plano> = {
     tipo: 'edicao',
     periodo: 'mês',
     libera: { meses: 1 },
-    resumo: 'Edição liberada por 1 mês a cada pagamento.',
+    resumo: 'Edição liberada por 1 mês a cada pagamento, sem cobrança automática.',
   },
   'atualizacao-anual': {
     id: 'atualizacao-anual',
@@ -63,9 +63,8 @@ export const PLANOS: Record<IdDoPlano, Plano> = {
 };
 
 export const PLANOS_DE_PUBLICACAO = (['pdf', 'site'] as const).map((id) => PLANOS[id]);
-export const PLANOS_DE_EDICAO = (['atualizacao-mensal', 'atualizacao-anual', 'edicao-avulsa'] as const).map(
-  (id) => PLANOS[id],
-);
+// "Edição por 30 dias" saiu da venda (Termos de 31/out); fica em PLANOS só para os pedidos antigos
+export const PLANOS_DE_EDICAO = (['atualizacao-mensal', 'atualizacao-anual'] as const).map((id) => PLANOS[id]);
 
 export const ehPlano = (id: unknown): id is IdDoPlano => typeof id === 'string' && id in PLANOS;
 
