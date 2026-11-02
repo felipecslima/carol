@@ -4,7 +4,7 @@ import { consulta } from '@server/banco';
 import { equipeDoPedido } from '@server/equipe';
 import { paginaNoAr } from '@server/pagina';
 import { contextoDe, gerarPdfDoKit, linkDoKit, origemDoSite, regerarKitDepois } from '@server/pdf';
-import { marcarComoPago, marcarPedidoPago } from '@server/publicacao';
+import { marcarComoPago, marcarPedidoPago, reembolsarPedido } from '@server/publicacao';
 
 export const prerender = false;
 
@@ -75,6 +75,18 @@ export const POST: APIRoute = async ({ request, locals }) => {
       if (!r.ok) return erro('Não deu para cancelar agora.', 502);
       await registrar('pedido_cancelado', c.pedido);
       return Response.json({ ok: true });
+    }
+    case 'reembolsar_pedido': {
+      // arrependimento de 7 dias (DEV-239): o valor é devolvido fora do sistema; aqui o pedido deixa de contar como pago
+      if (!c.pedido || !/^[0-9a-f-]{36}$/.test(c.pedido)) return erro('Pedido inválido.');
+      const r = await reembolsarPedido(c.pedido);
+      if (!r.ok) return erro(r.erro ?? 'Não deu para marcar como reembolsado.', 409);
+      await registrar('pedido_reembolsado', c.pedido, {
+        tipo: r.tipo,
+        saiuDoAr: r.saiuDoAr,
+        modoDeTeste: r.modoDeTeste,
+      });
+      return Response.json({ ok: true, tipo: r.tipo, saiuDoAr: r.saiuDoAr, modoDeTeste: r.modoDeTeste });
     }
     case 'tirar_do_ar':
     case 'recolocar_no_ar': {

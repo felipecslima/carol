@@ -3,17 +3,27 @@
 import { useState } from 'react';
 import { PLANOS_DE_EDICAO, type IdDoPlano } from '@lib/planos';
 import { AceiteDosTermos, EscolhaDePlano } from '../EscolhaDePlano';
+import { CampoDeWhatsapp } from '../CampoDeWhatsapp';
 import { pedirEdicao } from '../nuvem';
+import { useWhatsappDoPerfil } from '../whatsappDoPerfil';
 
 export function LiberarEdicao({ jaPedida }: { jaPedida: boolean }) {
   const [plano, setPlano] = useState<IdDoPlano>('atualizacao-mensal');
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const [enviado, setEnviado] = useState(jaPedida);
+  // a equipe manda o link de pagamento pelo WhatsApp do perfil: sem número válido o pedido não segue
+  const whats = useWhatsappDoPerfil(!enviado);
 
   async function aoPedir() {
     setEnviando(true);
     setErro(null);
+    const semWhats = await whats.salvar();
+    if (semWhats) {
+      setEnviando(false);
+      setErro(semWhats);
+      return;
+    }
     const falha = await pedirEdicao(plano);
     setEnviando(false);
     if (falha) setErro(falha);
@@ -36,6 +46,7 @@ export function LiberarEdicao({ jaPedida }: { jaPedida: boolean }) {
             valor={plano}
             aoMudar={setPlano}
           />
+          <CampoDeWhatsapp id="liberar-whats" whats={whats} />
           {erro && (
             <p className="ed-aviso" role="alert">
               {erro}
@@ -46,7 +57,12 @@ export function LiberarEdicao({ jaPedida }: { jaPedida: boolean }) {
             volta sozinha.
           </p>
           <AceiteDosTermos acao="Ao pedir a liberação" />
-          <button type="button" className="ed-primario ar-botao" disabled={enviando} onClick={() => void aoPedir()}>
+          <button
+            type="button"
+            className="ed-primario ar-botao"
+            disabled={enviando || !whats.pronto}
+            onClick={() => void aoPedir()}
+          >
             {enviando ? 'Enviando…' : 'Pedir a liberação'}
           </button>
         </>

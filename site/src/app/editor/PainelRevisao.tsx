@@ -6,7 +6,9 @@ import type { Projeto } from '@lib/projeto';
 import { podePublicar, type Alerta } from '@lib/revisao';
 import { normalizarSlug, problemaDoSlug, sugerirSlugs } from '@lib/slug';
 import { AceiteDosTermos, EscolhaDePlano } from '../EscolhaDePlano';
+import { CampoDeWhatsapp } from '../CampoDeWhatsapp';
 import { carregarAcesso, publicar, type RespostaDePublicar } from '../nuvem';
+import { useWhatsappDoPerfil } from '../whatsappDoPerfil';
 
 export function PainelRevisao({
   alertas,
@@ -43,9 +45,11 @@ export function PainelRevisao({
   const travada = acesso?.momento === 'travada';
   // escolhe o plano quem ainda não pagou; quem já pagou publica as mudanças direto
   const escolhePlano = Boolean(donoId) && acesso !== undefined && !acesso?.pago;
+  // quem vai pagar precisa de um WhatsApp válido no perfil: é por ele que a equipe manda o link de pagamento
+  const whats = useWhatsappDoPerfil(escolhePlano);
   const ok = podePublicar(alertas);
   const problema = link ? problemaDoSlug(link) : null;
-  const pronto = ok && Boolean(link) && !problema && !travada;
+  const pronto = ok && Boolean(link) && !problema && !travada && whats.pronto;
   const motivo = !donoId
     ? 'Para publicar, entre na sua conta.'
     : travada
@@ -56,12 +60,16 @@ export function PainelRevisao({
           ? 'Corrija o link para publicar.'
           : !ok
             ? 'Resolva os pontos em vermelho para publicar.'
-            : null;
+            : !whats.pronto
+              ? 'Escreva o seu WhatsApp para a equipe mandar o link de pagamento.'
+              : null;
 
   async function aoPublicar() {
     if (!donoId || !pronto) return;
     setEnviando(true);
-    setResposta(await publicar(donoId, projeto, link, plano));
+    const semWhats = await whats.salvar();
+    if (semWhats) setResposta({ ok: false, erro: semWhats });
+    else setResposta(await publicar(donoId, projeto, link, plano));
     setEnviando(false);
   }
   const sugestoes = sugerirSlugs('', arroba).filter((x) => x !== link);
@@ -166,6 +174,7 @@ export function PainelRevisao({
               aoMudar={setPlano}
             />
           )}
+          <CampoDeWhatsapp id="publicar-whats" whats={whats} />
           {!motivo && escolhePlano && (
             <p className="ed-dica">
               Nada é cobrado agora. A equipe te chama no WhatsApp com o link de pagamento e o portfólio vai ao ar quando

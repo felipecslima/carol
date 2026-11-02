@@ -2,7 +2,8 @@
 // Página de vendas em /portfolio-creator/ (só em português). Textos, preços e regras vêm do handoff
 // (portfolio-creator-handoff.zip, apagado em 31/out: 01-especificacao.md, 02-planos-e-precos.md). Frases que só estavam no
 // protótipo e não na especificação ("menos de 15 minutos", "acompanhamento da Carol", "contato que fecha")
-// ficam de fora até a Carol confirmar.
+// ficam de fora até a Carol confirmar. Preços, domínio e desistência seguem os Termos de Uso revisados em 31/out.
+import { EMPRESA } from './empresa';
 
 export const PC_PATH = '/portfolio-creator/';
 
@@ -12,7 +13,7 @@ export const PC = {
   instagram: 'https://www.instagram.com/eu.carollimah',
   // Todo botão de ação leva ao assistente que monta o portfólio (teste grátis, sem conta até publicar).
   cta: '/app/novo/',
-  /** direct da Carol: dúvidas, desistência e as 5 ferramentas em breve */
+  /** direct da Carol: dúvidas e as 5 ferramentas em breve (desistência é por e-mail ou WhatsApp oficial, Termos item 6) */
   dm: DM_CAROL,
   // wa.me/55DDDNÚMERO; vazio esconde os links de WhatsApp
   whatsapp: '',
@@ -101,8 +102,8 @@ export const PLANS = [
     items: [
       'Todas as seções e o Estilo completo: cores, fontes e cantos',
       'Portfólio completo em PDF, sem marca d’água',
-      'Mídia kit de 1 página no mesmo estilo',
-      'Seu link portfoliocreator.com.br/seunome',
+      'Mídia kit de 1 ou 2 páginas no mesmo estilo',
+      'Seu link eucarollimah.com.br/c/seunome',
       'Você edita até concluir e ainda ajusta por mais 7 dias',
       'Revisão guiada antes de concluir, para não sair nada errado',
     ],
@@ -112,13 +113,13 @@ export const PLANS = [
     key: 'site',
     label: 'Portfólio em site',
     price: 'R$ 149,90',
-    note: '+ R$ 40 de domínio no 1º ano: R$ 189,90 no total. Pagamento único, domínio anual.',
+    note: 'pagamento único; o domínio .com.br você registra e paga direto no Registro.br',
     items: [
       'Tudo do plano PDF',
-      '12 meses no ar, com domínio .com.br no seu nome e no seu CPF',
+      'Site no seu domínio .com.br, registrado no seu nome e no seu CPF',
       'Você cria a conta no Registro.br e a equipe publica seu site',
       'A equipe te chama no WhatsApp em até 2 dias úteis',
-      'No 2º ano, renovar é opcional: R$ 79,90',
+      'Do 2º ano em diante, você renova o domínio direto no Registro.br, se quiser',
     ],
     action: 'Quero este plano',
   },
@@ -127,15 +128,15 @@ export const PLANS = [
     label: 'Atualização mensal',
     price: 'R$ 19,90',
     per: '/mês',
-    note: 'assinatura recorrente, para quem já tem o PDF ou o site',
+    note: 'por mês de edição, sem cobrança automática, para quem já tem o PDF ou o site',
     yearly: 'ou R$ 179 por ano (sai a R$ 14,92/mês)',
     items: [
       'Libera a aba Editar no seu painel',
-      'Inclui seu link portfoliocreator.com.br/seunome',
-      'Você mesma muda números, vídeos e marcas, quando quiser',
+      'Inclui seu link eucarollimah.com.br/c/seunome',
+      'Você muda números, vídeos e marcas, quando quiser',
       'Site e PDF se atualizam na hora',
       'Troque seções, layouts e cores quando quiser',
-      'Mensal: cancele quando quiser, sem multa. Anual: sem reembolso proporcional depois dos 7 dias',
+      'Mensal: sem cobrança automática, você paga só o mês em que quiser editar. Anual: sem reembolso proporcional depois dos 7 dias',
     ],
     action: 'Quero este plano',
   },
@@ -143,12 +144,12 @@ export const PLANS = [
 
 export const FAQ = [
   { q: 'Posso usar sem seguidores ou sem nunca ter feito publi?', a: 'Pode. O modo iniciante esconde números e marcas e destaca seus vídeos de exemplo e o que você entrega. O guia que vou lançar ensina a gravar com produtos que você já tem.' },
-  { q: 'Quanto custa no total?', a: 'PDF + link: R$ 49,90, uma vez. Site: R$ 149,90 mais R$ 40 de domínio no 1º ano, R$ 189,90 no total; renovar no 2º ano é opcional, R$ 79,90 por ano. Atualização: R$ 19,90 por mês ou R$ 179 por ano.' },
-  { q: 'O domínio fica no meu nome?', a: 'Fica. O domínio .com.br é registrado no seu nome e no seu CPF. Você cria a conta no Registro.br, a gente te orienta, e a equipe publica seu site em até 2 dias úteis. Já tem o PDF + link? Passe para o domínio próprio por R$ 100,00 mais a taxa do domínio.' },
-  { q: 'E se eu não gostar?', a: 'Você tem 7 dias depois da compra para desistir e receber o dinheiro de volta. É só me chamar no direct do Instagram. Antes de pagar, dá para testar de graça.' },
+  { q: 'Quanto custa no total?', a: 'PDF + link: R$ 49,90, uma vez. Site: R$ 149,90, uma vez; o domínio .com.br você registra e paga direto no Registro.br. Atualização: R$ 19,90 por mês de edição, sem cobrança automática, ou R$ 179 por ano.' },
+  { q: 'O domínio fica no meu nome?', a: 'Fica. Você registra o domínio .com.br no Registro.br, no seu nome e no seu CPF, e paga direto a ele. A gente te orienta, e a equipe liga o domínio ao seu site em até 2 dias úteis. Já tem o PDF + link? Passe para o domínio próprio por R$ 100,00, mais a taxa do domínio no Registro.br.' },
+  { q: 'E se eu não gostar?', a: `Você tem 7 dias depois que o plano for liberado para desistir e receber todo o dinheiro de volta. É só me escrever no e-mail ${EMPRESA.email} ou no WhatsApp ${EMPRESA.whatsapp}. Antes de pagar, dá para testar de graça.` },
   { q: 'O que eu preciso ter em mãos?', a: 'Os vídeos que você gravou (até 100 MB cada) e, se quiser mostrar números, as estatísticas do seu Instagram abertas para copiar.' },
   { q: 'Como entram os meus números?', a: 'Você digita seguidores, views e dados do público, e eles aparecem formatados no portfólio, com o período de referência. Antes de concluir, a revisão aponta o que ainda está com número de exemplo.' },
   { q: 'O teste grátis tem limite?', a: 'No teste você monta o portfólio inteiro, com todas as seções, e vê como fica, com marca d’água. Baixar o PDF e publicar o site são liberados quando você escolhe um plano.' },
-  { q: 'Posso mudar meu site depois de publicado?', a: 'Pode. Com a atualização mensal, a aba Editar fica liberada e você mesma muda o que quiser: o site e o PDF se atualizam na hora. Sem assinatura, dá para liberar a aba Editar por 30 dias por R$ 49,90. Sem um dos dois, o site fica como foi publicado.' },
-  { q: 'Posso cancelar a atualização mensal?', a: 'Pode, quando quiser e sem multa, e a aba Editar continua liberada até o fim do mês já pago. No plano anual (R$ 179), o pagamento já cobre os 12 meses, sem reembolso proporcional depois dos 7 dias de desistência.' },
+  { q: 'Posso mudar meu site depois de publicado?', a: 'Pode. Com a atualização mensal ou anual, a aba Editar fica liberada e você muda o que quiser: o site e o PDF se atualizam na hora. Sem uma delas, o site fica como foi publicado.' },
+  { q: 'Posso cancelar a atualização mensal?', a: 'Não precisa: não há cobrança automática. Cada mês é um pedido novo, pago só quando você quiser editar; se não pagar um novo mês, a aba Editar volta a travar e o site continua no ar. No plano anual (R$ 179), o pagamento já cobre os 12 meses, sem reembolso proporcional depois dos 7 dias de desistência.' },
 ];

@@ -42,7 +42,13 @@ export const POST: APIRoute = async ({ request }) => {
     },
     apagarUsuario: apagarUsuarioDoAuth,
     registrar: async (id, detalhes) => {
-      const acao = 'bloqueada' in detalhes ? 'exclusao_bloqueada' : 'conta_excluida';
+      const bloqueio = 'bloqueada' in detalhes;
+      const acao = bloqueio ? 'exclusao_bloqueada' : 'conta_excluida';
+      // a rotina roda todo dia: o bloqueio de uma conta entra no registro uma vez só, não a cada dia
+      if (bloqueio) {
+        const ja = await consulta<{ id: number }>(`audit_log?acao=eq.${acao}&alvo=eq.${id}&select=id&limit=1`);
+        if (ja.ok && ja.dados.length > 0) return;
+      }
       await consulta('audit_log', { metodo: 'POST', corpo: { acao, alvo: id, detalhes } });
     },
   });

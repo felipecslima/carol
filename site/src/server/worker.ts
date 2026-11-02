@@ -21,14 +21,17 @@ export default {
     return response.status === 404 && isPage ? env.ASSETS.fetch(request) : response;
   },
 
-  // cron diário (wrangler.jsonc → triggers): exclusão definitiva das contas com prazo vencido (DEV-203). Passa pela
-  // rota interna para usar as mesmas variáveis e regras das outras rotas.
+  // cron diário (wrangler.jsonc → triggers): exclusão definitiva das contas com prazo vencido (DEV-203) e prazos de
+  // guarda da Política (registros de acesso 6 meses, registro de ações 5 anos). Passa pelas rotas internas para usar
+  // as mesmas variáveis e regras das outras rotas.
   async scheduled(_evento: unknown, env: Env, context: Parameters<typeof astro.fetch>[2]): Promise<void> {
-    const pedido = new Request('https://eucarollimah.com.br/api/interno/exclusoes', {
-      method: 'POST',
-      headers: { 'x-admin-token': env.ADMIN_TOKEN ?? '' },
-    });
-    const resposta = await astro.fetch(pedido, env, context);
-    console.log('exclusoes', resposta.status, await resposta.text());
+    for (const rotina of ['exclusoes', 'limpeza']) {
+      const pedido = new Request(`https://eucarollimah.com.br/api/interno/${rotina}`, {
+        method: 'POST',
+        headers: { 'x-admin-token': env.ADMIN_TOKEN ?? '' },
+      });
+      const resposta = await astro.fetch(pedido, env, context);
+      console.log(rotina, resposta.status, await resposta.text());
+    }
   },
 };
