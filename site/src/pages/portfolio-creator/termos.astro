@@ -1,6 +1,7 @@
 ---
-// Termos de Uso (DEV-241). Versão revisada em 31/out. Trechos em <mark class="pendente"> ainda dependem de decisão da
-// empresa ou do advogado e precisam sair antes de publicar. Preços e limites saem do código, para não divergirem.
+// Termos de Uso (DEV-241). Versão revisada em 31/out, publicada em 02/nov com texto genérico onde havia pendência (decisão
+// do usuário): o endereço completo ficou só a cidade e saiu a nota sobre o ECA Digital (verificação de idade). Resolver
+// os dois com o advogado (docs/PROGRESSO.md). Para marcar um trecho ainda não decidido, use <mark class="pendente">. Preços e limites saem do código, para não divergirem.
 import PaginaLegal from '../../views/PaginaLegal.astro';
 import { PLANOS } from '../../lib/planos';
 import { ESPACO_POR_CONTA, LINKS_DE_MARCA_POR_DIA, MIDIAS_POR_CONTA } from '../../lib/limites';
@@ -18,8 +19,7 @@ const gb = ESPACO_POR_CONTA / 1024 ** 3;
 >
   <p>
     O Portfólio Creator é um serviço para montar portfólio e mídia kit de creators, com página própria e PDF. Ele é
-    oferecido por <strong>{EMPRESA.razaoSocial}</strong> (Carol Limah), CNPJ {EMPRESA.cnpj}, com sede em{' '}
-    <mark class="pendente">[PENDENTE: endereço completo]</mark>, {EMPRESA.cidade}. Ao criar uma conta ou contratar um
+    oferecido por <strong>{EMPRESA.razaoSocial}</strong> (Carol Limah), CNPJ {EMPRESA.cnpj}, com sede em {EMPRESA.cidade}. Ao criar uma conta ou contratar um
     plano, você concorda com estes termos e com a <a href="/portfolio-creator/privacidade/">Política de Privacidade</a>.
   </p>
   <p>
@@ -33,12 +33,6 @@ const gb = ESPACO_POR_CONTA / 1024 ** 3;
     O serviço é só para pessoas com 18 anos ou mais. Não é permitido criar ou gerenciar uma conta em nome de menor de
     idade, inclusive por pais ou responsáveis. Você é responsável pelos dados que informa e por manter o acesso ao
     e-mail ou à conta Google que usa para entrar.
-  </p>
-  <p>
-    <mark class="pendente"
-      >[PENDENTE: o ECA Digital (Lei 15.211/2025) proíbe a autodeclaração de idade em serviços de acesso provável por
-      menores. O advogado avalia se o Portfólio Creator se enquadra e, se sim, qual verificação de idade usar.]</mark
-    >
   </p>
 
   <h2>2. Conta e acesso</h2>

@@ -7,5 +7,5 @@ export const EMPRESA = {
   email: 'ana.carolinelima1987@gmail.com',
   // número oficial: por ele a equipe manda o link de pagamento e recebe pedidos de desistência (Termos, itens 5 e 6)
   whatsapp: '+55 (12) 99137-6550',
-  atualizadoEm: '[data da publicação]',
+  atualizadoEm: '2 de novembro de 2026',
 };

@@ -1,6 +1,8 @@
 ---
-// Política de Privacidade (DEV-241, LGPD). Versão revisada em 31/out. Trechos em <mark class="pendente"> ainda dependem
-// de decisão da empresa ou do advogado e precisam sair antes de publicar. Quando entrar um serviço novo que recebe
+// Política de Privacidade (DEV-241, LGPD). Versão revisada em 31/out, publicada em 02/nov com texto genérico na
+// transferência internacional (decisão do usuário). Pendente: só o WhatsApp tem as cláusulas-padrão da ANPD no contrato;
+// Supabase, Resend, Cloudinary, Cloudflare e Amplitude têm só as da UE. Assinando as da ANPD, a Resolução 19 (art. 17,
+// cláusula 14) pede esta parte em destaque, com duração e transferências posteriores (docs/REVISAO-JURIDICA.md, parte 5). Quando entrar um serviço novo que recebe
 // dados (Slack, WhatsApp oficial, gateway), atualizar a lista de serviços.
 import PaginaLegal from '../../views/PaginaLegal.astro';
 import { DIAS_PARA_EXCLUIR } from '../../server/exclusao';
@@ -148,19 +150,7 @@ import { EMPRESA } from '../../data/empresa';
   </ul>
   <p>
     Supabase, Google, Resend, Cloudinary, Cloudflare, WhatsApp e Amplitude podem guardar ou processar dados fora do
-    Brasil, principalmente nos Estados Unidos. Nessas transferências, usamos as cláusulas-padrão contratuais aprovadas
-    pela ANPD (Resolução CD/ANPD nº 19/2024). Também podemos informar dados a autoridades quando a lei exigir.
-  </p>
-  <p>
-    <mark class="pendente"
-      >[PENDENTE, pesquisa de 31/out: só o WhatsApp tem as cláusulas-padrão da ANPD no contrato, e só se o número oficial
-      for uma conta WhatsApp Business. Supabase, Resend, Cloudinary, Cloudflare e Amplitude oferecem só as cláusulas da
-      União Europeia, que não valem no Brasil desde 23/08/2025. O Google, no login, trata os dados como responsável
-      próprio. Antes de publicar: assinar as cláusulas da ANPD com esses cinco (o contrato do Supabase prevê isso, Anexo
-      2, item 4.4) ou trocar esta frase por outra base legal. Usando as cláusulas, a Resolução 19 (art. 17 e cláusula 14)
-      pede esta parte em destaque e com a duração e as transferências posteriores. Detalhes em
-      docs/REVISAO-JURIDICA.md.]</mark
-    >
+    Brasil, principalmente nos Estados Unidos. Nessas transferências, seguimos as regras da LGPD para transferência internacional de dados (art. 33). Também podemos informar dados a autoridades quando a lei exigir.
   </p>
 
   <h2>4. Por quanto tempo</h2>
